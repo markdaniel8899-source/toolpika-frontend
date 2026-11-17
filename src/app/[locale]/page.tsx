@@ -15,7 +15,7 @@ function IconTile({ icon: Icon }: { icon: ComponentType<SVGProps<SVGSVGElement>>
   );
 }
 
-/** Category card - uniform boxes, simple icon + heading + description. */
+/** Category card - uniform boxes, same height/width, simple icon + heading + description. */
 function CategoryCard({
   category,
   tools,
@@ -27,15 +27,16 @@ function CategoryCard({
     <Link
       href={`/category/${category.slug}`}
       className={cn(
-        "flex flex-col items-start gap-2 h-[150px] rounded-[16px] border border-[var(--border)] bg-[var(--surface)] p-5",
+        "flex flex-col items-start gap-2 h-[160px] w-full rounded-[16px] border border-[var(--border)] bg-[var(--surface)] p-5",
         "transition-all duration-300 ease-out hover:border-[var(--accent)] hover:-translate-y-[4px] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)]",
+        "focus-visible:ring-0 focus-visible:outline-0",
       )}
     >
       <IconTile icon={category.Icon} />
-      <h3 className="font-sans text-[16px] font-medium leading-[1.15] tracking-tight text-[var(--text)]">
+      <h3 className="font-sans text-[15px] font-normal leading-[1.15] tracking-tight text-[var(--text)]">
         {category.label}
       </h3>
-      <p className="text-[13px] text-[var(--muted)] leading-[1.5] mt-auto">
+      <p className="text-[12px] text-[var(--muted)] leading-[1.5] mt-auto">
         {tools.slice(0, 3).map((tool, i) => (i > 0 ? ", " : "") + tool.title)}
       </p>
     </Link>
@@ -110,9 +111,10 @@ export default async function HomePage({ params }: LocalePageProps) {
                 <Link
                   href={`/tools/${slug}`}
                   className={cn(
-                    "rounded-full border px-4 py-1.5 text-[13px] font-medium transition-all duration-300 ease-out",
+                    "rounded-full border px-4 py-1.5 text-[13px] font-normal transition-all duration-300 ease-out",
                     chipColors[index % chipColors.length],
                     "hover:bg-[var(--accent)] hover:text-[var(--on-accent)] hover:border-[var(--accent)]",
+                    "focus-visible:ring-0 focus-visible:outline-0",
                   )}
                 >
                   {tool.title}
