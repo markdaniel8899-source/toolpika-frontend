@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Toolpika — Todas las herramientas que necesitas, en un solo lugar.",
+    "title": "Toolpika | Todas las herramientas que necesitas, en un solo lugar.",
     "description": "Herramientas online rápidas, gratuitas y respetuosas con tu privacidad para texto, imágenes, archivos y código. Sin registro, sin subir archivos."
   },
   "nav": {
@@ -13,7 +13,7 @@
   "home": {
     "title": "Encuentra la herramienta correcta en <display>segundos</display>",
     "subtitle": "Utilidades rápidas, gratuitas y respetuosas con tu privacidad para texto, imágenes, archivos y código. Se ejecutan en tu navegador.",
-    "searchPlaceholder": "Buscar herramientas…",
+    "searchPlaceholder": "Buscar",
     "searchHint": "Pulsa / para buscar",
     "popular": "Herramientas populares",
     "viewAll": "Ver todas",
@@ -45,7 +45,7 @@
     "catSecurity": "Seguridad"
   },
   "search": {
-    "placeholder": "Buscar herramientas…",
+    "placeholder": "Buscar",
     "clear": "Borrar búsqueda",
     "go": "Abrir",
     "noResults": "Ninguna herramienta coincide con tu búsqueda.",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Legal",
     "title": "Política de privacidad",
-    "description": "Qué hace Toolpika con tus datos — muy poco.",
+    "description": "Qué hace Toolpika con tus datos. Muy poco.",
     "updated": "Última actualización: 16 de noviembre de 2026",
     "filesTitle": "Tus archivos",
     "filesBody": "Las herramientas que aceptan archivos se ejecutan por completo en tu navegador mediante las APIs File y Canvas. El contenido nunca se envía a un servidor ni se almacena.",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "Contacto",
     "title": "Contáctanos",
-    "description": "Errores, solicitudes de herramientas o cualquier otra cosa — basta con un correo.",
+    "description": "Errores, solicitudes de herramientas o cualquier otra cosa. Basta con un correo.",
     "emailLabel": "Correo",
     "responseTime": "Normalmente respondemos en un par de días laborables."
   },

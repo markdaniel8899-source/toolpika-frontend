@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Toolpika — Todas as ferramentas que você precisa, em um só lugar.",
+    "title": "Toolpika | Todas as ferramentas que você precisa, em um só lugar.",
     "description": "Ferramentas online rápidas, gratuitas e que respeitam sua privacidade para texto, imagens, arquivos e código. Sem cadastro, sem envio de arquivos."
   },
   "nav": {
@@ -13,7 +13,7 @@
   "home": {
     "title": "Encontre a ferramenta certa em <display>segundos</display>",
     "subtitle": "Utilitários rápidos, gratuitos e que respeitam sua privacidade para texto, imagens, arquivos e código. Rodam no seu navegador.",
-    "searchPlaceholder": "Buscar ferramentas…",
+    "searchPlaceholder": "Buscar",
     "searchHint": "Pressione / para buscar",
     "popular": "Ferramentas populares",
     "viewAll": "Ver todas",
@@ -45,7 +45,7 @@
     "catSecurity": "Segurança"
   },
   "search": {
-    "placeholder": "Buscar ferramentas…",
+    "placeholder": "Buscar",
     "clear": "Limpar busca",
     "go": "Abrir",
     "noResults": "Nenhuma ferramenta corresponde à sua busca.",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Legal",
     "title": "Política de privacidade",
-    "description": "O que o Toolpika faz com seus dados — muito pouco.",
+    "description": "O que o Toolpika faz com seus dados. Muito pouco.",
     "updated": "Última atualização: 16 de novembro de 2026",
     "filesTitle": "Seus arquivos",
     "filesBody": "Ferramentas que aceitam arquivos rodam inteiramente no seu navegador usando as APIs File e Canvas. O conteúdo nunca é enviado a um servidor nem armazenado.",
@@ -110,7 +110,7 @@
     "description": "O básico para usar o Toolpika.",
     "updated": "Última atualização: 16 de novembro de 2026",
     "useTitle": "Uso das ferramentas",
-    "useBody": "O Toolpika está disponível para uso pessoal e comercial. Mantenha backups do que for importante — você é responsável pelos arquivos que processa.",
+    "useBody": "O Toolpika está disponível para uso pessoal e comercial. Mantenha backups do que for importante. Você é responsável pelos arquivos que processa.",
     "liabilityTitle": "Sem garantia",
     "liabilityBody": "As ferramentas são fornecidas como estão. Não respondemos por perda de dados ou por consequências de confiar no resultado de uma ferramenta.",
     "changesTitle": "Mudanças",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "Contato",
     "title": "Fale conosco",
-    "description": "Relatos de erro, pedidos de ferramentas ou qualquer outra coisa — e-mail resolve.",
+    "description": "Relatos de erro, pedidos de ferramentas ou qualquer outra coisa. E-mail resolve.",
     "emailLabel": "E-mail",
     "responseTime": "Normalmente respondemos em até dois dias úteis."
   },
@@ -152,7 +152,7 @@
   "toolPage": {
     "howToTitle": "Como usar",
     "step1": "Adicione seu conteúdo na área de entrada à esquerda.",
-    "step2": "Ajuste as opções — os padrões atendem à maioria dos arquivos.",
+    "step2": "Ajuste as opções. Os padrões atendem à maioria dos arquivos.",
     "step3": "Leia o resultado à direita e copie ou baixe.",
     "faqTitle": "Perguntas frequentes",
     "faqQuestion1": "Meus arquivos são enviados?",

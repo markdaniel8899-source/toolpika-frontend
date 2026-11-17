@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Toolpika — Tutti gli strumenti che ti servono, in un unico posto.",
+    "title": "Toolpika | Tutti gli strumenti che ti servono, in un unico posto.",
     "description": "Strumenti online rapidi, gratuiti e rispettosi della privacy per testo, immagini, file e codice. Nessuna registrazione, nessun caricamento."
   },
   "nav": {
@@ -13,7 +13,7 @@
   "home": {
     "title": "Trova lo strumento giusto in <display>secondi</display>",
     "subtitle": "Utilità rapide, gratuite e rispettose della privacy per testo, immagini, file e codice. Funzionano nel tuo browser.",
-    "searchPlaceholder": "Cerca strumenti…",
+    "searchPlaceholder": "Cerca",
     "searchHint": "Premi / per cercare",
     "popular": "Strumenti popolari",
     "viewAll": "Vedi tutti",
@@ -45,7 +45,7 @@
     "catSecurity": "Sicurezza"
   },
   "search": {
-    "placeholder": "Cerca strumenti…",
+    "placeholder": "Cerca",
     "clear": "Cancella ricerca",
     "go": "Apri",
     "noResults": "Nessuno strumento corrisponde alla ricerca.",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Note legali",
     "title": "Informativa sulla privacy",
-    "description": "Cosa fa Toolpika con i tuoi dati — pochissimo.",
+    "description": "Cosa fa Toolpika con i tuoi dati. Pochissimo.",
     "updated": "Ultimo aggiornamento: 16 novembre 2026",
     "filesTitle": "I tuoi file",
     "filesBody": "Gli strumenti che accettano file funzionano interamente nel browser tramite le API File e Canvas. Il contenuto non viene mai inviato a un server né memorizzato.",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "Contatti",
     "title": "Contattaci",
-    "description": "Segnalazioni di bug, richieste di strumenti o altro — basta un'email.",
+    "description": "Segnalazioni di bug, richieste di strumenti o altro. Basta un'email.",
     "emailLabel": "E-mail",
     "responseTime": "Di solito rispondiamo entro un paio di giorni lavorativi."
   },

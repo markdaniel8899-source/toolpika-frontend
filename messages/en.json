@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Toolpika — Every tool you need, in one place.",
-    "description": "Fast, free, privacy-first online tools for text, images, files and code. No sign-up, no uploads."
+    "title": "Toolpika | Every tool you need, in one place.",
+    "description": "Free tools for text, images, files and code. No sign-up, no uploads."
   },
   "nav": {
     "tools": "Tools",
@@ -12,14 +12,14 @@
   },
   "home": {
     "title": "Find the right tool in <display>seconds</display>",
-    "subtitle": "Fast, free, privacy-first utilities for text, images, files and code. Built to run in your browser.",
-    "searchPlaceholder": "Search tools…",
+    "subtitle": "Free tools that run in your browser. Your files stay on your device.",
+    "searchPlaceholder": "Search",
     "searchHint": "Press / to search",
     "popular": "Popular tools",
     "viewAll": "View all",
     "categories": "Categories",
-    "requestTitle": "Can't find what you need?",
-    "requestSubtitle": "Tell us which tool you're missing and we'll build it.",
+    "requestTitle": "Missing a tool?",
+    "requestSubtitle": "Tell us and we will build it.",
     "requestCTA": "Request a tool"
   },
   "theme": {
@@ -37,7 +37,7 @@
     "result": "Result",
     "resultEmpty": "Output appears here.",
     "about": "About {title}",
-    "runsInBrowser": "Runs entirely in your browser",
+    "runsInBrowser": "Runs in your browser",
     "catText": "Text",
     "catImage": "Images",
     "catCode": "Code",
@@ -45,7 +45,7 @@
     "catSecurity": "Security"
   },
   "search": {
-    "placeholder": "Search tools…",
+    "placeholder": "Search",
     "clear": "Clear search",
     "go": "Go",
     "noResults": "No tools match your search.",
@@ -73,11 +73,11 @@
     "title": "Request a tool",
     "description": "Tell us what you need. We read every request and build the most asked-for ones first.",
     "toolNameLabel": "Tool name",
-    "toolNamePlaceholder": "e.g. PDF page remover",
+    "toolNamePlaceholder": "Tool name",
     "descriptionLabel": "What should it do?",
-    "descriptionPlaceholder": "Describe the job you want to do and any options you need.",
+    "descriptionPlaceholder": "Description",
     "emailLabel": "Email (optional)",
-    "emailPlaceholder": "you@example.com",
+    "emailPlaceholder": "Email",
     "emailHint": "Only used to tell you when the tool is ready.",
     "submit": "Send request",
     "backHome": "Back to home"
@@ -85,8 +85,8 @@
   "about": {
     "eyebrow": "About",
     "title": "About Toolpika",
-    "description": "Toolpika is a collection of small, privacy-first online utilities that run in your browser.",
-    "intro": "Toolpika is a collection of small utilities that do one job each, quickly and without asking you to sign up.",
+    "description": "Toolpika is a collection of small utilities that run in your browser.",
+    "intro": "Toolpika is a collection of small utilities. Each does one job, without asking you to sign up.",
     "privacyTitle": "Files stay on your device",
     "privacyBody": "Every tool that touches a file or text processes it inside your browser. Nothing is uploaded, so we never see your content.",
     "contactTitle": "Get in touch",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Legal",
     "title": "Privacy policy",
-    "description": "What Toolpika does with your data — which is very little.",
+    "description": "What Toolpika does with your data. Which is very little.",
     "updated": "Last updated: 16 November 2026",
     "filesTitle": "Your files",
     "filesBody": "Tools that accept files run entirely in your browser using the File and Canvas APIs. File contents are never sent to a server and are never stored.",
@@ -110,7 +110,7 @@
     "description": "The basics of using Toolpika.",
     "updated": "Last updated: 16 November 2026",
     "useTitle": "Using the tools",
-    "useBody": "Toolpika is provided for personal and commercial work. Keep backups of anything important — you are responsible for the files you process.",
+    "useBody": "Toolpika is provided for personal and commercial work. Keep backups of anything important. You are responsible for the files you process.",
     "liabilityTitle": "No warranty",
     "liabilityBody": "The tools are provided as-is. We are not liable for lost data or outcomes from relying on a tool's output.",
     "changesTitle": "Changes",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "Contact",
     "title": "Contact us",
-    "description": "Bug reports, tool requests, or anything else — email is fine.",
+    "description": "Bug reports, tool requests, or anything else. Email is fine.",
     "emailLabel": "Email",
     "responseTime": "We usually reply within a couple of working days."
   },
@@ -151,8 +151,8 @@
   },
   "toolPage": {
     "howToTitle": "How to use",
-    "step1": "Add your content in the input area on the left.",
-    "step2": "Adjust any options in the panel — the defaults work for most files.",
+    "step1": "Add your content on the left.",
+    "step2": "Adjust any options in the panel. The defaults work for most files.",
     "step3": "Read the result on the right, then copy or download it.",
     "faqTitle": "Frequently asked questions",
     "faqQuestion1": "Are my files uploaded?",
@@ -185,7 +185,7 @@
     "kebabCase": "kebab-case",
     "snakeCase": "snake_case",
     "chooseImage": "Choose an image",
-    "dropImage": "or drop a JPEG or PNG here",
+    "dropImage": "Drop an image",
     "quality": "Quality",
     "original": "Original",
     "compressed": "Compressed",
@@ -218,7 +218,7 @@
     "decode": "Decode",
     "urlInvalid": "That does not look like a valid encoded URL.",
     "base64Invalid": "That does not look like valid Base64.",
-    "pasteText": "Paste your text here.",
+    "pasteText": "Text",
     "result": "Result"
   }
 }

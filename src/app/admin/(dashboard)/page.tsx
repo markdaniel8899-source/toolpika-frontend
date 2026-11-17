@@ -69,7 +69,7 @@ export default async function AdminOverviewPage() {
                         : item.kind === "post"
                           ? t.activityPost
                           : t.activityTool}
-                      {item.detail ? ` — ${item.detail}` : ""}
+                      {item.detail ? ` ${item.detail}` : ""}
                     </p>
                   </div>
                   <time

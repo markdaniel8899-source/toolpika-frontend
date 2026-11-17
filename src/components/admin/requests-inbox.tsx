@@ -76,7 +76,7 @@ export function RequestsInbox({
               </p>
             </td>
             <td className="px-3 py-3 text-[var(--muted)]">
-              {request.email ?? "—"}
+              {request.email ?? ""}
             </td>
             <td className="px-3 py-3 text-[var(--muted)]">
               <time dateTime={request.created_at}>

@@ -5,22 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { getPopularTools, getToolsByCategory, categories } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-/** Trust pill shown above the hero H1. */
-function TrustPill() {
-  return (
-    <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--accent)] text-[11px] font-semibold uppercase tracking-[0.15em] shadow-sm">
-      100% free
-      <span className="w-px h-3 bg-[var(--border)] mx-1" aria-hidden="true" />
-      No signup
-      <span className="w-px h-3 bg-[var(--border)] mx-1" aria-hidden="true" />
-      Files never leave your browser
-    </div>
-  );
-}
 
 /** Icon tile used inside category cards. */
 function IconTile({ icon: Icon }: { icon: ComponentType<SVGProps<SVGSVGElement>> }) {
@@ -95,7 +81,6 @@ function PopularCard({
       >
         {tool.title}
       </Link>
-      <Badge>{tool.category}</Badge>
     </li>
   );
 }
@@ -112,7 +97,7 @@ export default async function HomePage({ params }: LocalePageProps) {
 
   const whyToolpika = [
     ["Private by design", "Everything runs in your browser. Nothing is uploaded."],
-    ["Free and fast", "No signup, no paywall — tools open instantly."],
+    ["Free and fast", "No signup, tools open instantly."],
     ["Any device", "Works on desktop, tablet and phone."],
   ] as const;
 
@@ -132,9 +117,6 @@ export default async function HomePage({ params }: LocalePageProps) {
           aria-hidden="true"
         />
         <div className="relative z-10 mx-auto max-w-[560px] px-6 text-center">
-          <Reveal delay={0} className="mb-8">
-            <TrustPill />
-          </Reveal>
           <Reveal delay={80} className="mb-6">
             <h1 className="text-balance font-heading text-[40px] font-bold leading-[1.15] tracking-[-0.03em] text-[var(--text)] sm:text-[60px]">
               {t.rich("title", {

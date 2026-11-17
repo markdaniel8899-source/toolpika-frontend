@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Toolpika — Tous les outils qu'il vous faut, au même endroit.",
+    "title": "Toolpika | Tous les outils qu'il vous faut, au même endroit.",
     "description": "Des outils en ligne rapides, gratuits et respectueux de la vie privée pour le texte, les images, les fichiers et le code. Sans inscription, sans envoi de fichiers."
   },
   "nav": {
@@ -13,7 +13,7 @@
   "home": {
     "title": "Trouvez le bon outil en <display>secondes</display>",
     "subtitle": "Des utilitaires rapides, gratuits et respectueux de la vie privée pour le texte, les images, les fichiers et le code. Ils s'exécutent dans votre navigateur.",
-    "searchPlaceholder": "Rechercher un outil…",
+    "searchPlaceholder": "Rechercher",
     "searchHint": "Appuyez sur / pour rechercher",
     "popular": "Outils populaires",
     "viewAll": "Tout voir",
@@ -45,7 +45,7 @@
     "catSecurity": "Sécurité"
   },
   "search": {
-    "placeholder": "Rechercher un outil…",
+    "placeholder": "Rechercher",
     "clear": "Effacer la recherche",
     "go": "Ouvrir",
     "noResults": "Aucun outil ne correspond à votre recherche.",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Mentions légales",
     "title": "Politique de confidentialité",
-    "description": "Ce que Toolpika fait de vos données — très peu de choses.",
+    "description": "Ce que Toolpika fait de vos données. Très peu de choses.",
     "updated": "Dernière mise à jour : 16 novembre 2026",
     "filesTitle": "Vos fichiers",
     "filesBody": "Les outils qui acceptent des fichiers s'exécutent entièrement dans votre navigateur via les API File et Canvas. Le contenu des fichiers n'est jamais transmis à un serveur ni stocké.",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "Contact",
     "title": "Nous contacter",
-    "description": "Rapports de bugs, demandes d'outils ou tout autre sujet — l'e-mail suffit.",
+    "description": "Rapports de bugs, demandes d'outils ou tout autre sujet. L'e-mail suffit.",
     "emailLabel": "E-mail",
     "responseTime": "Nous répondons généralement sous deux jours ouvrés."
   },
@@ -152,7 +152,7 @@
   "toolPage": {
     "howToTitle": "Comment l'utiliser",
     "step1": "Ajoutez votre contenu dans la zone de saisie à gauche.",
-    "step2": "Ajustez les options — les réglages par défaut conviennent à la plupart des fichiers.",
+    "step2": "Ajustez les options. Les réglages par défaut conviennent à la plupart des fichiers.",
     "step3": "Lisez le résultat à droite, puis copiez-le ou téléchargez-le.",
     "faqTitle": "Questions fréquentes",
     "faqQuestion1": "Mes fichiers sont-ils envoyés ?",

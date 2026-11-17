@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Toolpika — İhtiyacınız olan tüm araçlar tek bir yerde.",
+    "title": "Toolpika | İhtiyacınız olan tüm araçlar tek bir yerde.",
     "description": "Metin, görsel, dosya ve kod için hızlı, ücretsiz ve gizliliğe saygılı çevrimiçi araçlar. Kayıt yok, dosya yükleme yok."
   },
   "nav": {
@@ -13,7 +13,7 @@
   "home": {
     "title": "Doğru aracı <display>saniyeler</display> içinde bulun",
     "subtitle": "Metin, görsel, dosya ve kod için hızlı, ücretsiz ve gizliliğe saygılı yardımcılar. Tarayıcınızda çalışır.",
-    "searchPlaceholder": "Araç ara…",
+    "searchPlaceholder": "Ara",
     "searchHint": "Aramak için / tuşuna basın",
     "popular": "Popüler araçlar",
     "viewAll": "Tümünü gör",
@@ -45,7 +45,7 @@
     "catSecurity": "Güvenlik"
   },
   "search": {
-    "placeholder": "Araç ara…",
+    "placeholder": "Ara",
     "clear": "Aramayı temizle",
     "go": "Aç",
     "noResults": "Aramanızla eşleşen araç yok.",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Hukuki",
     "title": "Gizlilik politikası",
-    "description": "Toolpika verilerinizle ne yapıyor — çok az şey.",
+    "description": "Toolpika verilerinizle ne yapıyor. Çok az şey.",
     "updated": "Son güncelleme: 16 Kasım 2026",
     "filesTitle": "Dosyalarınız",
     "filesBody": "Dosya kabul eden araçlar, File ve Canvas API'leriyle tamamen tarayıcınızda çalışır. Dosya içerikleri asla sunucuya gönderilmez veya saklanmaz.",
@@ -110,7 +110,7 @@
     "description": "Toolpika'yı kullanmanın temel kuralları.",
     "updated": "Son güncelleme: 16 Kasım 2026",
     "useTitle": "Araçların kullanımı",
-    "useBody": "Toolpika kişisel ve ticari kullanıma açıktır. Önemli dosyaların yedeğini alın — işlediğiniz dosyalardan siz sorumlusunuz.",
+    "useBody": "Toolpika kişisel ve ticari kullanıma açıktır. Önemli dosyaların yedeğini alın. İşlediğiniz dosyalardan siz sorumlusunuz.",
     "liabilityTitle": "Garanti verilmez",
     "liabilityBody": "Araçlar olduğu gibi sunulur. Veri kaybından veya bir aracın çıktısına güvenmenin sonuçlarından sorumlu değiliz.",
     "changesTitle": "Değişiklikler",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "İletişim",
     "title": "Bize ulaşın",
-    "description": "Hata bildirimi, araç talebi ya da başka bir şey — e-posta yeterli.",
+    "description": "Hata bildirimi, araç talebi ya da başka bir şey. E-posta yeterli.",
     "emailLabel": "E-posta",
     "responseTime": "Genellikle birkaç iş günü içinde yanıt veriyoruz."
   },
@@ -152,7 +152,7 @@
   "toolPage": {
     "howToTitle": "Nasıl kullanılır",
     "step1": "İçeriğinizi soldaki giriş alanına ekleyin.",
-    "step2": "Seçenekleri ayarlayın — varsayılanlar çoğu dosya için yeterlidir.",
+    "step2": "Seçenekleri ayarlayın. Varsayılanlar çoğu dosya için yeterlidir.",
     "step3": "Sağdaki sonucu okuyun, kopyalayın veya indirin.",
     "faqTitle": "Sık sorulan sorular",
     "faqQuestion1": "Dosyalarım yükleniyor mu?",

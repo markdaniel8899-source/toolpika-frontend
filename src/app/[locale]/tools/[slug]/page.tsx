@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
@@ -53,7 +52,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: `${tool.title} — Toolpika`,
+      title: `${tool.title} | Toolpika`,
       description: tool.description,
       type: "website",
       url: `${siteUrl}/${locale}/tools/${tool.slug}`,
@@ -157,7 +156,6 @@ export default async function ToolPage({ params }: LocalePageProps) {
           <h1 className="font-heading text-[28px] tracking-[-0.02em] text-[var(--text)] sm:text-[32px]">
             {tool.title}
           </h1>
-          <Badge>{t("live")}</Badge>
         </div>
         <p className="max-w-2xl leading-[1.6] text-[var(--muted)]">
           {tool.description}

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Toolpika — Alle Tools, die Sie brauchen, an einem Ort.",
+    "title": "Toolpika | Alle Tools, die Sie brauchen, an einem Ort.",
     "description": "Schnelle, kostenlose und datenschutzfreundliche Online-Tools für Text, Bilder, Dateien und Code. Ohne Anmeldung, ohne Upload."
   },
   "nav": {
@@ -13,7 +13,7 @@
   "home": {
     "title": "Finden Sie das richtige Tool in <display>Sekunden</display>",
     "subtitle": "Schnelle, kostenlose, datenschutzfreundliche Hilfsmittel für Text, Bilder, Dateien und Code. Läuft vollständig im Browser.",
-    "searchPlaceholder": "Tools suchen…",
+    "searchPlaceholder": "Suchen",
     "searchHint": "Drücken Sie / zum Suchen",
     "popular": "Beliebte Tools",
     "viewAll": "Alle anzeigen",
@@ -45,7 +45,7 @@
     "catSecurity": "Sicherheit"
   },
   "search": {
-    "placeholder": "Tools suchen…",
+    "placeholder": "Suchen",
     "clear": "Suche löschen",
     "go": "Öffnen",
     "noResults": "Keine Tools passen zu Ihrer Suche.",
@@ -86,7 +86,7 @@
     "eyebrow": "Über uns",
     "title": "Über Toolpika",
     "description": "Toolpika ist eine Sammlung kleiner, datenschutzfreundlicher Online-Werkzeuge, die in Ihrem Browser laufen.",
-    "intro": "Toolpika ist eine Sammlung kleiner Hilfsmittel, die jeweils eine Aufgabe erledigen — schnell und ohne Registrierung.",
+    "intro": "Toolpika ist eine Sammlung kleiner Hilfsmittel, die jeweils eine Aufgabe erledigen. Schnell und ohne Registrierung.",
     "privacyTitle": "Dateien bleiben auf Ihrem Gerät",
     "privacyBody": "Jedes Tool, das Dateien oder Text verarbeitet, läuft in Ihrem Browser. Es wird nichts hochgeladen, daher sehen wir Ihre Inhalte nie.",
     "contactTitle": "Kontakt",
@@ -95,7 +95,7 @@
   "privacy": {
     "eyebrow": "Rechtliches",
     "title": "Datenschutzerklärung",
-    "description": "Was Toolpika mit Ihren Daten macht — sehr wenig nämlich.",
+    "description": "Was Toolpika mit Ihren Daten macht. Sehr wenig nämlich.",
     "updated": "Zuletzt aktualisiert: 16. November 2026",
     "filesTitle": "Ihre Dateien",
     "filesBody": "Tools, die Dateien akzeptieren, laufen vollständig im Browser über die File- und Canvas-APIs. Dateiinhalte werden nie an einen Server gesendet und nie gespeichert.",
@@ -110,7 +110,7 @@
     "description": "Die Grundlagen der Nutzung von Toolpika.",
     "updated": "Zuletzt aktualisiert: 16. November 2026",
     "useTitle": "Nutzung der Tools",
-    "useBody": "Toolpika steht für private und kommerzielle Arbeit zur Verfügung. Bewahren Sie Sicherungskopien wichtiger Dateien auf — Sie sind für die verarbeiteten Dateien verantwortlich.",
+    "useBody": "Toolpika steht für private und kommerzielle Arbeit zur Verfügung. Bewahren Sie Sicherungskopien wichtiger Dateien auf. Sie sind für die verarbeiteten Dateien verantwortlich.",
     "liabilityTitle": "Keine Gewährleistung",
     "liabilityBody": "Die Tools werden ohne Garantie bereitgestellt. Wir haften nicht für Datenverlust oder Folgen, die Sie aus der Ausgabe eines Tools ableiten.",
     "changesTitle": "Änderungen",
@@ -119,7 +119,7 @@
   "contact": {
     "eyebrow": "Kontakt",
     "title": "Kontakt",
-    "description": "Fehlerberichte, Tool-Anfragen oder alles andere — E-Mail genügt.",
+    "description": "Fehlerberichte, Tool-Anfragen oder alles andere. E-Mail genügt.",
     "emailLabel": "E-Mail",
     "responseTime": "Wir antworten meist innerhalb von zwei Werktagen."
   },
@@ -152,7 +152,7 @@
   "toolPage": {
     "howToTitle": "So verwenden Sie es",
     "step1": "Fügen Sie Ihren Inhalt links in das Eingabefeld ein.",
-    "step2": "Passen Sie die Optionen an — die Standardwerte passen für die meisten Dateien.",
+    "step2": "Passen Sie die Optionen an. Die Standardwerte passen für die meisten Dateien.",
     "step3": "Lesen Sie das Ergebnis rechts und kopieren oder laden Sie es herunter.",
     "faqTitle": "Häufige Fragen",
     "faqQuestion1": "Werden meine Dateien hochgeladen?",
