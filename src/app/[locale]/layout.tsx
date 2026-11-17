@@ -3,10 +3,9 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { plusJakarta, inter } from "@/lib/fonts";
+import { heading, inter } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
 import { Header } from "@/components/layout/header";
-import { PageTransition } from "@/components/layout/page-transition";
 import { Footer } from "@/components/layout/footer";
 import "@/app/globals.css";
 
@@ -59,7 +58,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${inter.variable} ${plusJakarta.variable}`}
+      className={`${inter.variable} ${heading.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -69,9 +68,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <div className="flex min-h-screen flex-col">
             <Header />
-            <div className="flex-1">
-              <PageTransition>{children}</PageTransition>
-            </div>
+            <div className="flex-1">{children}</div>
             <Footer />
           </div>
         </NextIntlClientProvider>

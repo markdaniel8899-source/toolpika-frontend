@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ChevronRight, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Card } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/reveal";
 import {
   Accordion,
   AccordionContent,
@@ -139,44 +142,35 @@ export default async function ToolPage({ params }: LocalePageProps) {
         }}
       />
       <main className="mx-auto w-full max-w-page px-6 py-8">
-      <nav
-        aria-label="Breadcrumb"
-        className="mb-6 flex items-center gap-1 text-xs text-[var(--muted)]"
-      >
-        <Link
-          href="/"
-          className="transition-colors duration-200 hover:text-[var(--text)]"
-        >
-          {t("home")}
-        </Link>
-        <ChevronRight className="h-3 w-3" aria-hidden="true" />
-        <Link
-          href={`/category/${tool.category}`}
-          className="transition-colors duration-200 hover:text-[var(--text)]"
-        >
-          {categoryLabel}
-        </Link>
-        <ChevronRight className="h-3 w-3" aria-hidden="true" />
-        <span aria-current="page" className="text-[var(--text)]">
-          {tool.title}
-        </span>
-      </nav>
+        <Reveal className="mb-8">
+          <Breadcrumbs
+            items={[
+              { label: t("home"), href: "/" },
+              { label: categoryLabel, href: `/category/${tool.category}` },
+              { label: tool.title, href: pageUrl },
+            ]}
+          />
+        </Reveal>
 
       <header className="mb-6 flex flex-col gap-3">
         <div className="flex items-start justify-between gap-3">
-          <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-[var(--text)] sm:text-[32px]">
+          <h1 className="font-heading text-[28px] tracking-[-0.02em] text-[var(--text)] sm:text-[32px]">
             {tool.title}
           </h1>
-          <Badge variant="secondary">{t("live")}</Badge>
+          <Badge>{t("live")}</Badge>
         </div>
         <p className="max-w-2xl leading-[1.6] text-[var(--muted)]">
           {tool.description}
         </p>
       </header>
 
-      <ToolWorkspace slug={tool.slug} />
+        <Reveal className="mb-8">
+          <Card className="p-0">
+            <ToolWorkspace slug={tool.slug} />
+          </Card>
+        </Reveal>
 
-      <p className="mt-4 flex items-start gap-2 text-xs leading-[1.6] text-[var(--muted)]">
+        <p className="mt-4 flex items-start gap-2 text-xs leading-[1.6] text-[var(--muted)]">
         <ShieldCheck
           className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]"
           aria-hidden="true"
@@ -186,68 +180,76 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
       {/* SEO content */}
       <div className="mt-12 flex flex-col gap-12">
-        <section>
-          <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em] text-[var(--text)]">
-            {tHow("howToTitle")}
-          </h2>
-          <ol className="flex flex-col gap-3">
-            {[1, 2, 3].map((step) => (
-              <li key={step} className="flex gap-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--accent-fill)] text-xs font-bold text-[var(--on-accent)]">
-                  {step}
-                </span>
-                <span className="leading-[1.6] text-[var(--muted)]">
-                  {tHow(`step${step}`)}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </section>
+        <Reveal className="mb-8">
+          <section>
+            <h2 className="mb-4 font-heading text-[20px] tracking-[-0.02em] text-[var(--text)]">
+              {tHow("howToTitle")}
+            </h2>
+            <ol className="flex flex-col gap-3">
+              {[1, 2, 3].map((step) => (
+                <li key={step} className="flex gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--accent-fill)] text-xs font-bold text-[var(--on-accent)]">
+                    {step}
+                  </span>
+                  <span className="leading-[1.6] text-[var(--muted)]">
+                    {tHow(`step${step}`)}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </Reveal>
 
-        <section>
-          <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em] text-[var(--text)]">
-            {tHow("faqTitle")}
-          </h2>
-          <Accordion type="single" collapsible className="rounded-[14px] border border-[var(--border)] bg-[var(--surface)] px-5">
-            {[1, 2, 3].map((item) => (
-              <AccordionItem key={item} value={`faq-${item}`}>
-                <AccordionTrigger>{tHow(`faqQuestion${item}`)}</AccordionTrigger>
-                <AccordionContent>{tHow(`faqAnswer${item}`)}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </section>
+        <Reveal className="mb-8">
+          <section>
+            <h2 className="mb-4 font-heading text-[20px] tracking-[-0.02em] text-[var(--text)]">
+              {tHow("faqTitle")}
+            </h2>
+            <Accordion type="single" collapsible className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5">
+              {[1, 2, 3].map((item) => (
+                <AccordionItem key={item} value={`faq-${item}`}>
+                  <AccordionTrigger>{tHow(`faqQuestion${item}`)}</AccordionTrigger>
+                  <AccordionContent>{tHow(`faqAnswer${item}`)}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
+        </Reveal>
 
         {related.length > 0 && (
-          <section>
-            <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em] text-[var(--text)]">
-              {tHow("relatedTitle")}
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {related.map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/tools/${item.slug}`}
-                  className="flex flex-col gap-1 rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-200 hover:-translate-y-[2px] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
-                >
-                  <span className="font-medium text-[var(--text)]">
-                    {item.title}
-                  </span>
-                  <span className="text-sm leading-[1.6] text-[var(--muted)]">
-                    {item.description}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
+          <Reveal className="mb-8">
+            <section>
+              <h2 className="mb-4 font-heading text-[20px] tracking-[-0.02em] text-[var(--text)]">
+                {tHow("relatedTitle")}
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {related.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/tools/${item.slug}`}
+                    className="flex flex-col gap-1 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4 transition-[transform,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:-translate-y-[2px] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                  >
+                    <span className="font-medium text-[var(--text)]">
+                      {item.title}
+                    </span>
+                    <span className="text-sm leading-[1.6] text-[var(--muted)]">
+                      {item.description}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </Reveal>
         )}
 
-        <section>
-          <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em] text-[var(--text)]">
-            {t("about", { title: tool.title })}
-          </h2>
-          <p className="leading-[1.6] text-[var(--muted)]">{tool.description}</p>
-        </section>
+        <Reveal className="mb-8">
+          <section>
+            <h2 className="mb-4 font-heading text-[20px] tracking-[-0.02em] text-[var(--text)]">
+              {t("about", { title: tool.title })}
+            </h2>
+            <p className="leading-[1.6] text-[var(--muted)]">{tool.description}</p>
+          </section>
+        </Reveal>
       </div>
       </main>
     </>

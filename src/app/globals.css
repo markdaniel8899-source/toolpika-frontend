@@ -6,36 +6,66 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg: #f6f5f2;
+  --bg: #fafaf7;
   --surface: #ffffff;
-  --text: #17181c;
-  --muted: #5e6070;
-  --border: #e4e2dc;
+  --surface-2: #f3f2ee;
+  --border: #e8e6e1;
+  --text: #14141a;
+  --muted: #5e5e6b;
   --accent: #5b4bff;
-  --accent-hover: #4535e6;
+  --accent-fg: #ffffff;
   --accent-fill: #5b4bff;
   --accent-fill-hover: #4535e6;
   --on-accent: #ffffff;
+  --accent-soft: #eeebff;
+  --ring: rgba(91, 75, 255, 0.28);
+  --shadow-sm: 0 1px 2px rgba(20, 20, 26, 0.06);
+  --shadow-md: 0 8px 24px rgba(20, 20, 26, 0.08);
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 450ms;
+
   --danger: #dc2626;
   --danger-hover: #b91c1c;
   --success: #059669;
   --success-hover: #047857;
-  --radius: 10px;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #0e0f13;
-  --surface: #17181f;
-  --text: #ffffff;
-  --muted: #9a9cab;
-  --border: #2a2c36;
-  --accent: #8f85ff;
-  --accent-hover: #a59dff;
-  --accent-fill: #6a5bff;
+  --bg: #0e0e13;
+  --surface: #16161d;
+  --surface-2: #1d1d26;
+  --border: #2a2a36;
+  --text: #f2f2f5;
+  --muted: #a0a0b0;
+  --accent: #8b7fff;
+  --accent-fg: #ffffff;
+  --accent-fill: #6b5bff;
   --accent-fill-hover: #5b4bff;
   --on-accent: #ffffff;
+  --accent-hover: #a59dff;
+  --accent-soft: rgba(139, 127, 255, 0.14);
+  --ring: rgba(139, 127, 255, 0.35);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 450ms;
+
   --danger: #ef4444;
   --danger-hover: #f87171;
   --success: #34d399;
@@ -63,8 +93,8 @@
     background-color: var(--bg);
     color: var(--text);
     transition:
-      background-color 0.2s,
-      color 0.2s;
+      background-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
   }
 
   /*
@@ -86,12 +116,12 @@
    * The display face has no Arabic or Devanagari glyphs; keep headings on the
    * same readable script faces as the body instead of a generic serif.
    */
-  html:lang(ar) .font-display {
+  html:lang(ar) .font-heading {
     font-family:
       "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
   }
 
-  html:lang(hi) .font-display {
+  html:lang(hi) .font-heading {
     font-family:
       "Noto Sans Devanagari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
   }
@@ -109,7 +139,11 @@
    * Big Apple NF ships a single 400 weight. Letting the browser synthesise
    * a bold doubles the decorative outline and closes the counters.
    */
-  .font-display {
+  .font-heading {
+    font-synthesis: none;
+  }
+
+  .font-heading {
     font-synthesis: none;
   }
 
@@ -121,6 +155,23 @@
   ::selection {
     background-color: var(--accent);
     color: var(--on-accent);
+  }
+
+  /* Section 5 — Page transitions (CSS View Transitions API).
+     Degrades silently in browsers that do not support it. */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-old(root) {
+    animation: 200ms ease-out both fade-out;
+  }
+  ::view-transition-new(root) {
+    animation: 200ms ease-out both fade-in;
   }
 }
 
@@ -144,5 +195,27 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
   }
 }

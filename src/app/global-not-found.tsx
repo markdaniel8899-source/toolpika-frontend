@@ -10,7 +10,7 @@ export default function GlobalNotFound() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
             404
           </p>
-          <h1 className="mt-3 font-display text-3xl font-bold tracking-display">
+          <h1 className="mt-3 font-heading text-3xl tracking-display">
             Page not found
           </h1>
           <p className="mt-3 text-[var(--muted)]">

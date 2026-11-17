@@ -45,7 +45,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
           {t.eyebrow}
         </p>
-        <h1 className="font-display text-[30px] font-bold tracking-[-0.02em] sm:text-[34px]">
+        <h1 className="font-heading text-[30px] tracking-[-0.02em] sm:text-[34px]">
           {t.title}
         </h1>
         <p className="mt-3 leading-[1.6] text-[var(--muted)]">{t.description}</p>

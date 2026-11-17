@@ -5,18 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * Constitution §4 — Button rules.
- * Primary: bg-accent-fill / on-accent. Secondary: transparent + border.
- * Ghost: transparent, muted label. Radius 10px, 200ms transitions.
- * Focus ring: 2px accent outline with 3px offset (never a Tailwind ring utility).
+ * Section 7 — Buttons.
+ * Primary: bg --accent-fill / text --accent-fg.
+ * Secondary: transparent, 1px --border, text --text, hover border --accent.
+ * Ghost: transparent, hover --surface-2.
+ * Height 44px (36px small), radius --radius-md, font weight 600.
+ * Focus ring --ring, active scale 0.98, transition --dur-fast --ease-out.
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] font-bold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-md)] font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:outline-[var(--ring)] focus-visible:outline-offset-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.98]",
   {
     variants: {
       variant: {
         default:
-          "bg-[var(--accent-fill)] text-[var(--on-accent)] hover:scale-[1.02] hover:bg-[var(--accent-fill-hover)]",
+          "bg-[var(--accent-fill)] text-[var(--accent-fg)] hover:bg-[var(--accent-fill-hover)]",
         destructive:
           "bg-[var(--danger)] text-[var(--on-accent)] hover:bg-[var(--danger-hover)]",
         outline:
@@ -24,14 +26,14 @@ const buttonVariants = cva(
         secondary:
           "border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-[var(--accent)]",
         ghost:
-          "bg-transparent text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--text)]",
+          "bg-transparent text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]",
         link: "bg-transparent text-[var(--accent)] underline-offset-4 hover:underline",
       },
       size: {
-        default: "px-6 py-3 text-sm",
-        sm: "px-3 py-2 text-xs",
-        lg: "px-8 py-4 text-base",
-        icon: "h-10 w-10",
+        default: "h-11 px-6 text-sm",
+        sm: "h-9 px-4 text-xs",
+        lg: "h-12 px-8 text-base",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {
