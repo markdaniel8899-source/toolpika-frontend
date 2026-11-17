@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Zap, Search, Sun, Moon, Globe, Menu, X, ArrowRight } from "lucide-react";
+import { Zap, Sun, Moon, Menu, X, ArrowRight } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { useScrolled } from "@/hooks/useScrolled";
 
 const NAV = [
   { href: "/", key: "tools" },
@@ -32,8 +33,8 @@ export function Header() {
   const l = useTranslations("language");
   const th = useTranslations("theme");
   const pathname = usePathname();
+  const scrolled = useScrolled(8);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
   const [locale, setLocale] = useState<string>(() => {
     if (typeof document === "undefined") return "en";
     return document.documentElement.lang || "en";
@@ -57,19 +58,22 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-50 h-[64px] border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-[10px] transition-all duration-300 ease-out"
+      className={cn(
+        "sticky top-0 z-50 h-[64px] border-b bg-[var(--surface)]/90 backdrop-blur-[12px] transition-[background-color,border-color] duration-[var(--dur-base)] ease-[var(--ease-out)]",
+        scrolled && "shadow-[var(--shadow-sm)]",
+      )}
     >
       <div className="mx-auto flex h-full w-full max-w-page items-center justify-between gap-2 px-4 sm:px-6">
         {/* Left: Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Toolpika">
-          <Zap className="h-6 w-6 text-[var(--accent)]" aria-hidden="true" />
-          <span className="font-sans font-bold text-[24px] tracking-tight text-[var(--text)]">
+          <Zap className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
+          <span className="font-sans text-[20px] font-semibold tracking-tight text-[var(--text)]">
             Toolpika
           </span>
         </Link>
 
         {/* Center: nav links (desktop) */}
-        <nav className="hidden md:flex items-center gap-6 text-[15px] font-medium text-[var(--muted)]">
+        <nav className="hidden md:flex items-center gap-1 text-[14px] font-medium text-[var(--muted)]">
           {NAV.map((item) => {
             const active = pathname === item.href;
             return (
@@ -77,13 +81,18 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-3 py-2 relative transition-all duration-300 ease-out",
-                  active
-                    ? "text-[var(--accent)] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[2px] after:bg-[var(--accent)] after:rounded-full"
-                    : "hover:text-[var(--text)] hover:after:absolute hover:after:-bottom-[2px] hover:after:left-0 hover:after:right-0 hover:after:h-[2px] hover:after:bg-[var(--accent)] hover:after:rounded-full",
+                  "group relative px-4 py-2 text-[var(--muted)] transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--text)]",
+                  active && "text-[var(--accent)]",
                 )}
               >
                 {t(item.key)}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute bottom-0 left-0 h-[2px] w-0 rounded-full bg-[var(--accent)] transition-[width] duration-[var(--dur-base)] ease-[var(--ease-out)]",
+                    active ? "w-full" : "group-hover:w-full",
+                  )}
+                />
               </Link>
             );
           })}
@@ -98,9 +107,8 @@ export function Header() {
               setLocale(event.target.value);
             }}
             className={cn(
-              "flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-              "transition-all duration-300 ease-out hover:border-[var(--accent)] hover:text-[var(--text)]",
-              "appearance-none sm:px-3 sm:py-2",
+              "flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-2 text-[13px] text-[var(--text)] transition-[border-color,color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:border-[var(--accent)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 sm:h-10 sm:w-auto sm:px-3 sm:text-sm",
+              "appearance-none",
             )}
             aria-label={l("label")}
           >
@@ -117,8 +125,7 @@ export function Header() {
             onClick={toggleTheme}
             aria-label={th("toggle")}
             className={cn(
-              "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-              "transition-all duration-300 ease-out hover:text-[var(--text)] hover:border-[var(--accent)]",
+              "inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] transition-[color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--text)] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 sm:h-10 sm:w-10",
             )}
           >
             {theme === "dark" ? (
@@ -132,9 +139,7 @@ export function Header() {
           <Link
             href="/request"
             className={cn(
-              "inline-flex items-center justify-center rounded-lg bg-[var(--accent-fill)] px-5 py-2 font-medium text-[var(--on-accent)] text-sm",
-              "transition-all duration-300 ease-out hover:bg-[var(--accent-fill-hover)] hover:scale-[1.02]",
-              "hidden sm:flex",
+              "hidden sm:inline-flex h-9 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-fill)] px-5 font-semibold text-[var(--on-accent)] text-sm transition-[background-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:bg-[var(--accent-fill-hover)] hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 active:scale-[0.98] md:h-10",
             )}
           >
             <ArrowRight className="h-4 w-4 mr-1.5" aria-hidden="true" />
@@ -146,18 +151,12 @@ export function Header() {
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
             className={cn(
-              "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-              "transition-all duration-300 ease-out hover:text-[var(--text)] hover:bg-[var(--surface-2)]",
-              "md:hidden",
+              "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] transition-[color,border-color,background-color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--text)] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 md:hidden",
             )}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
-            {menuOpen ? (
-              <X className="h-5 w-5" aria-hidden="true" />
-            ) : (
-              <Menu className="h-5 w-5" aria-hidden="true" />
-            )}
+            {menuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -173,15 +172,21 @@ export function Header() {
           <div
             className={cn(
               "fixed inset-y-0 right-0 z-50 w-full sm:w-80 bg-[var(--surface)] border-l border-[var(--border)] shadow-[var(--shadow-md)]",
-              "transform transition-transform duration-300 ease-out",
+              "transform transition-transform duration-[var(--dur-slow)] ease-[var(--ease-drawer)]",
               menuOpen ? "translate-x-0" : "-translate-x-full",
             )}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">
+              <Link href="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+                <Zap className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
+                <span className="font-sans text-[20px] font-semibold tracking-tight text-[var(--text)]">
+                  Toolpika
+                </span>
+              </Link>
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-[var(--radius-md)] p-2 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)] transition-all duration-300"
+                className="rounded-[var(--radius-md)] p-2 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)] transition-colors duration-[var(--dur-fast)]"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
@@ -196,7 +201,7 @@ export function Header() {
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-300",
+                      "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
                       active
                         ? "bg-[var(--accent-soft)] text-[var(--accent)]"
                         : "text-[var(--text)] hover:bg-[var(--surface-2)]",
@@ -219,7 +224,9 @@ export function Header() {
                       setLocale(item.code);
                       setMenuOpen(false);
                     }}
-                    className="flex w-full items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] text-sm font-medium text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--accent)] transition-all duration-300"
+                    className={cn(
+                      "flex w-full items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] text-sm font-medium text-[var(--text)] transition-[background-color,color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:bg-[var(--surface-2)] hover:text-[var(--accent)]",
+                    )}
                   >
                     <span className="font-medium">{item.label}</span>
                   </button>

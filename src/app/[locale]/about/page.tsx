@@ -25,21 +25,21 @@ export default async function AboutPage({ params }: LocalePageProps) {
   return (
     <main className="mx-auto w-full max-w-page px-6 py-12">
       <div className="mx-auto max-w-2xl">
-        <header className="mb-8">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+        <header className="mb-12">
+          <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
             {t("eyebrow")}
           </p>
-          <h1 className="font-sans text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
+          <h1 className="font-sans text-[30px] font-bold leading-[1.15] tracking-tight text-[var(--text)] sm:text-[40px]">
             {t("title")}
           </h1>
         </header>
 
         <div className="flex flex-col gap-6 text-[var(--muted)]">
-          <p className="leading-[1.6]">{t("intro")}</p>
+          <p className="text-[16px] leading-[1.6]">{t("intro")}</p>
 
           <Card>
             <CardContent className="p-6">
-              <h2 className="mb-3 font-bold text-[var(--text)]">
+              <h2 className="mb-3 font-semibold text-[var(--text)]">
                 {t("privacyTitle")}
               </h2>
               <p className="leading-[1.6]">{t("privacyBody")}</p>
@@ -48,7 +48,7 @@ export default async function AboutPage({ params }: LocalePageProps) {
 
           <Card>
             <CardContent className="p-6">
-              <h2 className="mb-3 font-bold text-[var(--text)]">
+              <h2 className="mb-3 font-semibold text-[var(--text)]">
                 {t("contactTitle")}
               </h2>
               <p className="leading-[1.6]">

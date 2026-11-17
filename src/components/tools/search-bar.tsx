@@ -87,9 +87,7 @@ export function SearchBar() {
       setActiveIndex((index) => (index + 1) % results.length);
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      setActiveIndex((index) =>
-        index <= 0 ? results.length - 1 : index - 1
-      );
+      setActiveIndex((index) => (index <= 0 ? results.length - 1 : index - 1));
     } else if (event.key === "Escape") {
       setResults([]);
       setActiveIndex(-1);
@@ -109,9 +107,9 @@ export function SearchBar() {
   const maxResults = results.slice(0, 6);
 
   return (
-    <div className="flex w-full flex-col items-center gap-3">
+    <div className="relative flex w-full flex-col items-center gap-3">
       <form onSubmit={handleSubmit} className="relative w-full max-w-[700px]">
-        <div className="relative w-full rounded-[16px] border border-[var(--border)] bg-[var(--surface)] p-3">
+        <div className="relative w-full rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-3 transition-[border-color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-out)] focus-within:border-[var(--accent)] focus-within:shadow-[var(--shadow-md)]">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]"
             aria-hidden="true"
@@ -134,30 +132,36 @@ export function SearchBar() {
             placeholder={t("placeholder")}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            className="w-full pr-[12px] pl-[10px] py-2.5 bg-transparent border-none text-[17px] text-[var(--text)] placeholder-[var(--muted)] focus:outline-none sm:text-[18px]"
+            className="w-full pr-[44px] pl-[10px] py-2.5 bg-transparent border-none text-[17px] text-[var(--text)] placeholder-[var(--muted)] focus:outline-none sm:text-[18px]"
           />
-          {query && (
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            {query && (
+              <button
+                type="button"
+                onClick={clear}
+                className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--muted)] transition-[color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-2"
+                aria-label={t("clear")}
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
             <button
-              type="button"
-              onClick={clear}
-              className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full text-[var(--muted)] transition-colors hover:text-[var(--text)]"
-              aria-label={t("clear")}
+              type="submit"
+              className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-soft)] text-[var(--accent)] transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-2"
+              aria-label={t("go")}
             >
-              <X className="h-4 w-4" aria-hidden="true" />
+              <Search className="h-4 w-4" aria-hidden="true" />
             </button>
-          )}
+          </div>
         </div>
-        {isFocused && (
-          <div className="absolute inset-0 rounded-[16px] border border-[var(--accent)] shadow-[0_0_0_4px_rgba(91,75,255,0.1)] pointer-events-none" aria-hidden="true" />
-        )}
       </form>
 
-      {query && maxResults.length > 0 && (
+      {isFocused && query && maxResults.length > 0 && (
         <ul
           id={listboxId}
           role="listbox"
           aria-label={t("placeholder")}
-          className="z-20 w-full max-w-[700px] overflow-hidden rounded-[16px] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)] slide-up"
+          className="z-20 w-full max-w-[700px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)] slide-up"
         >
           {maxResults.map((tool, index) => (
             <li
@@ -173,7 +177,7 @@ export function SearchBar() {
                 onClick={() => go(tool.slug)}
                 onMouseEnter={() => setActiveIndex(index)}
                 className={cn(
-                  "flex w-full items-center justify-between px-4 py-3 text-left transition-all duration-200",
+                  "flex w-full items-center justify-between px-4 py-3 text-left transition-[background-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
                   index === activeIndex
                     ? "bg-[var(--bg)]"
                     : "hover:bg-[var(--bg)]",
@@ -185,6 +189,9 @@ export function SearchBar() {
                     {tool.title}
                   </span>
                 </div>
+                <span className="text-[13px] text-[var(--muted)]">
+                  {tool.category}
+                </span>
               </button>
             </li>
           ))}

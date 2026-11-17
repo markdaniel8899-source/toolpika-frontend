@@ -2,53 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Toolpika design tokens — "Porcelain & Violet-Ink".
+ * Source of truth: .agents/design-constitution.md
+ * All colors come from these variables; never hardcode hex in components.
+ */
 :root,
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg: #F6F5F2;
-  --surface: #FFFFFF;
-  --text: #17181C;
-  --muted: #5E6070;
-  --border: #E4E2DC;
-  --accent: #5B4BFF;
-  --accent-fill: #5B4BFF;
-  --accent-fill-hover: #4535E6;
-  --on-accent: #FFFFFF;
+  /* Neutrals — 60% bg / 30% surface / 10% text */
+  --bg: #f6f5f2;
+  --surface: #ffffff;
+  --surface-2: #f1efeb;
+  --text: #17181c;
+  --muted: #5e6070;
+  --border: #e4e2dc;
+
+  /* Accent — the only saturated color */
+  --accent: #5b4bff;
+  --accent-hover: #4535e6;
+  --accent-fill: #5b4bff;
+  --accent-fill-hover: #4535e6;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(91, 75, 255, 0.08);
+
+  /* Status */
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --success: #16a34a;
+  --warning: #d97706;
+
+  /* Radii — controls 10px, surfaces / cards 14px */
+  --radius: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  /* Elevation — ultra-diffuse, low opacity */
+  --shadow-sm: 0 1px 2px rgba(23, 24, 28, 0.05);
+  --shadow-md: 0 12px 32px rgba(23, 24, 28, 0.08);
+
+  /* Motion — short, restrained, named */
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-:root[data-theme="dark"] {
+[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #0E0F13;
-  --surface: #17181F;
-  --text: #FFFFFF;
-  --muted: #9A9CAB;
-  --border: #2A2C36;
-  --accent: #8F85FF;
-  --accent-fill: #6A5BFF;
-  --accent-fill-hover: #5B4BFF;
-  --on-accent: #FFFFFF;
-}
+  /* Neutrals */
+  --bg: #0e0f13;
+  --surface: #17181f;
+  --surface-2: #1e2027;
+  --text: #ffffff;
+  --muted: #9a9cab;
+  --border: #2a2c36;
 
-/* Premium smooth transitions */
-* {
-  transition: color 300ms ease, background-color 300ms ease, border-color 300ms ease;
-}
+  /* Accent */
+  --accent: #8f85ff;
+  --accent-hover: #a59dff;
+  --accent-fill: #6a5bff;
+  --accent-fill-hover: #5b4bff;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(143, 133, 255, 0.12);
 
-button,
-a {
-  transition: all 300ms ease;
-}
+  /* Status */
+  --danger: #f87171;
+  --danger-hover: #ef4444;
+  --success: #4ade80;
+  --warning: #fbbf24;
 
-.card {
-  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  /* Elevation */
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
-  transition: background 300ms ease, color 300ms ease;
+  transition: background-color var(--dur-base) ease, color var(--dur-base) ease;
 }
 
 html {
@@ -73,7 +108,7 @@ h6 {
   line-height: 1.15;
 }
 
-/* Smooth underline hover for links */
+/* Smooth underline hover for links — width only, never layout-triggering. */
 a {
   position: relative;
   text-decoration: none;
@@ -87,26 +122,18 @@ a::after {
   bottom: -2px;
   left: 0;
   background-color: var(--accent);
-  transition: width 300ms ease, box-shadow 300ms ease;
-  box-shadow: 0 0 0 rgba(91, 75, 255, 0);
+  transition: width var(--dur-base) var(--ease-out);
 }
 
-a:hover::after {
+a:hover::after,
+a:focus-visible::after {
   width: 100%;
-  box-shadow: 0 0 8px rgba(91, 75, 255, 0.6);
 }
 
-/* Remove focus borders from buttons */
-button:focus-visible,
-a:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
+/* Visible focus ring on every surface. */
 :focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-  border-radius: 6px;
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 ::selection {
@@ -114,52 +141,15 @@ a:focus-visible {
   color: var(--on-accent);
 }
 
-/* Section 5 — Page transitions (CSS View Transitions API). */
-@view-transition {
-  navigation: auto;
-}
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-old(root) {
-  animation: 300ms ease-out both fade-out;
-}
-::view-transition-new(root) {
-  animation: 300ms ease-out both fade-in;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
+/* Motion primitives */
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes fade-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-4px);
   }
 }
 
@@ -175,5 +165,16 @@ a:focus-visible {
 }
 
 .slide-up {
-  animation: slide-up 400ms ease-out forwards;
+  animation: slide-up var(--dur-slow) var(--ease-out) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

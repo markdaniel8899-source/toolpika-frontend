@@ -37,14 +37,14 @@ export default async function CategoryPage({ params }: LocalePageProps) {
 
   return (
     <main className="mx-auto w-full max-w-page px-6 py-12">
-      <header className="mb-8">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+      <header className="mb-12">
+        <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
           {t("eyebrow")}
         </p>
-        <h1 className="font-sans text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
+        <h1 className="font-sans text-[30px] font-bold leading-[1.15] tracking-tight text-[var(--text)] sm:text-[40px]">
           {category.label}
         </h1>
-        <p className="mt-4 max-w-xl text-[var(--muted)]">
+        <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[var(--muted)]">
           {t("description", { name: category.label })}
         </p>
       </header>
@@ -55,17 +55,17 @@ export default async function CategoryPage({ params }: LocalePageProps) {
             <Link
               key={tool.slug}
               href={`/tools/${tool.slug}`}
-              className="flex flex-col gap-2 rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-5 transition-all duration-200 hover:-translate-y-[2px] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+              className="group flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5 transition-[border-color,transform,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-out)] hover:border-[var(--accent)] hover:-translate-y-[2px] hover:shadow-[var(--shadow-md)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
             >
-              <span className="font-bold text-[var(--text)]">{tool.title}</span>
-              <span className="text-sm leading-[1.6] text-[var(--muted)]">
+              <span className="font-semibold text-[var(--text)]">{tool.title}</span>
+              <span className="text-[15px] leading-[1.6] text-[var(--muted)]">
                 {tool.description}
               </span>
             </Link>
           ))}
         </div>
       ) : (
-        <p className="text-[var(--muted)]">{t("empty")}</p>
+        <p className="text-[15px] text-[var(--muted)]">{t("empty")}</p>
       )}
     </main>
   );

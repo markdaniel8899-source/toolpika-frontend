@@ -153,7 +153,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
       <header className="mb-6 flex flex-col gap-3">
         <div className="flex items-start justify-between gap-3">
-          <h1 className="font-sans text-[28px] tracking-[-0.02em] text-[var(--text)] sm:text-[32px]">
+          <h1 className="font-sans text-[28px] font-bold leading-[1.15] tracking-tight text-[var(--text)] sm:text-[32px]">
             {tool.title}
           </h1>
         </div>
@@ -168,7 +168,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
           </Card>
         </Reveal>
 
-        <p className="mt-4 flex items-start gap-2 text-xs leading-[1.6] text-[var(--muted)]">
+        <p className="mt-4 flex items-start gap-2 text-[13px] leading-[1.6] text-[var(--muted)]">
         <ShieldCheck
           className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]"
           aria-hidden="true"
@@ -180,7 +180,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
       <div className="mt-12 flex flex-col gap-12">
         <Reveal className="mb-8">
           <section>
-            <h2 className="mb-4 font-sans text-[20px] tracking-[-0.02em] text-[var(--text)]">
+            <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
               {tHow("howToTitle")}
             </h2>
             <ol className="flex flex-col gap-3">
@@ -200,7 +200,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
         <Reveal className="mb-8">
           <section>
-            <h2 className="mb-4 font-sans text-[20px] tracking-[-0.02em] text-[var(--text)]">
+            <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
               {tHow("faqTitle")}
             </h2>
             <Accordion type="single" collapsible className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5">
@@ -217,7 +217,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
         {related.length > 0 && (
           <Reveal className="mb-8">
             <section>
-              <h2 className="mb-4 font-sans text-[20px] tracking-[-0.02em] text-[var(--text)]">
+              <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
                 {tHow("relatedTitle")}
               </h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -242,7 +242,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
         <Reveal className="mb-8">
           <section>
-            <h2 className="mb-4 font-sans text-[20px] tracking-[-0.02em] text-[var(--text)]">
+            <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
               {t("about", { title: tool.title })}
             </h2>
             <p className="leading-[1.6] text-[var(--muted)]">{tool.description}</p>

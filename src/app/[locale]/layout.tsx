@@ -78,7 +78,7 @@ export default async function LocaleLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className="min-h-screen bg-[var(--bg)] font-sans text-[var(--text)] antialiased">
+      <body className="min-h-screen bg-[var(--bg)] font-sans text-base leading-[1.6] text-[var(--text)] antialiased">
         <NextIntlClientProvider messages={messages}>
           <div className="flex min-h-screen flex-col">
             <Header />

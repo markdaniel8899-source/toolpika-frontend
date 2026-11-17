@@ -24,36 +24,36 @@ export default async function TermsPage({ params }: LocalePageProps) {
   return (
     <main className="mx-auto w-full max-w-page px-6 py-12">
       <article className="mx-auto max-w-2xl">
-        <header className="mb-8">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+        <header className="mb-12">
+          <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
             {t("eyebrow")}
           </p>
-          <h1 className="font-sans text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
+          <h1 className="font-sans text-[30px] font-bold leading-[1.15] tracking-tight text-[var(--text)] sm:text-[40px]">
             {t("title")}
           </h1>
-          <p className="mt-4 text-[var(--muted)]">{t("updated")}</p>
+          <p className="mt-4 text-[15px] leading-[1.6] text-[var(--muted)]">{t("updated")}</p>
         </header>
 
-        <div className="flex flex-col gap-8 text-[var(--muted)]">
+        <div className="flex flex-col gap-8 text-[15px] leading-[1.65] text-[var(--muted)]">
           <section>
-            <h2 className="mb-2 font-bold text-[var(--text)]">
+            <h2 className="mb-2 font-semibold text-[var(--text)]">
               {t("useTitle")}
             </h2>
-            <p className="leading-[1.6]">{t("useBody")}</p>
+            <p>{t("useBody")}</p>
           </section>
 
           <section>
-            <h2 className="mb-2 font-bold text-[var(--text)]">
+            <h2 className="mb-2 font-semibold text-[var(--text)]">
               {t("liabilityTitle")}
             </h2>
-            <p className="leading-[1.6]">{t("liabilityBody")}</p>
+            <p>{t("liabilityBody")}</p>
           </section>
 
           <section>
-            <h2 className="mb-2 font-bold text-[var(--text)]">
+            <h2 className="mb-2 font-semibold text-[var(--text)]">
               {t("changesTitle")}
             </h2>
-            <p className="leading-[1.6]">{t("changesBody")}</p>
+            <p>{t("changesBody")}</p>
           </section>
         </div>
       </article>
