@@ -124,7 +124,7 @@ export function SearchBar() {
           onChange={handleInput}
           onKeyDown={handleKeyDown}
           placeholder={t("placeholder")}
-          className="w-full rounded-[10px] border border-[var(--border)] bg-[var(--surface)] pl-10 pr-4 py-3 text-base text-[var(--text)] placeholder-[var(--muted)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 sm:text-lg"
+          className="w-full rounded-[14px] border border-[var(--border)] bg-[var(--surface)] pl-10 pr-6 py-4 text-base text-[var(--text)] placeholder-[var(--muted)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-4 focus:ring-[var(--accent)]/10 sm:text-lg"
         />
         {query && (
           <button
