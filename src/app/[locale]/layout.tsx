@@ -39,6 +39,13 @@ export async function generateMetadata({
       siteName: "Toolpika",
       type: "website",
     },
+    icons: [
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        url: "/favicon.svg",
+      },
+    ],
   };
 }
 

@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
+  icons: [
+    {
+      rel: "icon",
+      type: "image/svg+xml",
+      url: "/favicon.svg",
+    },
+  ],
 };
 
 /**
