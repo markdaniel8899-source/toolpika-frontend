@@ -31,31 +31,31 @@
   --on-accent: #FFFFFF;
 }
 
-/* Global Transitions */
+/* Premium smooth transitions */
 * {
-  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+  transition: color 300ms ease, background-color 300ms ease, border-color 300ms ease;
 }
 
 button,
 a {
-  transition: all 200ms ease;
+  transition: all 300ms ease;
 }
 
 .card {
-  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
-  transition: background 200ms ease, color 200ms ease;
+  transition: background 300ms ease, color 300ms ease;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Locale-specific fallbacks (no webfont download) */
+/* Locale-specific fallbacks */
 html:lang(ar) body {
   font-family: "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
 }
@@ -73,9 +73,39 @@ h6 {
   line-height: 1.15;
 }
 
+/* Smooth underline hover for links */
+a {
+  position: relative;
+  text-decoration: none;
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--accent);
+  transition: width 300ms ease, box-shadow 300ms ease;
+  box-shadow: 0 0 0 rgba(91, 75, 255, 0);
+}
+
+a:hover::after {
+  width: 100%;
+  box-shadow: 0 0 8px rgba(91, 75, 255, 0.6);
+}
+
+/* Remove focus borders from buttons */
+button:focus-visible,
+a:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline: none !important;
+  box-shadow: none !important;
   border-radius: 6px;
 }
 
@@ -84,8 +114,7 @@ h6 {
   color: var(--on-accent);
 }
 
-/* Section 5 — Page transitions (CSS View Transitions API).
-   Degrades silently in browsers that do not support it. */
+/* Section 5 — Page transitions (CSS View Transitions API). */
 @view-transition {
   navigation: auto;
 }
@@ -95,22 +124,10 @@ h6 {
   mix-blend-mode: normal;
 }
 ::view-transition-old(root) {
-  animation: 200ms ease-out both fade-out;
+  animation: 300ms ease-out both fade-out;
 }
 ::view-transition-new(root) {
-  animation: 200ms ease-out both fade-in;
-}
-
-.theme-icon-moon {
-  display: none;
-}
-
-[data-theme="dark"] .theme-icon-sun {
-  display: none;
-}
-
-[data-theme="dark"] .theme-icon-moon {
-  display: block;
+  animation: 300ms ease-out both fade-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -144,4 +161,19 @@ h6 {
     opacity: 0;
     transform: translateY(-4px);
   }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slide-up 400ms ease-out forwards;
 }

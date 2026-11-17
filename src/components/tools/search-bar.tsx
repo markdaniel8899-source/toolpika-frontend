@@ -14,6 +14,7 @@ export function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ReturnType<typeof getLiveTools>>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = "tool-search-results";
 
@@ -41,7 +42,6 @@ export function SearchBar() {
     [tools]
   );
 
-  // "/" focuses the search input from anywhere on the page.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -103,19 +103,17 @@ export function SearchBar() {
     inputRef.current?.focus();
   };
 
-  const [isFocused, setIsFocused] = useState(false);
-
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
   const maxResults = results.slice(0, 6);
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-3">
       <form onSubmit={handleSubmit} className="relative w-full max-w-[700px]">
-        <div className="relative w-full rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-4">
+        <div className="relative w-full rounded-[16px] border border-[var(--border)] bg-[var(--surface)] p-3">
           <Search
-            className="absolute left-[24px] top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]"
+            className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]"
             aria-hidden="true"
           />
           <input
@@ -136,16 +134,13 @@ export function SearchBar() {
             placeholder={t("placeholder")}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            className="w-full pr-[64px] pl-[52px] py-3 bg-transparent border-none text-[18px] text-[var(--text)] placeholder-[var(--muted)] focus:outline-none sm:text-[18px]"
+            className="w-full pr-[12px] pl-[10px] py-2.5 bg-transparent border-none text-[17px] text-[var(--text)] placeholder-[var(--muted)] focus:outline-none sm:text-[18px]"
           />
-          <span className="absolute right-[24px] top-1/2 -translate-y-1/2 px-2 py-0.5 rounded-full border border-[var(--border)] bg-[var(--bg)] text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--muted)]">
-            /
-          </span>
           {query && (
             <button
               type="button"
               onClick={clear}
-              className="absolute right-[24px] top-1/2 -translate-y-1/2 h-5 w-5 rounded-full text-[var(--muted)] transition-colors hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+              className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full text-[var(--muted)] transition-colors hover:text-[var(--text)]"
               aria-label={t("clear")}
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -153,24 +148,16 @@ export function SearchBar() {
           )}
         </div>
         {isFocused && (
-          <div className="absolute inset-0 rounded-[14px] border border-[var(--accent)] shadow-[0_0_0_4px_rgba(91,75,255,0.1)] pointer-events-none" aria-hidden="true" />
+          <div className="absolute inset-0 rounded-[16px] border border-[var(--accent)] shadow-[0_0_0_4px_rgba(91,75,255,0.1)] pointer-events-none" aria-hidden="true" />
         )}
       </form>
-
-      {query && (
-        <p className="sr-only" role="status" aria-live="polite">
-          {results.length
-            ? t("results", { count: results.length })
-            : t("noResults")}
-        </p>
-      )}
 
       {query && maxResults.length > 0 && (
         <ul
           id={listboxId}
           role="listbox"
           aria-label={t("placeholder")}
-          className="z-20 w-full max-w-[700px] overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)]"
+          className="z-20 w-full max-w-[700px] overflow-hidden rounded-[16px] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)] slide-up"
         >
           {maxResults.map((tool, index) => (
             <li
@@ -178,13 +165,15 @@ export function SearchBar() {
               id={`tool-result-${index}`}
               role="option"
               aria-selected={index === activeIndex}
+              className="slide-up"
+              style={{ animationDelay: `${index * 60}ms` }}
             >
               <button
                 type="button"
                 onClick={() => go(tool.slug)}
                 onMouseEnter={() => setActiveIndex(index)}
                 className={cn(
-                  "flex w-full items-center justify-between px-4 py-3 text-left transition-colors duration-200",
+                  "flex w-full items-center justify-between px-4 py-3 text-left transition-all duration-200",
                   index === activeIndex
                     ? "bg-[var(--bg)]"
                     : "hover:bg-[var(--bg)]",
@@ -196,9 +185,6 @@ export function SearchBar() {
                     {tool.title}
                   </span>
                 </div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted)]">
-                  {tool.category}
-                </span>
               </button>
             </li>
           ))}
