@@ -77,7 +77,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
           <CheckCircle2 className="w-10 h-10" aria-hidden="true" />
         </Reveal>
         <Reveal delay={100} className="text-center mb-4">
-          <h2 className="font-heading text-[24px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
+          <h2 className="font-sans text-[24px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
             Thanks! We&apos;ll build it soon.
           </h2>
         </Reveal>
@@ -105,7 +105,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
             <p className="mb-3 px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--accent)] text-[11px] font-semibold uppercase tracking-[0.15em] shadow-sm">
               {labels.eyebrow}
             </p>
-            <h1 className="font-heading text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
+            <h1 className="font-sans text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
               {labels.title}
             </h1>
             <p className="mt-4 text-[var(--muted)]">{labels.description}</p>

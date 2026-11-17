@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Search, Globe, Menu, X } from "lucide-react";
+import { Zap, Search, Sun, Moon, Globe, Menu, X, ArrowRight } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { useScrolled } from "@/hooks/useScrolled";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const NAV = [
   { href: "/", key: "tools" },
@@ -31,31 +29,41 @@ const LOCALES = [
 
 export function Header() {
   const t = useTranslations("nav");
-  const s = useTranslations("search");
+  const l = useTranslations("language");
+  const th = useTranslations("theme");
   const pathname = usePathname();
-  const scrolled = useScrolled(8);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [locale, setLocale] = useState<string>(() => {
     if (typeof document === "undefined") return "en";
     return document.documentElement.lang || "en";
   });
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof document === "undefined") return "light";
+    return (document.documentElement.getAttribute("data-theme") as "light" | "dark") ?? "light";
+  });
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    const root = document.documentElement;
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // Storage can be blocked; the attribute still updates for this session.
+    }
+  };
 
   return (
     <header
-      className={cn(
-        "sticky top-0 z-40 h-[64px] border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-[14px]",
-        "transition-[border-color,box-shadow,background-color] duration-[var(--dur-base)] ease-[var(--ease-out)]",
-        scrolled && "shadow-[var(--shadow-md)] border-[var(--accent)]",
-      )}
+      className="sticky top-0 z-50 h-[64px] border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-[10px]"
     >
       <div className="mx-auto flex h-full w-full max-w-page items-center justify-between gap-2 px-4 sm:px-6">
         {/* Left: Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="Toolpika">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-fill)] text-[var(--accent-fg)] font-heading font-bold text-[20px] leading-none tracking-tight">
-            T
-          </span>
-          <span className="font-heading text-[18px] font-bold tracking-[-0.01em] text-[var(--text)] sm:text-[20px]">
+        <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Toolpika">
+          <Zap className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
+          <span className="font-sans font-bold text-[24px] tracking-tight text-[var(--text)]">
             Toolpika
           </span>
         </Link>
@@ -69,16 +77,11 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative px-3 py-2 transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-                  active
-                    ? "text-[var(--text)]"
-                    : "hover:text-[var(--text)]",
+                  "px-3 py-2",
+                  active ? "text-[var(--text)]" : "hover:text-[var(--text)]",
                 )}
               >
                 {t(item.key)}
-                {active && (
-                  <span className="absolute -bottom-[2px] left-0 right-0 h-[2px] bg-[var(--accent)] rounded-full" aria-hidden="true" />
-                )}
               </Link>
             );
           })}
@@ -86,42 +89,54 @@ export function Header() {
 
         {/* Right: actions */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {/* Search icon button */}
+          {/* Language Dropdown (native select) */}
+          <select
+            value={locale}
+            onChange={(event) => setLocale(event.target.value)}
+            className={cn(
+              "flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
+              "transition-colors duration-200 hover:border-[var(--accent)]",
+              "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
+              "appearance-none sm:px-3 sm:py-2",
+            )}
+            aria-label={l("label")}
+          >
+            {LOCALES.map((item) => (
+              <option key={item.code} value={item.code}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+
+          {/* Theme Toggle */}
           <button
             type="button"
+            onClick={toggleTheme}
+            aria-label={th("toggle")}
             className={cn(
               "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-              "transition-[background-color,color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-              "hover:bg-[var(--surface-2)] hover:text-[var(--text)] hover:border-[var(--accent)]",
-              "focus-visible:outline-2 focus-visible:outline-[var(--ring)] focus-visible:outline-offset-3",
-              "sm:hidden",
+              "transition-colors duration-200 hover:text-[var(--text)] hover:border-[var(--accent)]",
+              "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
             )}
-            aria-label={s("placeholder")}
           >
-            <Search className="h-5 w-5" aria-hidden="true" />
+            {theme === "dark" ? (
+              <Sun className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Moon className="h-5 w-5" aria-hidden="true" />
+            )}
           </button>
 
-          <ThemeToggle />
-
-          {/* Language selector (custom, not native <select>) */}
-          <LanguageTrigger
-            locale={locale}
-            langOpen={langOpen}
-            setLangOpen={setLangOpen}
-            setLocale={setLocale}
-          />
-
-          {/* Request a tool button (desktop only) */}
+          {/* Request a tool CTA */}
           <Link
             href="/request"
             className={cn(
-              "hidden sm:inline-flex items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-fill)] px-5 py-2.5 font-semibold text-[var(--accent-fg)] text-sm",
-              "transition-all duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-              "hover:bg-[var(--accent-fill-hover)] hover:scale-[1.02]",
-              "focus-visible:outline-2 focus-visible:outline-[var(--ring)] focus-visible:outline-offset-3",
+              "inline-flex items-center justify-center rounded-lg bg-[var(--accent-fill)] px-5 py-2 font-medium text-[var(--accent-fg)] text-sm",
+              "transition-all duration-200 hover:bg-[var(--accent-fill-hover)] hover:scale-[1.02]",
+              "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
+              "hidden sm:flex",
             )}
           >
-            <Plus className="h-4 w-4 mr-1.5" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 mr-1.5" aria-hidden="true" />
             {t("request")}
           </Link>
 
@@ -131,9 +146,8 @@ export function Header() {
             onClick={() => setMenuOpen((prev) => !prev)}
             className={cn(
               "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-              "transition-[background-color,color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-              "hover:bg-[var(--surface-2)] hover:text-[var(--text)]",
-              "focus-visible:outline-2 focus-visible:outline-[var(--ring)] focus-visible:outline-offset-3",
+              "transition-colors duration-200 hover:text-[var(--text)] hover:bg-[var(--surface-2)]",
+              "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
               "md:hidden",
             )}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -159,7 +173,7 @@ export function Header() {
           <div
             className={cn(
               "fixed inset-y-0 right-0 z-50 w-full sm:w-80 bg-[var(--surface)] border-l border-[var(--border)] shadow-[var(--shadow-md)]",
-              "transform transition-[transform] duration-250 ease-[var(--ease-out)]",
+              "transform transition-transform duration-250 ease-out",
               menuOpen ? "translate-x-0" : "-translate-x-full",
             )}
           >
@@ -167,7 +181,7 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-[var(--radius-md)] p-2 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)] transition-colors duration-[var(--dur-fast)]"
+                className="rounded-[var(--radius-md)] p-2 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)] transition-colors duration-200"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
@@ -182,7 +196,7 @@ export function Header() {
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-colors duration-[var(--dur-fast)]",
+                      "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-colors duration-200",
                       active
                         ? "bg-[var(--accent-soft)] text-[var(--accent)]"
                         : "text-[var(--text)] hover:bg-[var(--surface-2)]",
@@ -205,7 +219,7 @@ export function Header() {
                       setLocale(item.code);
                       setMenuOpen(false);
                     }}
-                    className="flex w-full items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] text-sm font-medium text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--accent)] transition-colors duration-[var(--dur-fast)]"
+                    className="flex w-full items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] text-sm font-medium text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--accent)] transition-colors duration-200"
                   >
                     <span className="font-medium">{item.label}</span>
                   </button>
@@ -216,79 +230,5 @@ export function Header() {
         </>
       )}
     </header>
-  );
-}
-
-interface LanguageTriggerProps {
-  locale: string;
-  langOpen: boolean;
-  setLangOpen: (open: boolean | ((prev: boolean) => boolean)) => void;
-  setLocale: (code: string) => void;
-}
-
-function LanguageTrigger({
-  locale,
-  langOpen,
-  setLangOpen,
-  setLocale,
-}: LanguageTriggerProps) {
-  const l = useTranslations("language");
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setLangOpen((prev) => !prev)}
-        className={cn(
-          "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-          "transition-[background-color,color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-          "hover:bg-[var(--surface-2)] hover:text-[var(--text)]",
-          "focus-visible:outline-2 focus-visible:outline-[var(--ring)] focus-visible:outline-offset-3",
-          "sm:hidden",
-        )}
-        aria-label={l("label")}
-        aria-expanded={langOpen}
-        aria-haspopup="listbox"
-      >
-        <Globe className="h-5 w-5" aria-hidden="true" />
-      </button>
-
-      <button
-        type="button"
-        onClick={() => setLangOpen((prev) => !prev)}
-        className={cn(
-          "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]",
-          "transition-[background-color,color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-          "hover:bg-[var(--surface-2)] hover:text-[var(--text)]",
-          "focus-visible:outline-2 focus-visible:outline-[var(--ring)] focus-visible:outline-offset-3",
-          "hidden sm:flex",
-        )}
-        aria-label={l("label")}
-        aria-expanded={langOpen}
-        aria-haspopup="listbox"
-      >
-        <Globe className="h-5 w-5" aria-hidden="true" />
-        <span className="ml-1.5 font-medium text-[14px] text-[var(--text)] uppercase tracking-[0.05em]">
-          {locale.toUpperCase()}
-        </span>
-      </button>
-
-      {langOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)] py-2 z-50">
-          {LOCALES.map((item) => (
-            <button
-              key={item.code}
-              onClick={() => {
-                setLocale(item.code);
-                setLangOpen(false);
-              }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-[14px] text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--accent)] transition-colors duration-[var(--dur-fast)]"
-            >
-              <span className="font-medium">{item.label}</span>
-            </button>
-          ))}
-        </div>
-      )}
-    </>
   );
 }

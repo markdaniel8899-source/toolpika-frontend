@@ -30,7 +30,7 @@ export default async function PopularPage({ params }: LocalePageProps) {
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
           {t("eyebrow")}
         </p>
-        <h1 className="font-heading text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
+        <h1 className="font-sans text-[32px] tracking-[-0.02em] text-[var(--text)] sm:text-[40px]">
           {t("title")}
         </h1>
         <p className="mt-4 max-w-xl text-[var(--muted)]">{t("description")}</p>

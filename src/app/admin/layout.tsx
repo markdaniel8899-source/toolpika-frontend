@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, heading } from "@/lib/fonts";
+import { inter } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
 import "@/app/globals.css";
 
@@ -27,7 +27,7 @@ export default function AdminRootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${heading.variable}`}>
+    <html lang="en" className={`${inter.variable}`}>
       <head>
         <ThemeScript />
       </head>

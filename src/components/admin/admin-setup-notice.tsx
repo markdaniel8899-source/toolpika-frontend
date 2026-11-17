@@ -15,7 +15,7 @@ export function AdminSetupNotice() {
       <div className="rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-8">
         <div className="mb-4 flex items-center gap-2 text-[var(--danger)]">
           <AlertTriangle className="h-5 w-5" aria-hidden="true" />
-          <h1 className="font-heading text-[26px] tracking-[-0.02em] text-[var(--text)]">
+          <h1 className="font-sans text-[26px] tracking-[-0.02em] text-[var(--text)]">
             {t.title}
           </h1>
         </div>

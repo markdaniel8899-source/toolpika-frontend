@@ -103,50 +103,57 @@ export function SearchBar() {
     inputRef.current?.focus();
   };
 
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
   const maxResults = results.slice(0, 6);
 
   return (
     <div className="flex w-full flex-col items-center gap-4">
-      <form onSubmit={handleSubmit} className="relative w-full max-w-[640px]">
-        <Search
-          className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]"
-          aria-hidden="true"
-        />
-        <input
-          ref={inputRef}
-          autoComplete="off"
-          spellCheck="false"
-          role="combobox"
-          aria-expanded={results.length > 0}
-          aria-controls={listboxId}
-          aria-autocomplete="list"
-          aria-activedescendant={
-            activeIndex >= 0 ? `tool-result-${activeIndex}` : undefined
-          }
-          aria-label={t("placeholder")}
-          value={query}
-          onChange={handleInput}
-          onKeyDown={handleKeyDown}
-          placeholder={t("placeholder")}
-          className={`
-            w-full h-[56px] rounded-[14px] border border-[var(--border)] bg-[var(--surface)]
-            pl-11 pr-10 text-[16px] text-[var(--text)] placeholder-[var(--muted)]
-            transition-[border-color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-out)]
-            focus:border-[var(--accent)] focus:outline-none focus:ring-[3px] focus:ring-[var(--ring)]
-          `}
-        />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--muted)]">
-          /
-        </span>
-        {query && (
-          <button
-            type="button"
-            onClick={clear}
-            className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full text-[var(--muted)] transition-colors hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
-            aria-label={t("clear")}
-          >
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
+      <form onSubmit={handleSubmit} className="relative w-full max-w-[700px]">
+        <div className="relative w-full rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-4">
+          <Search
+            className="absolute left-[24px] top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]"
+            aria-hidden="true"
+          />
+          <input
+            ref={inputRef}
+            autoComplete="off"
+            spellCheck="false"
+            role="combobox"
+            aria-expanded={results.length > 0}
+            aria-controls={listboxId}
+            aria-autocomplete="list"
+            aria-activedescendant={
+              activeIndex >= 0 ? `tool-result-${activeIndex}` : undefined
+            }
+            aria-label={t("placeholder")}
+            value={query}
+            onChange={handleInput}
+            onKeyDown={handleKeyDown}
+            placeholder={t("placeholder")}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className="w-full pr-[64px] pl-[52px] py-3 bg-transparent border-none text-[18px] text-[var(--text)] placeholder-[var(--muted)] focus:outline-none sm:text-[18px]"
+          />
+          <span className="absolute right-[24px] top-1/2 -translate-y-1/2 px-2 py-0.5 rounded-full border border-[var(--border)] bg-[var(--bg)] text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--muted)]">
+            /
+          </span>
+          {query && (
+            <button
+              type="button"
+              onClick={clear}
+              className="absolute right-[24px] top-1/2 -translate-y-1/2 h-5 w-5 rounded-full text-[var(--muted)] transition-colors hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+              aria-label={t("clear")}
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
+          )}
+        </div>
+        {isFocused && (
+          <div className="absolute inset-0 rounded-[14px] border border-[var(--accent)] shadow-[0_0_0_4px_rgba(91,75,255,0.1)] pointer-events-none" aria-hidden="true" />
         )}
       </form>
 
@@ -163,7 +170,7 @@ export function SearchBar() {
           id={listboxId}
           role="listbox"
           aria-label={t("placeholder")}
-          className="z-20 w-full max-w-[640px] overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)]"
+          className="z-20 w-full max-w-[700px] overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)]"
         >
           {maxResults.map((tool, index) => (
             <li
@@ -177,7 +184,7 @@ export function SearchBar() {
                 onClick={() => go(tool.slug)}
                 onMouseEnter={() => setActiveIndex(index)}
                 className={cn(
-                  "flex w-full items-center justify-between px-4 py-3 text-left transition-colors duration-[var(--dur-fast)]",
+                  "flex w-full items-center justify-between px-4 py-3 text-left transition-colors duration-200",
                   index === activeIndex
                     ? "bg-[var(--bg)]"
                     : "hover:bg-[var(--bg)]",

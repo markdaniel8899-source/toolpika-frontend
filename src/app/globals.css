@@ -6,173 +6,99 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg: #fafaf7;
-  --surface: #ffffff;
-  --surface-2: #f3f2ee;
-  --border: #e8e6e1;
-  --text: #14141a;
-  --muted: #5e5e6b;
-  --accent: #5b4bff;
-  --accent-fg: #ffffff;
-  --accent-fill: #5b4bff;
-  --accent-fill-hover: #4535e6;
-  --on-accent: #ffffff;
-  --accent-soft: #eeebff;
-  --ring: rgba(91, 75, 255, 0.28);
-  --shadow-sm: 0 1px 2px rgba(20, 20, 26, 0.06);
-  --shadow-md: 0 8px 24px rgba(20, 20, 26, 0.08);
-  --radius-sm: 10px;
-  --radius-md: 12px;
-  --radius-lg: 14px;
-
-  /* Motion */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 150ms;
-  --dur-base: 250ms;
-  --dur-slow: 450ms;
-
-  --danger: #dc2626;
-  --danger-hover: #b91c1c;
-  --success: #059669;
-  --success-hover: #047857;
+  --bg: #F6F5F2;
+  --surface: #FFFFFF;
+  --text: #17181C;
+  --muted: #5E6070;
+  --border: #E4E2DC;
+  --accent: #5B4BFF;
+  --accent-fill: #5B4BFF;
+  --accent-fill-hover: #4535E6;
+  --on-accent: #FFFFFF;
 }
 
-[data-theme="dark"] {
+:root[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #0e0e13;
-  --surface: #16161d;
-  --surface-2: #1d1d26;
-  --border: #2a2a36;
-  --text: #f2f2f5;
-  --muted: #a0a0b0;
-  --accent: #8b7fff;
-  --accent-fg: #ffffff;
-  --accent-fill: #6b5bff;
-  --accent-fill-hover: #5b4bff;
-  --on-accent: #ffffff;
-  --accent-hover: #a59dff;
-  --accent-soft: rgba(139, 127, 255, 0.14);
-  --ring: rgba(139, 127, 255, 0.35);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --radius-sm: 10px;
-  --radius-md: 12px;
-  --radius-lg: 14px;
-
-  /* Motion */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 150ms;
-  --dur-base: 250ms;
-  --dur-slow: 450ms;
-
-  --danger: #ef4444;
-  --danger-hover: #f87171;
-  --success: #34d399;
-  --success-hover: #6ee7b7;
+  --bg: #0E0F13;
+  --surface: #17181F;
+  --text: #FFFFFF;
+  --muted: #9A9CAB;
+  --border: #2A2C36;
+  --accent: #8F85FF;
+  --accent-fill: #6A5BFF;
+  --accent-fill-hover: #5B4BFF;
+  --on-accent: #FFFFFF;
 }
 
-/*
- * shadcn/ui utilities are mapped straight to the constitution tokens in
- * tailwind.config.ts. Do not re-declare --muted, --border, --accent or
- * --success here: those are the project's own tokens and a second
- * declaration would silently clobber them (invisible muted text, invalid
- * self-referencing borders).
- */
+/* Global Transitions */
+* {
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
 
-@layer base {
-  * {
-    border-color: var(--border);
-  }
+button,
+a {
+  transition: all 200ms ease;
+}
 
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
+.card {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
 
-  body {
-    background-color: var(--bg);
-    color: var(--text);
-    transition:
-      background-color var(--dur-base) var(--ease-out),
-      color var(--dur-base) var(--ease-out);
-  }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background 200ms ease, color 200ms ease;
+}
 
-  /*
-   * Inter has no Arabic or Devanagari glyphs. These stacks keep those
-   * locales on a deliberate, script-appropriate face instead of an
-   * accidental OS fallback. They are free (no extra webfont download).
-   */
-  html:lang(ar) body {
-    font-family:
-      "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
-  html:lang(hi) body {
-    font-family:
-      "Noto Sans Devanagari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
-  }
+/* Locale-specific fallbacks (no webfont download) */
+html:lang(ar) body {
+  font-family: "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
+}
 
-  /*
-   * The display face has no Arabic or Devanagari glyphs; keep headings on the
-   * same readable script faces as the body instead of a generic serif.
-   */
-  html:lang(ar) .font-heading {
-    font-family:
-      "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
-  }
+html:lang(hi) body {
+  font-family: "Noto Sans Devanagari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+}
 
-  html:lang(hi) .font-heading {
-    font-family:
-      "Noto Sans Devanagari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.15;
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    line-height: 1.15;
-  }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
 
-  /*
-   * Big Apple NF ships a single 400 weight. Letting the browser synthesise
-   * a bold doubles the decorative outline and closes the counters.
-   */
-  .font-heading {
-    font-synthesis: none;
-  }
+::selection {
+  background-color: var(--accent);
+  color: var(--on-accent);
+}
 
-  .font-heading {
-    font-synthesis: none;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  ::selection {
-    background-color: var(--accent);
-    color: var(--on-accent);
-  }
-
-  /* Section 5 — Page transitions (CSS View Transitions API).
-     Degrades silently in browsers that do not support it. */
-  @view-transition {
-    navigation: auto;
-  }
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-  ::view-transition-old(root) {
-    animation: 200ms ease-out both fade-out;
-  }
-  ::view-transition-new(root) {
-    animation: 200ms ease-out both fade-in;
-  }
+/* Section 5 — Page transitions (CSS View Transitions API).
+   Degrades silently in browsers that do not support it. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  animation: 200ms ease-out both fade-out;
+}
+::view-transition-new(root) {
+  animation: 200ms ease-out both fade-in;
 }
 
 .theme-icon-moon {

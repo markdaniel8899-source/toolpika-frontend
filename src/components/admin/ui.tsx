@@ -10,7 +10,7 @@ export function PageHeader({
   return (
     <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <h1 className="font-heading text-[30px] tracking-[-0.02em] sm:text-[34px]">
+        <h1 className="font-sans text-[30px] tracking-[-0.02em] sm:text-[34px]">
           {title}
         </h1>
         {subtitle ? (
@@ -72,7 +72,7 @@ export function SectionCard({
       className={`rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 ${className ?? ""}`}
     >
       {title ? (
-        <h2 className="font-heading text-[20px] tracking-[-0.02em]">
+        <h2 className="font-sans text-[20px] tracking-[-0.02em]">
           {title}
         </h2>
       ) : null}

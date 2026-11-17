@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { heading, inter } from "@/lib/fonts";
+import { inter } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -58,7 +58,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${inter.variable} ${heading.variable}`}
+      className={`${inter.variable}`}
       suppressHydrationWarning
     >
       <head>

@@ -9,7 +9,7 @@ export default function NotFoundPage() {
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
         404
       </p>
-      <h1 className="mt-3 font-heading text-3xl tracking-display sm:text-4xl">
+      <h1 className="mt-3 font-sans text-3xl tracking-display sm:text-4xl">
         {t("title")}
       </h1>
       <p className="mt-3 max-w-md text-[var(--muted)]">{t("description")}</p>
