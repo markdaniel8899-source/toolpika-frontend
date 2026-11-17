@@ -17,6 +17,13 @@ export const metadata: Metadata = {
       rel: "icon",
       type: "image/svg+xml",
       url: "/favicon.svg",
+      sizes: "32x32",
+    },
+    {
+      rel: "apple-touch-icon",
+      type: "image/svg+xml",
+      url: "/favicon.svg",
+      sizes: "180x180",
     },
   ],
 };
