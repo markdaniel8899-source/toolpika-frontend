@@ -31,6 +31,10 @@ npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
 npm run build
 npm run start
+
+npm run check:locales   # locale files match en.json
+npm run check:messages  # used keys exist
+npm run translate       # Groq pipeline (reads .env.local)
 ```
 
 ## Environment
@@ -143,16 +147,19 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
 
 ## Translation pipeline
 
+The script reads `.env.local` through Node's `--env-file` flag (Node 20+):
+
 ```bash
-GROQ_API_KEY=... node scripts/translate-ui-strings.js
-GROQ_API_KEY=... node scripts/translate-ui-strings.js --locale de
+npm run translate
+npm run translate -- --locale de
+npm run translate -- --dry-run
 ```
 
 ## Checks
 
 ```bash
-node scripts/check-locale-keys.js      # every locale matches en.json
-node scripts/check-message-usage.js    # no key is used but undefined
+npm run check:locales      # every locale matches en.json
+npm run check:messages     # no key is used but undefined
 ```
 
 ## Notes
