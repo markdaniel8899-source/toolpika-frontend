@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f6f5f2;
+  --surface: #ffffff;
+  --text: #17181c;
+  --muted: #5e6070;
+  --border: #e4e2dc;
+  --accent: #5b4bff;
+  --accent-hover: #4535e6;
+  --accent-fill: #5b4bff;
+  --accent-fill-hover: #4535e6;
+  --on-accent: #ffffff;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --success: #059669;
+  --success-hover: #047857;
+  --radius: 10px;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0e0f13;
+  --surface: #17181f;
+  --text: #ffffff;
+  --muted: #9a9cab;
+  --border: #2a2c36;
+  --accent: #8f85ff;
+  --accent-hover: #a59dff;
+  --accent-fill: #6a5bff;
+  --accent-fill-hover: #5b4bff;
+  --on-accent: #ffffff;
+  --danger: #ef4444;
+  --danger-hover: #f87171;
+  --success: #34d399;
+  --success-hover: #6ee7b7;
+}
+
+/*
+ * shadcn/ui utilities are mapped straight to the constitution tokens in
+ * tailwind.config.ts. Do not re-declare --muted, --border, --accent or
+ * --success here: those are the project's own tokens and a second
+ * declaration would silently clobber them (invisible muted text, invalid
+ * self-referencing borders).
+ */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  /*
+   * Inter has no Arabic or Devanagari glyphs. These stacks keep those
+   * locales on a deliberate, script-appropriate face instead of an
+   * accidental OS fallback. They are free (no extra webfont download).
+   */
+  html:lang(ar) body {
+    font-family:
+      "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
+  }
+
+  html:lang(hi) body {
+    font-family:
+      "Noto Sans Devanagari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /*
+   * The display face has no Arabic or Devanagari glyphs; keep headings on the
+   * same readable script faces as the body instead of a generic serif.
+   */
+  html:lang(ar) .font-display {
+    font-family:
+      "Noto Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
+  }
+
+  html:lang(hi) .font-display {
+    font-family:
+      "Noto Sans Devanagari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.15;
+  }
+
+  /*
+   * Big Apple NF ships a single 400 weight. Letting the browser synthesise
+   * a bold doubles the decorative outline and closes the counters.
+   */
+  .font-display {
+    font-synthesis: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+}
+
+.theme-icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-moon {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
