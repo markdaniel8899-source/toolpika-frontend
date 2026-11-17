@@ -7,9 +7,39 @@ import { getPopularTools, getToolsByCategory, categories } from "@/lib/tools/reg
 
 function CategoryIcon({ icon: Icon }: { icon: ComponentType<SVGProps<SVGSVGElement>> }) {
   return (
-    <div className="rounded-[10px] bg-[var(--bg)] p-3">
-      <Icon className="h-[32px] w-[32px] text-[var(--accent)]" aria-hidden="true" />
-    </div>
+    <Icon className="h-[32px] w-[32px] text-[var(--accent)]" aria-hidden="true" />
+  );
+}
+
+/** Double-bezel category card: outer shell + inner surface core. */
+function CategoryCard({
+  category,
+  tools,
+}: {
+  category: (typeof categories)[number];
+  tools: ReturnType<typeof getToolsByCategory>;
+}) {
+  return (
+    <Link
+      href={`/category/${category.slug}`}
+      className="group relative flex flex-col gap-3 rounded-[18px] border border-[var(--border)] bg-[var(--bg)]/40 p-1.5 transition-all duration-300 hover:border-[var(--accent)] hover:-translate-y-[4px] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+    >
+      <div className="rounded-[16px] border border-[var(--border)] bg-[var(--surface)] p-6 transition-all duration-300 group-hover:border-[var(--accent)]">
+        <div className="rounded-[12px] bg-[var(--bg)] p-3 mb-3">
+          <CategoryIcon icon={category.Icon} />
+        </div>
+        <h3 className="font-display text-[20px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
+          {category.label}
+        </h3>
+        <ul className="flex flex-wrap gap-2 mt-2">
+          {tools.slice(0, 5).map((tool) => (
+            <li key={tool.slug} className="text-[12px] text-[var(--muted)]">
+              {tool.title}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Link>
   );
 }
 
@@ -25,16 +55,16 @@ export default async function HomePage({ params }: LocalePageProps) {
 
   return (
     <main className="mx-auto flex w-full max-w-page flex-col px-6">
-      <section className="flex-1 flex flex-col py-16">
+      <section className="flex-1 flex flex-col py-24">
         {/* Hero */}
-        <div className="flex flex-col items-center justify-center text-center lg:py-24">
+        <div className="flex flex-col items-center justify-center text-center lg:py-32">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
             Toolpika
           </p>
           <h1 className="max-w-[60ch] text-balance font-sans text-[60px] font-bold leading-[1.15] tracking-[-0.02em] text-[var(--text)]">
             {t.rich("title", {
               display: (chunks) => (
-                <span className="font-display text-[60px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--accent)] font-italic">
+                <span className="font-display text-[60px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--accent)]">
                   {chunks}
                 </span>
               ),
@@ -46,17 +76,17 @@ export default async function HomePage({ params }: LocalePageProps) {
         </div>
 
         {/* Mega search */}
-        <div className="mt-12">
+        <div className="mt-16">
           <SearchBar />
         </div>
 
         {/* Chips */}
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
+        <div className="mt-14 flex flex-wrap justify-center gap-3">
           {popular.slice(0, 6).map((tool) => (
             <Link
               key={tool.slug}
               href={`/tools/${tool.slug}`}
-              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text)] transition-colors duration-200 hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
             >
               {tool.title}
             </Link>
@@ -65,9 +95,9 @@ export default async function HomePage({ params }: LocalePageProps) {
       </section>
 
       {/* Popular tools */}
-      <section className="border-y border-[var(--border)] bg-[var(--surface)] py-12">
+      <section className="border-y border-[var(--border)] bg-[var(--surface)] py-24">
         <div className="mx-auto max-w-page px-6">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-2">
               <Flame className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
               <h2 className="font-display text-[32px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
@@ -76,7 +106,7 @@ export default async function HomePage({ params }: LocalePageProps) {
             </div>
             <Link
               href="/popular"
-              className="text-sm font-medium text-[var(--accent)] hover:underline"
+              className="text-sm font-medium text-[var(--accent)] hover:underline transition-colors"
             >
               {t("viewAll")}
             </Link>
@@ -86,9 +116,9 @@ export default async function HomePage({ params }: LocalePageProps) {
             {popular.map((tool, index) => (
               <li
                 key={tool.slug}
-                className="flex items-center gap-4 rounded-[12px] border border-[var(--border)] bg-[var(--surface)] px-6 py-4 hover:border-[var(--accent)] hover:-translate-y-[2px] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                className="flex items-center gap-4 rounded-[14px] border border-[var(--border)] bg-[var(--surface)] px-6 py-4 transition-all duration-200 hover:border-[var(--accent)] hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(0,0,0,0.04)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
               >
-                <span className="w-6 text-[18px] font-bold text-[var(--accent)]">
+                <span className="w-7 text-[18px] font-bold text-[var(--accent)]">
                   {index + 1}
                 </span>
                 <Link
@@ -104,46 +134,28 @@ export default async function HomePage({ params }: LocalePageProps) {
       </section>
 
       {/* Categories grid */}
-      <section className="py-12">
+      <section className="py-24">
         <div className="mx-auto max-w-page px-6">
-          <h2 className="mb-8 font-display text-[32px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
+          <h2 className="mb-12 font-display text-[32px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
             {t("categories")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {categories.map((category) => {
               const tools = getToolsByCategory(category.slug);
-              return (
-                <Link
-                  key={category.slug}
-                  href={`/category/${category.slug}`}
-                  className="flex flex-col gap-3 rounded-[16px] border border-[var(--border)] bg-[var(--surface)] p-6 hover:border-[var(--accent)] hover:-translate-y-[4px] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
-                >
-                  <CategoryIcon icon={category.Icon} />
-                  <h3 className="font-display text-[20px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
-                    {category.label}
-                  </h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {tools.slice(0, 5).map((tool) => (
-                      <li key={tool.slug} className="text-[14px] text-[var(--muted)]">
-                        {tool.title}
-                      </li>
-                    ))}
-                  </ul>
-                </Link>
-              );
+              return <CategoryCard key={category.slug} category={category} tools={tools} />;
             })}
           </div>
         </div>
       </section>
 
       {/* Request section */}
-      <section className="border-t border-[var(--border)] bg-[var(--surface)] py-12">
+      <section className="border-t border-[var(--border)] bg-[var(--surface)] py-24">
         <div className="mx-auto max-w-page px-6">
           <div className="rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-[48px] text-center lg:p-[64px]">
             <h2 className="mb-3 font-display text-[28px] font-normal leading-[1.15] tracking-[0.015em] text-[var(--text)]">
               {t("requestTitle")}
             </h2>
-            <p className="mb-6 max-w-md mx-auto text-[var(--muted)]">
+            <p className="mb-8 max-w-md mx-auto text-[var(--muted)]">
               {t("requestSubtitle")}
             </p>
             <Link

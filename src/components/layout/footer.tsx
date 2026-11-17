@@ -22,11 +22,11 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--surface)] py-7">
+    <footer className="border-t border-[var(--border)] bg-[var(--surface)] py-16">
       <div className="mx-auto max-w-page px-6">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="col-span-1 lg:col-span-1">
-            <span className="font-display text-lg font-bold tracking-[0.01em] text-[var(--text)]">
+            <span className="font-display text-lg font-normal tracking-[0.01em] text-[var(--text)]">
               Toolpika
             </span>
             <p className="mt-3 text-sm text-[var(--muted)]">
