@@ -62,7 +62,7 @@ export function Header() {
       <div className="mx-auto flex h-full w-full max-w-page items-center justify-between gap-2 px-4 sm:px-6">
         {/* Left: Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Toolpika">
-          <Zap className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
+          <Zap className="h-6 w-6 text-[var(--accent)]" aria-hidden="true" />
           <span className="font-sans font-bold text-[24px] tracking-tight text-[var(--text)]">
             Toolpika
           </span>
