@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, ChevronDown } from "lucide-react";
 import { submitToolRequest } from "./actions";
 
 interface RequestFormProps {
@@ -25,6 +25,7 @@ const emptyForm = { toolName: "", description: "", email: "" };
 
 export default function RequestForm({ labels }: RequestFormProps) {
   const [form, setForm] = useState(emptyForm);
+  const [category, setCategory] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -33,12 +34,13 @@ export default function RequestForm({ labels }: RequestFormProps) {
     const next: Record<string, string> = {};
     if (!form.toolName.trim()) next.toolName = "Tool name is required.";
     if (!form.description.trim()) next.description = "Description is required.";
+    if (!category) next.category = "Choose a category.";
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       next.email = "Enter a valid email address.";
     }
     setErrors(next);
     return Object.keys(next).length === 0;
-  }, [form]);
+  }, [form, category]);
 
   const handleChange =
     (key: keyof typeof form) =>
@@ -63,6 +65,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
     if (result.ok) {
       setSuccess(true);
       setForm(emptyForm);
+      setCategory("");
     } else {
       setErrors({ form: result.error });
     }
@@ -70,7 +73,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
 
   if (success) {
     return (
-      <div className="tp-card" style={{ padding: 40, textAlign: "center" }}>
+      <div className="tp-card tp-form-card" style={{ padding: 40, textAlign: "center" }}>
         <span
           className="tp-icon-tile"
           style={{ width: 44, height: 44, margin: "0 auto 16px", borderRadius: "50%" }}
@@ -96,7 +99,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
   }
 
   return (
-    <form className="tp-card" onSubmit={handleSubmit} style={{ padding: 28 }} noValidate>
+    <form className="tp-card tp-form-card" onSubmit={handleSubmit} style={{ padding: 28 }} noValidate>
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 20 }}>
         <h2 style={{ margin: 0, fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em" }}>
           Tell us what you need
@@ -132,9 +135,24 @@ export default function RequestForm({ labels }: RequestFormProps) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="tp-field">
-          <label className="tp-field-label" htmlFor="tool-category">Category</label>
-          <div style={{ position: "relative" }}>
-            <select id="tool-category" className="tp-field-input" defaultValue="" required>
+          <label className="tp-field-label is-soft" htmlFor="tool-category">Category</label>
+          <div className="tp-select-wrap">
+            <select
+              id="tool-category"
+              className={category ? "tp-field-input tp-select has-value" : "tp-field-input tp-select"}
+              value={category}
+              onChange={(event) => {
+                setCategory(event.target.value);
+                if (errors.category) {
+                  setErrors((prev) => {
+                    const next = { ...prev };
+                    delete next.category;
+                    return next;
+                  });
+                }
+              }}
+              required
+            >
               <option value="" disabled>Choose one</option>
               <option>Text</option>
               <option>Images</option>
@@ -143,7 +161,9 @@ export default function RequestForm({ labels }: RequestFormProps) {
               <option>Security</option>
               <option>Something else</option>
             </select>
+            <ChevronDown className="tp-icon tp-select-icon" aria-hidden="true" />
           </div>
+          {errors.category && <p style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.category}</p>}
         </div>
 
         <div className="tp-field">

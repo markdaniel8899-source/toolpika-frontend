@@ -623,7 +623,7 @@ html.theme-transition *::after {
 
 .tp-suggestions {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin: 8px 0 28px;
 }
@@ -632,6 +632,7 @@ html.theme-transition *::after {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 20px 16px;
   border-radius: var(--radius-card);
@@ -653,6 +654,7 @@ html.theme-transition *::after {
 }
 
 .tp-suggestion p {
+  width: 100%;
   margin: 0;
   color: var(--muted);
   font-size: 13px;
@@ -1273,6 +1275,51 @@ html.theme-transition *::after {
   color: var(--muted-2);
 }
 
+.tp-field-label.is-soft {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.tp-select-wrap {
+  position: relative;
+}
+
+.tp-select {
+  appearance: none;
+  padding-right: 38px;
+  color: var(--muted-2);
+  cursor: pointer;
+}
+
+.tp-select.has-value {
+  color: var(--text);
+}
+
+.tp-select option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.tp-select-icon {
+  position: absolute;
+  top: 50%;
+  right: 13px;
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.tp-form-card:hover {
+  box-shadow: var(--card-shadow), var(--card-highlight);
+  transform: none;
+}
+
+.tp-form-card::before {
+  display: none;
+}
+
 /* ---------- Workspace ---------- */
 
 .tp-workspace {
@@ -1433,11 +1480,11 @@ html.theme-transition *::after {
 }
 
 .tp-footer-col h3 {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   color: var(--muted-2);
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   line-height: 1.3;
   text-transform: uppercase;
 }
@@ -1445,7 +1492,7 @@ html.theme-transition *::after {
 .tp-footer-col ul {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1456,7 +1503,7 @@ html.theme-transition *::after {
   width: fit-content;
   padding: 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.35;
   transition: color var(--dur-fast) var(--ease-out);
 }
