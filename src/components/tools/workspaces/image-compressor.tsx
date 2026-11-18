@@ -41,7 +41,6 @@ export default function ImageCompressor() {
   const [compressed, setCompressed] = useState<CompressedFile | null>(null);
   const [quality, setQuality] = useState(70);
   const [busy, setBusy] = useState(false);
-  const [dragging, setDragging] = useState(false);
   const [errorCode, setErrorCode] = useState<"imageTooLarge" | "imageFailed" | null>(
     null
   );
@@ -148,17 +147,12 @@ export default function ImageCompressor() {
         <div className="flex flex-col gap-4">
           <label
             htmlFor="image-input"
-            onDragOver={(event) => {
-              event.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
+            onDragOver={(event) => event.preventDefault()}
             onDrop={(event) => {
               event.preventDefault();
-              setDragging(false);
               handleFile(event.dataTransfer.files[0]);
             }}
-            className={`tp-dropzone flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-3 rounded-[10px] border border-dashed border-[var(--border)] bg-[var(--bg)] p-6 text-center transition-colors hover:border-[var(--accent)]${dragging ? " is-dragging" : ""}`}
+            className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-3 rounded-[10px] border border-dashed border-[var(--border)] bg-[var(--bg)] p-6 text-center transition-colors hover:border-[var(--accent)]"
           >
             <Upload className="h-6 w-6 text-[var(--accent)]" aria-hidden="true" />
             <span className="font-medium text-[var(--text)]">
@@ -222,9 +216,6 @@ export default function ImageCompressor() {
                 <Stat label={t("compressed")} value={formatBytes(compressed.size)} />
                 <Stat label={t("saved")} value={`${savedPercent}%`} />
               </dl>
-              <div className="tp-savings" aria-hidden="true">
-                <span style={{ width: `${Math.max(0, Math.min(100, savedPercent))}%` }} />
-              </div>
               <a
                 href={compressed.url}
                 download={downloadName}

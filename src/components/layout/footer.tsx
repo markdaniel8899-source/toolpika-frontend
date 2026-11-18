@@ -18,6 +18,7 @@ const COMPANY_LINKS = [
 const LEGAL_LINKS = [
   { key: "privacy", href: "/privacy" },
   { key: "terms", href: "/terms" },
+  { key: "contact", href: "/contact" },
 ] as const;
 
 function FooterGroup({

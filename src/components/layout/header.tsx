@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Globe, Menu, Moon, Sun, X, Zap } from "lucide-react";
 import { usePathname, useRouter, Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -33,7 +32,6 @@ export function Header() {
   const router = useRouter();
   const locale = useLocale();
   const scrolled = useScrolled(8);
-  const reduceMotion = useReducedMotion();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -58,7 +56,7 @@ export function Header() {
     } catch {
       // Storage can be blocked; the attribute still updates for this session.
     }
-    window.setTimeout(() => root.classList.remove("theme-transition"), 260);
+    window.setTimeout(() => root.classList.remove("theme-transition"), 240);
   };
 
   const changeLocale = (next: Locale) => {
@@ -75,12 +73,7 @@ export function Header() {
   ];
 
   return (
-    <header
-      className={cn(
-        "tp-header",
-        scrolled && "is-scrolled shadow-[var(--shadow-sm)]",
-      )}
-    >
+    <header className={cn("tp-header", scrolled && "shadow-[var(--shadow-sm)]")}>
       <div className="tp-container tp-header-inner">
         <Link href="/" className="tp-brand" aria-label="Toolpika">
           <Zap className="tp-brand-mark" aria-hidden="true" />
@@ -97,17 +90,6 @@ export function Header() {
                 aria-current={active ? "page" : undefined}
               >
                 {item.label}
-                {active ? (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="tp-nav-underline"
-                    transition={
-                      reduceMotion
-                        ? { duration: 0 }
-                        : { type: "spring", stiffness: 420, damping: 34 }
-                    }
-                  />
-                ) : null}
               </Link>
             );
           })}

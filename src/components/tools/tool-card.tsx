@@ -20,7 +20,11 @@ export function ToolCard({ tool }: { tool: Tool }) {
         <span className="tp-tool-icon">
           <ToolIcon name={tool.icon} className="tp-icon" aria-hidden="true" />
         </span>
-        <ArrowUpRight className="tp-icon tp-card-arrow" aria-hidden="true" />
+        <ArrowUpRight
+          className="tp-icon"
+          style={{ width: 14, height: 14, color: "var(--accent)", opacity: 0.55 }}
+          aria-hidden="true"
+        />
       </span>
       <h3 className="tp-tool-title">{tool.title}</h3>
       <p className="tp-tool-desc">{tool.description}</p>
