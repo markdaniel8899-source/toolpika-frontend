@@ -3,9 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { requireAdmin } from "@/lib/supabase/admin";
 import { scoreSeo } from "@/lib/admin/seo";
 import type { FormState } from "@/lib/admin/types";
+
+async function requireUser() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/admin/login");
+  return supabase;
+}
 
 /* -------------------------------------------------------------------------- */
 /* Auth — Supabase Auth only                                                  */
@@ -78,7 +86,7 @@ export async function saveTool(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
-  await requireAdmin();
+  await requireUser();
 
   const values = readToolForm(formData);
 
@@ -120,9 +128,7 @@ export async function saveTool(
 }
 
 export async function deleteTool(id: string): Promise<void> {
-  await requireAdmin();
-
-  const supabase = await createClient();
+  const supabase = await requireUser();
   await supabase.from("tools").delete().eq("id", id);
 
   revalidatePath("/admin/tools");
@@ -145,7 +151,7 @@ export async function updateRequestStatus(
   id: string,
   status: RequestStatus
 ): Promise<void> {
-  await requireAdmin();
+  await requireUser();
 
   if (!REQUEST_STATUSES.includes(status)) return;
 
@@ -167,7 +173,7 @@ export async function savePost(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
-  await requireAdmin();
+  await requireUser();
 
   const id = String(formData.get("id") ?? "").trim() || null;
   const title = String(formData.get("title") ?? "").trim();
@@ -242,9 +248,7 @@ export async function savePost(
 }
 
 export async function deletePost(id: string): Promise<void> {
-  await requireAdmin();
-
-  const supabase = await createClient();
+  const supabase = await requireUser();
   await supabase.from("posts").delete().eq("id", id);
 
   revalidatePath("/admin/blog");
@@ -255,48 +259,14 @@ export async function deletePost(id: string): Promise<void> {
 /* Site settings                                                              */
 /* -------------------------------------------------------------------------- */
 
-const THEME_DEFAULTS = ["light", "dark", "system"] as const;
-
-/**
- * Site settings live in public.site_settings as key/value rows.
- *
- * API keys are never stored here — they stay in the deployment environment.
- * This action only writes the editable site details.
- */
+/** Minimal settings action: no site_settings table in the minimal schema. */
 export async function saveSettings(
   _prev: FormState,
-  formData: FormData
+  _formData: FormData
 ): Promise<FormState> {
-  await requireAdmin();
-
-  const themeDefault = String(formData.get("themeDefault") ?? "system");
-  const entries: Record<string, string> = {
-    site_name: String(formData.get("siteName") ?? "").trim(),
-    site_url: String(formData.get("siteUrl") ?? "").trim(),
-    social_github: String(formData.get("socialGithub") ?? "").trim(),
-    social_x: String(formData.get("socialX") ?? "").trim(),
-    social_linkedin: String(formData.get("socialLinkedIn") ?? "").trim(),
-    theme_default: (THEME_DEFAULTS as readonly string[]).includes(
-      themeDefault
-    )
-      ? themeDefault
-      : "system",
-  };
-
-  const supabase = await createClient();
-
-  const { error } = await supabase
-    .from("site_settings")
-    .upsert(
-      Object.entries(entries).map(([key, value]) => ({ key, value })),
-      { onConflict: "key" }
-    );
-
-  if (error) {
-    return { status: "error", message: "save_failed" };
-  }
-
+  void _prev;
+  void _formData;
+  await requireUser();
   revalidatePath("/admin/settings");
-
   return { status: "success" };
 }

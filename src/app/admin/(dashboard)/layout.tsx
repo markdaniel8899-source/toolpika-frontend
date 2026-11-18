@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getAdminSession } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { adminMessages } from "@/lib/admin/messages";
 import {
   ADMIN_ICONS,
@@ -19,25 +19,12 @@ export default async function AdminDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let session: Awaited<ReturnType<typeof getAdminSession>> = null;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  try {
-    session = await getAdminSession();
-  } catch (error) {
-    console.error("Admin session error:", error);
-    return (
-      <div style={{ padding: 32 }}>
-        <h1 style={{ fontSize: 20, fontWeight: 600 }}>
-          Profile query failed.
-        </h1>
-        <p style={{ marginTop: 8, color: "var(--muted)", fontSize: 14 }}>
-          Check SUPABASE_SERVICE_ROLE_KEY in Vercel env vars. Visit /admin/debug for details.
-        </p>
-      </div>
-    );
-  }
-
-  if (!session || session.profile?.role !== "admin") {
+  if (!user) {
     redirect("/admin/login");
   }
 
@@ -59,7 +46,7 @@ export default async function AdminDashboardLayout({
   return (
     <AdminShell
       nav={nav}
-      userEmail={session.profile?.email ?? session.user.email ?? ""}
+      userEmail={user.email ?? ""}
       signOutLabel={t.signOut}
       dashboardLabel={t.dashboard}
       navLabel={t.navLabel}

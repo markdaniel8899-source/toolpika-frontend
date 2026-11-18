@@ -15,7 +15,6 @@ function isAdminRoute(pathname: string) {
   return pathname === ADMIN_PREFIX || pathname.startsWith(`${ADMIN_PREFIX}/`);
 }
 
-/** Mirrors refreshed Supabase auth cookies onto request + response. */
 function upsertSession(request: NextRequest, cookiesToSet: AuthCookie[]) {
   cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
   const response = NextResponse.next({ request });
@@ -31,30 +30,25 @@ function redirectWithSession(url: URL, source: NextResponse) {
   return response;
 }
 
-/** Plain /admin/login redirect — no query string, host from request. */
-function loginRedirect(request: NextRequest, source?: NextResponse) {
+function loginRedirect(request: NextRequest, source: NextResponse) {
   const url = request.nextUrl.clone();
   url.pathname = LOGIN_PATH;
   url.search = "";
-  return source ? redirectWithSession(url, source) : NextResponse.redirect(url);
+  return redirectWithSession(url, source);
 }
 
-/**
- * Next 16 equivalent of middleware.ts (see AGENTS.md).
- *
- * RULE: middleware only checks the Supabase AUTH SESSION.
- * It MUST NOT query public.profiles or any other table. Role checks happen in
- * the admin pages via requireAdmin() with a service-role client.
- */
+/** Only checks auth session. No profile query, no role check. */
 async function handleAdmin(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !anonKey) {
     if (pathname === LOGIN_PATH) return NextResponse.next();
-    return loginRedirect(request);
+    const url = request.nextUrl.clone();
+    url.pathname = LOGIN_PATH;
+    url.search = "";
+    return NextResponse.redirect(url);
   }
 
   let response = NextResponse.next({ request });
@@ -70,7 +64,6 @@ async function handleAdmin(request: NextRequest) {
     },
   });
 
-  // ONLY auth check — no database/table query here.
   const {
     data: { user },
   } = await supabase.auth.getUser();
