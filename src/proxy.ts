@@ -15,6 +15,16 @@ function isAdminRoute(pathname: string) {
   return pathname === ADMIN_PREFIX || pathname.startsWith(`${ADMIN_PREFIX}/`);
 }
 
+function isValidUrl(value?: string): value is string {
+  if (!value) return false;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 function upsertSession(request: NextRequest, cookiesToSet: AuthCookie[]) {
   cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
   const response = NextResponse.next({ request });
@@ -30,49 +40,58 @@ function redirectWithSession(url: URL, source: NextResponse) {
   return response;
 }
 
-function loginRedirect(request: NextRequest, source: NextResponse) {
+function loginRedirect(request: NextRequest, source?: NextResponse) {
   const url = request.nextUrl.clone();
   url.pathname = LOGIN_PATH;
   url.search = "";
-  return redirectWithSession(url, source);
+  return source ? redirectWithSession(url, source) : NextResponse.redirect(url);
 }
 
-/** Only checks auth session. No profile query, no role check. */
+/**
+ * Next 16 Proxy (formerly middleware). Only checks the Supabase auth session.
+ * Never throws: a bad env value or auth failure must not produce a 500.
+ */
 async function handleAdmin(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!url || !anonKey) {
+  if (!isValidUrl(supabaseUrl) || !anonKey) {
+    console.error(
+      "[proxy] Invalid or missing Supabase env vars. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel.",
+    );
     if (pathname === LOGIN_PATH) return NextResponse.next();
-    const url = request.nextUrl.clone();
-    url.pathname = LOGIN_PATH;
-    url.search = "";
-    return NextResponse.redirect(url);
+    return loginRedirect(request);
   }
 
   let response = NextResponse.next({ request });
 
-  const supabase = createServerClient(url, anonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
+  try {
+    const supabase = createServerClient(supabaseUrl, anonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          response = upsertSession(request, cookiesToSet);
+        },
       },
-      setAll(cookiesToSet) {
-        response = upsertSession(request, cookiesToSet);
-      },
-    },
-  });
+    });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user && pathname !== LOGIN_PATH) {
+    if (!user && pathname !== LOGIN_PATH) {
+      return loginRedirect(request, response);
+    }
+
+    return response;
+  } catch (error) {
+    console.error("[proxy] Supabase auth check failed:", error);
+    if (pathname === LOGIN_PATH) return NextResponse.next();
     return loginRedirect(request, response);
   }
-
-  return response;
 }
 
 export default async function proxy(request: NextRequest) {
