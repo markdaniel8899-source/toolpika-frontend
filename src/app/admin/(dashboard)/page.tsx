@@ -55,11 +55,11 @@ export default async function AdminOverviewPage() {
           {activity.length === 0 ? (
             <EmptyState message={t.activityEmpty} />
           ) : (
-            <ol className="flex flex-col divide-y divide-[var(--border)]">
+            <ol className="flex flex-col gap-1">
               {activity.map((item) => (
                 <li
                   key={item.id}
-                  className="flex items-start justify-between gap-4 py-3 first:pt-0 last:pb-0"
+                  className="flex items-start justify-between gap-4 rounded-[10px] px-3 py-3 transition-colors duration-150 hover:bg-[var(--surface-2)]"
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium">{item.label}</p>

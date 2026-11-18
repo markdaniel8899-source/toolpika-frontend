@@ -34,7 +34,7 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-5">
+    <div className="tp-admin-card p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
         {label}
       </p>
@@ -50,7 +50,7 @@ export function StatCard({
 
 export function EmptyState({ message }: { message: string }) {
   return (
-    <p className="rounded-[14px] border border-dashed border-[var(--border)] bg-[var(--surface)] px-5 py-8 text-center text-sm leading-[1.6] text-[var(--muted)]">
+    <p className="rounded-[14px] border border-dashed border-[var(--border)] bg-[var(--surface-2)] px-5 py-8 text-center text-sm leading-[1.6] text-[var(--muted)]">
       {message}
     </p>
   );
@@ -69,7 +69,7 @@ export function SectionCard({
 }) {
   return (
     <section
-      className={`rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 ${className ?? ""}`}
+      className={`tp-admin-card p-5 sm:p-6 ${className ?? ""}`}
     >
       {title ? (
         <h2 className="font-sans text-[20px] tracking-[-0.02em]">
@@ -116,10 +116,10 @@ export function DataTable({
   children: React.ReactNode;
 }) {
   return (
-    <div className="-mx-5 overflow-x-auto sm:mx-0">
-      <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+    <div data-ui className="-mx-5 overflow-x-auto sm:mx-0">
+      <table className="tp-admin-table w-full min-w-[640px] border-collapse text-left text-sm">
         <thead>
-          <tr className="border-b border-[var(--border)]">
+          <tr data-ui className="border-b border-[var(--border)]">
             {headers.map((header) => (
               <th
                 key={header}

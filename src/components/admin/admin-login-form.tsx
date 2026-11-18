@@ -17,12 +17,7 @@ export interface AdminLoginCopy {
 function SubmitButton({ copy }: { copy: AdminLoginCopy }) {
   const { pending } = useFormStatus();
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="tp-btn tp-btn-primary"
-      style={{ width: "100%", height: 46 }}
-    >
+    <button type="submit" disabled={pending} className="tp-admin-btn tp-admin-login-submit">
       {pending ? copy.sending : copy.submit}
       <ArrowRight className="tp-icon" aria-hidden="true" />
     </button>
@@ -36,16 +31,13 @@ export function AdminLoginForm({ copy }: { copy: AdminLoginCopy }) {
   const error = state.status === "error" ? state.message : undefined;
 
   return (
-    <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <div>
-        <label
-          htmlFor="admin-email"
-          style={{ display: "block", marginBottom: 6, color: "var(--muted-2)", fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase" }}
-        >
+    <form action={formAction} className="tp-admin-login-form">
+      <div className="tp-admin-login-field">
+        <label htmlFor="admin-email" className="tp-admin-login-label">
           {copy.emailLabel}
         </label>
-        <div style={{ position: "relative" }}>
-          <Mail className="tp-icon" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--muted-2)" }} aria-hidden="true" />
+        <span className="tp-admin-login-input-wrap">
+          <Mail className="tp-icon" aria-hidden="true" />
           <input
             id="admin-email"
             name="email"
@@ -54,20 +46,16 @@ export function AdminLoginForm({ copy }: { copy: AdminLoginCopy }) {
             autoComplete="username"
             placeholder={copy.emailPlaceholder}
             className="tp-atlas-input"
-            style={{ paddingLeft: 38 }}
           />
-        </div>
+        </span>
       </div>
 
-      <div>
-        <label
-          htmlFor="admin-password"
-          style={{ display: "block", marginBottom: 6, color: "var(--muted-2)", fontSize: 11, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase" }}
-        >
+      <div className="tp-admin-login-field">
+        <label htmlFor="admin-password" className="tp-admin-login-label">
           {copy.passwordLabel}
         </label>
-        <div style={{ position: "relative" }}>
-          <LockKeyhole className="tp-icon" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--muted-2)" }} aria-hidden="true" />
+        <span className="tp-admin-login-input-wrap">
+          <LockKeyhole className="tp-icon" aria-hidden="true" />
           <input
             id="admin-password"
             name="password"
@@ -76,13 +64,12 @@ export function AdminLoginForm({ copy }: { copy: AdminLoginCopy }) {
             autoComplete="current-password"
             placeholder={copy.passwordPlaceholder}
             className="tp-atlas-input"
-            style={{ paddingLeft: 38 }}
           />
-        </div>
+        </span>
       </div>
 
       {error ? (
-        <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12.5, lineHeight: 1.5 }}>
+        <p role="alert" className="tp-admin-login-error">
           {error}
         </p>
       ) : null}

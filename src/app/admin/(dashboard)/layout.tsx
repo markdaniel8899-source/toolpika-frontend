@@ -35,7 +35,7 @@ export default async function AdminDashboardLayout({
   if (authError) {
     return (
       <html lang="en">
-        <body className="flex min-h-screen items-center justify-center bg-[var(--bg)] px-6 font-sans text-[var(--text)]">
+        <body className="flex min-h-dvh items-center justify-center bg-[var(--bg)] px-6 font-sans text-[var(--text)]">
           <div className="text-center text-red-500">
             <h1 style={{ fontSize: "22px", fontWeight: 600, letterSpacing: "-0.03em" }}>
               Admin Dashboard Error

@@ -200,6 +200,14 @@ html.theme-transition .tp-header,
 html.theme-transition .tp-footer,
 html.theme-transition .tp-card,
 html.theme-transition .tp-atlas-card,
+html.theme-transition .tp-admin-card,
+html.theme-transition .tp-admin-btn,
+html.theme-transition .tp-admin-btn-secondary,
+html.theme-transition .tp-admin-icon,
+html.theme-transition .tp-admin-nav,
+html.theme-transition .tp-admin-select-content,
+html.theme-transition .tp-admin-login-card,
+html.theme-transition .tp-admin-login-wash,
 html.theme-transition .tp-field-input,
 html.theme-transition .tp-dropdown-menu,
 html.theme-transition .tp-dropdown-trigger {
@@ -1343,7 +1351,11 @@ html.theme-transition .tp-dropdown-trigger {
   background: var(--field-bg);
   color: var(--text);
   font-size: 14.5px;
-  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.tp-field-input:hover:not(:focus) {
+  border-color: var(--accent);
 }
 
 .tp-field textarea {
@@ -2264,6 +2276,363 @@ html.theme-transition .tp-dropdown-trigger {
     padding: 18px 20px 40px;
   }
 }
+
+/* ==========================================================================
+   Admin dashboard — premium interaction layer
+   Uses only design-system tokens. Flat surfaces separated by tone steps,
+   no gradients, no shadows at rest. Every control has instant press feedback
+   and a fast, custom-eased hover so both themes feel alive.
+   ========================================================================== */
+
+/* Instant route feedback: override the public site's smooth scroll for admin. */
+html:has([data-admin="true"]) {
+  scroll-behavior: auto;
+}
+
+/* Primary action — used by SubmitButton in every admin form. */
+.tp-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-control);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  transform: translateY(0) scale(1);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+  will-change: transform;
+}
+
+.tp-admin-btn:hover:not(:disabled) {
+  background: var(--accent-fill-hover);
+  transform: translateY(-1px);
+}
+
+.tp-admin-btn:active:not(:disabled) {
+  transform: scale(0.97) translateY(0);
+}
+
+.tp-admin-btn:disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Secondary action — ghost/outline buttons, cancel and icon controls. */
+.tp-admin-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  transform: translateY(0) scale(1);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.tp-admin-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* Square icon buttons — edit / delete / theme / menu in the dashboard. */
+.tp-admin-icon {
+  display: inline-flex;
+  height: 38px;
+  width: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  transform: scale(1);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-icon:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-admin-icon:active {
+  transform: scale(0.92);
+}
+
+.tp-admin-icon[data-danger="true"]:hover {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  color: var(--danger);
+}
+
+/* Sidebar navigation item — active state uses a tone step, not a hairline. */
+.tp-admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--radius-control);
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  transform: translateX(0);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-nav:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+.tp-admin-nav[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-admin-nav:active {
+  transform: scale(0.98);
+}
+
+/* Stat / section cards — lift on hover with the accent tone. */
+.tp-admin-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.tp-admin-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  transform: translateY(-2px);
+}
+
+/* Table row hover — subtle tone step for scanability. */
+.tp-admin-table tbody tr {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-table tbody tr:hover {
+  background: var(--surface-2);
+}
+
+/* Theme-aware Radix select dropdown. Origin-aware scale from the trigger. */
+.tp-admin-select-content {
+  z-index: 60;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+  transform-origin: var(--radix-select-content-transform-origin);
+  animation: tp-menu-in var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-select-item {
+  position: relative;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-select-item[data-highlighted] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-admin-select-item[data-state="checked"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Page enter — a single fast, restrained fade+rise, never blocks content. */
+.tp-admin-page {
+  animation: fade-in var(--dur-base) var(--ease-out) both;
+}
+
+/* ---------- Admin login — flat, focused, premium ---------- */
+
+.tp-admin-login {
+  position: relative;
+  display: flex;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.tp-admin-login-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--accent-wash);
+  opacity: 0.5;
+}
+
+.tp-admin-login-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px;
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  border: 1px solid var(--border); /* taste-skill-ignore: needed surface definition on tinted wash */
+}
+
+.tp-admin-login-head {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.tp-admin-login-mark {
+  display: inline-flex;
+  height: 52px;
+  width: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-admin-login-mark .tp-brand-mark {
+  width: 22px;
+  height: 22px;
+}
+
+.tp-admin-login-mark .tp-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tp-admin-login-head h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.tp-admin-login-head p {
+  margin: 8px 0 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.tp-admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tp-admin-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.tp-admin-login-label {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tp-admin-login-input-wrap {
+  position: relative;
+  display: block;
+}
+
+.tp-admin-login-input-wrap .tp-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.tp-admin-login-input-wrap .tp-atlas-input {
+  padding-left: 40px;
+}
+
+.tp-admin-login-submit {
+  width: 100%;
+  height: 46px;
+  margin-top: 4px;
+}
+
+.tp-admin-login-error {
+  margin: 0;
+  color: var(--danger);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+/* Staggered entrance: icon, heading, copy, then each field and the button.
+   Transform + opacity only, so it stays on the GPU and renders instantly. */
+.tp-admin-login-mark,
+.tp-admin-login-head h1,
+.tp-admin-login-head p,
+.tp-admin-login-field,
+.tp-admin-login-error,
+.tp-admin-login-submit {
+  animation: fade-in var(--dur-base) var(--ease-out) both;
+}
+
+.tp-admin-login-head h1 { animation-delay: 60ms; }
+.tp-admin-login-head p { animation-delay: 120ms; }
+.tp-admin-login-field:nth-of-type(1) { animation-delay: 180ms; }
+.tp-admin-login-field:nth-of-type(2) { animation-delay: 240ms; }
+.tp-admin-login-submit { animation-delay: 300ms; }
 
 @media (prefers-reduced-motion: reduce) {
   *,

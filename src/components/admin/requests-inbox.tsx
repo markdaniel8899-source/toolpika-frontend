@@ -136,7 +136,7 @@ export function RequestsInbox({
           {visible.map((request) => (
             <tr
               key={request.id}
-              className="border-b border-[var(--border)] align-top last:border-0"
+              data-ui className="border-b border-[var(--border)] align-top last:border-0"
             >
               <td className="px-3 py-3 first:pl-0">
                 <TypeBadge type={request.type} copy={copy} />

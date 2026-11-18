@@ -16,8 +16,19 @@ import {
   Settings,
   Wrench,
   X,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
+
+/** Wordmark shared by the mobile header and desktop sidebar. */
+function AdminBrand({ compact = false }: { compact?: boolean }) {
+  return (
+    <Link href="/admin" className="tp-brand" aria-label="Toolpika admin home">
+      <Zap className="tp-brand-mark" aria-hidden="true" />
+      <span className={compact ? "text-[21px]" : "text-[24px]"}>Toolpika</span>
+    </Link>
+  );
+}
 
 /**
  * Nav icons are referenced by a plain string key, never by component value.
@@ -87,15 +98,10 @@ export function AdminShell({
     href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[260px_1fr]">
+    <div data-ui data-admin="true" className="min-h-dvh bg-[var(--bg)] lg:grid lg:grid-cols-[260px_1fr]">
       {/* Top bar (mobile) */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/90 px-6 py-3 backdrop-blur-[8px] lg:hidden">
-        <Link
-          href="/admin"
-          className="font-display text-[26px] leading-none tracking-[0.01em]"
-        >
-          Toolpika
-        </Link>
+      <header data-ui className="sticky top-0 z-40 flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)] px-6 py-3 lg:hidden">
+        <AdminBrand compact />
         <div className="flex items-center gap-2">
           <AdminThemeToggle label={themeToggleLabel} />
           <button
@@ -103,7 +109,7 @@ export function AdminShell({
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="admin-nav"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+            className="tp-admin-icon"
           >
             {open ? (
               <X className="h-5 w-5" aria-hidden="true" />
@@ -120,15 +126,15 @@ export function AdminShell({
         id="admin-nav"
         className={`${
           open ? "block" : "hidden"
-        } border-b border-[var(--border)] bg-[var(--surface)] lg:sticky lg:top-0 lg:block lg:h-screen lg:border-b-0 lg:border-r`}
+        } bg-[var(--surface)] lg:sticky lg:top-0 lg:block lg:h-dvh`}
       >
         <div className="flex h-full flex-col gap-6 px-5 py-6">
-          <Link
-            href="/admin"
-            className="hidden font-display text-[30px] leading-none tracking-[0.01em] lg:block"
-          >
-            Toolpika
-          </Link>
+          <div className="hidden lg:block">
+            <AdminBrand />
+            <p className="mt-2 pl-[34px] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+              {dashboardLabel}
+            </p>
+          </div>
 
           <nav aria-label={navLabel}>
             <ul className="flex flex-col gap-1">
@@ -142,16 +148,10 @@ export function AdminShell({
                       href={item.href}
                       onClick={() => setOpen(false)}
                       aria-current={active ? "page" : undefined}
-                      className={`flex items-center gap-3 rounded-[10px] px-3 py-2.5 text-sm font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 ${
-                        active
-                          ? "bg-[var(--bg)] text-[var(--text)]"
-                          : "text-[var(--muted)] hover:bg-[var(--bg)] hover:text-[var(--text)]"
-                      }`}
+                      className="tp-admin-nav"
                     >
                       <Icon
-                        className={`h-[18px] w-[18px] ${
-                          active ? "text-[var(--accent)]" : ""
-                        }`}
+                        className="h-[18px] w-[18px] shrink-0"
                         aria-hidden="true"
                       />
                       {item.label}
@@ -162,7 +162,7 @@ export function AdminShell({
             </ul>
           </nav>
 
-          <div className="mt-auto flex flex-col gap-3 border-t border-[var(--border)] pt-4">
+          <div className="mt-auto flex flex-col gap-3 rounded-[10px] bg-[var(--surface-2)] p-3">
             <div className="flex items-center justify-between gap-3">
               <p className="truncate text-xs text-[var(--muted)]" title={userEmail}>
                 {userEmail}
@@ -172,7 +172,7 @@ export function AdminShell({
             <button
               type="button"
               onClick={handleLogout}
-              className="flex w-full items-center gap-2 rounded-[10px] px-3 py-2 text-sm text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--bg)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+              className="tp-admin-nav w-full"
             >
               <LogOut className="h-4 w-4" aria-hidden="true" />
               {signOutLabel}
@@ -181,7 +181,9 @@ export function AdminShell({
         </div>
       </aside>
 
-      <main className="min-w-0 px-6 py-8 lg:px-10 lg:py-10">{children}</main>
+      <main className="tp-admin-page min-w-0 px-6 py-8 lg:px-10 lg:py-10">
+        {children}
+      </main>
     </div>
   );
 }

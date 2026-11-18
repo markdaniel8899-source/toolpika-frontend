@@ -38,7 +38,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center justify-center rounded-[10px] bg-[var(--accent-fill)] px-5 py-2.5 text-sm font-bold text-[var(--on-accent)] transition-all duration-200 hover:bg-[var(--accent-fill-hover)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 disabled:pointer-events-none disabled:opacity-60"
+      className="tp-admin-btn"
     >
       {pending ? pendingLabel : label}
     </button>
@@ -77,10 +77,16 @@ export function SettingsForm({
         // Storage may be blocked.
       }
       const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.setAttribute("data-theme", systemDark ? "dark" : "light");
+      const root = document.documentElement;
+      root.classList.add("theme-transition");
+      root.setAttribute("data-theme", systemDark ? "dark" : "light");
+      window.setTimeout(() => root.classList.remove("theme-transition"), 240);
       return;
     }
-    document.documentElement.setAttribute("data-theme", value);
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
+    root.setAttribute("data-theme", value);
+    window.setTimeout(() => root.classList.remove("theme-transition"), 240);
     try {
       localStorage.setItem("theme", value);
     } catch {

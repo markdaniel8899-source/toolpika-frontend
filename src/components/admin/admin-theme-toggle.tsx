@@ -25,7 +25,10 @@ export function AdminThemeToggle({ label }: { label: string }) {
     const root = document.documentElement;
     const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
 
+    // Smooth, token-based theme swap (matches the public header behaviour).
+    root.classList.add("theme-transition");
     root.setAttribute("data-theme", next);
+    window.setTimeout(() => root.classList.remove("theme-transition"), 240);
     setTheme(next);
 
     try {
@@ -41,7 +44,7 @@ export function AdminThemeToggle({ label }: { label: string }) {
       onClick={toggleTheme}
       aria-label={label}
       title={label}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+      className="tp-admin-icon"
     >
       {theme === "dark" ? (
         <Sun className="h-[18px] w-[18px]" aria-hidden="true" />

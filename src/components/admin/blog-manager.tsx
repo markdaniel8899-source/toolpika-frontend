@@ -73,7 +73,7 @@ function SubmitButton({
       name={name}
       value={value}
       disabled={pending}
-      className="inline-flex items-center justify-center rounded-[10px] bg-[var(--accent-fill)] px-5 py-2.5 text-sm font-bold text-[var(--on-accent)] transition-all duration-200 hover:bg-[var(--accent-fill-hover)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 disabled:pointer-events-none disabled:opacity-60"
+      className="tp-admin-btn"
     >
       {pending ? pendingLabel : label}
     </button>
@@ -175,7 +175,7 @@ export function BlogManager({
         <button
           type="button"
           onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-[10px] bg-[var(--accent-fill)] px-5 py-2.5 text-sm font-bold text-[var(--on-accent)] transition-all duration-200 hover:bg-[var(--accent-fill-hover)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+          className="tp-admin-btn"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           {copy.add}
@@ -191,7 +191,7 @@ export function BlogManager({
             <button
               type="button"
               onClick={close}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--bg)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+              className="tp-admin-icon"
             >
               <X className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">{copy.cancel}</span>
@@ -321,7 +321,7 @@ export function BlogManager({
                 <button
                   type="button"
                   onClick={close}
-                  className="inline-flex items-center justify-center rounded-[10px] border border-[var(--border)] px-5 py-2.5 text-sm font-bold text-[var(--text)] transition-colors duration-200 hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                  className="tp-admin-btn-secondary"
                 >
                   {copy.cancel}
                 </button>
@@ -387,7 +387,7 @@ export function BlogManager({
           ]}
         >
           {posts.map((post) => (
-            <tr key={post.id} className="border-b border-[var(--border)] last:border-0">
+            <tr key={post.id} data-ui className="border-b border-[var(--border)] last:border-0">
               <td className="px-3 py-3 first:pl-0 last:pr-0">
                 <p className="font-medium">{post.title}</p>
                 <p className="text-xs text-[var(--muted)]">{post.slug}</p>
@@ -404,7 +404,7 @@ export function BlogManager({
                   <button
                     type="button"
                     onClick={() => openEdit(post)}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--muted)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                    className="tp-admin-icon"
                   >
                     <Pencil className="h-4 w-4" aria-hidden="true" />
                     <span className="sr-only">{copy.editorTitle}</span>
@@ -419,7 +419,8 @@ export function BlogManager({
                   >
                     <button
                       type="submit"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--muted)] transition-colors duration-200 hover:border-[var(--danger)] hover:text-[var(--danger)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                      className="tp-admin-icon"
+                      data-danger="true"
                     >
                       <Trash2 className="h-4 w-4" aria-hidden="true" />
                       <span className="sr-only">{copy.delete}</span>

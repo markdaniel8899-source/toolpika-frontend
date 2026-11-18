@@ -11,7 +11,7 @@ export function AdminSetupNotice() {
   const t = adminMessages.setup;
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-2xl flex-col justify-center px-6 py-16">
+    <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col justify-center px-6 py-16">
       <div className="rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-8">
         <div className="mb-4 flex items-center gap-2 text-[var(--danger)]">
           <AlertTriangle className="h-5 w-5" aria-hidden="true" />
