@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
 
@@ -17,6 +18,7 @@ export function Reveal({
   index,
   className,
   once = true,
+  style,
 }: {
   children: React.ReactNode;
   delay?: number;
@@ -24,6 +26,7 @@ export function Reveal({
   index?: number;
   className?: string;
   once?: boolean;
+  style?: CSSProperties;
 }) {
   const { ref, inView } = useInView({ once, threshold: 0.15 });
 
@@ -46,6 +49,7 @@ export function Reveal({
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(16px)",
         transitionDelay: computedDelay > 0 ? `${computedDelay}ms` : undefined,
+        ...style,
       }}
     >
       {children}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { SecondaryPage } from "@/components/layout/secondary-page";
+import { Reveal } from "@/components/ui/reveal";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -13,37 +15,34 @@ export default async function PrivacyPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "privacy" });
 
-  const sections = [
-    { title: t("filesTitle"), body: t("filesBody") },
-    { title: t("dataTitle"), body: t("dataBody") },
-    { title: t("cookiesTitle"), body: t("cookiesBody") },
-  ];
-
   return (
-    <main className="tp-container" style={{ paddingBottom: 64 }}>
-      <section className="tp-page-hero">
-        <div className="tp-page-hero-grid">
-          <div className="tp-page-title">
-            <p className="tp-eyebrow">{t("eyebrow")}</p>
-            <h1>{t("title")}</h1>
-            <p>{t("updated")}</p>
-          </div>
-        </div>
-      </section>
+    <SecondaryPage>
+      <Reveal>
+        <p className="tp-atlas-eyebrow">{t("eyebrow")}</p>
+        <h1 className="tp-atlas-title">{t("title")}</h1>
+        <p className="tp-atlas-date">{t("updated")}</p>
+        <p className="tp-atlas-lead">{t("description")}</p>
+      </Reveal>
 
-      <div className="tp-trust-grid">
-        {sections.map((section, index) => (
-          <div
-            key={section.title}
-            className={`tp-card tp-trust-card${index === 0 ? " tp-trust-feature" : ""}`}
-          >
-            <div>
-              <h3>{section.title}</h3>
-              <p>{section.body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </main>
+      <Reveal className="tp-atlas-section">
+        <h2 className="tp-atlas-h2">{t("filesTitle")}</h2>
+        <p className="tp-atlas-p">{t("filesBody")}</p>
+      </Reveal>
+
+      <Reveal className="tp-atlas-section">
+        <h2 className="tp-atlas-h2">{t("dataTitle")}</h2>
+        <p className="tp-atlas-p">{t("dataBody")}</p>
+        <ul className="tp-atlas-list">
+          <li>Theme and language preferences stay in your browser.</li>
+          <li>No account is required to use any public tool.</li>
+          <li>Request submissions are only stored when you choose to send one.</li>
+        </ul>
+      </Reveal>
+
+      <Reveal className="tp-atlas-section">
+        <h2 className="tp-atlas-h2">{t("cookiesTitle")}</h2>
+        <p className="tp-atlas-p">{t("cookiesBody")}</p>
+      </Reveal>
+    </SecondaryPage>
   );
 }

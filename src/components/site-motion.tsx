@@ -18,6 +18,18 @@ export function SiteMotion() {
   const ringRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
 
+  /* Keep the chosen theme across locale switches */
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark" || saved === "light") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    } catch {
+      // Storage may be blocked; the current attribute stays untouched.
+    }
+  }, [pathname]);
+
   /* Custom cursor */
   useEffect(() => {
     if (prefersReducedMotion()) return;

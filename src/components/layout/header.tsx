@@ -78,7 +78,6 @@ export function Header() {
     setLocaleOpen(false);
     if (next === locale) return;
     router.replace(pathname, { locale: next });
-    router.refresh();
   };
 
   const openLocaleMenu = () => {
