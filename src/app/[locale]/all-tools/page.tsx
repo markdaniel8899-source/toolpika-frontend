@@ -39,7 +39,7 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
         </div>
       </section>
 
-      <div style={{ maxWidth: 620, margin: "0 auto 16px" }}>
+      <div style={{ maxWidth: 680, margin: "0 auto 16px" }}>
         <SearchBar />
       </div>
 

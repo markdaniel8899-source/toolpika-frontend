@@ -615,8 +615,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-page-hero {
-  padding-top: 56px;
-  padding-bottom: 36px;
+  padding-top: 44px;
+  padding-bottom: 24px;
 }
 
 .tp-page-hero-grid {
@@ -630,9 +630,15 @@ html.theme-transition .tp-dropdown-trigger {
   font-size: clamp(40px, 4.2vw, 52px);
 }
 
+/* Consistent vertical rhythm: eyebrow -> heading -> subtitle. */
+.tp-page-title .tp-eyebrow {
+  margin-bottom: 12px;
+  font-size: 12.5px;
+}
+
 .tp-page-title p {
   max-width: 560px;
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   color: var(--muted);
   font-size: 16px;
   line-height: 1.6;
@@ -671,22 +677,27 @@ html.theme-transition .tp-dropdown-trigger {
   justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 16px 0;
+  padding: 14px 0 0;
+}
+
+/* Popular / New sit on the next line, same format as the tabs above. */
+.tp-tabs-secondary {
+  padding-top: 8px;
 }
 
 .tp-tab {
   position: relative;
   isolation: isolate;
   display: inline-flex;
-  height: 36px;
+  height: 40px;
   align-items: center;
   justify-content: center;
-  padding: 0 14px;
+  padding: 0 18px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1;
   cursor: pointer;
@@ -699,6 +710,17 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-tab-label {
   position: relative;
   z-index: 1;
+}
+
+.tp-tab-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tp-tab-icon {
+  width: 15px;
+  height: 15px;
 }
 
 /* 3.3 Active indicator uses the indigo accent fill with on-accent text. */
@@ -866,12 +888,12 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-search {
   position: relative;
   display: flex;
-  max-width: 620px;
-  height: 56px;
+  max-width: 680px;
+  height: 62px;
   align-items: center;
   gap: 12px;
-  margin-top: 26px;
-  padding: 0 16px;
+  margin-top: 24px;
+  padding: 0 18px;
   border: 1px solid var(--border-strong);
   border-radius: 12px;
   background: var(--surface);
