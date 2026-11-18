@@ -6,7 +6,7 @@ import { useInView } from "@/hooks/useInView";
 
 /**
  * Section 5 — Scroll reveal.
- * Default effect: opacity 0→1 and translateY(16px)→0 over --dur-slow.
+ * Default effect: opacity 0→1 and translateY(12px)→0 over --dur-slow.
  * `delay` prop adds a transition delay (ms).
  * `stagger` with `index` applies index * 60ms delay (max 8 steps).
  * Respects prefers-reduced-motion (animation disabled via CSS).
@@ -47,7 +47,7 @@ export function Reveal({
       )}
       style={{
         opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(16px)",
+        transform: inView ? "translateY(0)" : "translateY(12px)",
         transitionDelay: computedDelay > 0 ? `${computedDelay}ms` : undefined,
         ...style,
       }}

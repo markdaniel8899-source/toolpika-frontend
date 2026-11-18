@@ -77,21 +77,29 @@ export function CopyButton({
   };
 
   return (
-    <Button
-      type="button"
-      variant="secondary"
-      size="sm"
-      onClick={copy}
-      disabled={!text}
-      className={className}
-    >
+    <>
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        onClick={copy}
+        disabled={!text}
+        className={cn(className, copied && "is-copied")}
+      >
+        {copied ? (
+          <Check className="h-3.5 w-3.5" aria-hidden="true" />
+        ) : (
+          <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+        )}
+        {copied ? copiedLabel : label}
+      </Button>
       {copied ? (
-        <Check className="h-3.5 w-3.5" aria-hidden="true" />
-      ) : (
-        <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-      )}
-      {copied ? copiedLabel : label}
-    </Button>
+        <span role="status" className="tp-copy-toast">
+          <Check className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
+          {copiedLabel}
+        </span>
+      ) : null}
+    </>
   );
 }
 

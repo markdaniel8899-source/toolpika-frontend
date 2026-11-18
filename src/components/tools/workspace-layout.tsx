@@ -24,7 +24,7 @@ export function WorkspaceLayout({
         {input}
       </section>
 
-      <section className="tp-workspace-pane" style={{ width: "40%" }}>
+      <section className="tp-workspace-pane tp-output-pane" style={{ width: "40%" }}>
         <div className="tp-pane-head">
           <h2>{t("result")}</h2>
         </div>

@@ -13,6 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ToolWorkspace } from "@/components/tools/tool-workspace";
+import { TrackToolView } from "@/components/tools/track-tool-view";
 import { getTool, getLiveTools, getToolsByCategory } from "@/lib/tools/registry";
 
 const LOCALES = [
@@ -118,6 +119,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
   return (
     <>
+      <TrackToolView slug={tool.slug} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -15,9 +15,20 @@ export function SearchBar() {
   const [results, setResults] = useState<ReturnType<typeof getLiveTools>>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
+  const [hintIndex, setHintIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = "tool-search-results";
   const tools = getLiveTools();
+  const hints = ["Word Counter", "JSON Formatter", "Password Generator", "Image Compressor"];
+  const rotatingHint = hints[hintIndex % hints.length];
+
+  useEffect(() => {
+    if (isFocused || query) return;
+    const timer = window.setInterval(() => {
+      setHintIndex((index) => index + 1);
+    }, 2600);
+    return () => window.clearInterval(timer);
+  }, [isFocused, query]);
 
   const handleInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +130,7 @@ export function SearchBar() {
             onKeyDown={handleKeyDown}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            placeholder={t("placeholder")}
+            placeholder={isFocused || query ? t("placeholder") : `Try “${rotatingHint}”`}
           />
           {query && (
             <button

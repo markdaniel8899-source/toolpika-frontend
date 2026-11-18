@@ -8,6 +8,7 @@ import { ThemeScript } from "@/components/theme-script";
 import { SiteMotion } from "@/components/site-motion";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { CommandPalette } from "@/components/tools/command-palette";
 import "@/app/globals.css";
 
 type LocaleLayoutProps = {
@@ -82,6 +83,7 @@ export default async function LocaleLayout({
       <body className="min-h-screen bg-[var(--bg)] font-sans text-base leading-[1.6] text-[var(--text)] antialiased">
         <NextIntlClientProvider messages={messages}>
           <SiteMotion />
+          <CommandPalette />
           <div className="flex min-h-screen flex-col">
             <Header />
             <div className="flex-1">{children}</div>

@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  RefreshCw,
+} from "lucide-react";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -14,13 +21,48 @@ export type HeroSlide = {
   icon: string;
 };
 
+const SAMPLE_TEXT =
+  "A quiet interface leaves room for the work itself, and a good tool gets out of the way once it has done its job.";
+
+function createPassword() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
+  const bytes = new Uint32Array(16);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (byte) => chars[byte % chars.length]).join("");
+}
+
+function convertCase(text: string, mode: string) {
+  if (!text.trim()) return "";
+  const words = text.trim().split(/\s+/);
+  if (mode === "upper") return text.toUpperCase();
+  if (mode === "lower") return text.toLowerCase();
+  if (mode === "title")
+    return words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  if (mode === "camel")
+    return words
+      .map((word, index) =>
+        index === 0
+          ? word.toLowerCase()
+          : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+      )
+      .join("");
+  return text;
+}
+
 export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion] = useState(
-    () => typeof window !== "undefined" &&
+    () =>
+      typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+
+  const [sample, setSample] = useState(SAMPLE_TEXT);
+  const [caseText, setCaseText] = useState("Make this text useful");
+  const [caseMode, setCaseMode] = useState("title");
+  const [password, setPassword] = useState("vK7!mQ2#rT9@xL4w");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (reducedMotion || paused || slides.length === 0) return;
@@ -30,8 +72,21 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     return () => window.clearInterval(timer);
   }, [index, paused, reducedMotion, slides.length]);
 
-  const go = (next: number) => {
-    setIndex((next + slides.length) % slides.length);
+  const go = (next: number) => setIndex((next + slides.length) % slides.length);
+  const pause = () => setPaused(true);
+  const resume = () => setPaused(false);
+
+  const words = sample.trim() ? sample.trim().split(/\s+/).length : 0;
+  const reading = Math.max(1, Math.ceil(words / 200));
+
+  const copyPassword = async () => {
+    try {
+      await navigator.clipboard.writeText(password);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Clipboard can be blocked; the text stays selectable.
+    }
   };
 
   if (slides.length === 0) return null;
@@ -40,12 +95,14 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     <aside
       className="tp-carousel"
       aria-label="Featured tools"
-      onFocusCapture={() => setPaused(true)}
+      onFocusCapture={pause}
+      onPointerDownCapture={pause}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setPaused(false);
+          resume();
         }
       }}
+      onPointerLeave={resume}
     >
       <div className="tp-carousel-head">
         <span className="tp-micro">Tool spotlight</span>
@@ -87,78 +144,105 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               </div>
               <p className="tp-slide-title">{slide.title}</p>
               <p className="tp-slide-copy">{slide.description}</p>
-              <div className="tp-slide-preview" aria-hidden="true">
+
+              <div className="tp-slide-preview">
                 {slide.slug === "word-counter" ? (
-                  <div className="tp-mini-stats">
-                    <div className="tp-mini-stat">
-                      <span className="tp-mini-label">Words</span>
-                      <span className="tp-mini-value">1,284</span>
+                  <>
+                    <textarea
+                      aria-label="Sample text"
+                      value={sample}
+                      onChange={(event) => setSample(event.target.value)}
+                      className="tp-mini-input"
+                      rows={2}
+                    />
+                    <div className="tp-mini-stats" style={{ marginTop: 10 }}>
+                      <div className="tp-mini-stat">
+                        <span className="tp-mini-label">Words</span>
+                        <span className="tp-mini-value">{words}</span>
+                      </div>
+                      <div className="tp-mini-stat">
+                        <span className="tp-mini-label">Characters</span>
+                        <span className="tp-mini-value">{sample.length}</span>
+                      </div>
+                      <div className="tp-mini-stat">
+                        <span className="tp-mini-label">Reading</span>
+                        <span className="tp-mini-value">{reading} min</span>
+                      </div>
                     </div>
-                    <div className="tp-mini-stat">
-                      <span className="tp-mini-label">Characters</span>
-                      <span className="tp-mini-value">7,402</span>
+                  </>
+                ) : slide.slug === "case-converter" ? (
+                  <>
+                    <input
+                      aria-label="Text to convert"
+                      value={caseText}
+                      onChange={(event) => setCaseText(event.target.value)}
+                      className="tp-mini-input"
+                    />
+                    <div className="tp-mini-row">
+                      <select
+                        aria-label="Case mode"
+                        value={caseMode}
+                        onChange={(event) => setCaseMode(event.target.value)}
+                        className="tp-mini-select"
+                      >
+                        <option value="title">Title Case</option>
+                        <option value="upper">UPPERCASE</option>
+                        <option value="lower">lowercase</option>
+                        <option value="camel">camelCase</option>
+                      </select>
+                      <span className="tp-mini-output">{convertCase(caseText, caseMode)}</span>
                     </div>
-                    <div className="tp-mini-stat">
-                      <span className="tp-mini-label">Reading</span>
-                      <span className="tp-mini-value">6 min</span>
+                  </>
+                ) : slide.slug === "password-generator" ? (
+                  <>
+                    <div className="tp-mini-row">
+                      <code className="tp-mini-password">{password}</code>
+                      <button
+                        type="button"
+                        className="tp-mini-action"
+                        onClick={() => setPassword(createPassword())}
+                        aria-label="Generate a new password"
+                      >
+                        <RefreshCw className="tp-icon" aria-hidden="true" />
+                      </button>
+                      <button
+                        type="button"
+                        className="tp-mini-action"
+                        onClick={copyPassword}
+                        aria-label="Copy password"
+                      >
+                        {copied ? (
+                          <Check className="tp-icon" aria-hidden="true" />
+                        ) : (
+                          <Copy className="tp-icon" aria-hidden="true" />
+                        )}
+                      </button>
                     </div>
-                  </div>
-                ) : slide.slug === "json-formatter" ? (
-                  <pre
-                    style={{
-                      margin: 0,
-                      overflow: "hidden",
-                      color: "var(--text)",
-                      fontFamily: 'ui-monospace, "SFMono-Regular", Consolas, monospace',
-                      fontSize: 11.5,
-                      lineHeight: 1.75,
-                      whiteSpace: "pre",
-                    }}
-                  >
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginTop: 12 }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4, flex: 1 }}>
+                        {[0, 1, 2, 3].map((bar) => (
+                          <span
+                            key={bar}
+                            style={{ height: 4, borderRadius: 99, background: "var(--accent)", opacity: 0.75 }}
+                          />
+                        ))}
+                      </div>
+                      <span style={{ color: "var(--muted)", fontSize: 13 }}>
+                        {copied ? "Copied" : "Strong, 16 characters"}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <pre className="tp-mini-code">
                     <code>
-                      <span style={{ color: "var(--muted-2)" }}>{"{"}</span>
-                      {"\n  "}
-                      <span style={{ color: "var(--accent)" }}>{'"name"'}</span>
-                      : <span>{'"toolpika"'}</span>,{"\n  "}
-                      <span style={{ color: "var(--accent)" }}>{'"local"'}</span>
-                      : <span style={{ color: "var(--muted)" }}>true</span>
-                      ,{"\n  "}
-                      <span style={{ color: "var(--accent)" }}>{'"upload"'}</span>
-                      : <span style={{ color: "var(--muted)" }}>false</span>
+                      <span style={{ color: "var(--accent)" }}>{'"local"'}</span>: true
                       {"\n"}
-                      <span style={{ color: "var(--muted-2)" }}>{"}"}</span>
+                      <span style={{ color: "var(--accent)" }}>{'"upload"'}</span>: false
                     </code>
                   </pre>
-                ) : (
-                  <div style={{ width: "100%" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: 12,
-                        padding: "10px 12px",
-                        borderRadius: 9,
-                        background: "var(--surface)",
-                      }}
-                    >
-                      <code style={{ fontSize: 13, letterSpacing: "0.02em" }}>vK7!mQ2#rT9@xL4w</code>
-                      <ArrowRight className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
-                    </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4, marginTop: 10 }}>
-                      {[0, 1, 2, 3].map((bar) => (
-                        <span
-                          key={bar}
-                          style={{ height: 4, borderRadius: 99, background: "var(--accent)", opacity: 0.75 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ display: "block", marginTop: 8, color: "var(--muted-2)", fontSize: 11.5 }}>
-                      Strong, 16 characters
-                    </span>
-                  </div>
                 )}
               </div>
+
               <Link href={`/tools/${slide.slug}`} className="tp-text-link" style={{ marginTop: 16 }}>
                 Open {slide.title}
                 <ArrowRight className="tp-icon" aria-hidden="true" />
@@ -181,7 +265,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             />
           ))}
         </div>
-        <Link href="/all-tools" className="tp-text-link" style={{ fontSize: 12.5 }}>
+        <Link href="/all-tools" className="tp-text-link" style={{ fontSize: 13 }}>
           All tools
           <ArrowRight className="tp-icon" aria-hidden="true" />
         </Link>

@@ -45,21 +45,37 @@ export function SiteMotion() {
     let ringX = -100;
     let ringY = -100;
     let frame = 0;
+    let moved = false;
 
     const onMove = (event: PointerEvent) => {
       targetX = event.clientX;
       targetY = event.clientY;
-      dot.style.opacity = "1";
-      ring.style.opacity = "1";
+
+      if (!moved) {
+        moved = true;
+        ringX = targetX;
+        ringY = targetY;
+        dot.style.opacity = "1";
+        ring.style.opacity = "1";
+      }
+
+      const card = (event.target as HTMLElement | null)?.closest<HTMLElement>(".tp-card");
+      if (card) {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+        card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+      }
     };
 
     const onOver = (event: PointerEvent) => {
+      if (!moved) return;
       const el = event.target as HTMLElement | null;
       const interactive = el?.closest("a, button, [role='button'], input, textarea, select");
       if (interactive) ring.classList.add("is-active");
     };
 
     const onOut = (event: PointerEvent) => {
+      if (!moved) return;
       const el = event.target as HTMLElement | null;
       const interactive = el?.closest("a, button, [role='button'], input, textarea, select");
       if (interactive && !el?.closest(":hover")) ring.classList.remove("is-active");

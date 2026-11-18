@@ -54,20 +54,14 @@ export function AllToolsBrowser({
         })}
       </div>
 
-      <div className="tp-suggestions" aria-label="Suggestions">
-        <Link href="/popular" className="tp-suggestion">
-          <span className="tp-suggestion-pill">
-            <Flame className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
-            Popular
-          </span>
-          <p>Tools people come back to most.</p>
+      <div className="tp-segmented" role="group" aria-label="Discover tools">
+        <Link href="/popular" className="tp-segment">
+          <Flame className="tp-icon" aria-hidden="true" />
+          Popular
         </Link>
-        <Link href="/new" className="tp-suggestion">
-          <span className="tp-suggestion-pill">
-            <Sparkles className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
-            New
-          </span>
-          <p>The latest additions to the collection.</p>
+        <Link href="/new" className="tp-segment">
+          <Sparkles className="tp-icon" aria-hidden="true" />
+          New
         </Link>
       </div>
 
