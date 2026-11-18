@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import RequestForm from "./form";
 
 type LocalePageProps = {
@@ -84,13 +84,6 @@ export default async function RequestPage({ params }: LocalePageProps) {
 
         <RequestForm labels={labels} />
       </section>
-
-      <div style={{ marginTop: 32 }}>
-        <a href="mailto:hafizmzain786@gmail.com" className="tp-text-link">
-          Prefer email? Write to us
-          <ArrowRight className="tp-icon" aria-hidden="true" />
-        </a>
-      </div>
     </main>
   );
 }

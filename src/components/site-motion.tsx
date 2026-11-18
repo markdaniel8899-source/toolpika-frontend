@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" &&
@@ -18,20 +21,16 @@ export function SiteMotion() {
   const ringRef = useRef<HTMLDivElement>(null);
   const firstRender = useRef(true);
 
-  /* Keep the chosen theme across locale switches */
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.add("theme-transition");
+  /* Restore the chosen theme before paint on every locale navigation. */
+  useIsomorphicLayoutEffect(() => {
     try {
       const saved = localStorage.getItem("theme");
       if (saved === "dark" || saved === "light") {
-        root.setAttribute("data-theme", saved);
+        document.documentElement.setAttribute("data-theme", saved);
       }
     } catch {
       // Storage may be blocked; the current attribute stays untouched.
     }
-    const timer = window.setTimeout(() => root.classList.remove("theme-transition"), 240);
-    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   /* Custom cursor */

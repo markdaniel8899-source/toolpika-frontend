@@ -1463,9 +1463,26 @@ html.theme-transition .tp-dropdown-trigger {
   transform: translateY(-50%);
 }
 
+.tp-form-card {
+  overflow: visible;
+}
+
 .tp-form-card:hover {
   box-shadow: var(--card-shadow), var(--card-highlight);
   transform: none;
+}
+
+.tp-form-card .tp-field {
+  position: relative;
+  z-index: 1;
+}
+
+.tp-form-card .tp-dropdown {
+  z-index: 20;
+}
+
+.tp-form-card .tp-field:has(.tp-dropdown) {
+  z-index: 30;
 }
 
 .tp-form-card::before {
