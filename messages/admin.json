@@ -28,7 +28,8 @@
     "settings": "Settings",
     "signOut": "Sign out",
     "dashboard": "Dashboard",
-    "navLabel": "Admin sections"
+    "navLabel": "Admin sections",
+    "themeToggle": "Toggle theme"
   },
   "common": {
     "save": "Save",
@@ -165,7 +166,8 @@
     "trafficTitle": "Traffic by language and country",
     "trafficEmpty": "Language and country are not tracked. Toolpika does not collect visitor data, so there is nothing to chart here.",
     "privacyNote": "Public tool runs stay in the visitor's browser. Toolpika never receives them, so tool usage charts stay empty on purpose.",
-    "totalViews": "Total post views"
+    "totalViews": "Total post views",
+    "totalPosts": "Total posts"
   },
   "settings": {
     "title": "Settings",

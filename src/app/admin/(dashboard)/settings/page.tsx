@@ -1,16 +1,20 @@
 import { adminMessages } from "@/lib/admin/messages";
 import { getSiteUrl } from "@/lib/site-url";
+import { getSettings } from "@/lib/admin/data";
 import { PageHeader, SectionCard, StatusPill } from "@/components/admin/ui";
 import { SettingsForm } from "@/components/admin/settings-form";
 
 export const dynamic = "force-dynamic";
 
-export default function AdminSettingsPage() {
+export default async function AdminSettingsPage() {
   const t = adminMessages.settings;
 
-  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  const envAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-  const envGroq = process.env.GROQ_API_KEY ?? "";
+  const [settings, envUrl, envAnon, envGroq] = await Promise.all([
+    getSettings(),
+    Promise.resolve(process.env.NEXT_PUBLIC_SUPABASE_URL ?? ""),
+    Promise.resolve(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""),
+    Promise.resolve(process.env.GROQ_API_KEY ?? ""),
+  ]);
 
   const keyRows = [
     { label: t.keySupabaseUrl, set: Boolean(envUrl) },
@@ -26,12 +30,12 @@ export default function AdminSettingsPage() {
         <SectionCard>
           <SettingsForm
             values={{
-              siteName: "Toolpika",
-              siteUrl: getSiteUrl(),
-              socialGithub: "",
-              socialX: "",
-              socialLinkedIn: "",
-              themeDefault: "system",
+              siteName: settings.siteName || "Toolpika",
+              siteUrl: settings.siteUrl || getSiteUrl(),
+              socialGithub: settings.socialGithub ?? "",
+              socialX: settings.socialX ?? "",
+              socialLinkedIn: settings.socialLinkedIn ?? "",
+              themeDefault: settings.themeDefault || "system",
             }}
             copy={{
               ...t,

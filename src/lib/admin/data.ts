@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { assertSupabaseConfigured } from "@/lib/supabase/config";
+import { assertSupabaseConfigured, isSupabaseConfigured } from "@/lib/supabase/config";
 import { categories } from "@/lib/tools/registry";
 import type {
   AdminPost,
@@ -11,8 +11,9 @@ import type {
 } from "@/lib/admin/row-types";
 
 /**
- * Minimal admin reads. The schema only has: profiles, tools, inbox_messages.
- * Other pages degrade to empty states instead of querying missing tables.
+ * Minimal admin reads. Core tables are: profiles, tools, inbox_messages.
+ * Optional tables (posts, post_views, site_settings) degrade to empty results
+ * when they have not been created yet, so a fresh deployment never crashes.
  */
 
 async function rows<T>(
@@ -22,6 +23,24 @@ async function rows<T>(
   const { data, error } = await promise;
   if (error) throw new Error(`[admin] query failed: ${error.message}`);
   return (data ?? []) as T[];
+}
+
+/** Like rows(), but returns [] instead of throwing when an optional table is missing. */
+async function safeRows<T>(
+  promise: PromiseLike<{ data: unknown; error: { message: string } | null }>,
+): Promise<T[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const { data, error } = await promise;
+    if (error) {
+      console.warn("[admin] optional query skipped:", error.message);
+      return [];
+    }
+    return (data ?? []) as T[];
+  } catch (error) {
+    console.warn("[admin] optional query failed:", error);
+    return [];
+  }
 }
 
 export interface AdminCategory {
@@ -60,18 +79,24 @@ export async function getRequests(): Promise<AdminRequest[]> {
 }
 
 export async function getPosts(): Promise<AdminPost[]> {
-  return [];
+  const supabase = await createClient();
+  return safeRows<AdminPost>(
+    supabase.from("posts").select("*").order("created_at", { ascending: false }),
+  );
 }
 
 export async function getPostViews(): Promise<AdminPostView[]> {
-  return [];
+  const supabase = await createClient();
+  return safeRows<AdminPostView>(supabase.from("post_views").select("*"));
 }
 
 export async function getOverviewStats(): Promise<OverviewStats> {
   const supabase = await createClient();
-  const [tools, requests] = await Promise.all([
+  const [tools, requests, posts, views] = await Promise.all([
     rows<AdminTool>(supabase.from("tools").select("id")),
     rows<AdminRequest>(supabase.from("inbox_messages").select("id, status")),
+    safeRows<{ id: string }>(supabase.from("posts").select("id")),
+    safeRows<{ views: number }>(supabase.from("post_views").select("views")),
   ]);
 
   return {
@@ -79,8 +104,8 @@ export async function getOverviewStats(): Promise<OverviewStats> {
     pendingRequests: requests.filter(
       (request) => request.status === "new" || request.status === "in_progress",
     ).length,
-    totalPosts: 0,
-    viewsToday: 0,
+    totalPosts: posts.length,
+    viewsToday: views.reduce((sum, view) => sum + (view.views || 0), 0),
   };
 }
 
@@ -127,5 +152,14 @@ export interface AdminSetting {
 }
 
 export async function getSettings(): Promise<Record<string, string>> {
-  return {};
+  if (!isSupabaseConfigured()) return {};
+  const supabase = await createClient();
+  const settings = await safeRows<AdminSetting>(
+    supabase.from("site_settings").select("key, value"),
+  );
+
+  return settings.reduce<Record<string, string>>((acc, setting) => {
+    acc[setting.key] = setting.value;
+    return acc;
+  }, {});
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { updateRequestStatus } from "@/app/admin/actions";
 import type { AdminRequest, InboxStatus } from "@/lib/admin/row-types";
 import { DataTable, EmptyState } from "@/components/admin/ui";
@@ -72,6 +73,7 @@ export function RequestsInbox({
   requests: AdminRequest[];
   copy: RequestsCopy;
 }) {
+  const router = useRouter();
   const [filter, setFilter] = useState<Filter>("all");
   const [pending, startTransition] = useTransition();
 
@@ -89,6 +91,7 @@ export function RequestsInbox({
   const setStatus = (id: string, status: InboxStatus) => {
     startTransition(async () => {
       await updateRequestStatus(id, status);
+      router.refresh();
     });
   };
 

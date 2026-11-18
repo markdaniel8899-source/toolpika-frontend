@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { AdminThemeToggle } from "@/components/admin/admin-theme-toggle";
 import {
   BarChart3,
   FileText,
@@ -60,6 +61,7 @@ export function AdminShell({
   signOutLabel,
   dashboardLabel,
   navLabel,
+  themeToggleLabel,
   children,
 }: {
   nav: AdminNavItem[];
@@ -67,6 +69,7 @@ export function AdminShell({
   signOutLabel: string;
   dashboardLabel: string;
   navLabel: string;
+  themeToggleLabel: string;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -93,20 +96,23 @@ export function AdminShell({
         >
           Toolpika
         </Link>
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-controls="admin-nav"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
-        >
-          {open ? (
-            <X className="h-5 w-5" aria-hidden="true" />
-          ) : (
-            <Menu className="h-5 w-5" aria-hidden="true" />
-          )}
-          <span className="sr-only">{dashboardLabel}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <AdminThemeToggle label={themeToggleLabel} />
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-controls="admin-nav"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] border border-[var(--border)] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+          >
+            {open ? (
+              <X className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            )}
+            <span className="sr-only">{dashboardLabel}</span>
+          </button>
+        </div>
       </header>
 
       {/* Sidebar */}
@@ -157,9 +163,12 @@ export function AdminShell({
           </nav>
 
           <div className="mt-auto flex flex-col gap-3 border-t border-[var(--border)] pt-4">
-            <p className="truncate text-xs text-[var(--muted)]" title={userEmail}>
-              {userEmail}
-            </p>
+            <div className="flex items-center justify-between gap-3">
+              <p className="truncate text-xs text-[var(--muted)]" title={userEmail}>
+                {userEmail}
+              </p>
+              <AdminThemeToggle label={themeToggleLabel} />
+            </div>
             <button
               type="button"
               onClick={handleLogout}

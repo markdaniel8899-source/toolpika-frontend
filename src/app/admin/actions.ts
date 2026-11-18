@@ -259,14 +259,37 @@ export async function deletePost(id: string): Promise<void> {
 /* Site settings                                                              */
 /* -------------------------------------------------------------------------- */
 
-/** Minimal settings action: no site_settings table in the minimal schema. */
+const SETTING_KEYS = [
+  "siteName",
+  "siteUrl",
+  "socialGithub",
+  "socialX",
+  "socialLinkedIn",
+  "themeDefault",
+] as const;
+
+/** Persists every settings field to the site_settings table (key/value). */
 export async function saveSettings(
   _prev: FormState,
-  _formData: FormData
+  formData: FormData
 ): Promise<FormState> {
   void _prev;
-  void _formData;
-  await requireUser();
+  const supabase = await requireUser();
+
+  const rows = SETTING_KEYS.map((key) => ({
+    key,
+    value: String(formData.get(key) ?? "").trim(),
+    updated_at: new Date().toISOString(),
+  }));
+
+  const { error } = await supabase.from("site_settings").upsert(rows, {
+    onConflict: "key",
+  });
+
+  if (error) {
+    return { status: "error", message: "save_failed" };
+  }
+
   revalidatePath("/admin/settings");
   return { status: "success" };
 }

@@ -23,6 +23,21 @@ export default async function AdminAnalyticsPage() {
     .map(([day, value]) => ({ label: day, value }))
     .sort((a, b) => a.label.localeCompare(b.label));
 
+  // Views by post. Falls back to the post's own view counter when no daily
+  // rows exist, so the chart is never artificially empty.
+  const viewsByPost = posts
+    .map((post) => ({
+      label: post.title,
+      value: Math.max(
+        post.views,
+        dailyViews
+          .filter((view) => view.post_id === post.id)
+          .reduce((sum, view) => sum + view.views, 0),
+      ),
+    }))
+    .filter((item) => item.value > 0)
+    .sort((a, b) => b.value - a.value);
+
   const totalViews = posts.reduce((total, post) => total + post.views, 0);
 
   return (
@@ -31,6 +46,7 @@ export default async function AdminAnalyticsPage() {
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label={t.totalViews} value={totalViews} />
+        <StatCard label={t.totalPosts} value={posts.length} />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
@@ -39,7 +55,7 @@ export default async function AdminAnalyticsPage() {
         </SectionCard>
 
         <SectionCard title={t.trafficTitle}>
-          <PieChart data={[]} emptyLabel={t.trafficEmpty} />
+          <PieChart data={viewsByPost} emptyLabel={t.trafficEmpty} />
           <p className="mt-4 text-sm leading-[1.6] text-[var(--muted)]">
             {t.privacyNote}
           </p>

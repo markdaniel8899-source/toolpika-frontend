@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { Check, CircleDashed, Pencil, Plus, Trash2, X } from "lucide-react";
 import { deletePost, savePost } from "@/app/admin/actions";
@@ -90,6 +91,7 @@ export function BlogManager({
   posts: AdminPost[];
   copy: BlogManagerCopy;
 }) {
+  const router = useRouter();
   const [editing, setEditing] = useState<AdminPost | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [state, formAction] = useActionState(savePost, {
@@ -132,6 +134,7 @@ export function BlogManager({
   const close = () => {
     setFormOpen(false);
     setEditing(null);
+    router.refresh();
   };
 
   const errorMessage =
@@ -410,6 +413,7 @@ export function BlogManager({
                     action={async () => {
                       if (window.confirm(copy.deleteConfirm)) {
                         await deletePost(post.id);
+                        router.refresh();
                       }
                     }}
                   >

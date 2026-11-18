@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { saveSettings } from "@/app/admin/actions";
 
@@ -66,6 +66,27 @@ export function SettingsForm({
   const [state, formAction] = useActionState(saveSettings, {
     status: "idle" as const,
   });
+  const [themeDefault, setThemeDefault] = useState(values.themeDefault);
+
+  function applyThemeDefault(value: string) {
+    setThemeDefault(value);
+    if (value === "system") {
+      try {
+        localStorage.removeItem("theme");
+      } catch {
+        // Storage may be blocked.
+      }
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-theme", systemDark ? "dark" : "light");
+      return;
+    }
+    document.documentElement.setAttribute("data-theme", value);
+    try {
+      localStorage.setItem("theme", value);
+    } catch {
+      // Storage may be blocked; the attribute still updates.
+    }
+  }
 
   return (
     <form action={formAction} className="flex flex-col gap-8">
@@ -164,7 +185,8 @@ export function SettingsForm({
                 type="radio"
                 name="themeDefault"
                 value={value}
-                defaultChecked={values.themeDefault === value}
+                checked={themeDefault === value}
+                onChange={() => applyThemeDefault(value)}
                 className="h-4 w-4 accent-[var(--accent-fill)]"
               />
               {label}

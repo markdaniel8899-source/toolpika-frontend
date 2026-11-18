@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { Pencil, Plus, Trash2, X } from "lucide-react";
 import { deleteTool, saveTool } from "@/app/admin/actions";
@@ -83,11 +84,18 @@ export function ToolsManager({
   categories: { slug: string; label: string }[];
   copy: ToolManagerCopy;
 }) {
+  const router = useRouter();
   const [editing, setEditing] = useState<AdminTool | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [state, formAction] = useActionState(saveTool, {
     status: "idle" as const,
   });
+
+  const close = () => {
+    setFormOpen(false);
+    setEditing(null);
+    router.refresh();
+  };
 
   const openCreate = () => {
     setEditing(null);
@@ -97,11 +105,6 @@ export function ToolsManager({
   const openEdit = (tool: AdminTool) => {
     setEditing(tool);
     setFormOpen(true);
-  };
-
-  const close = () => {
-    setFormOpen(false);
-    setEditing(null);
   };
 
   const errorMessage =
@@ -361,6 +364,7 @@ export function ToolsManager({
                     action={async () => {
                       if (window.confirm(copy.deleteConfirm)) {
                         await deleteTool(tool.id);
+                        router.refresh();
                       }
                     }}
                   >

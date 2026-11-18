@@ -26,9 +26,9 @@ export default async function AdminDashboardLayout({
     const supabase = await createClient();
     const result = await supabase.auth.getUser();
     user = result.data.user;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[admin] auth check failed:", error);
-    authError = error?.message || String(error);
+    authError = error instanceof Error ? error.message : String(error);
   }
 
   // RENDER ERROR ON SCREEN — do not let Vercel show a generic 500 page
@@ -77,6 +77,7 @@ export default async function AdminDashboardLayout({
       signOutLabel={t.signOut}
       dashboardLabel={t.dashboard}
       navLabel={t.navLabel}
+      themeToggleLabel={t.themeToggle}
     >
       {children}
     </AdminShell>
