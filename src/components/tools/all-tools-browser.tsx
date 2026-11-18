@@ -26,7 +26,7 @@ export function AllToolsBrowser({
 
   return (
     <>
-      <div className="tp-tabs tp-tabs-centered" aria-label="Filter tools">
+      <div className="tp-tabs" aria-label="Filter tools">
         {tabs.map((tab) => {
           const isActive = active === tab.slug;
           return (

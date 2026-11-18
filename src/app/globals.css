@@ -334,7 +334,7 @@ html.theme-transition .tp-dropdown-trigger {
   justify-content: space-between;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-control);
-  background: var(--field-bg);
+  background: var(--surface);
   color: var(--text);
   font-size: 14.5px;
   text-align: left;
@@ -366,9 +366,7 @@ html.theme-transition .tp-dropdown-trigger {
   padding: 6px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--surface);
   box-shadow: var(--shadow-md);
   opacity: 0;
   visibility: hidden;
@@ -722,10 +720,6 @@ html.theme-transition .tp-dropdown-trigger {
   flex-wrap: wrap;
   gap: 8px;
   padding: 16px 0;
-}
-
-.tp-tabs-centered {
-  justify-content: center;
 }
 
 .tp-tab {
@@ -1465,6 +1459,9 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-form-card {
   overflow: visible;
+  background: var(--surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .tp-form-card:hover {
