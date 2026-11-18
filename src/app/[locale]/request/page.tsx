@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { ShieldCheck, Sparkles, MessageSquare } from "lucide-react";
 import RequestForm from "./form";
 import { SecondaryPage } from "@/components/layout/secondary-page";
 import { Reveal } from "@/components/ui/reveal";
@@ -41,18 +42,51 @@ export default async function RequestPage({ params }: LocalePageProps) {
     backHome: t("backHome"),
   };
 
-  // Mirrors the Contact page: one centred column, same container and rhythm.
+  // Left: heading + short supporting content. Right: the form card.
+  // Mirrors the Contact page's two-column rhythm and container width.
   return (
-    <SecondaryPage>
-      <Reveal className="tp-request-head">
-        <p className="tp-atlas-eyebrow">{labels.eyebrow}</p>
-        <h1 className="tp-atlas-title">{labels.title}</h1>
-        <p className="tp-atlas-lead">{labels.description}</p>
-      </Reveal>
+    <SecondaryPage wide>
+      <div className="tp-request-grid">
+        <Reveal className="tp-request-copy">
+          <p className="tp-atlas-eyebrow">{labels.eyebrow}</p>
+          <h1 className="tp-atlas-title">{labels.title}</h1>
+          <p className="tp-atlas-lead">{labels.description}</p>
 
-      <Reveal delay={80} className="tp-request-shell">
-        <RequestForm labels={labels} />
-      </Reveal>
+          <ul className="tp-request-points">
+            <li>
+              <span className="tp-request-point-icon">
+                <Sparkles className="tp-icon" aria-hidden="true" />
+              </span>
+              <span>
+                <strong>Describe the job</strong>
+                <span>What you put in and what a good result looks like. No design or naming needed.</span>
+              </span>
+            </li>
+            <li>
+              <span className="tp-request-point-icon">
+                <MessageSquare className="tp-icon" aria-hidden="true" />
+              </span>
+              <span>
+                <strong>We review it</strong>
+                <span>We read every request and check whether it fits the collection.</span>
+              </span>
+            </li>
+            <li>
+              <span className="tp-request-point-icon">
+                <ShieldCheck className="tp-icon" aria-hidden="true" />
+              </span>
+              <span>
+                <strong>Private by default</strong>
+                <span>Your note stays with us. We never publish or share your email.</span>
+              </span>
+            </li>
+          </ul>
+        </Reveal>
+
+        <Reveal delay={80} className="tp-request-shell">
+          <RequestForm labels={labels} />
+        </Reveal>
+      </div>
     </SecondaryPage>
   );
 }

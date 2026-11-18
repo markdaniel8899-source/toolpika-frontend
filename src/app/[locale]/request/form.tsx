@@ -85,17 +85,12 @@ export default function RequestForm({ labels }: RequestFormProps) {
 
   if (success) {
     return (
-      <div className="tp-card tp-form-card" style={{ padding: 40, textAlign: "center" }}>
-        <span
-          className="tp-icon-tile"
-          style={{ width: 44, height: 44, margin: "0 auto 16px", borderRadius: "50%" }}
-        >
-          <Check className="tp-icon" style={{ width: 19, height: 19 }} aria-hidden="true" />
+      <div className="tp-request-card tp-request-success">
+        <span className="tp-request-success-icon">
+          <Check className="tp-icon" aria-hidden="true" />
         </span>
-        <h2 style={{ margin: 0, fontSize: 22, fontWeight: 600, letterSpacing: "-0.03em" }}>
-          Request received
-        </h2>
-        <p style={{ maxWidth: 360, margin: "8px auto 20px", color: "var(--muted)", fontSize: 14, lineHeight: 1.65 }}>
+        <h2>Request received</h2>
+        <p>
           Thank you. We read every request that comes in, and we will reply if yours
           is something we can build well.
         </p>
@@ -111,39 +106,39 @@ export default function RequestForm({ labels }: RequestFormProps) {
   }
 
   return (
-    <form className="tp-card tp-form-card tp-request-form" onSubmit={handleSubmit} style={{ padding: 28 }} noValidate>
-      {/* 2.2: single heading, one step up (28px), Inter bold, var(--text). */}
-      {/* 2.1: the "Takes about a minute" corner note is removed entirely. */}
-      <h2 className="tp-request-form-title">Tell us what you need</h2>
-
-      {/* 2.3: no visible <label>; soft placeholder + aria-label for a11y. */}
-      <div className="tp-field">
-        <input
-          id="tool-name"
-          className="tp-field-input"
-          value={form.toolName}
-          onChange={handleChange("toolName")}
-          placeholder={labels.toolNamePlaceholder}
-          aria-label={labels.toolNameLabel}
-          required
-        />
-        {errors.toolName && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.toolName}</p>}
+    <form className="tp-request-card tp-request-form" onSubmit={handleSubmit} noValidate>
+      <div className="tp-request-card-head">
+        <h2 className="tp-request-form-title">Tell us what you need</h2>
+        <p className="tp-request-card-sub">A short note is enough to get started.</p>
       </div>
 
-      <div className="tp-field">
-        <textarea
-          id="tool-description"
-          className="tp-field-input"
-          value={form.description}
-          onChange={handleChange("description")}
-          placeholder={labels.descriptionPlaceholder}
-          aria-label={labels.descriptionLabel}
-          required
-        />
-        {errors.description && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.description}</p>}
-      </div>
+      <div className="tp-request-fields">
+        <div className="tp-field">
+          <input
+            id="tool-name"
+            className="tp-field-input"
+            value={form.toolName}
+            onChange={handleChange("toolName")}
+            placeholder={labels.toolNamePlaceholder}
+            aria-label={labels.toolNameLabel}
+            required
+          />
+          {errors.toolName && <p role="alert" className="tp-request-error">{errors.toolName}</p>}
+        </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="tp-field">
+          <textarea
+            id="tool-description"
+            className="tp-field-input"
+            value={form.description}
+            onChange={handleChange("description")}
+            placeholder={labels.descriptionPlaceholder}
+            aria-label={labels.descriptionLabel}
+            required
+          />
+          {errors.description && <p role="alert" className="tp-request-error">{errors.description}</p>}
+        </div>
+
         <div className="tp-field">
           <div className="tp-select-wrap">
             <Dropdown
@@ -172,7 +167,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
               }}
             />
           </div>
-          {errors.category && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.category}</p>}
+          {errors.category && <p role="alert" className="tp-request-error">{errors.category}</p>}
         </div>
 
         <div className="tp-field">
@@ -185,13 +180,12 @@ export default function RequestForm({ labels }: RequestFormProps) {
             placeholder={labels.emailPlaceholder}
             aria-label={`${labels.emailLabel} (optional)`}
           />
-          {errors.email && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.email}</p>}
+          {errors.email && <p role="alert" className="tp-request-error">{errors.email}</p>}
         </div>
       </div>
 
       <InboxStatus state={status} message={statusMessage} />
 
-      {/* 2.5: the bottom helper note is removed entirely. */}
       <button type="submit" className="tp-btn tp-btn-primary tp-request-submit" disabled={status === "sending"}>
         {status === "sending" ? "Sending…" : labels.submit}
         <ArrowRight className="tp-icon" aria-hidden="true" />
