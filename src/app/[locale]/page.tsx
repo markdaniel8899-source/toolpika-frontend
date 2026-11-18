@@ -1,59 +1,32 @@
 import type { ComponentType, SVGProps } from "react";
 import React from "react";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, Shield, Zap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
-import { getToolsByCategory, categories, getLiveTools } from "@/lib/tools/registry";
+import { ToolIcon } from "@/components/tools/tool-icon";
+import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
+import { categories, getLiveTools, getTool, type ToolCategory } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
-/** Icon tile used inside category cards - soft accent surface, no border. */
-function IconTile({ icon: Icon }: { icon: ComponentType<SVGProps<SVGSVGElement>> }) {
-  return (
-    <span className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-soft)] text-[var(--accent)]">
-      <Icon className="h-5 w-5" aria-hidden="true" />
-    </span>
-  );
-}
+const CATEGORY_LABELS: Record<ToolCategory, string> = {
+  text: "Text",
+  image: "Images",
+  file: "Files",
+  code: "Code",
+  converter: "Converters",
+  security: "Security",
+  calculator: "Calculators",
+};
 
-/** Category card - soft icon tile, title, covered tool list. */
-function CategoryCard({
-  category,
-  tools,
-}: {
-  category: (typeof categories)[number];
-  tools: ReturnType<typeof getToolsByCategory>;
-}) {
-  const Icon = category.Icon;
-  return (
-    <Link
-      href={`/category/${category.slug}`}
-      className={cn(
-        "group flex h-full min-h-[176px] flex-col gap-4 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5",
-        "transition-[border-color,transform,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-out)]",
-        "hover:border-[var(--accent)] hover:-translate-y-[2px] hover:shadow-[var(--shadow-md)]",
-        "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
-      )}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <IconTile icon={Icon} />
-        <span className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-          {`${tools.length} ${tools.length === 1 ? "tool" : "tools"}`}
-        </span>
-      </div>
-      <div className="mt-auto">
-        <h3 className="font-sans text-[17px] font-semibold leading-[1.2] tracking-tight text-[var(--text)]">
-          {category.label}
-        </h3>
-        <p className="mt-1 text-[13px] leading-[1.55] text-[var(--muted)]">
-          {tools.slice(0, 3).map((tool) => tool.title).join(", ")}
-          {tools.length > 3 ? `, +${tools.length - 3} more` : ""}
-        </p>
-      </div>
-    </Link>
-  );
-}
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  text: "Count, convert and clean up copy.",
+  image: "Compress and prepare images locally.",
+  code: "Format, validate and inspect code.",
+  converter: "Move between units, URLs and Base64.",
+  security: "Generate passwords that hold up.",
+};
 
 type LocalePageProps = {
   params: Promise<{ locale: string }>;
@@ -62,129 +35,190 @@ type LocalePageProps = {
 export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
+  const tools = getLiveTools();
+
+  const slides: HeroSlide[] = ["word-counter", "json-formatter", "password-generator"]
+    .map((slug) => getTool(slug))
+    .filter((tool): tool is NonNullable<typeof tool> => Boolean(tool))
+    .map((tool) => ({
+      slug: tool.slug,
+      title: tool.title,
+      description: tool.description,
+      category: CATEGORY_LABELS[tool.category],
+      icon: tool.icon,
+    }));
 
   return (
-    <main className="mx-auto flex w-full max-w-page flex-col px-6">
+    <main>
       {/* Hero */}
-      <section className="flex-1 flex flex-col relative py-8 md:py-16 overflow-hidden">
-        {/* Soft accent glow at the top, fading out. */}
-        <div
-          className="pointer-events-none absolute -top-[20%] left-1/2 -translate-x-1/2 w-[500px] h-[250px] rounded-full bg-[var(--accent-soft)] blur-[100px] opacity-40 md:w-[700px] md:h-[350px]"
-          aria-hidden="true"
-        />
-        <div className="relative z-10 mx-auto w-full max-w-[620px] px-6 text-center">
-          <Reveal delay={80}>
-            <h1 className="text-balance font-display text-[56px] font-normal leading-[1.1] tracking-[0.01em] text-[var(--text)] sm:text-[64px] lg:text-[80px]">
-              {t.rich("title", {
-                display: (chunks) => (
-                  <>
-                    {React.Children.map(chunks, (chunk, i) =>
-                      React.isValidElement(chunk) ? (
-                        <span key={i} className="font-display italic text-[var(--accent)]">
-                          {chunk}
-                        </span>
-                      ) : (
-                        <span key={i}>{chunk}</span>
-                      )
-                    )}
-                  </>
-                ),
-              })}
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-6 text-[16px] leading-[1.6] text-[var(--muted)]">
-              {t("subtitle")}
-            </p>
-          </Reveal>
+      <section className="tp-container tp-hero">
+        <div className="tp-hero-copy">
+          <p className="tp-eyebrow">Free tools, in your browser</p>
+          <h1 className="tp-hero-title">
+            {t.rich("title", {
+              display: (chunks: React.ReactNode) => <em>{chunks}</em>,
+            })}
+          </h1>
+          <p className="tp-lede">{t("subtitle")}</p>
+
+          <SearchBar />
+
+          <div className="tp-trust" aria-label="Toolpika promises">
+            <span><Check className="tp-icon" aria-hidden="true" /> No uploads</span>
+            <span><Check className="tp-icon" aria-hidden="true" /> No sign-up</span>
+            <span><Check className="tp-icon" aria-hidden="true" /> Free to use</span>
+          </div>
         </div>
 
-        <div className="mt-12 md:mt-16">
-          <Reveal delay={220}>
-            <SearchBar />
-          </Reveal>
+        <HeroCarousel slides={slides} />
+      </section>
+
+      {/* Tool grid */}
+      <section className="tp-container tp-section" id="tools">
+        <div className="tp-section-head">
+          <div>
+            <p className="tp-eyebrow">The collection</p>
+            <h2 className="tp-section-title">Essential tools</h2>
+          </div>
+          <Link href="/popular" className="tp-text-link">
+            View all tools
+            <ArrowRight className="tp-icon" aria-hidden="true" />
+          </Link>
         </div>
 
-        {/* Quick access chips - quiet pills */}
-        <div className="mt-10 md:mt-12 flex flex-wrap justify-center gap-2">
-          {["word-counter", "case-converter", "image-compressor", "json-formatter", "unit-converter", "password-generator"].map((slug, index) => {
-            const tool = getLiveTools().find((t) => t.slug === slug);
-            if (!tool) return null;
-            return (
-              <Reveal key={slug} delay={280 + index * 40} stagger index={index}>
-                <Link
-                  href={`/tools/${slug}`}
-                  className={cn(
-                    "rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-[13px] font-medium text-[var(--muted)]",
-                    "transition-[color,border-color,background-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-                    "hover:border-[var(--accent)] hover:text-[var(--accent)]",
-                    "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
-                  )}
-                >
-                  {tool.title}
-                </Link>
-              </Reveal>
-            );
-          })}
+        <div className="tp-tool-grid">
+          {tools.map((tool, index) => (
+            <Reveal key={tool.slug} delay={index * 40}>
+              <Link href={`/tools/${tool.slug}`} className="tp-card tp-tool-card">
+                <span className="tp-tool-top">
+                  <span className="tp-tool-icon">
+                    <ToolIcon name={tool.icon} className="tp-icon" aria-hidden="true" />
+                  </span>
+                  <ArrowUpRight className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)", opacity: 0.55 }} aria-hidden="true" />
+                </span>
+                <h3 className="tp-tool-title">{tool.title}</h3>
+                <p className="tp-tool-desc">{tool.description}</p>
+                <span className="tp-tool-cat">{CATEGORY_LABELS[tool.category]}</span>
+              </Link>
+            </Reveal>
+          ))}
         </div>
       </section>
 
-      {/* Categories grid */}
-      <section className="py-16 md:py-20">
-        <div className="mx-auto max-w-page px-6">
-          <Reveal className="mb-12">
-            <h2 className="font-sans text-[28px] font-bold leading-[1.15] tracking-tight text-[var(--text)]">
-              {t("categories")}
-            </h2>
-          </Reveal>
-          <div className={cn(
-            "grid gap-4",
-            "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
-          )}>
-            {categories.map((category, i) => {
-              const tools = getToolsByCategory(category.slug);
+      {/* Categories */}
+      <section className="tp-container tp-section" id="categories">
+        <div className="tp-split">
+          <div className="tp-split-copy">
+            <p className="tp-eyebrow">Browse</p>
+            <h2>Find by category</h2>
+            <p>
+              Small collections, each with one job. Start with the kind of work
+              you are doing, not the name of a tool.
+            </p>
+            <Link href="/popular" className="tp-text-link" style={{ marginTop: 26 }}>
+              View all tools
+              <ArrowRight className="tp-icon" aria-hidden="true" />
+            </Link>
+          </div>
+
+          <div className="tp-category-grid">
+            {categories.map((category, index) => {
+              const categoryTools = tools.filter((tool) => tool.category === category.slug);
+              const Icon = category.Icon as ComponentType<SVGProps<SVGSVGElement>>;
               return (
-                <Reveal key={category.slug} stagger index={i}>
-                  <CategoryCard category={category} tools={tools} />
-                </Reveal>
+                <Link
+                  key={category.slug}
+                  href={`/category/${category.slug}`}
+                  className={cn("tp-card tp-category-card", index === 0 && "tp-category-feature")}
+                >
+                  {index === 0 ? (
+                    <>
+                      <span className="tp-icon-tile">
+                        <Icon className="tp-icon" aria-hidden="true" />
+                      </span>
+                      <span style={{ display: "flex", minWidth: 0, flexDirection: "column" }}>
+                        <span className="tp-category-name">{category.label}</span>
+                        <span className="tp-category-desc">{CATEGORY_DESCRIPTIONS[category.slug]}</span>
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                        <span className="tp-category-count">
+                          {categoryTools.length} {categoryTools.length === 1 ? "tool" : "tools"}
+                        </span>
+                        <ArrowRight className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)", opacity: 0.55 }} aria-hidden="true" />
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+                        <span className="tp-icon-tile">
+                          <Icon className="tp-icon" aria-hidden="true" />
+                        </span>
+                        <ArrowUpRight className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)", opacity: 0.55 }} aria-hidden="true" />
+                      </span>
+                      <span className="tp-category-name">{category.label}</span>
+                      <span className="tp-category-desc">{CATEGORY_DESCRIPTIONS[category.slug]}</span>
+                      <span className="tp-category-count">
+                        {categoryTools.length} {categoryTools.length === 1 ? "tool" : "tools"}
+                      </span>
+                    </>
+                  )}
+                </Link>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Request section */}
-      <section className="border-t border-[var(--border)] bg-[var(--surface)] py-16 md:py-20">
-        <div className="mx-auto max-w-page px-6">
-          <Reveal>
-            <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg)] px-6 py-12 text-center md:px-16 md:py-16">
-              <Reveal className="mb-4">
-                <h2 className="font-sans text-[28px] font-bold leading-[1.15] tracking-tight text-[var(--text)]">
-                  {t("requestTitle")}
-                </h2>
-              </Reveal>
-              <Reveal delay={80}>
-                <p className="mt-[12px] max-w-md mx-auto text-[15px] text-[var(--muted)]">
-                  {t("requestSubtitle")}
-                </p>
-              </Reveal>
-              <Reveal delay={160}>
-                <Link
-                  href="/request"
-                  className={cn(
-                    "group inline-flex items-center justify-center mt-[32px] rounded-[var(--radius-md)] bg-[var(--accent-fill)] px-[32px] py-3 font-semibold text-[var(--on-accent)] text-[16px]",
-                    "transition-[background-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-                    "hover:bg-[var(--accent-fill-hover)] hover:scale-[1.02]",
-                    "focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3",
-                    "active:scale-[0.98]",
-                  )}
-                >
-                  {t("requestCTA")}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] group-hover:translate-x-0.5" aria-hidden="true" />
-                </Link>
-              </Reveal>
+      {/* Why Toolpika */}
+      <section id="about" style={{ background: "var(--surface-2)" }}>
+        <div className="tp-container tp-split" style={{ paddingTop: 56, paddingBottom: 56 }}>
+          <div className="tp-split-copy">
+            <p className="tp-eyebrow">Why Toolpika</p>
+            <h2>Small tools. No small print.</h2>
+            <p>
+              No accounts. No uploads. No clutter. Just useful things that work
+              in the tab you already have open.
+            </p>
+          </div>
+
+          <div className="tp-trust-grid">
+            <div className="tp-card tp-trust-card tp-trust-feature">
+              <span className="tp-icon-tile"><Shield className="tp-icon" aria-hidden="true" /></span>
+              <div>
+                <h3>Runs in your browser</h3>
+                <p>Text and files are processed on your device, not on a server.</p>
+              </div>
             </div>
-          </Reveal>
+            <div className="tp-card tp-trust-card">
+              <span className="tp-icon-tile"><Zap className="tp-icon" aria-hidden="true" /></span>
+              <h3>Nothing to install</h3>
+              <p>Open a tool, do the job, close the tab. No account in between.</p>
+            </div>
+            <div className="tp-card tp-trust-card">
+              <span className="tp-icon-tile"><Check className="tp-icon" aria-hidden="true" /></span>
+              <h3>Free to use</h3>
+              <p>No paywall, no trial clock, no feature hidden behind a sign-up.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Request CTA */}
+      <section className="tp-container tp-cta" id="request">
+        <div className="tp-cta-inner">
+          <div>
+            <p className="tp-eyebrow">Request</p>
+            <h2>{t("requestTitle")}</h2>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 36 }}>
+            <p style={{ maxWidth: 320, margin: 0, color: "var(--muted)", fontSize: 15, lineHeight: 1.65 }}>
+              {t("requestSubtitle")}
+            </p>
+            <Link href="/request" className="tp-btn tp-btn-primary">
+              {t("requestCTA")}
+              <ArrowRight className="tp-icon" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
     </main>

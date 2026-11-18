@@ -1,4 +1,4 @@
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 
 /**
  * Body / UI typeface — clean, neutral, highly readable.
@@ -16,10 +16,10 @@ export const inter = Inter({
  * Used for the italic accent word and other short display moments.
  * Loaded as --font-display.
  */
-export const display = Playfair_Display({
+export const display = Instrument_Serif({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "600", "700"],
+  weight: "400",
   style: "italic",
   display: "swap",
 });

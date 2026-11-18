@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
-type LocalePageProps = {
-  params: Promise<{ locale: string }>;
-};
+type LocalePageProps = { params: Promise<{ locale: string }> };
 
-export async function generateMetadata({
-  params,
-}: LocalePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: LocalePageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about" });
-
-  return {
-    title: t("title"),
-    description: t("description"),
-  };
+  return { title: t("title"), description: t("description") };
 }
 
 export default async function AboutPage({ params }: LocalePageProps) {
@@ -23,45 +16,40 @@ export default async function AboutPage({ params }: LocalePageProps) {
   const t = await getTranslations({ locale, namespace: "about" });
 
   return (
-    <main className="mx-auto w-full max-w-page px-6 py-12">
-      <div className="mx-auto max-w-2xl">
-        <header className="mb-12">
-          <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-            {t("eyebrow")}
-          </p>
-          <h1 className="font-sans text-[30px] font-bold leading-[1.15] tracking-tight text-[var(--text)] sm:text-[40px]">
-            {t("title")}
-          </h1>
-        </header>
-
-        <div className="flex flex-col gap-6 text-[var(--muted)]">
-          <p className="text-[16px] leading-[1.6]">{t("intro")}</p>
-
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="mb-3 font-semibold text-[var(--text)]">
-                {t("privacyTitle")}
-              </h2>
-              <p className="leading-[1.6]">{t("privacyBody")}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="mb-3 font-semibold text-[var(--text)]">
-                {t("contactTitle")}
-              </h2>
-              <p className="leading-[1.6]">
-                <a
-                  href="mailto:hello@toolpika.site"
-                  className="text-[var(--accent)] underline underline-offset-4 hover:opacity-80"
-                >
-                  hello@toolpika.site
-                </a>
-              </p>
-            </CardContent>
-          </Card>
+    <main className="tp-container" style={{ paddingBottom: 64 }}>
+      <section className="tp-page-hero">
+        <div className="tp-page-hero-grid">
+          <div className="tp-page-title">
+            <p className="tp-eyebrow">{t("eyebrow")}</p>
+            <h1>{t("title")}</h1>
+            <p>{t("intro")}</p>
+          </div>
         </div>
+      </section>
+
+      <div className="tp-trust-grid">
+        <div className="tp-card tp-trust-card tp-trust-feature">
+          <div>
+            <h3>{t("privacyTitle")}</h3>
+            <p>{t("privacyBody")}</p>
+          </div>
+        </div>
+        <div className="tp-card tp-trust-card">
+          <h3>{t("contactTitle")}</h3>
+          <p>
+            <a href="mailto:hello@toolpika.site" className="tp-text-link">
+              hello@toolpika.site
+              <ArrowRight className="tp-icon" aria-hidden="true" />
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 32 }}>
+        <Link href="/request" className="tp-text-link">
+          Request a tool
+          <ArrowRight className="tp-icon" aria-hidden="true" />
+        </Link>
       </div>
     </main>
   );

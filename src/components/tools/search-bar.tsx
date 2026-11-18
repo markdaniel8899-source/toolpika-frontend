@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
 import { getLiveTools } from "@/lib/tools/registry";
 import { ToolIcon } from "@/components/tools/tool-icon";
+import { cn } from "@/lib/utils";
 
 export function SearchBar() {
   const t = useTranslations("search");
@@ -17,7 +17,6 @@ export function SearchBar() {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = "tool-search-results";
-
   const tools = getLiveTools();
 
   const handleInput = useCallback(
@@ -35,11 +34,11 @@ export function SearchBar() {
           (tool) =>
             tool.title.toLowerCase().includes(lower) ||
             tool.slug.includes(lower) ||
-            tool.description.toLowerCase().includes(lower)
-        )
+            tool.description.toLowerCase().includes(lower),
+        ),
       );
     },
-    [tools]
+    [tools],
   );
 
   useEffect(() => {
@@ -49,7 +48,6 @@ export function SearchBar() {
         target?.tagName === "INPUT" ||
         target?.tagName === "TEXTAREA" ||
         target?.isContentEditable;
-
       if (event.key === "/" && !isTyping) {
         event.preventDefault();
         inputRef.current?.focus();
@@ -63,6 +61,7 @@ export function SearchBar() {
     router.push(`/tools/${slug}`);
     setQuery("");
     setResults([]);
+    setIsFocused(false);
     inputRef.current?.blur();
   };
 
@@ -74,14 +73,11 @@ export function SearchBar() {
       return;
     }
     const match = results[activeIndex >= 0 ? activeIndex : 0];
-    if (match) {
-      go(match.slug);
-    }
+    if (match) go(match.slug);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!results.length) return;
-
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setActiveIndex((index) => (index + 1) % results.length);
@@ -101,19 +97,13 @@ export function SearchBar() {
     inputRef.current?.focus();
   };
 
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
-
   const maxResults = results.slice(0, 6);
 
   return (
-    <div className="relative flex w-full flex-col items-center gap-3">
-      <form onSubmit={handleSubmit} className="relative w-full max-w-[700px]">
-        <div className="relative w-full rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-3 transition-[border-color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-out)] focus-within:border-[var(--accent)] focus-within:shadow-[var(--shadow-md)]">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]"
-            aria-hidden="true"
-          />
+    <div style={{ position: "relative", width: "100%" }}>
+      <form onSubmit={handleSubmit}>
+        <div className="tp-search">
+          <Search className="tp-icon" aria-hidden="true" />
           <input
             ref={inputRef}
             autoComplete="off"
@@ -122,76 +112,67 @@ export function SearchBar() {
             aria-expanded={results.length > 0}
             aria-controls={listboxId}
             aria-autocomplete="list"
-            aria-activedescendant={
-              activeIndex >= 0 ? `tool-result-${activeIndex}` : undefined
-            }
+            aria-activedescendant={activeIndex >= 0 ? `tool-result-${activeIndex}` : undefined}
             aria-label={t("placeholder")}
             value={query}
             onChange={handleInput}
             onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             placeholder={t("placeholder")}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            className="w-full pr-[44px] pl-[10px] py-2.5 bg-transparent border-none text-[17px] text-[var(--text)] placeholder-[var(--muted)] focus:outline-none sm:text-[18px]"
           />
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            {query && (
-              <button
-                type="button"
-                onClick={clear}
-                className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--muted)] transition-[color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-2"
-                aria-label={t("clear")}
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </button>
-            )}
+          {query ? (
             <button
-              type="submit"
-              className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-soft)] text-[var(--accent)] transition-[background-color,color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-2"
-              aria-label={t("go")}
+              type="button"
+              onClick={clear}
+              aria-label={t("clear")}
+              className="tp-icon-btn tp-icon-only"
+              style={{ width: 28, height: 28, border: 0, background: "transparent" }}
             >
-              <Search className="h-4 w-4" aria-hidden="true" />
+              <X className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
             </button>
-          </div>
+          ) : (
+            <kbd
+              style={{
+                padding: "2px 7px",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                background: "var(--surface-2)",
+                color: "var(--muted)",
+                fontSize: 10.5,
+                lineHeight: 1.5,
+              }}
+            >
+              /
+            </kbd>
+          )}
+          <button
+            type="submit"
+            className="tp-icon-btn tp-icon-only"
+            style={{ width: 32, height: 32, border: 0, background: "var(--accent-soft)" }}
+            aria-label={t("go")}
+          >
+            <Search className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
+          </button>
         </div>
       </form>
 
       {isFocused && query && maxResults.length > 0 && (
-        <ul
-          id={listboxId}
-          role="listbox"
-          aria-label={t("placeholder")}
-          className="z-20 w-full max-w-[700px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-md)] slide-up"
-        >
+        <ul id={listboxId} role="listbox" aria-label={t("placeholder")} className="tp-search-results slide-up">
           {maxResults.map((tool, index) => (
-            <li
-              key={tool.slug}
-              id={`tool-result-${index}`}
-              role="option"
-              aria-selected={index === activeIndex}
-              className="slide-up"
-              style={{ animationDelay: `${index * 60}ms` }}
-            >
+            <li key={tool.slug} id={`tool-result-${index}`} role="option" aria-selected={index === activeIndex}>
               <button
                 type="button"
+                onMouseDown={(event) => event.preventDefault()}
                 onClick={() => go(tool.slug)}
                 onMouseEnter={() => setActiveIndex(index)}
-                className={cn(
-                  "flex w-full items-center justify-between px-4 py-3 text-left transition-[background-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
-                  index === activeIndex
-                    ? "bg-[var(--bg)]"
-                    : "hover:bg-[var(--bg)]",
-                )}
+                className={cn("tp-search-option", index === activeIndex && "is-active")}
               >
-                <div className="flex items-center gap-3">
-                  <ToolIcon name={tool.icon} className="h-4 w-4 text-[var(--accent)]" />
-                  <span className="font-medium text-[var(--text)]">
-                    {tool.title}
-                  </span>
-                </div>
-                <span className="text-[13px] text-[var(--muted)]">
-                  {tool.category}
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
+                  <ToolIcon name={tool.icon} className="tp-icon" style={{ width: 16, height: 16 }} aria-hidden="true" />
+                  <span style={{ fontWeight: 500 }}>{tool.title}</span>
                 </span>
+                <span style={{ color: "var(--muted)", fontSize: 13 }}>{tool.category}</span>
               </button>
             </li>
           ))}

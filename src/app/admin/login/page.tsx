@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const ADMIN_EMAIL = "hafizmzain786@gmail.com";
 
-export default async function AdminLoginPage() {
+export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {

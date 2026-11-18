@@ -43,12 +43,12 @@ const config: Config = {
           foreground: "var(--on-accent)",
         },
         muted: {
-          DEFAULT: "var(--bg)",
-          foreground: "var(--muted)",
+          DEFAULT: "var(--muted)",
+          foreground: "var(--text)",
         },
         accent: {
-          DEFAULT: "var(--bg)",
-          foreground: "var(--text)",
+          DEFAULT: "var(--accent)",
+          foreground: "var(--on-accent)",
         },
         popover: {
           DEFAULT: "var(--surface)",

@@ -1,4 +1,4 @@
-import { Mail, ExternalLink, Zap } from "lucide-react";
+import { ArrowRight, ExternalLink, Mail, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -21,107 +21,76 @@ const LEGAL_LINKS = [
   { key: "contact", href: "/contact" },
 ] as const;
 
+function FooterGroup({
+  title,
+  links,
+  t,
+}: {
+  title: string;
+  links: ReadonlyArray<{ key: string; href: string }>;
+  t: (key: string) => string;
+}) {
+  return (
+    <div className="tp-footer-col">
+      <h3>{title}</h3>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+        {links.map((item) => (
+          <li key={`${item.key}-${item.href}`}>
+            <Link href={item.href} className="footer-link">
+              {t(item.key)}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function Footer() {
   const t = useTranslations("footer");
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--surface)] py-[48px] pt-[48px] pb-[24px]">
-      <div className="mx-auto max-w-page px-6">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Zap className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
-              <span className="font-sans font-semibold text-[20px] tracking-tight text-[var(--text)]">
-                Toolpika
-              </span>
-            </div>
-            <p className="mt-[8px] text-[14px] leading-[1.6] text-[var(--muted)]">
-              {t("tagline")}
-            </p>
-            <div className="mt-4 flex gap-3">
+    <footer className="tp-footer">
+      <div className="tp-container">
+        <div className="tp-footer-grid">
+          <div className="tp-footer-brand">
+            <Link href="/" className="tp-brand" aria-label="Toolpika">
+              <Zap className="tp-brand-mark" aria-hidden="true" />
+              Toolpika
+            </Link>
+            <p>{t("tagline")}</p>
+            <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
               <a
                 href="mailto:hello@toolpika.site"
-                className="h-8 w-8 flex items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] text-[var(--muted)] transition-[color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--accent)] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                className="tp-icon-btn tp-icon-only"
                 aria-label="Email"
               >
-                <Mail className="h-4 w-4" aria-hidden="true" />
+                <Mail className="tp-icon" aria-hidden="true" />
               </a>
               <a
                 href="https://github.com/toolpika"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="h-8 w-8 flex items-center justify-center rounded-[var(--radius-md)] border border-[var(--border)] text-[var(--muted)] transition-[color,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--accent)] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+                className="tp-icon-btn tp-icon-only"
                 aria-label="GitHub"
               >
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                <ExternalLink className="tp-icon" aria-hidden="true" />
               </a>
             </div>
           </div>
 
-          {/* Tools */}
-          <div>
-            <h3 className="mb-[12px] text-[14px] font-semibold tracking-tight text-[var(--text)]">
-              {t("tools")}
-            </h3>
-            <ul className="space-y-[12px]">
-              {TOOLS_LINKS.map((item) => (
-                <li key={item.key}>
-                  <Link
-                    href={item.href}
-                    className="block text-[14px] text-[var(--muted)] transition-[color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--accent)]"
-                  >
-                    {t(item.key)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h3 className="mb-[12px] text-[14px] font-semibold tracking-tight text-[var(--text)]">
-              {t("company")}
-            </h3>
-            <ul className="space-y-[12px]">
-              {COMPANY_LINKS.map((item) => (
-                <li key={item.key}>
-                  <Link
-                    href={item.href}
-                    className="block text-[14px] text-[var(--muted)] transition-[color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--accent)]"
-                  >
-                    {t(item.key)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="mb-[12px] text-[14px] font-semibold tracking-tight text-[var(--text)]">
-              {t("legal")}
-            </h3>
-            <ul className="space-y-[12px]">
-              {LEGAL_LINKS.map((item) => (
-                <li key={item.key}>
-                  <Link
-                    href={item.href}
-                    className="block text-[14px] text-[var(--muted)] transition-[color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--accent)]"
-                  >
-                    {t(item.key)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterGroup title={t("tools")} links={TOOLS_LINKS} t={t} />
+          <FooterGroup title={t("company")} links={COMPANY_LINKS} t={t} />
+          <FooterGroup title={t("legal")} links={LEGAL_LINKS} t={t} />
         </div>
 
-        <div className="mt-[40px] border-t border-[var(--border)] pt-[24px] text-center">
-          <p className="text-[13px] text-[var(--muted)]">
-            © {year} Toolpika. All rights reserved.
-          </p>
+        <div className="tp-footer-bottom">
+          <span>© {year} Toolpika. All rights reserved.</span>
+          <Link href="/request" className="tp-text-link footer-link">
+            Request a tool
+            <ArrowRight className="tp-icon" aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </footer>

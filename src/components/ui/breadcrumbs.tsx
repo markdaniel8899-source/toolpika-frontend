@@ -1,11 +1,8 @@
 import * as React from "react";
-
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-/**
- * Section 7 — Breadcrumbs.
- * Home > Category > Tool Name, 14px, muted; current page in --text.
- */
+/** Home > Category > Current page, themed and localized. */
 export function Breadcrumbs({
   items,
   className,
@@ -14,28 +11,17 @@ export function Breadcrumbs({
   className?: string;
 }) {
   return (
-    <nav
-      aria-label="Breadcrumb"
-      className={cn("flex flex-wrap gap-1 text-[14px] text-[var(--muted)]", className)}
-    >
+    <nav aria-label="Breadcrumb" className={cn("tp-breadcrumbs", className)}>
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (
-          <React.Fragment key={item.label}>
-            {item.href ? (
-              <a
-                href={item.href}
-                className={cn(
-                  "transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:text-[var(--accent)]",
-                  isLast ? "" : ""
-                )}
-              >
-                {item.label}
-              </a>
+          <React.Fragment key={`${item.label}-${index}`}>
+            {item.href && !isLast ? (
+              <Link href={item.href}>{item.label}</Link>
             ) : (
-              <span className="text-[var(--text)]">{item.label}</span>
+              <span style={{ color: isLast ? "var(--text)" : undefined }}>{item.label}</span>
             )}
-            {!isLast && <span className="mx-1">›</span>}
+            {!isLast && <span className="sep" aria-hidden="true">/</span>}
           </React.Fragment>
         );
       })}

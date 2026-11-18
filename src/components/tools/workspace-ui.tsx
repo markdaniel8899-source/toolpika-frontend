@@ -8,11 +8,9 @@ import { cn } from "@/lib/utils";
 /** A single labelled number in the result pane. */
 export function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-4 py-3">
-      <dt className="text-xs font-medium text-[var(--muted)]">{label}</dt>
-      <dd className="mt-1 font-sans text-[24px] font-bold leading-none tracking-[-0.02em] tabular-nums">
-        {value}
-      </dd>
+    <div className="tp-stat">
+      <dt className="tp-stat-label">{label}</dt>
+      <dd className="tp-stat-value">{value}</dd>
     </div>
   );
 }
@@ -98,8 +96,7 @@ export function CopyButton({
 }
 
 /** Shared native select styling — same tokens as the shadcn input. */
-export const selectClassName =
-  "flex h-11 w-full rounded-[10px] border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] transition-colors focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20";
+export const selectClassName = "tp-field-input";
 
 export function CheckboxRow({
   id,

@@ -2,22 +2,14 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-/**
- * Section 7 — Cards.
- * --surface background, 1px --border, radius --radius-lg (14px), padding 20-24px.
- * One border only, no nested cards.
- * Hover: translateY(-2px), border --accent, shadow --shadow-md.
- */
+/** Cards use the shared Quiet Utility surface: no solid border, soft shadow, cursor glow. */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-[border-color,transform,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-out)] hover:border-[var(--accent)] hover:-translate-y-[2px] hover:shadow-[var(--shadow-md)]",
-      className
-    )}
+    className={cn("tp-card text-[var(--text)]", className)}
     {...props}
   />
 ));

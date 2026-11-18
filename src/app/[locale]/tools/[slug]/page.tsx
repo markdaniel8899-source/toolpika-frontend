@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Card } from "@/components/ui/card";
+import { ToolCard } from "@/components/tools/tool-card";
 import { Reveal } from "@/components/ui/reveal";
 import {
   Accordion,
@@ -25,7 +25,7 @@ type LocalePageProps = {
 
 export function generateStaticParams() {
   return getLiveTools().flatMap((tool) =>
-    LOCALES.map((locale) => ({ locale, slug: tool.slug }))
+    LOCALES.map((locale) => ({ locale, slug: tool.slug })),
   );
 }
 
@@ -46,7 +46,7 @@ export async function generateMetadata({
       canonical: `${siteUrl}/${locale}/tools/${tool.slug}`,
       languages: {
         ...Object.fromEntries(
-          LOCALES.map((alt) => [alt, `${siteUrl}/${alt}/tools/${tool.slug}`])
+          LOCALES.map((alt) => [alt, `${siteUrl}/${alt}/tools/${tool.slug}`]),
         ),
         "x-default": `${siteUrl}/en/tools/${tool.slug}`,
       },
@@ -86,7 +86,6 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolpika.site";
   const pageUrl = `${siteUrl}/${locale}/tools/${tool.slug}`;
 
-  // Honest structured data only: a free tool that runs in the browser.
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -109,24 +108,9 @@ export default async function ToolPage({ params }: LocalePageProps) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: t("home"),
-            item: `${siteUrl}/${locale}`,
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: categoryLabel,
-            item: `${siteUrl}/${locale}/category/${tool.category}`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: tool.title,
-            item: pageUrl,
-          },
+          { "@type": "ListItem", position: 1, name: t("home"), item: `${siteUrl}/${locale}` },
+          { "@type": "ListItem", position: 2, name: categoryLabel, item: `${siteUrl}/${locale}/category/${tool.category}` },
+          { "@type": "ListItem", position: 3, name: tool.title, item: pageUrl },
         ],
       },
     ],
@@ -140,115 +124,103 @@ export default async function ToolPage({ params }: LocalePageProps) {
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <main className="mx-auto w-full max-w-page px-6 py-8">
-        <Reveal className="mb-8">
+      <main className="tp-container" style={{ paddingBottom: 64 }}>
+        <div style={{ paddingTop: 32, paddingBottom: 28 }}>
           <Breadcrumbs
             items={[
               { label: t("home"), href: "/" },
               { label: categoryLabel, href: `/category/${tool.category}` },
-              { label: tool.title, href: pageUrl },
+              { label: tool.title },
             ]}
           />
-        </Reveal>
-
-      <header className="mb-6 flex flex-col gap-3">
-        <div className="flex items-start justify-between gap-3">
-          <h1 className="font-sans text-[28px] font-bold leading-[1.15] tracking-tight text-[var(--text)] sm:text-[32px]">
-            {tool.title}
-          </h1>
         </div>
-        <p className="max-w-2xl leading-[1.6] text-[var(--muted)]">
-          {tool.description}
-        </p>
-      </header>
 
-        <Reveal className="mb-8">
-          <Card className="p-0">
-            <ToolWorkspace slug={tool.slug} />
-          </Card>
+        <section className="tp-page-hero" style={{ paddingTop: 0 }}>
+          <div className="tp-page-hero-grid">
+            <div className="tp-page-title">
+              <p className="tp-eyebrow">{categoryLabel}</p>
+              <h1>{tool.title}</h1>
+              <p>{tool.description}</p>
+            </div>
+            <span className="tp-page-badge" style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "var(--muted)", fontSize: 12.5 }}>
+              <ShieldCheck className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
+              {t("runsInBrowser")}
+            </span>
+          </div>
+        </section>
+
+        <Reveal>
+          <ToolWorkspace slug={tool.slug} />
         </Reveal>
 
-        <p className="mt-4 flex items-start gap-2 text-[13px] leading-[1.6] text-[var(--muted)]">
-        <ShieldCheck
-          className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]"
-          aria-hidden="true"
-        />
-        <span>{t("runsInBrowser")}</span>
-      </p>
+        {/* SEO content */}
+        <div className="tp-split" style={{ marginTop: 56, paddingTop: 56, paddingBottom: 56 }}>
+          <div className="tp-split-copy">
+            <p className="tp-eyebrow">How it works</p>
+            <h2>No setup required</h2>
+            <p>Everything happens in this tab. There is nothing to install and nothing to upload.</p>
+          </div>
 
-      {/* SEO content */}
-      <div className="mt-12 flex flex-col gap-12">
-        <Reveal className="mb-8">
-          <section>
-            <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
-              {tHow("howToTitle")}
-            </h2>
-            <ol className="flex flex-col gap-3">
-              {[1, 2, 3].map((step) => (
-                <li key={step} className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--accent-fill)] text-xs font-bold text-[var(--on-accent)]">
-                    {step}
-                  </span>
-                  <span className="leading-[1.6] text-[var(--muted)]">
-                    {tHow(`step${step}`)}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </Reveal>
-
-        <Reveal className="mb-8">
-          <section>
-            <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
-              {tHow("faqTitle")}
-            </h2>
-            <Accordion type="single" collapsible className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-5">
-              {[1, 2, 3].map((item) => (
-                <AccordionItem key={item} value={`faq-${item}`}>
-                  <AccordionTrigger>{tHow(`faqQuestion${item}`)}</AccordionTrigger>
-                  <AccordionContent>{tHow(`faqAnswer${item}`)}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </section>
-        </Reveal>
-
-        {related.length > 0 && (
-          <Reveal className="mb-8">
-            <section>
-              <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
-                {tHow("relatedTitle")}
-              </h2>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {related.map((item) => (
-                  <Link
-                    key={item.slug}
-                    href={`/tools/${item.slug}`}
-                    className="flex flex-col gap-1 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4 transition-[transform,border-color] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:-translate-y-[2px] hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
-                  >
-                    <span className="font-medium text-[var(--text)]">
-                      {item.title}
-                    </span>
-                    <span className="text-sm leading-[1.6] text-[var(--muted)]">
-                      {item.description}
-                    </span>
-                  </Link>
+          <div>
+            <div className="tp-card" style={{ padding: 24 }}>
+              <h3 style={{ margin: "0 0 18px", fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>
+                {tHow("howToTitle")}
+              </h3>
+              <div>
+                {[1, 2, 3].map((step) => (
+                  <div key={step} className="tp-step">
+                    <p>{tHow(`step${step}`)}</p>
+                  </div>
                 ))}
               </div>
-            </section>
-          </Reveal>
+            </div>
+
+            <div className="tp-card" style={{ padding: 24, marginTop: 16 }}>
+              <h3 style={{ margin: "0 0 18px", fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>
+                {tHow("faqTitle")}
+              </h3>
+              <Accordion type="single" collapsible>
+                {[1, 2, 3].map((item) => (
+                  <AccordionItem key={item} value={`faq-${item}`}>
+                    <AccordionTrigger className="tp-faq-q">{tHow(`faqQuestion${item}`)}</AccordionTrigger>
+                    <AccordionContent>
+                      <p className="tp-faq-a">{tHow(`faqAnswer${item}`)}</p>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </div>
+
+        {related.length > 0 && (
+          <section style={{ paddingTop: 40, paddingBottom: 56 }}>
+            <div className="tp-section-head">
+              <div>
+                <p className="tp-eyebrow">Keep going</p>
+                <h2 className="tp-section-title">{tHow("relatedTitle")}</h2>
+              </div>
+            </div>
+            <div className="tp-tool-grid" style={{ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}>
+              {related.map((item) => (
+                <ToolCard key={item.slug} tool={item} />
+              ))}
+            </div>
+          </section>
         )}
 
-        <Reveal className="mb-8">
-          <section>
-            <h2 className="mb-4 font-sans text-[20px] font-bold leading-[1.2] tracking-tight text-[var(--text)]">
+        <section style={{ paddingBottom: 56 }}>
+          <div className="tp-card" style={{ padding: 24 }}>
+            <h2 style={{ margin: "0 0 12px", fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>
               {t("about", { title: tool.title })}
             </h2>
-            <p className="leading-[1.6] text-[var(--muted)]">{tool.description}</p>
-          </section>
-        </Reveal>
-      </div>
+            <p style={{ margin: 0, color: "var(--muted)", fontSize: 14.5 }}>{tool.description}</p>
+            <Link href="/request" className="tp-text-link" style={{ marginTop: 20 }}>
+              Request another tool
+              <ArrowRight className="tp-icon" aria-hidden="true" />
+            </Link>
+          </div>
+        </section>
       </main>
     </>
   );
