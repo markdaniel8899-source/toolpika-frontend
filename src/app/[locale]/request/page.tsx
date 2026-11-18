@@ -86,7 +86,7 @@ export default async function RequestPage({ params }: LocalePageProps) {
       </section>
 
       <div style={{ marginTop: 32 }}>
-        <a href="mailto:hello@toolpika.site" className="tp-text-link">
+        <a href="mailto:hafizmzain786@gmail.com" className="tp-text-link">
           Prefer email? Write to us
           <ArrowRight className="tp-icon" aria-hidden="true" />
         </a>

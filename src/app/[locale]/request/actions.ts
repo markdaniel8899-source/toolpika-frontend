@@ -23,7 +23,7 @@ export async function submitToolRequest(input: {
   if (!isSupabaseConfigured()) {
     return {
       ok: false,
-      error: "Requests are unavailable right now. Email hello@toolpika.site instead.",
+      error: "Requests are unavailable right now. Email hafizmzain786@gmail.com instead.",
     };
   }
 
@@ -43,7 +43,7 @@ export async function submitToolRequest(input: {
   } catch {
     return {
       ok: false,
-      error: "Something went wrong. Please try again or email hello@toolpika.site.",
+      error: "Something went wrong. Please try again or email hafizmzain786@gmail.com.",
     };
   }
 }

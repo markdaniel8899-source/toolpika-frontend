@@ -1,7 +1,9 @@
 import type { User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { ADMIN_COOKIE, ADMIN_EMAIL } from "@/lib/admin/credentials";
 
 export interface AdminProfile {
   id: string;
@@ -58,15 +60,29 @@ export async function getAdminSession(): Promise<AdminSession | null> {
  * the session cookies — it cannot be bypassed by hiding a link.
  */
 export async function requireAdmin(): Promise<AdminSession> {
+  const cookieStore = await cookies();
+  const credentialSession = cookieStore.get(ADMIN_COOKIE)?.value === "1";
+
   const session = await getAdminSession();
+
+  if (credentialSession || session?.profile?.role === "admin") {
+    if (session) return session;
+    return {
+      user: {
+        id: "credential-admin",
+        email: ADMIN_EMAIL,
+      } as User,
+      profile: {
+        id: "credential-admin",
+        email: ADMIN_EMAIL,
+        role: "admin",
+      },
+    };
+  }
 
   if (!session) {
     redirect("/admin/login");
   }
 
-  if (session.profile?.role !== "admin") {
-    redirect("/admin/login?error=forbidden");
-  }
-
-  return session;
+  redirect("/admin/login?error=forbidden");
 }

@@ -1,19 +1,5 @@
 import { ShieldCheck } from "lucide-react";
-import { MagicLinkForm } from "@/components/admin/magic-link-form";
-
-const copy = {
-  emailLabel: "Email",
-  emailPlaceholder: "admin@example.com",
-  submit: "Send magic link",
-  sending: "Sending...",
-  sentTitle: "Check your inbox",
-  sentBody: "We sent a one-time sign-in link. Open it on this device to continue.",
-  sentAnother: "Use another email",
-  errorInvalid: "Enter a valid email address.",
-  errorGeneric: "Something went wrong. Please try again.",
-  errorRateLimit: "Too many attempts. Try again in a moment.",
-  errorNotConfigured: "Supabase is not configured for this deployment.",
-};
+import { CredentialsForm } from "@/components/admin/credentials-form";
 
 export default function AdminLoginPage() {
   return (
@@ -54,11 +40,11 @@ export default function AdminLoginPage() {
             Toolpika Admin
           </h1>
           <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 13 }}>
-            Restricted area. Sign in with a magic link.
+            Restricted area. Use the owner credential to sign in.
           </p>
         </div>
 
-        <MagicLinkForm copy={copy} />
+        <CredentialsForm />
       </div>
     </main>
   );

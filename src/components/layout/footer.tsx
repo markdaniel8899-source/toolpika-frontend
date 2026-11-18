@@ -62,7 +62,7 @@ export function Footer() {
             <p>{t("tagline")}</p>
             <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
               <a
-                href="mailto:hello@toolpika.site"
+                href="mailto:hafizmzain786@gmail.com"
                 className="tp-icon-btn tp-icon-only"
                 aria-label="Email"
               >

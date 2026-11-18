@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
+import { ADMIN_COOKIE } from "@/lib/admin/credentials";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -26,6 +27,11 @@ function isAdminRoute(pathname: string) {
  */
 async function handleAdmin(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // Single-credential admin session — no Supabase check needed.
+  if (request.cookies.get(ADMIN_COOKIE)?.value === "1") {
+    return NextResponse.next();
+  }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

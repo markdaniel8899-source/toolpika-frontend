@@ -45,7 +45,7 @@ export default function AdminRootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className="min-h-screen bg-[var(--bg)] font-sans text-[var(--text)] antialiased">
+      <body data-cursor="default" className="min-h-screen bg-[var(--bg)] font-sans text-[var(--text)] antialiased">
         {children}
       </body>
     </html>

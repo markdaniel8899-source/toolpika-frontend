@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, Clock3, Mail, MessageSquare } from "lucide-react";
+import { ArrowRight, Clock3, Mail, MessageSquare, Phone } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SecondaryPage } from "@/components/layout/secondary-page";
 import { Reveal } from "@/components/ui/reveal";
@@ -36,11 +36,19 @@ export default async function ContactPage({ params }: LocalePageProps) {
           </div>
 
           <div className="tp-atlas-contact-rows">
-            <a href="mailto:hello@toolpika.site" className="tp-atlas-contact-row">
+            <a href="mailto:hafizmzain786@gmail.com" className="tp-atlas-contact-row">
               <span className="tp-icon-tile"><Mail className="tp-icon" aria-hidden="true" /></span>
               <span style={{ flex: 1 }}>
                 <strong>{t("emailLabel")}</strong>
-                <span>hello@toolpika.site</span>
+                <span>hafizmzain786@gmail.com</span>
+              </span>
+              <ArrowRight className="tp-icon" style={{ color: "var(--accent)" }} aria-hidden="true" />
+            </a>
+            <a href="tel:+923074477250" className="tp-atlas-contact-row">
+              <span className="tp-icon-tile"><Phone className="tp-icon" aria-hidden="true" /></span>
+              <span style={{ flex: 1 }}>
+                <strong>Phone</strong>
+                <span>+923074477250</span>
               </span>
               <ArrowRight className="tp-icon" style={{ color: "var(--accent)" }} aria-hidden="true" />
             </a>
@@ -68,8 +76,8 @@ export default async function ContactPage({ params }: LocalePageProps) {
               name: "Name",
               email: t("emailLabel"),
               message: "Message",
-              submit: "Open email draft",
-              note: "This opens your mail app with the message ready to send.",
+              submit: "Send message",
+              note: "Your message goes straight to the admin inbox.",
             }}
           />
         </Reveal>

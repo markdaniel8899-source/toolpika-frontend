@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { ADMIN_COOKIE } from "@/lib/admin/credentials";
 
 /**
  * Sign-out endpoint.
@@ -14,7 +15,9 @@ export async function POST(request: Request) {
     await supabase.auth.signOut();
   }
 
-  return NextResponse.redirect(new URL("/admin/login", request.url), {
+  const response = NextResponse.redirect(new URL("/admin/login", request.url), {
     status: 303,
   });
+  response.cookies.set(ADMIN_COOKIE, "", { path: "/", maxAge: 0 });
+  return response;
 }

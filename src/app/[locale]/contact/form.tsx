@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+import { submitContactMessage } from "./actions";
 
 export type ContactCopy = {
   name: string;
@@ -12,18 +13,28 @@ export type ContactCopy = {
 };
 
 export function ContactForm({ copy }: { copy: ContactCopy }) {
-  const [opened, setOpened] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = String(data.get("name") ?? "");
-    const email = String(data.get("email") ?? "");
-    const message = String(data.get("message") ?? "");
-    const subject = `Toolpika contact: ${name}`;
-    const body = `${message}\n\nFrom: ${email}`;
-    window.location.href = `mailto:hello@toolpika.site?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setOpened(true);
+    setStatus("sending");
+    setError("");
+
+    const result = await submitContactMessage({
+      name: String(data.get("name") ?? ""),
+      email: String(data.get("email") ?? ""),
+      message: String(data.get("message") ?? ""),
+    });
+
+    if (result.ok) {
+      setStatus("sent");
+      event.currentTarget.reset();
+    } else {
+      setError(result.error);
+      setStatus("error");
+    }
   };
 
   return (
@@ -36,16 +47,33 @@ export function ContactForm({ copy }: { copy: ContactCopy }) {
           name="message"
           rows={7}
           placeholder={copy.message}
-          style={{ minHeight: 180, resize: "vertical" }}
+          style={{ minHeight: 180, resize: "none" }}
           required
         />
       </div>
-      <button type="submit" className="tp-btn tp-btn-primary" style={{ width: "100%", marginTop: 18, height: 48 }}>
-        {copy.submit}
-        <ArrowRight className="tp-icon" aria-hidden="true" />
+
+      {error && (
+        <p role="alert" style={{ margin: "10px 0 0", color: "var(--danger)", fontSize: 12.5 }}>
+          {error}
+        </p>
+      )}
+
+      <button type="submit" className="tp-btn tp-btn-primary" style={{ width: "100%", marginTop: 18, height: 48 }} disabled={status === "sending"}>
+        {status === "sent" ? (
+          <>
+            Message sent
+            <Check className="tp-icon" aria-hidden="true" />
+          </>
+        ) : (
+          <>
+            {status === "sending" ? "Sending..." : copy.submit}
+            <ArrowRight className="tp-icon" aria-hidden="true" />
+          </>
+        )}
       </button>
+
       <p style={{ margin: "10px 0 0", color: "var(--muted-2)", fontSize: 12.5, textAlign: "center" }}>
-        {opened ? "Your email draft is ready. Send it from your mail app." : copy.note}
+        {status === "sent" ? "Thanks. We will read your message." : copy.note}
       </p>
     </form>
   );
