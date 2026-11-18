@@ -16,36 +16,38 @@ export type AdminLoginState = {
   message?: string;
 };
 
-function safeNext(value: FormDataEntryValue | null): string {
-  const next = typeof value === "string" ? value : "";
-  if (next.startsWith("/admin") && !next.startsWith("/admin/login")) {
-    return next;
-  }
-  return "/admin";
-}
-
-/** Signs in with Supabase Auth. The anon server client writes sb-*-auth-token cookies. */
+/** Signs in with Supabase Auth. Always redirects to /admin on success. */
 export async function adminLogin(
   _prev: AdminLoginState,
   formData: FormData,
 ): Promise<AdminLoginState> {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const next = safeNext(formData.get("next"));
 
   if (!email || !password) {
     return { status: "error", message: "Email and password are required." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  let errorMessage: string | null = null;
 
-  if (error) {
-    // Surface the real Supabase error, never a generic credential message.
-    return { status: "error", message: error.message };
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) errorMessage = error.message;
+  } catch (error) {
+    // Surface the REAL error (including missing env or network failures).
+    errorMessage =
+      error instanceof Error ? error.message : "Unexpected sign-in error.";
   }
 
-  redirect(next);
+  if (errorMessage) {
+    return { status: "error", message: errorMessage };
+  }
+
+  redirect("/admin");
 }
 
 /* -------------------------------------------------------------------------- */

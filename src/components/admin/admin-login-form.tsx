@@ -31,22 +31,12 @@ function SubmitButton({ copy }: { copy: AdminLoginCopy }) {
 
 const initialState: AdminLoginState = { status: "idle" };
 
-export function AdminLoginForm({
-  copy,
-  next,
-  initialError,
-}: {
-  copy: AdminLoginCopy;
-  next?: string;
-  initialError?: string;
-}) {
+export function AdminLoginForm({ copy }: { copy: AdminLoginCopy }) {
   const [state, formAction] = useActionState(adminLogin, initialState);
-  const error = initialError ?? (state.status === "error" ? state.message : undefined);
+  const error = state.status === "error" ? state.message : undefined;
 
   return (
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <input type="hidden" name="next" value={next ?? "/admin"} />
-
       <div>
         <label
           htmlFor="admin-email"
