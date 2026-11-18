@@ -41,7 +41,7 @@ export function scoreSeo(input: SeoInput): number {
 /**
  * Live checklist state used by the blog editor sidebar.
  *
- * It returns measurements only — the labels and sentences come from
+ * It returns measurements only - the labels and sentences come from
  * messages/admin.json in the component, so no UI copy is hardcoded here.
  */
 export function getSeoChecks(input: SeoInput): SeoCheckState[] {

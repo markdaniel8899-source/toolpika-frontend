@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
 
 /**
- * Section 5 — Scroll reveal.
+ * Section 5 - Scroll reveal.
  * Default effect: opacity 0→1 and translateY(16px)→0 over --dur-slow.
  * `delay` prop adds a transition delay (ms).
  * `stagger` with `index` applies index * 60ms delay (max 8 steps).

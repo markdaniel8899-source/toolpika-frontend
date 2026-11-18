@@ -29,7 +29,7 @@ export async function createClient() {
             cookieStore.set(name, value, options)
           );
         } catch {
-          // Called from a Server Component — cookie writes are not allowed
+          // Called from a Server Component - cookie writes are not allowed
           // there. The proxy/middleware refreshes the session instead.
         }
       },

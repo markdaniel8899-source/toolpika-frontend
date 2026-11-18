@@ -19,7 +19,7 @@ export function AllToolsBrowser({
 }) {
   const [active, setActive] = useState("all");
 
-  // 3.4 — grid content swaps instantly on tab change; only the accent
+  // 3.4 - grid content swaps instantly on tab change; only the accent
   // indicator moves (handled by the layoutId pill below), no page transition.
   const visible = active === "all" ? tools : tools.filter((tool) => tool.category === active);
 

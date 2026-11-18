@@ -8,7 +8,7 @@ export interface ChartDatum {
  *
  * No charting library: the dashboard needs three simple shapes and pulling a
  * dependency in would add bundle weight for no gain. Colors stay inside the
- * constitution palette — the accent at different opacities plus the neutral
+ * constitution palette - the accent at different opacities plus the neutral
  * tokens.
  */
 
@@ -175,7 +175,7 @@ export function PieChart({
   const radius = 70;
   const circumference = 2 * Math.PI * radius;
 
-  // Offsets are computed up front with a pure reduce — no mutation while
+  // Offsets are computed up front with a pure reduce - no mutation while
   // rendering.
   const segments = data.reduce<
     { label: string; dash: number; gap: number; offset: number; fill: string }[]

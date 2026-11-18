@@ -31,7 +31,7 @@ export default async function AdminDashboardLayout({
     authError = error instanceof Error ? error.message : String(error);
   }
 
-  // RENDER ERROR ON SCREEN — do not let Vercel show a generic 500 page
+  // RENDER ERROR ON SCREEN - do not let Vercel show a generic 500 page
   if (authError) {
     return (
       <html lang="en">

@@ -18,7 +18,7 @@ function words(text: string) {
 function titleCase(text: string) {
   return text
     .toLowerCase()
-    .replace(/(^|[\s\-–—]+)(\p{L})/gu, (_match, prefix: string, letter: string) => prefix + letter.toUpperCase());
+    .replace(/(^|[\s-]+)(\p{L})/gu, (_match, prefix: string, letter: string) => prefix + letter.toUpperCase());
 }
 
 function sentenceCase(text: string) {

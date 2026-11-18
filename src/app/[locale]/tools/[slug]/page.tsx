@@ -84,7 +84,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const categoryLabel = getCategoryLabel(tool.category, t);
   const seo = getToolSeoContent(tool, categoryLabel);
 
-  // 4.7 — same-category tools first; top popular as fallback when < 3.
+  // 4.7 - same-category tools first; top popular as fallback when < 3.
   const related = getToolsByCategory(tool.category)
     .filter((item) => item.slug !== tool.slug)
     .slice(0, 4);
@@ -129,7 +129,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
           { "@type": "ListItem", position: 3, name: tool.title, item: pageUrl },
         ],
       },
-      // 4.6 — FAQPage schema for the fully visible FAQs rendered below.
+      // 4.6 - FAQPage schema for the fully visible FAQs rendered below.
       {
         "@type": "FAQPage",
         mainEntity: seo.faqs.map((faq) => ({
@@ -152,7 +152,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
         }}
       />
       <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
-        {/* 4.1 — Tool name first, H1. */}
+        {/* 4.1 - Tool name first, H1. */}
         <header className="tp-tool-page-head">
           <h1 className="tp-tool-page-title">{tool.title}</h1>
           <p className="tp-tool-page-sub">
@@ -161,10 +161,10 @@ export default async function ToolPage({ params }: LocalePageProps) {
           </p>
         </header>
 
-        {/* 4.2 — How to use heading. */}
+        {/* 4.2 - How to use heading. */}
         <h2 className="tp-tool-page-section-title">{tHow("howToTitle")}</h2>
 
-        {/* 4.3 — Numbered steps with accent circles. */}
+        {/* 4.3 - Numbered steps with accent circles. */}
         <ol className="tp-how-list">
           {steps.map((step, index) => (
             <li key={index} className="tp-how-item">
@@ -174,12 +174,12 @@ export default async function ToolPage({ params }: LocalePageProps) {
           ))}
         </ol>
 
-        {/* 4.4 — The actual tool workspace, below the steps. */}
+        {/* 4.4 - The actual tool workspace, below the steps. */}
         <section className="tp-tool-page-workspace" aria-label={`${tool.title} tool`}>
           <ToolWorkspace slug={tool.slug} />
         </section>
 
-        {/* 4.5 — Per-tool SEO content in natural language. */}
+        {/* 4.5 - Per-tool SEO content in natural language. */}
         <section className="tp-tool-seo">
           <h2 className="tp-tool-page-section-title">{`About ${tool.title}`}</h2>
           <p className="tp-tool-seo-lead">{seo.intro}</p>
@@ -193,7 +193,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
           ))}
         </section>
 
-        {/* 4.6 — FAQs fully visible: H3 question + paragraph answer, no accordion. */}
+        {/* 4.6 - FAQs fully visible: H3 question + paragraph answer, no accordion. */}
         <section className="tp-tool-faq">
           <h2 className="tp-tool-page-section-title">{tHow("faqTitle")}</h2>
           <div className="tp-tool-faq-list">
@@ -206,7 +206,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
           </div>
         </section>
 
-        {/* 4.7 — Related tools, last on the page. */}
+        {/* 4.7 - Related tools, last on the page. */}
         {related.length > 0 && (
           <section className="tp-tool-related">
             <h2 className="tp-tool-page-section-title">{tHow("relatedTitle")}</h2>

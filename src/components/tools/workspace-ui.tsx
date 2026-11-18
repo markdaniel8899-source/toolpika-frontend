@@ -95,7 +95,7 @@ export function CopyButton({
   );
 }
 
-/** Shared native select styling — same tokens as the shadcn input. */
+/** Shared native select styling - same tokens as the shadcn input. */
 export const selectClassName = "tp-field-input";
 
 export function CheckboxRow({

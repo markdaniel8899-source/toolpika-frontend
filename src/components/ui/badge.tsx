@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Section 7 — Badge.
+ * Section 7 - Badge.
  * Small pill, --accent-soft background, --accent text.
  * 12px is allowed only here (uppercase labels), weight 600.
  */

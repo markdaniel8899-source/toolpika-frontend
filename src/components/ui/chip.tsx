@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Section 7 — Chips.
+ * Section 7 - Chips.
  * Pill shape, 1px --border, --surface background, 14px text.
  * Hover: --accent-soft background, --accent text.
  */

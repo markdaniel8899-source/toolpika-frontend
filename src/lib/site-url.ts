@@ -11,7 +11,7 @@ export function getSiteUrl(): string {
       return raw;
     }
   } catch {
-    // Invalid env value — fall back to the production domain.
+    // Invalid env value - fall back to the production domain.
   }
 
   return fallback;

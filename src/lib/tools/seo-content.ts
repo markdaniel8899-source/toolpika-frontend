@@ -1,7 +1,7 @@
 import type { Tool } from "@/lib/tools/registry";
 
 /**
- * Per-tool SEO copy, generated from the registry entry — never one identical
+ * Per-tool SEO copy, generated from the registry entry - never one identical
  * blob pasted on every page. The tool name and category appear naturally a few
  * times; the rest is plain, human language about what the tool actually does.
  */
@@ -31,8 +31,8 @@ export function getToolSeoContent(
   const intro =
     `${name} is a free ${category} tool that ${what}. ` +
     `It runs entirely in your browser, so there is nothing to install, no account to create, ` +
-    `and nothing to upload. Open the page, do the work, and move on — ${name} keeps your ` +
-    `content on your own device. Whether you need a one-off ${category} fix or a repeatable ` +
+    `and nothing to upload. Open the page, do the work, and move on. ${name} keeps your ` +
+    `content on your own device. Whether you need a quick ${category} fix or a repeatable ` +
     `step in your workflow, this tool is built to get out of the way.`;
 
   const sections: ToolSeoContent["sections"] = [
@@ -62,7 +62,7 @@ export function getToolSeoContent(
     {
       heading: "Why use a browser-based tool",
       paragraphs: [
-        `A browser ${category} tool keeps the useful part — getting the job done — and ` +
+        `A browser ${category} tool keeps the useful part, getting the job done, and ` +
           `drops the rest. ${name} does not ask for a sign-in, tracking cookies or an ` +
           `upload, so the page stays fast and your material stays yours.`,
       ],

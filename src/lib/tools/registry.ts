@@ -39,7 +39,7 @@ const CATEGORY_ICONS: Record<ToolCategory, ComponentType> = {
  *
  * The array order is the curated order used by the "Popular tools" list.
  * There is deliberately no usage count here: run counts live in Supabase
- * (public.tools.usage_count) and are never invented (AGENTS.md — no fake proof).
+ * (public.tools.usage_count) and are never invented (AGENTS.md - no fake proof).
  */
 export const tools: Tool[] = [
   {

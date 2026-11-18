@@ -63,7 +63,7 @@ export interface AdminNavItem {
 /**
  * Admin shell: sidebar navigation on desktop, a disclosure panel on mobile.
  *
- * The nav is a plain list of links so it works without JavaScript too — the
+ * The nav is a plain list of links so it works without JavaScript too - the
  * panel is only a layout convenience.
  */
 export function AdminShell({

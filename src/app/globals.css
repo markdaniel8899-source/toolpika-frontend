@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /*
- * Toolpika design system — "Quiet Utility"
+ * Toolpika design system - "Quiet Utility"
  * Warm paper light theme / graphite dark theme.
  * Inter for UI + Instrument Serif for the single italic accent word.
  */
@@ -1475,7 +1475,7 @@ html.theme-transition .tp-dropdown-trigger {
   display: none;
 }
 
-/* ---------- Request page — centred single column (mirrors contact) ---------- */
+/* ---------- Request page - centred single column (mirrors contact) ---------- */
 
 .tp-request-head {
   max-width: 640px;
@@ -1487,7 +1487,7 @@ html.theme-transition .tp-dropdown-trigger {
   margin: 48px auto 0;
 }
 
-/* 2.2 — one step up from the old 18px: 28px, Inter bold, full ink. */
+/* 2.2 - one step up from the old 18px: 28px, Inter bold, full ink. */
 .tp-request-form-title {
   margin: 0 0 22px;
   color: var(--text);
@@ -1497,7 +1497,7 @@ html.theme-transition .tp-dropdown-trigger {
   line-height: 1.15;
 }
 
-/* 2.3 — soft placeholder only: var(--muted), normal weight. */
+/* 2.3 - soft placeholder only: var(--muted), normal weight. */
 .tp-request-form .tp-field-input::placeholder,
 .tp-request-form textarea::placeholder {
   color: var(--muted);
@@ -1510,7 +1510,7 @@ html.theme-transition .tp-dropdown-trigger {
   margin-top: 4px;
 }
 
-/* 2.4 — solid dropdown panel in BOTH themes: no blur, no transparency. */
+/* 2.4 - solid dropdown panel in BOTH themes: no blur, no transparency. */
 .tp-request-form .tp-dropdown-menu,
 .tp-request-form [data-ui].tp-dropdown-menu {
   background: var(--surface);
@@ -2354,7 +2354,7 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 /* ==========================================================================
-   Admin dashboard — premium interaction layer
+   Admin dashboard - premium interaction layer
    Uses only design-system tokens. Flat surfaces separated by tone steps,
    no gradients, no shadows at rest. Every control has instant press feedback
    and a fast, custom-eased hover so both themes feel alive.
@@ -2365,7 +2365,7 @@ html:has([data-admin="true"]) {
   scroll-behavior: auto;
 }
 
-/* Primary action — used by SubmitButton in every admin form. */
+/* Primary action - used by SubmitButton in every admin form. */
 .tp-admin-btn {
   display: inline-flex;
   align-items: center;
@@ -2401,7 +2401,7 @@ html:has([data-admin="true"]) {
   opacity: 0.6;
 }
 
-/* Secondary action — ghost/outline buttons, cancel and icon controls. */
+/* Secondary action - ghost/outline buttons, cancel and icon controls. */
 .tp-admin-btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -2433,7 +2433,7 @@ html:has([data-admin="true"]) {
   transform: scale(0.97);
 }
 
-/* Square icon buttons — edit / delete / theme / menu in the dashboard. */
+/* Square icon buttons - edit / delete / theme / menu in the dashboard. */
 .tp-admin-icon {
   display: inline-flex;
   height: 38px;
@@ -2468,7 +2468,7 @@ html:has([data-admin="true"]) {
   color: var(--danger);
 }
 
-/* Sidebar navigation item — active state uses a tone step, not a hairline. */
+/* Sidebar navigation item - active state uses a tone step, not a hairline. */
 .tp-admin-nav {
   display: flex;
   align-items: center;
@@ -2500,7 +2500,7 @@ html:has([data-admin="true"]) {
   transform: scale(0.98);
 }
 
-/* Stat / section cards — lift on hover with the accent tone. */
+/* Stat / section cards - lift on hover with the accent tone. */
 .tp-admin-card {
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
@@ -2515,7 +2515,7 @@ html:has([data-admin="true"]) {
   transform: translateY(-2px);
 }
 
-/* Table row hover — subtle tone step for scanability. */
+/* Table row hover - subtle tone step for scanability. */
 .tp-admin-table tbody tr {
   transition: background-color var(--dur-fast) var(--ease-out);
 }
@@ -2564,12 +2564,12 @@ html:has([data-admin="true"]) {
   font-weight: 600;
 }
 
-/* Page enter — a single fast, restrained fade+rise, never blocks content. */
+/* Page enter - a single fast, restrained fade+rise, never blocks content. */
 .tp-admin-page {
   animation: fade-in var(--dur-base) var(--ease-out) both;
 }
 
-/* ---------- Admin login — flat, focused, premium ---------- */
+/* ---------- Admin login - flat, focused, premium ---------- */
 
 .tp-admin-login {
   position: relative;
@@ -2711,11 +2711,11 @@ html:has([data-admin="true"]) {
 .tp-admin-login-submit { animation-delay: 300ms; }
 
 /* ==========================================================================
-   Individual tool page — fixed top-to-bottom order:
+   Individual tool page - fixed top-to-bottom order:
    name → how to use → numbered steps → workspace → SEO → FAQs → related
    ========================================================================== */
 
-/* 4.1 — Tool name at the very top. */
+/* 4.1 - Tool name at the very top. */
 .tp-tool-page-head {
   padding-top: 32px;
 }
@@ -2744,7 +2744,7 @@ html:has([data-admin="true"]) {
   color: var(--accent);
 }
 
-/* 4.2 / 4.5 / 4.6 / 4.7 — shared section heading. */
+/* 4.2 / 4.5 / 4.6 / 4.7 - shared section heading. */
 .tp-tool-page-section-title {
   margin: 48px 0 20px;
   color: var(--text);
@@ -2754,7 +2754,7 @@ html:has([data-admin="true"]) {
   line-height: 1.2;
 }
 
-/* 4.3 — Counting list; each number is an accent circle. */
+/* 4.3 - Counting list; each number is an accent circle. */
 .tp-how-list {
   display: flex;
   flex-direction: column;
@@ -2794,12 +2794,12 @@ html:has([data-admin="true"]) {
   line-height: 1.6;
 }
 
-/* 4.4 — The workspace sits directly below the steps. */
+/* 4.4 - The workspace sits directly below the steps. */
 .tp-tool-page-workspace {
   margin-top: 32px;
 }
 
-/* 4.5 — Per-tool SEO prose. */
+/* 4.5 - Per-tool SEO prose. */
 .tp-tool-seo,
 .tp-tool-faq,
 .tp-tool-related {
@@ -2832,7 +2832,7 @@ html:has([data-admin="true"]) {
   line-height: 1.7;
 }
 
-/* 4.6 — FAQs always open: H3 question + paragraph answer. */
+/* 4.6 - FAQs always open: H3 question + paragraph answer. */
 .tp-tool-faq-list {
   display: flex;
   flex-direction: column;
@@ -2862,7 +2862,7 @@ html:has([data-admin="true"]) {
   line-height: 1.65;
 }
 
-/* 4.7 — Related tools, last. */
+/* 4.7 - Related tools, last. */
 .tp-tool-related-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }

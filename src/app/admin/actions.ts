@@ -16,7 +16,7 @@ async function requireUser() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Auth — Supabase Auth only                                                  */
+/* Auth - Supabase Auth only                                                  */
 /* -------------------------------------------------------------------------- */
 
 export type AdminLoginState = {

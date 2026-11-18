@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * Section 7 — Buttons.
+ * Section 7 - Buttons.
  * Primary: bg --accent-fill / text --accent-fg.
  * Secondary: transparent, 1px --border, text --text, hover border --accent.
  * Ghost: transparent, hover --surface-2.

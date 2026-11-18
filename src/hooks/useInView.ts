@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 
 /**
- * Section 5 — Scroll reveal.
+ * Section 5 - Scroll reveal.
  * IntersectionObserver, once: true, threshold 0.15.
  * Returns [ref, inView].
  */

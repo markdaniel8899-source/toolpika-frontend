@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * Section 5 — Header scrolled state.
+ * Section 5 - Header scrolled state.
  * True when window.scrollY > 8px. Used to add border/shadow to the header.
  */
 export function useScrolled(threshold = 8) {

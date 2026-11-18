@@ -6,7 +6,7 @@ import { categories, getLiveTools } from "@/lib/tools/registry";
 const SITE_URL = getSiteUrl();
 
 /**
- * i18n.md §4 — one sitemap per locale plus an x-default index.
+ * i18n.md §4 - one sitemap per locale plus an x-default index.
  * Every URL carries hreflang alternates for all 10 locales.
  */
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -1,7 +1,7 @@
 import { Inter, Instrument_Serif } from "next/font/google";
 
 /**
- * Body / UI typeface — clean, neutral, highly readable.
+ * Body / UI typeface - clean, neutral, highly readable.
  * Loaded as --font-inter; weights 400, 500 and 600 used across the UI.
  */
 export const inter = Inter({
@@ -12,7 +12,7 @@ export const inter = Inter({
 });
 
 /**
- * Display / accent typeface — editorial serif for hero highlights.
+ * Display / accent typeface - editorial serif for hero highlights.
  * Used for the italic accent word and other short display moments.
  * Loaded as --font-display.
  */
