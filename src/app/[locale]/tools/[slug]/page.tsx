@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { ToolCard } from "@/components/tools/tool-card";
+import { getSiteUrl } from "@/lib/site-url";
 import { Reveal } from "@/components/ui/reveal";
 import {
   Accordion,
@@ -37,7 +38,7 @@ export async function generateMetadata({
   if (!tool) return { title: "Tool not found" };
 
   const t = await getTranslations({ locale, namespace: "tools" });
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolpika.site";
+  const siteUrl = getSiteUrl();
 
   return {
     title: `${tool.title} | ${t("online")}`,
@@ -83,7 +84,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
     .filter((item) => item.slug !== tool.slug)
     .slice(0, 4);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolpika.site";
+  const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}/${locale}/tools/${tool.slug}`;
 
   const structuredData = {

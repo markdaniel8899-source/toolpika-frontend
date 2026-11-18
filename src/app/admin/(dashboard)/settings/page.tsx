@@ -1,4 +1,5 @@
 import { adminMessages } from "@/lib/admin/messages";
+import { getSiteUrl } from "@/lib/site-url";
 import { PageHeader, SectionCard, StatusPill } from "@/components/admin/ui";
 import { SettingsForm } from "@/components/admin/settings-form";
 
@@ -26,8 +27,7 @@ export default function AdminSettingsPage() {
           <SettingsForm
             values={{
               siteName: "Toolpika",
-              siteUrl:
-                process.env.NEXT_PUBLIC_SITE_URL || "https://toolpika.site",
+              siteUrl: getSiteUrl(),
               socialGithub: "",
               socialX: "",
               socialLinkedIn: "",

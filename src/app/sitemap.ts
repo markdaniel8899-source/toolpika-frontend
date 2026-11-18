@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
+import { getSiteUrl } from "@/lib/site-url";
 import { categories, getLiveTools } from "@/lib/tools/registry";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolpika.site";
+const SITE_URL = getSiteUrl();
 
 /**
  * i18n.md §4 — one sitemap per locale plus an x-default index.

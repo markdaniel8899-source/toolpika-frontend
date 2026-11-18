@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { getSiteUrl } from "@/lib/site-url";
 import { inter, display } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
 import { SiteMotion } from "@/components/site-motion";
@@ -26,9 +27,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "meta" });
 
   return {
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolpika.site",
-    ),
+    metadataBase: new URL(getSiteUrl()),
     title: {
       default: t("title"),
       template: "%s | Toolpika",
