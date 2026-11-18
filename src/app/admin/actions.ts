@@ -36,9 +36,14 @@ export async function adminLogin(
       email,
       password,
     });
-    if (error) errorMessage = error.message;
+    if (error) {
+      // Full Supabase auth error for Vercel logs.
+      console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
+      errorMessage = error.message;
+    }
   } catch (error) {
     // Surface the REAL error (including missing env or network failures).
+    console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
     errorMessage =
       error instanceof Error ? error.message : "Unexpected sign-in error.";
   }

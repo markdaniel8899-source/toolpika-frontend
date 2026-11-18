@@ -11,20 +11,11 @@ const LOGIN_PATH = "/admin/login";
 
 type AuthCookie = { name: string; value: string; options: CookieOptions };
 
-type RoleResult = {
-  role?: string;
-  error?: string;
-};
-
 function isAdminRoute(pathname: string) {
   return pathname === ADMIN_PREFIX || pathname.startsWith(`${ADMIN_PREFIX}/`);
 }
 
-/**
- * Next 16 equivalent of middleware.ts (see AGENTS.md).
- * Mirrors Supabase auth cookies onto both request and response so refreshed
- * tokens survive on Vercel (upsertSession pattern).
- */
+/** Mirrors refreshed Supabase auth cookies onto request + response. */
 function upsertSession(request: NextRequest, cookiesToSet: AuthCookie[]) {
   cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
   const response = NextResponse.next({ request });
@@ -40,7 +31,7 @@ function redirectWithSession(url: URL, source: NextResponse) {
   return response;
 }
 
-/** Plain /admin/login redirect — no query string, host comes from request. */
+/** Plain /admin/login redirect — no query string, host from request. */
 function loginRedirect(request: NextRequest, source?: NextResponse) {
   const url = request.nextUrl.clone();
   url.pathname = LOGIN_PATH;
@@ -49,33 +40,12 @@ function loginRedirect(request: NextRequest, source?: NextResponse) {
 }
 
 /**
- * Never let a profiles schema error crash the middleware.
- * Log it and let the page re-check with its own error boundary.
+ * Next 16 equivalent of middleware.ts (see AGENTS.md).
+ *
+ * RULE: middleware only checks the Supabase AUTH SESSION.
+ * It MUST NOT query public.profiles or any other table. Role checks happen in
+ * the admin pages via requireAdmin() with a service-role client.
  */
-async function readAdminRole(
-  supabase: ReturnType<typeof createServerClient>,
-  userId: string,
-): Promise<RoleResult> {
-  try {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", userId)
-      .maybeSingle();
-
-    if (error) {
-      console.error("[proxy] profiles role query failed:", error.message);
-      return { error: error.message };
-    }
-
-    return { role: data?.role ?? undefined };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("[proxy] profiles role query threw:", message);
-    return { error: message };
-  }
-}
-
 async function handleAdmin(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -100,42 +70,12 @@ async function handleAdmin(request: NextRequest) {
     },
   });
 
-  // 1. Always resolve the session first.
+  // ONLY auth check — no database/table query here.
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 2. No user → plain login redirect, no query params.
-  if (!user) {
-    if (pathname === LOGIN_PATH) return response;
-    return loginRedirect(request, response);
-  }
-
-  // 3. Role lookup is resilient.
-  const { role, error: roleError } = await readAdminRole(supabase, user.id);
-
-  if (pathname === LOGIN_PATH) {
-    if (role === "admin") {
-      const adminUrl = request.nextUrl.clone();
-      adminUrl.pathname = ADMIN_PREFIX;
-      adminUrl.search = "";
-      return redirectWithSession(adminUrl, response);
-    }
-    // Explicit non-admin signs out; a schema error just leaves them on login.
-    if (!roleError && role && role !== "admin") {
-      await supabase.auth.signOut();
-    }
-    return response;
-  }
-
-  // 4. Schema/query error → do not crash, let /admin re-check.
-  if (roleError) {
-    return response;
-  }
-
-  // 5. Only block when the role is explicitly not admin.
-  if (role !== "admin") {
-    await supabase.auth.signOut();
+  if (!user && pathname !== LOGIN_PATH) {
     return loginRedirect(request, response);
   }
 

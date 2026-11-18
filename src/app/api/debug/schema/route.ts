@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin-client";
 
 export const dynamic = "force-dynamic";
 
 /**
- * Temporary admin-only diagnostic: verifies public.profiles is reachable.
- * GET /api/debug/schema → { count, error }
+ * Temporary admin-only diagnostic: verifies public.profiles is reachable
+ * with the service role client. GET /api/debug/schema → { count, error }
  */
 export async function GET() {
   try {
     const supabase = await createClient();
-
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -19,16 +19,15 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data, error } = await supabase
+    const admin = createAdminClient();
+    const { data, error } = await admin
       .from("profiles")
       .select("id, role")
       .limit(1);
 
     if (error) {
-      return NextResponse.json({
-        count: 0,
-        error: error.message,
-      });
+      console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
+      return NextResponse.json({ count: 0, error: error.message });
     }
 
     const role = data?.[0]?.role;
@@ -39,11 +38,9 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json({
-      count: data?.length ?? 0,
-      error: null,
-    });
+    return NextResponse.json({ count: data?.length ?? 0, error: null });
   } catch (error) {
+    console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
     return NextResponse.json(
       {
         count: 0,

@@ -1,6 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin-client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export interface AdminProfile {
@@ -15,11 +16,11 @@ export interface AdminSession {
 }
 
 /**
- * Reads the signed-in user and their profile row.
+ * Reads the signed-in user, then the profile row with the SERVICE ROLE client.
  *
- * Returns null when nobody is signed in. `profile` is null when the row is
- * missing — create it with backend/database/005_admin_user.sql after adding
- * the user in Supabase Auth.
+ * The anon client cannot reliably read public.profiles from a Server Component
+ * (PostgREST "Database error querying schema"). The service role key bypasses
+ * RLS and is server-only. Full errors are logged for diagnosis.
  */
 export async function getAdminSession(): Promise<AdminSession | null> {
   if (!isSupabaseConfigured()) return null;
@@ -31,31 +32,34 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 
   if (!user) return null;
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id, email, role")
-    .eq("id", user.id)
-    .maybeSingle();
+  let profile: AdminProfile | null = null;
 
-  return {
-    user,
-    profile: profile
-      ? {
-          id: profile.id,
-          email: profile.email,
-          role: profile.role === "admin" ? "admin" : "user",
-        }
-      : null,
-  };
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("profiles")
+      .select("id, email, role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (error) {
+      // Full Supabase/PostgREST error for Vercel logs.
+      console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
+    } else if (data) {
+      profile = {
+        id: data.id,
+        email: data.email,
+        role: data.role === "admin" ? "admin" : "user",
+      };
+    }
+  } catch (error) {
+    console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
+  }
+
+  return { user, profile };
 }
 
-/**
- * Server-side guard for every admin dashboard page.
- *
- * Only a real Supabase Auth session with an admin profile passes. The proxy
- * redirects earlier, but pages run this check too so data can never be read
- * by hiding a link.
- */
+/** Server-side guard for every admin dashboard page. */
 export async function requireAdmin(): Promise<AdminSession> {
   const session = await getAdminSession();
 
@@ -64,7 +68,7 @@ export async function requireAdmin(): Promise<AdminSession> {
   }
 
   if (session.profile?.role !== "admin") {
-    redirect("/admin/login?error=forbidden");
+    redirect("/admin/login");
   }
 
   return session;
