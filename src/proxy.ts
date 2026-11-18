@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
@@ -9,29 +9,39 @@ const intlMiddleware = createMiddleware(routing);
 const ADMIN_PREFIX = "/admin";
 const LOGIN_PATH = "/admin/login";
 
+type AuthCookie = { name: string; value: string; options: CookieOptions };
+
 function isAdminRoute(pathname: string) {
   return pathname === ADMIN_PREFIX || pathname.startsWith(`${ADMIN_PREFIX}/`);
 }
 
 /**
- * Guards every /admin/* route (admin.md §1).
+ * Next 16 equivalent of middleware.ts (see AGENTS.md).
  *
- * - Refreshes the Supabase session so the cookie stays valid.
- * - Redirects to /admin/login when there is no session.
- * - Redirects to /admin/login?error=forbidden when the profile role is not
- *   admin.
- *
- * The role is read from the public.profiles table, which RLS exposes to the
- * signed-in user for their own row only.
+ * Mirrors Supabase auth cookies onto both the request and a fresh response so
+ * refreshed tokens survive on Vercel. This is the upsertSession pattern.
  */
+function upsertSession(request: NextRequest, cookiesToSet: AuthCookie[]) {
+  cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+  const response = NextResponse.next({ request });
+  cookiesToSet.forEach(({ name, value, options }) =>
+    response.cookies.set(name, value, options),
+  );
+  return response;
+}
+
+function redirectWithSession(url: URL, source: NextResponse) {
+  const response = NextResponse.redirect(url);
+  source.cookies.getAll().forEach((cookie) => response.cookies.set(cookie));
+  return response;
+}
+
 async function handleAdmin(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Without Supabase there is no session to check. Send the user to the login
-  // page with a clear setup error instead of letting requests through.
   if (!url || !anonKey) {
     if (pathname === LOGIN_PATH) return NextResponse.next();
     const loginUrl = request.nextUrl.clone();
@@ -49,13 +59,7 @@ async function handleAdmin(request: NextRequest) {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value)
-        );
-        response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        );
+        response = upsertSession(request, cookiesToSet);
       },
     },
   });
@@ -64,7 +68,6 @@ async function handleAdmin(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // The login page must never redirect to itself, so it is handled first.
   if (pathname === LOGIN_PATH) {
     if (!user) return response;
 
@@ -74,15 +77,15 @@ async function handleAdmin(request: NextRequest) {
       .eq("id", user.id)
       .maybeSingle();
 
-    // An admin who lands on the login page goes straight to the dashboard.
     if (profile?.role === "admin") {
       const adminUrl = request.nextUrl.clone();
       adminUrl.pathname = ADMIN_PREFIX;
       adminUrl.search = "";
-      return NextResponse.redirect(adminUrl);
+      return redirectWithSession(adminUrl, response);
     }
 
-    // Signed in but not an admin — the login page explains that.
+    // Signed in but not an admin: clear the Supabase session.
+    await supabase.auth.signOut();
     return response;
   }
 
@@ -91,7 +94,7 @@ async function handleAdmin(request: NextRequest) {
     loginUrl.pathname = LOGIN_PATH;
     loginUrl.search = "";
     loginUrl.searchParams.set("next", `${pathname}${search}`);
-    return NextResponse.redirect(loginUrl);
+    return redirectWithSession(loginUrl, response);
   }
 
   const { data: profile } = await supabase
@@ -101,11 +104,12 @@ async function handleAdmin(request: NextRequest) {
     .maybeSingle();
 
   if (profile?.role !== "admin") {
+    await supabase.auth.signOut();
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = LOGIN_PATH;
     loginUrl.search = "";
     loginUrl.searchParams.set("error", "forbidden");
-    return NextResponse.redirect(loginUrl);
+    return redirectWithSession(loginUrl, response);
   }
 
   return response;
@@ -114,7 +118,6 @@ async function handleAdmin(request: NextRequest) {
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Admin routes are intentionally unprefixed and never localized.
   if (isAdminRoute(pathname)) {
     return handleAdmin(request);
   }

@@ -6,12 +6,18 @@ export const metadata = {
   title: adminMessages.meta.title,
 };
 
+function initialError(code?: string): string | undefined {
+  if (code === "forbidden") return adminMessages.login.errorForbidden;
+  if (code === "not_configured") return adminMessages.login.errorMissingConfig;
+  return undefined;
+}
+
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
   const t = adminMessages.login;
 
   return (
@@ -57,7 +63,8 @@ export default async function AdminLoginPage({
         </div>
 
         <AdminLoginForm
-          errorMessage={error}
+          next={next}
+          initialError={initialError(error)}
           copy={{
             emailLabel: t.emailLabel,
             emailPlaceholder: t.emailPlaceholder,
@@ -65,10 +72,6 @@ export default async function AdminLoginPage({
             passwordPlaceholder: t.passwordPlaceholder,
             submit: t.submit,
             sending: t.sending,
-            errorGeneric: t.errorGeneric,
-            errorInvalid: t.errorInvalid,
-            errorForbidden: t.errorForbidden,
-            errorMissingConfig: t.errorMissingConfig,
           }}
         />
       </div>

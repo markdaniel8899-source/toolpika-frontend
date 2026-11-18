@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import {
   BarChart3,
   FileText,
@@ -44,7 +45,15 @@ export function AdminShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.replace("/admin/login");
+    router.refresh();
+  };
 
   const isActive = (href: string) =>
     href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
@@ -126,15 +135,14 @@ export function AdminShell({
             <p className="truncate text-xs text-[var(--muted)]" title={userEmail}>
               {userEmail}
             </p>
-            <form action="/admin/logout" method="post">
-              <button
-                type="submit"
-                className="flex w-full items-center gap-2 rounded-[10px] px-3 py-2 text-sm text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--bg)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
-              >
-                <LogOut className="h-4 w-4" aria-hidden="true" />
-                {signOutLabel}
-              </button>
-            </form>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2 rounded-[10px] px-3 py-2 text-sm text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--bg)] hover:text-[var(--text)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
+            >
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+              {signOutLabel}
+            </button>
           </div>
         </div>
       </aside>

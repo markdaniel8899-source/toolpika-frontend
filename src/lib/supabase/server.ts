@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 /**
  * Server-side Supabase client for Server Components, Route Handlers and
- * Server Actions. Reads the auth cookies set by the magic-link flow.
+ * Server Actions. Uses the anon key, never the service role key.
  */
 export async function createClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

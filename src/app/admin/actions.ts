@@ -1,10 +1,52 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/supabase/admin";
 import { scoreSeo } from "@/lib/admin/seo";
 import type { FormState } from "@/lib/admin/types";
+
+/* -------------------------------------------------------------------------- */
+/* Auth — Supabase Auth only                                                  */
+/* -------------------------------------------------------------------------- */
+
+export type AdminLoginState = {
+  status: "idle" | "error";
+  message?: string;
+};
+
+function safeNext(value: FormDataEntryValue | null): string {
+  const next = typeof value === "string" ? value : "";
+  if (next.startsWith("/admin") && !next.startsWith("/admin/login")) {
+    return next;
+  }
+  return "/admin";
+}
+
+/** Signs in with Supabase Auth. The anon server client writes sb-*-auth-token cookies. */
+export async function adminLogin(
+  _prev: AdminLoginState,
+  formData: FormData,
+): Promise<AdminLoginState> {
+  const email = String(formData.get("email") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
+  const next = safeNext(formData.get("next"));
+
+  if (!email || !password) {
+    return { status: "error", message: "Email and password are required." };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    // Surface the real Supabase error, never a generic credential message.
+    return { status: "error", message: error.message };
+  }
+
+  redirect(next);
+}
 
 /* -------------------------------------------------------------------------- */
 /* Tools                                                                      */
