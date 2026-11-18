@@ -7,7 +7,7 @@
     "tools": "Outils",
     "popular": "Populaires",
     "new": "Nouveaux",
-    "guides": "Guides",
+    "guides": "Blog",
     "request": "Demander un outil"
   },
   "home": {
@@ -63,7 +63,7 @@
   },
   "guides": {
     "eyebrow": "Apprendre",
-    "title": "Guides",
+    "title": "Blog",
     "description": "Des guides courts et pratiques pour tirer parti de ces outils.",
     "empty": "Aucun guide n'est encore publié. Revenez bientôt, ou demandez celui qu'il vous faut.",
     "requestInstead": "Demander un guide"
@@ -128,6 +128,10 @@
     "title": "Outils {name}",
     "description": "Tous les outils {name} de Toolpika. Ils s'exécutent dans votre navigateur et ne demandent aucun compte.",
     "empty": "Aucun outil dans cette catégorie pour le moment."
+    ,"allEyebrow": "Browse"
+    ,"allTitle": "All categories"
+    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
+    ,"viewCategory": "View category"
   },
   "notFound": {
     "title": "Page introuvable",
@@ -141,7 +145,7 @@
     "legal": "Mentions légales",
     "popular": "Populaires",
     "new": "Nouveaux",
-    "guides": "Guides",
+    "guides": "Blog",
     "request": "Demande",
     "about": "À propos",
     "contact": "Contact",

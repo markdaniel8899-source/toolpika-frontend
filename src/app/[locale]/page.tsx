@@ -118,13 +118,13 @@ export default async function HomePage({ params }: LocalePageProps) {
         <div className="tp-split">
           <div className="tp-split-copy">
             <p className="tp-eyebrow">Browse</p>
-            <h2>Find by category</h2>
+            <h2 className="tp-section-title">Find by category</h2>
             <p>
               Small collections, each with one job. Start with the kind of work
               you are doing, not the name of a tool.
             </p>
-            <Link href="/all-tools" className="tp-text-link" style={{ marginTop: 26 }}>
-              View all tools
+            <Link href="/categories" className="tp-text-link" style={{ marginTop: 26 }}>
+              View all categories
               <ArrowRight className="tp-icon" aria-hidden="true" />
             </Link>
           </div>
@@ -182,7 +182,7 @@ export default async function HomePage({ params }: LocalePageProps) {
         <div className="tp-container tp-split" style={{ paddingTop: 56, paddingBottom: 56 }}>
           <div className="tp-split-copy">
             <p className="tp-eyebrow">Why Toolpika</p>
-            <h2>Small tools. No small print.</h2>
+            <h2 className="tp-section-title">Small tools. No small print.</h2>
             <p>
               No accounts. No uploads. No clutter. Just useful things that work
               in the tab you already have open.

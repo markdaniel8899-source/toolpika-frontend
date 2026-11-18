@@ -128,6 +128,10 @@
     "title": "Ferramentas de {name}",
     "description": "Todas as ferramentas de {name} no Toolpika. Rodam no navegador e não exigem conta.",
     "empty": "Ainda não há ferramentas nesta categoria."
+    ,"allEyebrow": "Browse"
+    ,"allTitle": "All categories"
+    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
+    ,"viewCategory": "View category"
   },
   "notFound": {
     "title": "Página não encontrada",

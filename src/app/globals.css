@@ -688,6 +688,7 @@ html.theme-transition .tp-dropdown-trigger {
 /* Popular / New sit on the next line, same format as the tabs above. */
 .tp-tabs-secondary {
   padding-top: 8px;
+  padding-bottom: 20px;
 }
 
 .tp-tab {
@@ -1508,12 +1509,17 @@ html.theme-transition .tp-dropdown-trigger {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 56px;
-  margin-top: 56px;
+  margin-top: 40px;
   align-items: start;
 }
 
 .tp-request-copy {
   max-width: 460px;
+}
+
+/* Slightly smaller heading on this page only. */
+.tp-request-copy .tp-atlas-title {
+  font-size: clamp(36px, 4.6vw, 56px);
 }
 
 /* Supporting points under the heading. */
@@ -1599,11 +1605,11 @@ html.theme-transition .tp-dropdown-trigger {
   line-height: 1.5;
 }
 
-/* Full-width fields, comfortable spacing. */
+/* Full-width fields, tight spacing. */
 .tp-request-fields {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
 }
 
 /* Fields use the neutral field surface, not the odd tinted wash. */
@@ -3040,6 +3046,32 @@ html:has([data-admin="true"]) {
 .tp-tool-related-link {
   display: inline-flex;
   margin-top: 28px;
+}
+
+/* ---------- All categories page ---------- */
+
+.tp-category-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  margin-top: 8px;
+}
+
+.tp-category-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.tp-category-section-head h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
 
 @media (max-width: 980px) {

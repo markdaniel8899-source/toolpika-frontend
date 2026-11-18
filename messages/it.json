@@ -7,7 +7,7 @@
     "tools": "Strumenti",
     "popular": "Popolari",
     "new": "Nuovi",
-    "guides": "Guide",
+    "guides": "Blog",
     "request": "Richiedi uno strumento"
   },
   "home": {
@@ -128,6 +128,10 @@
     "title": "Strumenti {name}",
     "description": "Tutti gli strumenti {name} su Toolpika. Funzionano nel browser e non richiedono un account.",
     "empty": "Non ci sono ancora strumenti in questa categoria."
+    ,"allEyebrow": "Browse"
+    ,"allTitle": "All categories"
+    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
+    ,"viewCategory": "View category"
   },
   "notFound": {
     "title": "Pagina non trovata",
@@ -141,7 +145,7 @@
     "legal": "Legale",
     "popular": "Popolari",
     "new": "Nuovi",
-    "guides": "Guide",
+    "guides": "Blog",
     "request": "Richiesta",
     "about": "Chi siamo",
     "contact": "Contatti",
