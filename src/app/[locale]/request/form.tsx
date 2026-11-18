@@ -111,43 +111,40 @@ export default function RequestForm({ labels }: RequestFormProps) {
   }
 
   return (
-    <form className="tp-card tp-form-card" onSubmit={handleSubmit} style={{ padding: 28 }} noValidate>
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 20 }}>
-        <h2 style={{ margin: 0, fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em" }}>
-          Tell us what you need
-        </h2>
-        <span style={{ color: "var(--muted-2)", fontSize: 12.5 }}>Takes about a minute</span>
-      </div>
+    <form className="tp-card tp-form-card tp-request-form" onSubmit={handleSubmit} style={{ padding: 28 }} noValidate>
+      {/* 2.2: single heading, one step up (28px), Inter bold, var(--text). */}
+      {/* 2.1: the "Takes about a minute" corner note is removed entirely. */}
+      <h2 className="tp-request-form-title">Tell us what you need</h2>
 
+      {/* 2.3: no visible <label>; soft placeholder + aria-label for a11y. */}
       <div className="tp-field">
-        <label className="tp-field-label" htmlFor="tool-name">{labels.toolNameLabel}</label>
         <input
           id="tool-name"
           className="tp-field-input"
           value={form.toolName}
           onChange={handleChange("toolName")}
           placeholder={labels.toolNamePlaceholder}
+          aria-label={labels.toolNameLabel}
           required
         />
-        {errors.toolName && <p style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.toolName}</p>}
+        {errors.toolName && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.toolName}</p>}
       </div>
 
       <div className="tp-field">
-        <label className="tp-field-label" htmlFor="tool-description">{labels.descriptionLabel}</label>
         <textarea
           id="tool-description"
           className="tp-field-input"
           value={form.description}
           onChange={handleChange("description")}
           placeholder={labels.descriptionPlaceholder}
+          aria-label={labels.descriptionLabel}
           required
         />
-        {errors.description && <p style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.description}</p>}
+        {errors.description && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.description}</p>}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="tp-field">
-          <label className="tp-field-label is-soft" htmlFor="tool-category">Category</label>
           <div className="tp-select-wrap">
             <Dropdown
               id="tool-category"
@@ -160,7 +157,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
                 { value: "Security", label: "Security" },
                 { value: "Something else", label: "Something else" },
               ]}
-              placeholder="Choose one"
+              placeholder="Choose a category"
               ariaLabel="Category"
               triggerClassName="tp-category-trigger"
               onChange={(value) => {
@@ -175,13 +172,10 @@ export default function RequestForm({ labels }: RequestFormProps) {
               }}
             />
           </div>
-          {errors.category && <p style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.category}</p>}
+          {errors.category && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.category}</p>}
         </div>
 
         <div className="tp-field">
-          <label className="tp-field-label" htmlFor="tool-email">
-            Email <span style={{ color: "var(--muted-2)", fontSize: 11.5, fontWeight: 400 }}>Optional</span>
-          </label>
           <input
             id="tool-email"
             type="email"
@@ -189,22 +183,19 @@ export default function RequestForm({ labels }: RequestFormProps) {
             value={form.email}
             onChange={handleChange("email")}
             placeholder={labels.emailPlaceholder}
+            aria-label={`${labels.emailLabel} (optional)`}
           />
-          {errors.email && <p style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.email}</p>}
+          {errors.email && <p role="alert" style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.email}</p>}
         </div>
       </div>
 
       <InboxStatus state={status} message={statusMessage} />
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, marginTop: 24 }}>
-        <p style={{ maxWidth: 250, margin: 0, color: "var(--muted-2)", fontSize: 12.5, lineHeight: 1.55 }}>
-          No account needed. We only use your email if we need to ask a follow-up about this request.
-        </p>
-        <button type="submit" className="tp-btn tp-btn-primary" disabled={status === "sending"}>
-          {status === "sending" ? "Sending…" : labels.submit}
-          <ArrowRight className="tp-icon" aria-hidden="true" />
-        </button>
-      </div>
+      {/* 2.5: the bottom helper note is removed entirely. */}
+      <button type="submit" className="tp-btn tp-btn-primary tp-request-submit" disabled={status === "sending"}>
+        {status === "sending" ? "Sending…" : labels.submit}
+        <ArrowRight className="tp-icon" aria-hidden="true" />
+      </button>
     </form>
   );
 }

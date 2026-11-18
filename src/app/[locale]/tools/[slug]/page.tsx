@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { ToolCard } from "@/components/tools/tool-card";
 import { getSiteUrl } from "@/lib/site-url";
-import { Reveal } from "@/components/ui/reveal";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { ToolWorkspace } from "@/components/tools/tool-workspace";
-import { getTool, getLiveTools, getToolsByCategory } from "@/lib/tools/registry";
+import {
+  getTool,
+  getLiveTools,
+  getToolsByCategory,
+} from "@/lib/tools/registry";
+import { getToolSeoContent } from "@/lib/tools/seo-content";
 
 const LOCALES = [
   "en", "de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi",
@@ -61,6 +58,21 @@ export async function generateMetadata({
   };
 }
 
+/** Human-readable category label shared by metadata and the page body. */
+function getCategoryLabel(
+  category: string,
+  t: (key: string) => string,
+): string {
+  const map: Record<string, string> = {
+    text: t("catText"),
+    image: t("catImage"),
+    code: t("catCode"),
+    converter: t("catConverter"),
+    security: t("catSecurity"),
+  };
+  return map[category] ?? category;
+}
+
 export default async function ToolPage({ params }: LocalePageProps) {
   const { slug, locale } = await params;
   const tool = getTool(slug);
@@ -69,20 +81,23 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const t = await getTranslations({ locale, namespace: "tools" });
   const tHow = await getTranslations({ locale, namespace: "toolPage" });
 
-  const categoryLabel = (() => {
-    const map: Record<string, string> = {
-      text: t("catText"),
-      image: t("catImage"),
-      code: t("catCode"),
-      converter: t("catConverter"),
-      security: t("catSecurity"),
-    };
-    return map[tool.category] ?? tool.category;
-  })();
+  const categoryLabel = getCategoryLabel(tool.category, t);
+  const seo = getToolSeoContent(tool, categoryLabel);
 
+  // 4.7 — same-category tools first; top popular as fallback when < 3.
   const related = getToolsByCategory(tool.category)
     .filter((item) => item.slug !== tool.slug)
     .slice(0, 4);
+  if (related.length < 3) {
+    const seen = new Set([tool.slug, ...related.map((item) => item.slug)]);
+    for (const fallback of getLiveTools()) {
+      if (related.length >= 4) break;
+      if (!seen.has(fallback.slug)) {
+        related.push(fallback);
+        seen.add(fallback.slug);
+      }
+    }
+  }
 
   const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}/${locale}/tools/${tool.slug}`;
@@ -114,8 +129,19 @@ export default async function ToolPage({ params }: LocalePageProps) {
           { "@type": "ListItem", position: 3, name: tool.title, item: pageUrl },
         ],
       },
+      // 4.6 — FAQPage schema for the fully visible FAQs rendered below.
+      {
+        "@type": "FAQPage",
+        mainEntity: seo.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      },
     ],
   };
+
+  const steps = [tHow("step1"), tHow("step2"), tHow("step3")];
 
   return (
     <>
@@ -125,103 +151,75 @@ export default async function ToolPage({ params }: LocalePageProps) {
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <main className="tp-container" style={{ paddingBottom: 64 }}>
-        <div style={{ paddingTop: 32, paddingBottom: 28 }}>
-          <Breadcrumbs
-            items={[
-              { label: t("home"), href: "/" },
-              { label: categoryLabel, href: `/category/${tool.category}` },
-              { label: tool.title },
-            ]}
-          />
-        </div>
+      <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
+        {/* 4.1 — Tool name first, H1. */}
+        <header className="tp-tool-page-head">
+          <h1 className="tp-tool-page-title">{tool.title}</h1>
+          <p className="tp-tool-page-sub">
+            <ShieldCheck className="tp-icon" aria-hidden="true" />
+            {t("runsInBrowser")}
+          </p>
+        </header>
 
-        <section className="tp-page-hero" style={{ paddingTop: 0 }}>
-          <div className="tp-page-hero-grid">
-            <div className="tp-page-title">
-              <p className="tp-eyebrow">{categoryLabel}</p>
-              <h1>{tool.title}</h1>
-              <p>{tool.description}</p>
+        {/* 4.2 — How to use heading. */}
+        <h2 className="tp-tool-page-section-title">{tHow("howToTitle")}</h2>
+
+        {/* 4.3 — Numbered steps with accent circles. */}
+        <ol className="tp-how-list">
+          {steps.map((step, index) => (
+            <li key={index} className="tp-how-item">
+              <span className="tp-how-number" aria-hidden="true">{index + 1}</span>
+              <p>{step}</p>
+            </li>
+          ))}
+        </ol>
+
+        {/* 4.4 — The actual tool workspace, below the steps. */}
+        <section className="tp-tool-page-workspace" aria-label={`${tool.title} tool`}>
+          <ToolWorkspace slug={tool.slug} />
+        </section>
+
+        {/* 4.5 — Per-tool SEO content in natural language. */}
+        <section className="tp-tool-seo">
+          <h2 className="tp-tool-page-section-title">{`About ${tool.title}`}</h2>
+          <p className="tp-tool-seo-lead">{seo.intro}</p>
+          {seo.sections.map((section) => (
+            <div key={section.heading} className="tp-tool-seo-block">
+              <h3 className="tp-tool-seo-subtitle">{section.heading}</h3>
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
-            <span className="tp-page-badge" style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "var(--muted)", fontSize: 12.5 }}>
-              <ShieldCheck className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
-              {t("runsInBrowser")}
-            </span>
+          ))}
+        </section>
+
+        {/* 4.6 — FAQs fully visible: H3 question + paragraph answer, no accordion. */}
+        <section className="tp-tool-faq">
+          <h2 className="tp-tool-page-section-title">{tHow("faqTitle")}</h2>
+          <div className="tp-tool-faq-list">
+            {seo.faqs.map((faq) => (
+              <div key={faq.question} className="tp-tool-faq-item">
+                <h3 className="tp-tool-faq-question">{faq.question}</h3>
+                <p className="tp-tool-faq-answer">{faq.answer}</p>
+              </div>
+            ))}
           </div>
         </section>
 
-        <Reveal>
-          <ToolWorkspace slug={tool.slug} />
-        </Reveal>
-
-        {/* SEO content */}
-        <div className="tp-split" style={{ marginTop: 56, paddingTop: 56, paddingBottom: 56 }}>
-          <div className="tp-split-copy">
-            <p className="tp-eyebrow">How it works</p>
-            <h2>No setup required</h2>
-            <p>Everything happens in this tab. There is nothing to install and nothing to upload.</p>
-          </div>
-
-          <div>
-            <div className="tp-card" style={{ padding: 24 }}>
-              <h3 style={{ margin: "0 0 18px", fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>
-                {tHow("howToTitle")}
-              </h3>
-              <div>
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="tp-step">
-                    <p>{tHow(`step${step}`)}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="tp-card" style={{ padding: 24, marginTop: 16 }}>
-              <h3 style={{ margin: "0 0 18px", fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>
-                {tHow("faqTitle")}
-              </h3>
-              <Accordion type="single" collapsible>
-                {[1, 2, 3].map((item) => (
-                  <AccordionItem key={item} value={`faq-${item}`}>
-                    <AccordionTrigger className="tp-faq-q">{tHow(`faqQuestion${item}`)}</AccordionTrigger>
-                    <AccordionContent>
-                      <p className="tp-faq-a">{tHow(`faqAnswer${item}`)}</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </div>
-        </div>
-
+        {/* 4.7 — Related tools, last on the page. */}
         {related.length > 0 && (
-          <section style={{ paddingTop: 40, paddingBottom: 56 }}>
-            <div className="tp-section-head">
-              <div>
-                <p className="tp-eyebrow">Keep going</p>
-                <h2 className="tp-section-title">{tHow("relatedTitle")}</h2>
-              </div>
-            </div>
-            <div className="tp-tool-grid" style={{ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}>
+          <section className="tp-tool-related">
+            <h2 className="tp-tool-page-section-title">{tHow("relatedTitle")}</h2>
+            <div className="tp-tool-grid tp-tool-related-grid">
               {related.map((item) => (
                 <ToolCard key={item.slug} tool={item} />
               ))}
             </div>
+            <Link href="/request" className="tp-text-link tp-tool-related-link">
+              Missing a tool? Request it
+            </Link>
           </section>
         )}
-
-        <section style={{ paddingBottom: 56 }}>
-          <div className="tp-card" style={{ padding: 24 }}>
-            <h2 style={{ margin: "0 0 12px", fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em" }}>
-              {t("about", { title: tool.title })}
-            </h2>
-            <p style={{ margin: 0, color: "var(--muted)", fontSize: 14.5 }}>{tool.description}</p>
-            <Link href="/request" className="tp-text-link" style={{ marginTop: 20 }}>
-              Request another tool
-              <ArrowRight className="tp-icon" aria-hidden="true" />
-            </Link>
-          </div>
-        </section>
       </main>
     </>
   );

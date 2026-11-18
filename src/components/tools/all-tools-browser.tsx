@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Flame, Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -18,8 +18,9 @@ export function AllToolsBrowser({
   categories: CategoryTab[];
 }) {
   const [active, setActive] = useState("all");
-  const reduceMotion = useReducedMotion();
 
+  // 3.4 — grid content swaps instantly on tab change; only the accent
+  // indicator moves (handled by the layoutId pill below), no page transition.
   const visible = active === "all" ? tools : tools.filter((tool) => tool.category === active);
 
   const tabs = [{ slug: "all", label: "All tools" }, ...categories];
@@ -41,11 +42,7 @@ export function AllToolsBrowser({
                 <motion.span
                   layoutId="all-tools-tab-highlight"
                   className="tp-tab-highlight"
-                  transition={
-                    reduceMotion
-                      ? { duration: 0 }
-                      : { type: "spring", stiffness: 420, damping: 34 }
-                  }
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 />
               )}
               <span className="tp-tab-label">{tab.label}</span>
