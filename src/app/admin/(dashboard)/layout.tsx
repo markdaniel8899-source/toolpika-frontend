@@ -20,13 +20,42 @@ export default async function AdminDashboardLayout({
   children: React.ReactNode;
 }) {
   let user: { email?: string } | null = null;
+  let authError: string | null = null;
+  let envUrlStatus: string | null = null;
 
   try {
+    envUrlStatus = process.env.NEXT_PUBLIC_SUPABASE_URL
+      ? "NEXT_PUBLIC_SUPABASE_URL: EXISTS"
+      : "NEXT_PUBLIC_SUPABASE_URL: MISSING";
     const supabase = await createClient();
     const result = await supabase.auth.getUser();
     user = result.data.user;
-  } catch (error) {
+  } catch (error: any) {
     console.error("[admin] auth check failed:", error);
+    authError = error?.message || String(error);
+  }
+
+  // RENDER ERROR ON SCREEN — do not let Vercel show a generic 500 page
+  if (authError) {
+    return (
+      <html lang="en">
+        <body className="flex min-h-screen items-center justify-center bg-[var(--bg)] px-6 font-sans text-[var(--text)]">
+          <div className="text-center text-red-500">
+            <h1 style={{ fontSize: "22px", fontWeight: 600, letterSpacing: "-0.03em" }}>
+              Admin Dashboard Error
+            </h1>
+            <p className="mt-3 text-[var(--muted)]">{envUrlStatus}</p>
+            <pre className="mt-4 bg-gray-100 p-4 text-sm text-left w-full max-w-2xl overflow-x-auto rounded">
+              {authError}
+            </pre>
+            <p className="mt-4 text-[var(--muted)] text-sm">
+              Fix: Check Vercel Environment Variables → NEXT_PUBLIC_SUPABASE_URL and
+              NEXT_PUBLIC_SUPABASE_ANON_KEY, then redeploy.
+            </p>
+          </div>
+        </body>
+      </html>
+    );
   }
 
   if (!user) {

@@ -48,7 +48,7 @@ function loginRedirect(request: NextRequest, source?: NextResponse) {
 }
 
 /**
- * Next 16 Proxy (formerly middleware). Only checks the Supabase auth session.
+ * Next 16 Middleware. Only checks the Supabase auth session.
  * Never throws: a bad env value or auth failure must not produce a 500.
  */
 async function handleAdmin(request: NextRequest) {
@@ -58,7 +58,7 @@ async function handleAdmin(request: NextRequest) {
 
   if (!isValidUrl(supabaseUrl) || !anonKey) {
     console.error(
-      "[proxy] Invalid or missing Supabase env vars. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel.",
+      "[middleware] Invalid or missing Supabase env vars. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel.",
     );
     if (pathname === LOGIN_PATH) return NextResponse.next();
     return loginRedirect(request);
@@ -88,13 +88,13 @@ async function handleAdmin(request: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error("[proxy] Supabase auth check failed:", error);
+    console.error("[middleware] Supabase auth check failed:", error);
     if (pathname === LOGIN_PATH) return NextResponse.next();
     return loginRedirect(request, response);
   }
 }
 
-export default async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (isAdminRoute(pathname)) {
