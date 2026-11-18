@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
-import { submitContactMessage } from "./actions";
+import { ArrowRight } from "lucide-react";
+import { InboxStatus } from "@/components/ui/inbox-status";
+import { submitInbox } from "@/lib/inbox/submit";
 
 export type ContactCopy = {
   name: string;
@@ -14,31 +15,35 @@ export type ContactCopy = {
 
 export function ContactForm({ copy }: { copy: ContactCopy }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [error, setError] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setStatus("sending");
-    setError("");
+    const form = event.currentTarget;
+    const data = new FormData(form);
 
-    const result = await submitContactMessage({
-      name: String(data.get("name") ?? ""),
-      email: String(data.get("email") ?? ""),
-      message: String(data.get("message") ?? ""),
+    setStatus("sending");
+    setStatusMessage("");
+
+    const result = await submitInbox({
+      type: "contact",
+      name: String(data.get("name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      description: String(data.get("message") ?? "").trim(),
     });
 
     if (result.ok) {
       setStatus("sent");
-      event.currentTarget.reset();
+      setStatusMessage("Message sent. We will read it shortly.");
+      form.reset();
     } else {
-      setError(result.error);
       setStatus("error");
+      setStatusMessage(result.error ?? "Could not send your message.");
     }
   };
 
   return (
-    <form className="tp-atlas-card" onSubmit={handleSubmit}>
+    <form className="tp-atlas-card" onSubmit={handleSubmit} noValidate>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <input className="tp-atlas-input" name="name" placeholder={copy.name} required />
         <input className="tp-atlas-input" name="email" type="email" placeholder={copy.email} required />
@@ -52,28 +57,14 @@ export function ContactForm({ copy }: { copy: ContactCopy }) {
         />
       </div>
 
-      {error && (
-        <p role="alert" style={{ margin: "10px 0 0", color: "var(--danger)", fontSize: 12.5 }}>
-          {error}
-        </p>
-      )}
+      <InboxStatus state={status} message={statusMessage} />
 
       <button type="submit" className="tp-btn tp-btn-primary" style={{ width: "100%", marginTop: 18, height: 48 }} disabled={status === "sending"}>
-        {status === "sent" ? (
-          <>
-            Message sent
-            <Check className="tp-icon" aria-hidden="true" />
-          </>
-        ) : (
-          <>
-            {status === "sending" ? "Sending..." : copy.submit}
-            <ArrowRight className="tp-icon" aria-hidden="true" />
-          </>
-        )}
+        {status === "sending" ? "Sending..." : copy.submit}
+        <ArrowRight className="tp-icon" aria-hidden="true" />
       </button>
-
       <p style={{ margin: "10px 0 0", color: "var(--muted-2)", fontSize: 12.5, textAlign: "center" }}>
-        {status === "sent" ? "Thanks. We will read your message." : copy.note}
+        {copy.note}
       </p>
     </form>
   );

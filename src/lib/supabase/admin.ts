@@ -1,9 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { ADMIN_COOKIE, ADMIN_EMAIL } from "@/lib/admin/credentials";
 
 export interface AdminProfile {
   id: string;
@@ -20,9 +18,8 @@ export interface AdminSession {
  * Reads the signed-in user and their profile row.
  *
  * Returns null when nobody is signed in. `profile` is null when the row is
- * missing — the auth trigger in backend/database/001_initial_schema.sql
- * creates it on sign-up, so a missing row means the account was made before
- * the trigger existed.
+ * missing — create it with backend/database/005_admin_user.sql after adding
+ * the user in Supabase Auth.
  */
 export async function getAdminSession(): Promise<AdminSession | null> {
   if (!isSupabaseConfigured()) return null;
@@ -55,34 +52,20 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 /**
  * Server-side guard for every admin dashboard page.
  *
- * The proxy already redirects unauthenticated traffic. This second check is
- * what actually protects the data: it runs in the page, on the server, with
- * the session cookies — it cannot be bypassed by hiding a link.
+ * Only a real Supabase Auth session with an admin profile passes. The proxy
+ * redirects earlier, but pages run this check too so data can never be read
+ * by hiding a link.
  */
 export async function requireAdmin(): Promise<AdminSession> {
-  const cookieStore = await cookies();
-  const credentialSession = cookieStore.get(ADMIN_COOKIE)?.value === "1";
-
   const session = await getAdminSession();
-
-  if (credentialSession || session?.profile?.role === "admin") {
-    if (session) return session;
-    return {
-      user: {
-        id: "credential-admin",
-        email: ADMIN_EMAIL,
-      } as User,
-      profile: {
-        id: "credential-admin",
-        email: ADMIN_EMAIL,
-        role: "admin",
-      },
-    };
-  }
 
   if (!session) {
     redirect("/admin/login");
   }
 
-  redirect("/admin/login?error=forbidden");
+  if (session.profile?.role !== "admin") {
+    redirect("/admin/login?error=forbidden");
+  }
+
+  return session;
 }

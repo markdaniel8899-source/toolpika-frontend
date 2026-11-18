@@ -1,15 +1,32 @@
 /**
- * Supabase configuration check.
+ * Supabase configuration.
  *
- * The admin dashboard talks to Supabase, but the public site must build and
- * run without it. Every admin entry point asks this helper first so a missing
- * .env.local produces a readable setup notice instead of a crash.
+ * Production rule: never fabricate data when Supabase is unavailable. Admin
+ * reads throw a typed error which the dashboard error boundary renders as a
+ * clear setup message. Public forms return a readable error instead.
  */
+
+export const SUPABASE_UNAVAILABLE =
+  "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in the deployment environment, then redeploy.";
+
+export class SupabaseUnavailableError extends Error {
+  constructor() {
+    super(SUPABASE_UNAVAILABLE);
+    this.name = "SupabaseUnavailableError";
+  }
+}
+
 export function isSupabaseConfigured(): boolean {
   return Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
+}
+
+export function assertSupabaseConfigured(): void {
+  if (!isSupabaseConfigured()) {
+    throw new SupabaseUnavailableError();
+  }
 }
 
 export function getSupabaseConfig(): { url: string; anonKey: string } | null {

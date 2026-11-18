@@ -3,7 +3,8 @@
 import { useCallback, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { Dropdown } from "@/components/ui/dropdown";
-import { submitToolRequest } from "./actions";
+import { InboxStatus } from "@/components/ui/inbox-status";
+import { submitInbox } from "@/lib/inbox/submit";
 
 interface RequestFormProps {
   labels: {
@@ -28,7 +29,8 @@ export default function RequestForm({ labels }: RequestFormProps) {
   const [form, setForm] = useState(emptyForm);
   const [category, setCategory] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [statusMessage, setStatusMessage] = useState("");
   const [success, setSuccess] = useState(false);
 
   const validate = useCallback(() => {
@@ -59,16 +61,25 @@ export default function RequestForm({ labels }: RequestFormProps) {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!validate()) return;
-    setSubmitting(true);
+    setStatus("sending");
+    setStatusMessage("");
     setErrors({});
-    const result = await submitToolRequest(form);
-    setSubmitting(false);
+
+    const result = await submitInbox({
+      type: "tool_request",
+      toolName: form.toolName.trim(),
+      email: form.email.trim() || undefined,
+      description: `Category: ${category}\n\n${form.description.trim()}`,
+    });
+
     if (result.ok) {
+      setStatus("idle");
       setSuccess(true);
       setForm(emptyForm);
       setCategory("");
     } else {
-      setErrors({ form: result.error });
+      setStatus("error");
+      setStatusMessage(result.error ?? "Could not send your request.");
     }
   };
 
@@ -183,18 +194,14 @@ export default function RequestForm({ labels }: RequestFormProps) {
         </div>
       </div>
 
-      {errors.form && (
-        <p role="alert" style={{ margin: "0 0 16px", color: "var(--danger)", fontSize: 13 }}>
-          {errors.form}
-        </p>
-      )}
+      <InboxStatus state={status} message={statusMessage} />
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, marginTop: 24 }}>
         <p style={{ maxWidth: 250, margin: 0, color: "var(--muted-2)", fontSize: 12.5, lineHeight: 1.55 }}>
           No account needed. We only use your email if we need to ask a follow-up about this request.
         </p>
-        <button type="submit" className="tp-btn tp-btn-primary" disabled={submitting}>
-          {submitting ? "Sending…" : labels.submit}
+        <button type="submit" className="tp-btn tp-btn-primary" disabled={status === "sending"}>
+          {status === "sending" ? "Sending…" : labels.submit}
           <ArrowRight className="tp-icon" aria-hidden="true" />
         </button>
       </div>

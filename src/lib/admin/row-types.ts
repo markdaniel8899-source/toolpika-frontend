@@ -13,14 +13,22 @@ export interface AdminTool {
   updated_at: string;
 }
 
+export type InboxType = "tool_request" | "contact";
+export type InboxStatus =
+  | "new"
+  | "in_progress"
+  | "resolved"
+  | "rejected";
+
 export interface AdminRequest {
   id: string;
-  tool_name: string;
-  description: string;
+  type: InboxType;
+  name: string | null;
   email: string | null;
-  status: "new" | "building" | "launched";
+  tool_name: string | null;
+  description: string;
+  status: InboxStatus;
   created_at: string;
-  updated_at: string;
 }
 
 export interface AdminPost {

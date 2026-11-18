@@ -43,6 +43,7 @@
   --danger-hover: #b91c1c;
   --success: #16a34a;
   --warning: #d97706;
+  --info: #2f6fed;
 
   --radius-control: 10px;
   --radius-card: 14px;
@@ -96,6 +97,7 @@
   --danger-hover: #ef4444;
   --success: #4ade80;
   --warning: #fbbf24;
+  --info: #79a6ff;
 
   --shadow-md: 0 18px 42px rgba(0, 0, 0, 0.5);
 }

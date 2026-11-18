@@ -1,7 +1,19 @@
 import { ShieldCheck } from "lucide-react";
-import { CredentialsForm } from "@/components/admin/credentials-form";
+import { AdminLoginForm } from "@/components/admin/admin-login-form";
+import { adminMessages } from "@/lib/admin/messages";
 
-export default function AdminLoginPage() {
+export const metadata = {
+  title: adminMessages.meta.title,
+};
+
+export default async function AdminLoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+  const t = adminMessages.login;
+
   return (
     <main
       style={{
@@ -37,14 +49,28 @@ export default function AdminLoginPage() {
             <ShieldCheck className="tp-icon" style={{ width: 20, height: 20 }} aria-hidden="true" />
           </span>
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 600, letterSpacing: "-0.03em" }}>
-            Toolpika Admin
+            {t.title}
           </h1>
-          <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 13 }}>
-            Restricted area. Sign in to continue.
+          <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 13, lineHeight: 1.6 }}>
+            {t.description}
           </p>
         </div>
 
-        <CredentialsForm />
+        <AdminLoginForm
+          errorMessage={error}
+          copy={{
+            emailLabel: t.emailLabel,
+            emailPlaceholder: t.emailPlaceholder,
+            passwordLabel: t.passwordLabel,
+            passwordPlaceholder: t.passwordPlaceholder,
+            submit: t.submit,
+            sending: t.sending,
+            errorGeneric: t.errorGeneric,
+            errorInvalid: t.errorInvalid,
+            errorForbidden: t.errorForbidden,
+            errorMissingConfig: t.errorMissingConfig,
+          }}
+        />
       </div>
     </main>
   );

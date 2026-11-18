@@ -1,105 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { headers, cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/supabase/admin";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { scoreSeo } from "@/lib/admin/seo";
-import { ADMIN_COOKIE, ADMIN_EMAIL, ADMIN_PASSWORD } from "@/lib/admin/credentials";
-import type { FormState, MagicLinkState } from "@/lib/admin/types";
-
-/* -------------------------------------------------------------------------- */
-/* Auth                                                                       */
-/* -------------------------------------------------------------------------- */
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export type AdminLoginState = {
-  status: "idle" | "error";
-  message?: "invalid" | "empty";
-};
-
-/** Single-credential sign-in for this deployment. */
-export async function adminLogin(
-  _prev: AdminLoginState,
-  formData: FormData,
-): Promise<AdminLoginState> {
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  const password = String(formData.get("password") ?? "");
-
-  if (!email || !password) {
-    return { status: "error", message: "empty" };
-  }
-
-  if (email !== ADMIN_EMAIL.toLowerCase() || password !== ADMIN_PASSWORD) {
-    return { status: "error", message: "invalid" };
-  }
-
-  const cookieStore = await cookies();
-  cookieStore.set(ADMIN_COOKIE, "1", {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-
-  redirect("/admin");
-}
-
-export async function requestMagicLink(
-  _prev: MagicLinkState,
-  formData: FormData
-): Promise<MagicLinkState> {
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-
-  // "Send another link" re-opens the form without sending a second email.
-  if (formData.get("intent") === "another") {
-    return { status: "idle", email };
-  }
-
-  if (!EMAIL_PATTERN.test(email)) {
-    return { status: "error", message: "invalid_email", email };
-  }
-
-  if (!isSupabaseConfigured()) {
-    return { status: "error", message: "not_configured", email };
-  }
-
-  const headerList = await headers();
-  const host = headerList.get("host") ?? "localhost:3000";
-  const protocol = headerList.get("x-forwarded-proto") ?? "http";
-
-  const supabase = await createClient();
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: `${protocol}://${host}/admin/login`,
-    },
-  });
-
-  if (error) {
-    const rateLimited = /rate|too many/i.test(error.message);
-    return {
-      status: "error",
-      message: rateLimited ? "rate_limited" : "generic",
-      email,
-    };
-  }
-
-  return { status: "sent", email };
-}
-
-export async function signOut(): Promise<void> {
-  if (isSupabaseConfigured()) {
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-  }
-
-  redirect("/admin/login");
-}
+import type { FormState } from "@/lib/admin/types";
 
 /* -------------------------------------------------------------------------- */
 /* Tools                                                                      */
@@ -193,7 +98,12 @@ export async function deleteTool(id: string): Promise<void> {
 /* Requests                                                                   */
 /* -------------------------------------------------------------------------- */
 
-const REQUEST_STATUSES = ["new", "building", "launched"] as const;
+const REQUEST_STATUSES = [
+  "new",
+  "in_progress",
+  "resolved",
+  "rejected",
+] as const;
 type RequestStatus = (typeof REQUEST_STATUSES)[number];
 
 export async function updateRequestStatus(
@@ -205,7 +115,7 @@ export async function updateRequestStatus(
   if (!REQUEST_STATUSES.includes(status)) return;
 
   const supabase = await createClient();
-  await supabase.from("tool_requests").update({ status }).eq("id", id);
+  await supabase.from("inbox_messages").update({ status }).eq("id", id);
 
   revalidatePath("/admin/requests");
   revalidatePath("/admin");

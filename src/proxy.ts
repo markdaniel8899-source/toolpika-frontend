@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
-import { ADMIN_COOKIE } from "@/lib/admin/credentials";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -28,18 +27,18 @@ function isAdminRoute(pathname: string) {
 async function handleAdmin(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // Single-credential admin session — no Supabase check needed.
-  if (request.cookies.get(ADMIN_COOKIE)?.value === "1") {
-    return NextResponse.next();
-  }
-
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Supabase is not configured in this environment. Let the request through so
-  // the dashboard can show a setup notice instead of an infinite redirect.
+  // Without Supabase there is no session to check. Send the user to the login
+  // page with a clear setup error instead of letting requests through.
   if (!url || !anonKey) {
-    return NextResponse.next();
+    if (pathname === LOGIN_PATH) return NextResponse.next();
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = LOGIN_PATH;
+    loginUrl.search = "";
+    loginUrl.searchParams.set("error", "not_configured");
+    return NextResponse.redirect(loginUrl);
   }
 
   let response = NextResponse.next({ request });

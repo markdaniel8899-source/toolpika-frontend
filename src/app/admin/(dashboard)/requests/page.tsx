@@ -20,11 +20,18 @@ export default async function AdminRequestsPage() {
           userEmail: t.userEmail,
           date: adminMessages.common.date,
           status: adminMessages.common.status,
+          typeLabel: t.typeLabel,
+          typeToolRequest: t.typeToolRequest,
+          typeContact: t.typeContact,
+          filterAll: t.filterAll,
+          filterToolRequests: t.filterToolRequests,
+          filterContact: t.filterContact,
+          statusNew: t.statusNew,
+          statusInProgress: t.statusInProgress,
+          statusResolved: t.statusResolved,
+          statusRejected: t.statusRejected,
           empty: t.empty,
-          markBuilding: t.markBuilding,
-          markLaunched: t.markLaunched,
-          reopen: t.reopen,
-          launchedNote: t.launchedNote,
+          statusNote: t.statusNote,
         }}
       />
     </>
