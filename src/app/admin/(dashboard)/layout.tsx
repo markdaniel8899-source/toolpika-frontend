@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { requireAdmin } from "@/lib/supabase/admin";
+import { redirect } from "next/navigation";
+import { getAdminSession } from "@/lib/supabase/admin";
 import { adminMessages } from "@/lib/admin/messages";
 import {
   ADMIN_ICONS,
@@ -18,9 +19,28 @@ export default async function AdminDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // requireAdmin() redirects to /admin/login when there is no session, when
-  // the profile role is not admin, or when Supabase is not configured.
-  const session = await requireAdmin();
+  let session: Awaited<ReturnType<typeof getAdminSession>> = null;
+
+  try {
+    session = await getAdminSession();
+  } catch (error) {
+    console.error("Admin session error:", error);
+    return (
+      <div style={{ padding: 32 }}>
+        <h1 style={{ fontSize: 20, fontWeight: 600 }}>
+          Profile query failed.
+        </h1>
+        <p style={{ marginTop: 8, color: "var(--muted)", fontSize: 14 }}>
+          Check SUPABASE_SERVICE_ROLE_KEY in Vercel env vars. Visit /admin/debug for details.
+        </p>
+      </div>
+    );
+  }
+
+  if (!session || session.profile?.role !== "admin") {
+    redirect("/admin/login");
+  }
+
   const t = adminMessages.nav;
 
   const nav: AdminNavItem[] = [

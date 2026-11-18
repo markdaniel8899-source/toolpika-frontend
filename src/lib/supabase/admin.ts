@@ -43,9 +43,12 @@ export async function getAdminSession(): Promise<AdminSession | null> {
       .maybeSingle();
 
     if (error) {
-      // Full Supabase/PostgREST error for Vercel logs.
+      // Full Supabase/PostgREST error for Vercel logs, then let the layout show it.
       console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
-    } else if (data) {
+      throw error;
+    }
+
+    if (data) {
       profile = {
         id: data.id,
         email: data.email,
@@ -54,6 +57,7 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     }
   } catch (error) {
     console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
+    throw error;
   }
 
   return { user, profile };

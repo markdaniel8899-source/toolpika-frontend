@@ -28,28 +28,14 @@ export async function adminLogin(
     return { status: "error", message: "Email and password are required." };
   }
 
-  let errorMessage: string | null = null;
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-  try {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      // Full Supabase auth error for Vercel logs.
-      console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
-      errorMessage = error.message;
-    }
-  } catch (error) {
-    // Surface the REAL error (including missing env or network failures).
-    console.error("SUPABASE DEBUG ERROR:", JSON.stringify(error, null, 2));
-    errorMessage =
-      error instanceof Error ? error.message : "Unexpected sign-in error.";
-  }
-
-  if (errorMessage) {
-    return { status: "error", message: errorMessage };
+  if (error) {
+    return { status: "error", message: error.message };
   }
 
   redirect("/admin");
