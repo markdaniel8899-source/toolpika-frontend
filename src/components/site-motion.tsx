@@ -20,14 +20,18 @@ export function SiteMotion() {
 
   /* Keep the chosen theme across locale switches */
   useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
     try {
       const saved = localStorage.getItem("theme");
       if (saved === "dark" || saved === "light") {
-        document.documentElement.setAttribute("data-theme", saved);
+        root.setAttribute("data-theme", saved);
       }
     } catch {
       // Storage may be blocked; the current attribute stays untouched.
     }
+    const timer = window.setTimeout(() => root.classList.remove("theme-transition"), 240);
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   /* Custom cursor */

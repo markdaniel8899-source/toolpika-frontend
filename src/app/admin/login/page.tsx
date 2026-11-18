@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
             Toolpika Admin
           </h1>
           <p style={{ margin: "6px 0 0", color: "var(--muted)", fontSize: 13 }}>
-            Restricted area. Use the owner credential to sign in.
+            Restricted area. Sign in to continue.
           </p>
         </div>
 

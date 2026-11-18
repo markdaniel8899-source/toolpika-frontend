@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, Flame, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
+import { AllToolsBrowser } from "@/components/tools/all-tools-browser";
 import { categories, getLiveTools } from "@/lib/tools/registry";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
@@ -42,37 +43,13 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
         <SearchBar />
       </div>
 
-      <div className="tp-tabs" aria-label="Categories">
-        <Link href="/all-tools" className="tp-tab" data-active="true">All tools</Link>
-        {categories.map((category) => (
-          <Link key={category.slug} href={`/category/${category.slug}`} className="tp-tab">
-            {category.label}
-          </Link>
-        ))}
-      </div>
-
-      <div className="tp-suggestions" aria-label="Suggestions">
-        <Link href="/popular" className="tp-suggestion">
-          <span className="tp-suggestion-pill">
-            <Flame className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
-            Popular
-          </span>
-          <p>Tools people come back to most.</p>
-        </Link>
-        <Link href="/new" className="tp-suggestion">
-          <span className="tp-suggestion-pill">
-            <Sparkles className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
-            New
-          </span>
-          <p>The latest additions to the collection.</p>
-        </Link>
-      </div>
-
-      <div className="tp-tool-grid">
-        {tools.map((tool) => (
-          <ToolCard key={tool.slug} tool={tool} />
-        ))}
-      </div>
+      <AllToolsBrowser
+        tools={tools}
+        categories={categories.map((category) => ({
+          slug: category.slug,
+          label: category.label,
+        }))}
+      />
 
       {featured.length > 0 && (
         <section style={{ marginTop: 56 }}>

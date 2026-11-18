@@ -47,7 +47,7 @@ export function CredentialsForm() {
             type="email"
             required
             autoComplete="username"
-            placeholder="admin@example.com"
+            placeholder="Email"
             className="tp-atlas-input"
             style={{ paddingLeft: 38 }}
           />

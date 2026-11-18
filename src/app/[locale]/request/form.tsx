@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+import { Dropdown } from "@/components/ui/dropdown";
 import { submitToolRequest } from "./actions";
 
 interface RequestFormProps {
@@ -137,12 +138,22 @@ export default function RequestForm({ labels }: RequestFormProps) {
         <div className="tp-field">
           <label className="tp-field-label is-soft" htmlFor="tool-category">Category</label>
           <div className="tp-select-wrap">
-            <select
+            <Dropdown
               id="tool-category"
-              className={category ? "tp-field-input tp-select has-value" : "tp-field-input tp-select"}
               value={category}
-              onChange={(event) => {
-                setCategory(event.target.value);
+              options={[
+                { value: "Text", label: "Text" },
+                { value: "Images", label: "Images" },
+                { value: "Code", label: "Code" },
+                { value: "Converters", label: "Converters" },
+                { value: "Security", label: "Security" },
+                { value: "Something else", label: "Something else" },
+              ]}
+              placeholder="Choose one"
+              ariaLabel="Category"
+              triggerClassName="tp-category-trigger"
+              onChange={(value) => {
+                setCategory(value);
                 if (errors.category) {
                   setErrors((prev) => {
                     const next = { ...prev };
@@ -151,17 +162,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
                   });
                 }
               }}
-              required
-            >
-              <option value="" disabled>Choose one</option>
-              <option>Text</option>
-              <option>Images</option>
-              <option>Code</option>
-              <option>Converters</option>
-              <option>Security</option>
-              <option>Something else</option>
-            </select>
-            <ChevronDown className="tp-icon tp-select-icon" aria-hidden="true" />
+            />
           </div>
           {errors.category && <p style={{ margin: 0, color: "var(--danger)", fontSize: 12 }}>{errors.category}</p>}
         </div>
