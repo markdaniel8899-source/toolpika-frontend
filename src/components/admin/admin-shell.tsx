@@ -15,12 +15,37 @@ import {
   Settings,
   Wrench,
   X,
+  type LucideIcon,
 } from "lucide-react";
+
+/**
+ * Nav icons are referenced by a plain string key, never by component value.
+ * Server Components cannot serialize functions across the RSC -> client
+ * boundary (React error #130), so the icon map lives here on the client.
+ */
+export type AdminIconName =
+  | "overview"
+  | "tools"
+  | "requests"
+  | "blog"
+  | "analytics"
+  | "settings"
+  | "editor";
+
+const ADMIN_ICON_MAP: Record<AdminIconName, LucideIcon> = {
+  overview: LayoutGrid,
+  tools: Wrench,
+  requests: Inbox,
+  blog: FileText,
+  analytics: BarChart3,
+  settings: Settings,
+  editor: PenLine,
+};
 
 export interface AdminNavItem {
   href: string;
   label: string;
-  Icon: typeof LayoutGrid;
+  iconName: AdminIconName;
 }
 
 /**
@@ -103,7 +128,7 @@ export function AdminShell({
             <ul className="flex flex-col gap-1">
               {nav.map((item) => {
                 const active = isActive(item.href);
-                const Icon = item.Icon;
+                const Icon = ADMIN_ICON_MAP[item.iconName] ?? LayoutGrid;
 
                 return (
                   <li key={item.href}>
@@ -152,13 +177,3 @@ export function AdminShell({
   );
 }
 
-/** Icons used by the dashboard nav, kept next to the shell on purpose. */
-export const ADMIN_ICONS = {
-  overview: LayoutGrid,
-  tools: Wrench,
-  requests: Inbox,
-  blog: FileText,
-  analytics: BarChart3,
-  settings: Settings,
-  editor: PenLine,
-};

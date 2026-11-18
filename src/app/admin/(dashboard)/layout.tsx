@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { adminMessages } from "@/lib/admin/messages";
-import {
-  ADMIN_ICONS,
-  AdminShell,
-  type AdminNavItem,
-} from "@/components/admin/admin-shell";
+import { AdminShell, type AdminNavItem } from "@/components/admin/admin-shell";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -64,17 +60,14 @@ export default async function AdminDashboardLayout({
 
   const t = adminMessages.nav;
 
+  // Only serializable data (strings) crosses the server -> client boundary.
   const nav: AdminNavItem[] = [
-    { href: "/admin", label: t.overview, Icon: ADMIN_ICONS.overview },
-    { href: "/admin/tools", label: t.tools, Icon: ADMIN_ICONS.tools },
-    { href: "/admin/requests", label: t.requests, Icon: ADMIN_ICONS.requests },
-    { href: "/admin/blog", label: t.blog, Icon: ADMIN_ICONS.blog },
-    {
-      href: "/admin/analytics",
-      label: t.analytics,
-      Icon: ADMIN_ICONS.analytics,
-    },
-    { href: "/admin/settings", label: t.settings, Icon: ADMIN_ICONS.settings },
+    { href: "/admin", label: t.overview, iconName: "overview" },
+    { href: "/admin/tools", label: t.tools, iconName: "tools" },
+    { href: "/admin/requests", label: t.requests, iconName: "requests" },
+    { href: "/admin/blog", label: t.blog, iconName: "blog" },
+    { href: "/admin/analytics", label: t.analytics, iconName: "analytics" },
+    { href: "/admin/settings", label: t.settings, iconName: "settings" },
   ];
 
   return (
