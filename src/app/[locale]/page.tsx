@@ -181,7 +181,7 @@ export default async function HomePage({ params }: LocalePageProps) {
             </p>
           </div>
 
-          <div className="tp-trust-grid">
+          <div className="tp-trust-grid tp-static-cards">
             <div className="tp-card tp-trust-card tp-trust-feature">
               <span className="tp-icon-tile"><Shield className="tp-icon" aria-hidden="true" /></span>
               <div>

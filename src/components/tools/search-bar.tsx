@@ -121,7 +121,7 @@ export function SearchBar() {
             onBlur={() => setIsFocused(false)}
             placeholder={t("placeholder")}
           />
-          {query ? (
+          {query && (
             <button
               type="button"
               onClick={clear}
@@ -131,29 +131,7 @@ export function SearchBar() {
             >
               <X className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
             </button>
-          ) : (
-            <kbd
-              style={{
-                padding: "2px 7px",
-                border: "1px solid var(--border)",
-                borderRadius: 6,
-                background: "var(--surface-2)",
-                color: "var(--muted)",
-                fontSize: 10.5,
-                lineHeight: 1.5,
-              }}
-            >
-              /
-            </kbd>
           )}
-          <button
-            type="submit"
-            className="tp-icon-btn tp-icon-only"
-            style={{ width: 32, height: 32, border: 0, background: "var(--accent-soft)" }}
-            aria-label={t("go")}
-          >
-            <Search className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
-          </button>
         </div>
       </form>
 

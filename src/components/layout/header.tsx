@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowRight, ChevronDown, Globe, Menu, Moon, Sun, X, Zap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, ChevronDown, Globe, Menu, Moon, Sun, X, Zap } from "lucide-react";
 import { usePathname, useRouter, Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
@@ -38,6 +38,11 @@ export function Header() {
   const scrolled = useScrolled(8);
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [localeOpen, setLocaleOpen] = useState(false);
+  const [localeHighlight, setLocaleHighlight] = useState(0);
+  const localeRef = useRef<HTMLDivElement>(null);
+  const localeButtonRef = useRef<HTMLButtonElement>(null);
+
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof document === "undefined") return "light";
     return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -47,6 +52,17 @@ export function Header() {
     document.body.classList.toggle("menu-open", menuOpen);
     return () => document.body.classList.remove("menu-open");
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!localeOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!localeRef.current?.contains(event.target as Node)) {
+        setLocaleOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [localeOpen]);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
@@ -61,9 +77,46 @@ export function Header() {
 
   const changeLocale = (next: Locale) => {
     setMenuOpen(false);
+    setLocaleOpen(false);
     if (next === locale) return;
     router.replace(pathname, { locale: next });
     router.refresh();
+  };
+
+  const openLocaleMenu = () => {
+    const currentIndex = LOCALES.findIndex((item) => item.code === locale);
+    setLocaleHighlight(currentIndex >= 0 ? currentIndex : 0);
+    setLocaleOpen(true);
+  };
+
+  const onLocaleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setLocaleOpen(false);
+      localeButtonRef.current?.focus();
+      return;
+    }
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (!localeOpen) {
+        openLocaleMenu();
+      } else {
+        setLocaleHighlight((index) => (index + 1) % LOCALES.length);
+      }
+      return;
+    }
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!localeOpen) {
+        openLocaleMenu();
+      } else {
+        setLocaleHighlight((index) => (index - 1 + LOCALES.length) % LOCALES.length);
+      }
+      return;
+    }
+    if (event.key === "Enter" && localeOpen) {
+      event.preventDefault();
+      changeLocale(LOCALES[localeHighlight].code);
+    }
   };
 
   return (
@@ -90,22 +143,56 @@ export function Header() {
         </nav>
 
         <div className="tp-header-actions">
-          <label className="tp-icon-btn" aria-label={l("label")}>
-            <Globe className="tp-icon" aria-hidden="true" />
-            <select
-              value={locale}
-              onChange={(event) => changeLocale(event.target.value as Locale)}
-              className="w-[54px] appearance-none border-0 bg-transparent outline-none"
+          <div className="tp-locale" ref={localeRef}>
+            <button
+              ref={localeButtonRef}
+              type="button"
+              className="tp-icon-btn tp-locale-trigger"
+              aria-haspopup="listbox"
+              aria-expanded={localeOpen}
               aria-label={l("label")}
+              onClick={() => (localeOpen ? setLocaleOpen(false) : openLocaleMenu())}
+              onKeyDown={onLocaleKeyDown}
             >
-              {LOCALES.map((item) => (
-                <option key={item.code} value={item.code}>
-                  {item.code.toUpperCase()}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="tp-icon" aria-hidden="true" style={{ width: 12, height: 12 }} />
-          </label>
+              <Globe className="tp-icon" aria-hidden="true" />
+              <span>{locale.toUpperCase()}</span>
+              <ChevronDown
+                className={cn("tp-icon chevron", localeOpen && "is-open")}
+                aria-hidden="true"
+                style={{ width: 12, height: 12 }}
+              />
+            </button>
+
+            {localeOpen && (
+              <div
+                className="tp-locale-menu"
+                role="listbox"
+                aria-label={l("label")}
+                aria-activedescendant={`tp-locale-${LOCALES[localeHighlight].code}`}
+                onKeyDown={onLocaleKeyDown}
+              >
+                {LOCALES.map((item, index) => (
+                  <button
+                    key={item.code}
+                    id={`tp-locale-${item.code}`}
+                    type="button"
+                    role="option"
+                    aria-selected={item.code === locale}
+                    className={cn(
+                      "tp-locale-option",
+                      index === localeHighlight && "is-highlighted",
+                      item.code === locale && "is-selected",
+                    )}
+                    onMouseEnter={() => setLocaleHighlight(index)}
+                    onClick={() => changeLocale(item.code)}
+                  >
+                    <span>{item.label}</span>
+                    {item.code === locale && <Check className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <button
             type="button"
