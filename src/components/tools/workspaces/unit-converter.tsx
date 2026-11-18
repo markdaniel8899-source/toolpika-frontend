@@ -95,7 +95,7 @@ export default function UnitConverter() {
           <div
             role="group"
             aria-label={t("value")}
-            className="grid grid-cols-3 gap-2"
+            className="grid grid-cols-1 gap-2 sm:grid-cols-3"
           >
             {(["length", "weight", "temperature"] as const).map((item) => (
               <Button

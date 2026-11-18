@@ -3,6 +3,16 @@ import { inter } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
 import "@/app/globals.css";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover" as const,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f5f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0c0f" },
+  ],
+};
+
 export const metadata: Metadata = {
   title: {
     default: "Toolpika Admin",

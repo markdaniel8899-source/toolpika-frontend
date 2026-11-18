@@ -211,7 +211,7 @@ export default function ImageCompressor() {
                 alt=""
                 className="max-h-[200px] w-full rounded-[10px] border border-[var(--border)] bg-[var(--bg)] object-contain"
               />
-              <dl className="grid grid-cols-3 gap-3">
+              <dl className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <Stat label={t("original")} value={formatBytes(original?.size ?? 0)} />
                 <Stat label={t("compressed")} value={formatBytes(compressed.size)} />
                 <Stat label={t("saved")} value={`${savedPercent}%`} />
