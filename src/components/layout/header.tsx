@@ -8,13 +8,6 @@ import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
 
-const NAV = [
-  { href: "/all-tools", key: "tools" },
-  { href: "/popular", key: "popular" },
-  { href: "/new", key: "new" },
-  { href: "/guides", key: "guides" },
-] as const;
-
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "en", label: "English" },
   { code: "de", label: "Deutsch" },
@@ -30,6 +23,8 @@ const LOCALES: { code: Locale; label: string }[] = [
 
 export function Header() {
   const t = useTranslations("nav");
+  const tTools = useTranslations("tools");
+  const tFooter = useTranslations("footer");
   const l = useTranslations("language");
   const th = useTranslations("theme");
   const pathname = usePathname();
@@ -66,13 +61,16 @@ export function Header() {
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
     setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
+    root.setAttribute("data-theme", next);
     try {
       localStorage.setItem("theme", next);
     } catch {
       // Storage can be blocked; the attribute still updates for this session.
     }
+    window.setTimeout(() => root.classList.remove("theme-transition"), 320);
   };
 
   const changeLocale = (next: Locale) => {
@@ -119,6 +117,13 @@ export function Header() {
     }
   };
 
+  const navItems = [
+    { href: "/", label: tTools("home") },
+    { href: "/all-tools", label: t("tools") },
+    { href: "/guides", label: t("guides") },
+    { href: "/about", label: tFooter("about") },
+  ];
+
   return (
     <header className={cn("tp-header", scrolled && "shadow-[var(--shadow-sm)]")}>
       <div className="tp-container tp-header-inner">
@@ -128,7 +133,7 @@ export function Header() {
         </Link>
 
         <nav className="tp-nav" aria-label="Main">
-          {NAV.map((item) => {
+          {navItems.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
@@ -136,7 +141,7 @@ export function Header() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
               >
-                {t(item.key)}
+                {item.label}
               </Link>
             );
           })}
@@ -226,7 +231,7 @@ export function Header() {
 
       <div className="tp-mobile-panel" aria-label="Mobile menu">
         <nav aria-label="Mobile main">
-          {NAV.map((item) => {
+          {navItems.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
@@ -236,7 +241,7 @@ export function Header() {
                 aria-current={active ? "page" : undefined}
                 className="justify-between"
               >
-                {t(item.key)}
+                {item.label}
                 <ArrowRight className="tp-icon" aria-hidden="true" />
               </Link>
             );

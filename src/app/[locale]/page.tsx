@@ -13,7 +13,7 @@ const HeroCarousel = dynamic(
   () => import("@/components/home/hero-carousel").then((module) => module.HeroCarousel),
   { loading: () => <CarouselSkeleton /> },
 );
-import { categories, getLiveTools, getTool, type ToolCategory } from "@/lib/tools/registry";
+import { categories, getLiveTools, getPopularTools, getTool, type ToolCategory } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +43,7 @@ export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
   const tools = getLiveTools();
+  const featuredTools = getPopularTools(4);
 
   const slides: HeroSlide[] = ["word-counter", "json-formatter", "password-generator"]
     .map((slug) => getTool(slug))
@@ -84,8 +85,8 @@ export default async function HomePage({ params }: LocalePageProps) {
       <section className="tp-container tp-section" id="tools">
         <div className="tp-section-head">
           <div>
-            <p className="tp-eyebrow">The collection</p>
-            <h2 className="tp-section-title">Essential tools</h2>
+            <p className="tp-eyebrow">Popular</p>
+            <h2 className="tp-section-title">Popular tools</h2>
           </div>
           <Link href="/all-tools" className="tp-text-link">
             View all tools
@@ -94,7 +95,7 @@ export default async function HomePage({ params }: LocalePageProps) {
         </div>
 
         <div className="tp-tool-grid">
-          {tools.map((tool, index) => (
+          {featuredTools.map((tool, index) => (
             <Reveal key={tool.slug} delay={index * 40}>
               <Link href={`/tools/${tool.slug}`} className="tp-card tp-tool-card">
                 <span className="tp-tool-top">

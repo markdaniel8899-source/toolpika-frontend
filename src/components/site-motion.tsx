@@ -82,7 +82,7 @@ export function SiteMotion() {
     curtain.dataset.phase = "reveal";
     const timer = window.setTimeout(() => {
       curtain.dataset.phase = "idle";
-    }, 380);
+    }, 400);
     return () => window.clearTimeout(timer);
   }, [pathname]);
 
@@ -119,7 +119,7 @@ export function SiteMotion() {
         return;
       }
       curtain.dataset.phase = "cover";
-      window.setTimeout(() => router.push(internal), 320);
+      window.setTimeout(() => router.push(internal), 360);
     };
 
     document.addEventListener("click", onClick, true);

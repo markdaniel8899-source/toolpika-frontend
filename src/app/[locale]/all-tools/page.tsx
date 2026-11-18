@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Flame, Sparkles, BookOpen } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -49,6 +49,30 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
             {category.label}
           </Link>
         ))}
+      </div>
+
+      <div className="tp-suggestions" aria-label="Suggestions">
+        <Link href="/popular" className="tp-suggestion">
+          <span className="tp-suggestion-pill">
+            <Flame className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
+            Popular
+          </span>
+          <p>Tools people come back to most.</p>
+        </Link>
+        <Link href="/new" className="tp-suggestion">
+          <span className="tp-suggestion-pill">
+            <Sparkles className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
+            New
+          </span>
+          <p>The latest additions to the collection.</p>
+        </Link>
+        <Link href="/guides" className="tp-suggestion">
+          <span className="tp-suggestion-pill">
+            <BookOpen className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)" }} aria-hidden="true" />
+            Guides
+          </span>
+          <p>Short, practical walkthroughs.</p>
+        </Link>
       </div>
 
       <div className="tp-tool-grid">

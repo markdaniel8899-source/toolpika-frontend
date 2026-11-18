@@ -33,7 +33,7 @@ function FooterGroup({
   return (
     <div className="tp-footer-col">
       <h3>{title}</h3>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+      <ul>
         {links.map((item) => (
           <li key={`${item.key}-${item.href}`}>
             <Link href={item.href} className="footer-link">
