@@ -36,7 +36,7 @@ export default async function PopularPage({ params }: LocalePageProps) {
       </section>
 
       <div className="tp-tabs" aria-label="Tool navigation">
-        <Link href="/" className="tp-tab">All tools</Link>
+        <Link href="/all-tools" className="tp-tab">All tools</Link>
         <Link href="/popular" className="tp-tab" data-active="true">Popular</Link>
         <Link href="/new" className="tp-tab">New</Link>
         <Link href="/request" className="tp-tab">Request a tool</Link>

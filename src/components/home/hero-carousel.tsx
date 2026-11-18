@@ -181,7 +181,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             />
           ))}
         </div>
-        <Link href="/" className="tp-text-link" style={{ fontSize: 12.5 }}>
+        <Link href="/all-tools" className="tp-text-link" style={{ fontSize: 12.5 }}>
           All tools
           <ArrowRight className="tp-icon" aria-hidden="true" />
         </Link>

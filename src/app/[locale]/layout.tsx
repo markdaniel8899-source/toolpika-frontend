@@ -5,6 +5,7 @@ import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { inter, display } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
+import { SiteMotion } from "@/components/site-motion";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import "@/app/globals.css";
@@ -80,6 +81,7 @@ export default async function LocaleLayout({
       </head>
       <body className="min-h-screen bg-[var(--bg)] font-sans text-base leading-[1.6] text-[var(--text)] antialiased">
         <NextIntlClientProvider messages={messages}>
+          <SiteMotion />
           <div className="flex min-h-screen flex-col">
             <Header />
             <div className="flex-1">{children}</div>

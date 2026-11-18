@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const TOOLS_LINKS = [
-  { key: "tools", href: "/" },
+  { key: "tools", href: "/all-tools" },
   { key: "popular", href: "/popular" },
   { key: "new", href: "/new" },
   { key: "request", href: "/request" },

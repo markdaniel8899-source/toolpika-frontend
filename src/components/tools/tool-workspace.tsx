@@ -3,19 +3,21 @@
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { WorkspaceLayout } from "./workspace-layout";
+import { WorkspaceSkeleton } from "@/components/ui/skeleton";
 
 /**
  * Tool workspaces are client-only islands and each one is code-split, so a
  * visitor only downloads the tool they opened.
  */
-const WordCounter = dynamic(() => import("./workspaces/word-counter"));
-const CaseConverter = dynamic(() => import("./workspaces/case-converter"));
-const ImageCompressor = dynamic(() => import("./workspaces/image-compressor"));
-const JsonFormatter = dynamic(() => import("./workspaces/json-formatter"));
-const UnitConverter = dynamic(() => import("./workspaces/unit-converter"));
-const PasswordGenerator = dynamic(() => import("./workspaces/password-generator"));
-const UrlEncoder = dynamic(() => import("./workspaces/url-encoder"));
-const Base64Encoder = dynamic(() => import("./workspaces/base64-encoder"));
+const loading = () => <WorkspaceSkeleton />;
+const WordCounter = dynamic(() => import("./workspaces/word-counter"), { loading });
+const CaseConverter = dynamic(() => import("./workspaces/case-converter"), { loading });
+const ImageCompressor = dynamic(() => import("./workspaces/image-compressor"), { loading });
+const JsonFormatter = dynamic(() => import("./workspaces/json-formatter"), { loading });
+const UnitConverter = dynamic(() => import("./workspaces/unit-converter"), { loading });
+const PasswordGenerator = dynamic(() => import("./workspaces/password-generator"), { loading });
+const UrlEncoder = dynamic(() => import("./workspaces/url-encoder"), { loading });
+const Base64Encoder = dynamic(() => import("./workspaces/base64-encoder"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,

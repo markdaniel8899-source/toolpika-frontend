@@ -3,9 +3,16 @@ import React from "react";
 import { getTranslations } from "next-intl/server";
 import { ArrowRight, ArrowUpRight, Check, Shield, Zap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import dynamic from "next/dynamic";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolIcon } from "@/components/tools/tool-icon";
-import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
+import { CarouselSkeleton } from "@/components/ui/skeleton";
+import type { HeroSlide } from "@/components/home/hero-carousel";
+
+const HeroCarousel = dynamic(
+  () => import("@/components/home/hero-carousel").then((module) => module.HeroCarousel),
+  { loading: () => <CarouselSkeleton /> },
+);
 import { categories, getLiveTools, getTool, type ToolCategory } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
@@ -80,7 +87,7 @@ export default async function HomePage({ params }: LocalePageProps) {
             <p className="tp-eyebrow">The collection</p>
             <h2 className="tp-section-title">Essential tools</h2>
           </div>
-          <Link href="/popular" className="tp-text-link">
+          <Link href="/all-tools" className="tp-text-link">
             View all tools
             <ArrowRight className="tp-icon" aria-hidden="true" />
           </Link>
@@ -115,7 +122,7 @@ export default async function HomePage({ params }: LocalePageProps) {
               Small collections, each with one job. Start with the kind of work
               you are doing, not the name of a tool.
             </p>
-            <Link href="/popular" className="tp-text-link" style={{ marginTop: 26 }}>
+            <Link href="/all-tools" className="tp-text-link" style={{ marginTop: 26 }}>
               View all tools
               <ArrowRight className="tp-icon" aria-hidden="true" />
             </Link>

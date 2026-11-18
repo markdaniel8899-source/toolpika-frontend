@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const locale of locales) {
     const paths = [
       "",
+      "/all-tools",
       "/popular",
       "/new",
       "/guides",

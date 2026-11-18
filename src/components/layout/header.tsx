@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
 
 const NAV = [
-  { href: "/", key: "tools" },
+  { href: "/all-tools", key: "tools" },
   { href: "/popular", key: "popular" },
   { href: "/new", key: "new" },
   { href: "/guides", key: "guides" },

@@ -21,8 +21,8 @@
   --border: #e5e2db;
   --border-strong: #d2cec5;
 
-  --accent: #5b4bff;
-  --accent-hover: #4535e6;
+  --accent: #6b5cff;
+  --accent-hover: #5747e8;
   --accent-fill: #5b4bff;
   --accent-fill-hover: #4a3ae8;
   --on-accent: #ffffff;
@@ -31,11 +31,11 @@
   --accent-wash: #f5f3ff;
 
   --field-bg: #faf9ff;
-  --focus-ring: rgba(91, 75, 255, 0.32);
+  --focus-ring: rgba(107, 92, 255, 0.32);
   --field-shadow: 0 10px 28px rgba(44, 36, 92, 0.12);
   --card-shadow: 0 2px 8px rgba(20, 16, 50, 0.05);
-  --card-lift-shadow: 0 3px 8px rgba(20, 16, 50, 0.06), 0 16px 38px rgba(91, 75, 255, 0.12);
-  --card-glow: rgba(91, 75, 255, 0.1);
+  --card-lift-shadow: 0 3px 8px rgba(20, 16, 50, 0.06), 0 16px 38px rgba(107, 92, 255, 0.12);
+  --card-glow: rgba(107, 92, 255, 0.1);
   --card-glass: color-mix(in srgb, var(--surface) 94%, transparent);
   --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.55);
 
@@ -74,21 +74,21 @@
   --border: #26272f;
   --border-strong: #353741;
 
-  --accent: #a79eff;
-  --accent-hover: #b8b0ff;
+  --accent: #8f7dff;
+  --accent-hover: #a697ff;
   --accent-fill: #6a5bff;
   --accent-fill-hover: #5b4bff;
   --on-accent: #ffffff;
   --accent-fg: #ffffff;
-  --accent-soft: rgba(167, 158, 255, 0.12);
+  --accent-soft: rgba(143, 125, 255, 0.14);
   --accent-wash: #171625;
 
   --field-bg: #1b1c24;
-  --focus-ring: rgba(167, 158, 255, 0.42);
+  --focus-ring: rgba(143, 125, 255, 0.42);
   --field-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  --card-lift-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), 0 18px 42px rgba(167, 158, 255, 0.14);
-  --card-glow: rgba(167, 158, 255, 0.12);
+  --card-lift-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), 0 18px 42px rgba(143, 125, 255, 0.14);
+  --card-glow: rgba(143, 125, 255, 0.14);
   --card-glass: color-mix(in srgb, var(--surface) 84%, transparent);
   --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
@@ -163,6 +163,34 @@ button {
   color: var(--on-accent);
 }
 
+/* ---------- Custom scrollbars ---------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--border-strong);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  background-clip: content-box;
+}
+
 /* ---------- Shared primitives ---------- */
 
 .tp-container {
@@ -225,7 +253,7 @@ button {
 }
 
 .tp-btn-ghost:hover {
-  border-color: var(--border-strong);
+  border-color: var(--border);
 }
 
 .tp-icon-btn {
@@ -245,8 +273,8 @@ button {
 }
 
 .tp-icon-btn:hover {
-  border-color: var(--border-strong);
-  color: var(--text);
+  border-color: var(--border);
+  color: var(--muted);
 }
 
 .tp-icon-btn .tp-icon {
@@ -294,6 +322,12 @@ button {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: var(--shadow-md);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tp-locale-menu::-webkit-scrollbar {
+  display: none;
 }
 
 .tp-locale-option {
@@ -350,9 +384,9 @@ button {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .tp-header-inner {
@@ -562,8 +596,8 @@ button {
 }
 
 .tp-tab:hover {
-  color: var(--text);
-  border-color: var(--border);
+  color: var(--muted);
+  border-color: transparent;
 }
 
 .tp-tab[aria-pressed="true"],
@@ -1356,14 +1390,15 @@ button {
 .tp-footer-col a {
   display: block;
   width: fit-content;
-  padding: 2px 0;
+  padding: 3px 0;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.25;
   transition: color var(--dur-fast) var(--ease-out);
 }
 
 .tp-footer-col a:hover {
-  color: var(--text);
+  color: var(--muted);
 }
 
 .footer-link {
@@ -1375,7 +1410,7 @@ button {
   content: "";
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 1px;
   left: 0;
   height: 1px;
   background: var(--accent);
@@ -1397,6 +1432,109 @@ button {
   margin-top: 44px;
   color: var(--muted-2);
   font-size: 12.5px;
+}
+
+/* ---------- Skeleton loaders ---------- */
+
+@keyframes tp-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.tp-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    color-mix(in srgb, var(--surface-2) 55%, var(--surface)) 50%,
+    var(--surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: tp-shimmer 1400ms linear infinite;
+}
+
+.tp-skeleton-line {
+  height: 12px;
+  border-radius: 999px;
+}
+
+/* ---------- Custom cursor ---------- */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body {
+    cursor: none;
+  }
+
+  body a,
+  body button,
+  body [role="button"] {
+    cursor: none;
+  }
+
+  .tp-cursor-dot,
+  .tp-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    border-radius: 999px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .tp-cursor-dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background: var(--accent);
+  }
+
+  .tp-cursor-ring {
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 1px solid var(--accent);
+    opacity: 0;
+    transition: width 180ms var(--ease-out), height 180ms var(--ease-out), margin 180ms var(--ease-out), opacity 180ms var(--ease-out), border-color 180ms var(--ease-out);
+  }
+
+  .tp-cursor-ring.is-active {
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+}
+
+/* ---------- Page curtain ---------- */
+
+.tp-page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--accent-wash), var(--bg) 55%);
+  transform: translateY(100%);
+  transition: transform 340ms var(--ease-out);
+}
+
+.tp-page-curtain[data-phase="cover"] {
+  transform: translateY(0);
+}
+
+.tp-page-curtain[data-phase="reveal"] {
+  transform: translateY(-100%);
+}
+
+.tp-page-curtain[data-phase="idle"] {
+  transform: translateY(100%);
+  transition: none;
 }
 
 /* ---------- Motion primitives ---------- */
