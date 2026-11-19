@@ -1087,7 +1087,8 @@ html.theme-transition .tp-dropdown-trigger {
   transition:
     background-color 600ms var(--ease-reveal),
     box-shadow 600ms var(--ease-reveal),
-    transform 600ms var(--ease-spring);
+    transform 600ms var(--ease-spring),
+    filter 200ms ease;
 }
 
 .tp-split-copy-lg .tp-btn::after {
@@ -1101,8 +1102,9 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-split-copy-lg .tp-btn:hover {
-  transform: translateY(-2px) scale(0.99);
-  box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 38%, transparent);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--accent) 45%, transparent);
+  filter: brightness(1.08);
 }
 
 .tp-split-copy-lg .tp-btn:hover::after {
@@ -1130,8 +1132,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-split-copy-lg .tp-btn:hover .tp-cta-icon {
-  transform: translate(2px, -2px) rotate(45deg);
-  background: color-mix(in srgb, var(--on-accent) 28%, transparent);
+  transform: translate(3px, -3px) rotate(45deg) scale(1.08);
+  background: color-mix(in srgb, var(--on-accent) 30%, transparent);
 }
 
 .tp-section .tp-eyebrow,
