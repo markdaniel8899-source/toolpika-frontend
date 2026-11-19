@@ -234,7 +234,9 @@
     "savedTools": "Strumenti salvati su questo dispositivo.",
     "emptyPage": "La tua lista dei preferiti è vuota. Esplora gli strumenti e salva i tuoi preferiti!",
     "browseTools": "Esplora gli strumenti",
-    "open": "Apri {title}"
+    "open": "Apri {title}",
+    "tipSave": "Salva nei preferiti",
+    "tipSaved": "Salvato nei preferiti"
   },
   "cookies": {
     "title": "Preferenze sui cookie",

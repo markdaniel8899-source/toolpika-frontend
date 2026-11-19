@@ -32,6 +32,9 @@ export function WishlistButton({ slug, title }: { slug: string; title: string })
         <path className="tp-heart-trail" d={HEART_PATH} />
         <path className="tp-heart-path" d={HEART_PATH} />
       </svg>
+      <span className="tp-wish-tip" role="tooltip">
+        {saved ? t("tipSaved") : t("tipSave")}
+      </span>
     </button>
   );
 }

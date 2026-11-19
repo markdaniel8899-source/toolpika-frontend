@@ -908,7 +908,7 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-wish-btn {
   position: absolute;
   top: 20px;
-  right: 62px;
+  right: 56px;
   z-index: 3;
   display: grid;
   width: 32px;
@@ -938,17 +938,16 @@ html.theme-transition .tp-dropdown-trigger {
   color: var(--accent);
 }
 
-/* Saved state = soft tinted circle with an accent ring; the heart stays
-   the focus. The path draws itself and fills in on click. */
+/* Saved state matches the arrow circle exactly: accent fill, white icon. */
 .tp-wish-btn.is-saved {
-  background: var(--accent-soft);
-  box-shadow: 0 0 0 1px var(--accent);
-  color: var(--accent);
+  background: var(--accent-fill);
+  box-shadow: var(--shadow-sm);
+  color: var(--on-accent);
 }
 
 .tp-heart-svg {
-  width: 18px;
-  height: 18px;
+  width: 18.3px;
+  height: 18.3px;
   overflow: visible;
   transition: transform 350ms ease;
 }
@@ -968,7 +967,7 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-heart-trail {
-  stroke: var(--accent);
+  stroke: var(--on-accent);
   stroke-width: 1.2;
   opacity: 0;
 }
@@ -998,9 +997,37 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 @keyframes tp-heart-draw {
-  0% { stroke-dashoffset: 100; fill: transparent; transform: scale(0.7) rotate(-18deg); }
-  55% { stroke-dashoffset: 0; fill: transparent; transform: scale(1.2) rotate(10deg); }
-  100% { stroke-dashoffset: 0; fill: var(--accent); transform: scale(1) rotate(0deg); }
+  0% { stroke-dashoffset: 100; fill: transparent; stroke: var(--on-accent); transform: scale(0.7) rotate(-18deg); }
+  55% { stroke-dashoffset: 0; fill: transparent; stroke: var(--on-accent); transform: scale(1.2) rotate(10deg); }
+  100% { stroke-dashoffset: 0; fill: var(--on-accent); stroke: var(--on-accent); transform: scale(1) rotate(0deg); }
+}
+
+/* Single-line tooltip card on heart hover, themed with tokens. */
+.tp-wish-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 5;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.tp-wish-btn:hover .tp-wish-tip,
+.tp-wish-btn:focus-visible .tp-wish-tip {
+  opacity: 1;
+  transform: none;
 }
 
 @media (hover: none) {
@@ -1729,8 +1756,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-tool-arrow .tp-icon {
-  width: 18px;
-  height: 18px;
+  width: 18.3px;
+  height: 18.3px;
   opacity: 0.55;
   transition: opacity 350ms ease, transform 350ms ease;
 }

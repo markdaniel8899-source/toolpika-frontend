@@ -234,7 +234,9 @@
     "savedTools": "Tools you saved on this device.",
     "emptyPage": "Your wishlist is empty. Browse tools and save your favorites!",
     "browseTools": "Browse tools",
-    "open": "Open {title}"
+    "open": "Open {title}",
+    "tipSave": "Save to wishlist",
+    "tipSaved": "Saved to wishlist"
   },
   "cookies": {
     "title": "Cookie preferences",

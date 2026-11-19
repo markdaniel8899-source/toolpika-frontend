@@ -234,7 +234,9 @@
     "savedTools": "Tools, die du auf diesem Gerät gespeichert hast.",
     "emptyPage": "Deine Merkliste ist leer. Stöbere durch die Tools und speichere deine Favoriten!",
     "browseTools": "Tools entdecken",
-    "open": "{title} öffnen"
+    "open": "{title} öffnen",
+    "tipSave": "Zur Merkliste hinzufügen",
+    "tipSaved": "In der Merkliste gespeichert"
   },
   "cookies": {
     "title": "Cookie-Einstellungen",

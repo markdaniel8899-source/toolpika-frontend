@@ -234,7 +234,9 @@
     "savedTools": "Bu cihazda kaydettiğin araçlar.",
     "emptyPage": "Favorilerin boş. Araçlara göz at ve favorilerini kaydet!",
     "browseTools": "Araçlara göz at",
-    "open": "{title} aracını aç"
+    "open": "{title} aracını aç",
+    "tipSave": "Favorilere ekle",
+    "tipSaved": "Favorilere kaydedildi"
   },
   "cookies": {
     "title": "Çerez tercihleri",

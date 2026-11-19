@@ -234,7 +234,9 @@
     "savedTools": "Ferramentas salvas neste dispositivo.",
     "emptyPage": "Sua lista de favoritos está vazia. Navegue pelas ferramentas e salve suas favoritas!",
     "browseTools": "Explorar ferramentas",
-    "open": "Abrir {title}"
+    "open": "Abrir {title}",
+    "tipSave": "Salvar nos favoritos",
+    "tipSaved": "Salvo nos favoritos"
   },
   "cookies": {
     "title": "Preferências de cookies",
