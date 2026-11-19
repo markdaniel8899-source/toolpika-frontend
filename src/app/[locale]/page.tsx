@@ -95,9 +95,9 @@ export default async function HomePage({ params }: LocalePageProps) {
               Small collections, each with one job. Start with the kind of work
               you are doing, not the name of a tool.
             </p>
-            <Link href="/categories" className="tp-btn tp-btn-primary" style={{ marginTop: 28 }}>
-              View all categories
-              <ArrowRight className="tp-icon" aria-hidden="true" />
+            <Link href="/categories" className="tp-btn tp-btn-primary tp-static-cta" style={{ marginTop: 28 }}>
+              <span>View all categories</span>
+              <span className="tp-cta-icon"><ArrowRight className="tp-icon" aria-hidden="true" /></span>
             </Link>
           </div>
 

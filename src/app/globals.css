@@ -1079,20 +1079,59 @@ html.theme-transition .tp-dropdown-trigger {
   line-height: 1.6;
 }
 
-/* View all categories button — same tactile transitions as other CTAs. */
+/* View all categories button — same tactile transitions as other CTAs.
+   Excluded from the magnetic effect so its CSS hover transform actually wins. */
 .tp-split-copy-lg .tp-btn {
+  position: relative;
+  overflow: hidden;
   transition:
     background-color 600ms var(--ease-reveal),
     box-shadow 600ms var(--ease-reveal),
     transform 600ms var(--ease-spring);
 }
 
+.tp-split-copy-lg .tp-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--on-accent) 16%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
 .tp-split-copy-lg .tp-btn:hover {
   transform: translateY(-2px) scale(0.99);
+  box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.tp-split-copy-lg .tp-btn:hover::after {
+  opacity: 1;
 }
 
 .tp-split-copy-lg .tp-btn:active {
   transform: scale(0.97);
+}
+
+.tp-split-copy-lg .tp-cta-icon {
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--on-accent) 18%, transparent);
+  transition: transform 600ms var(--ease-spring), background-color 200ms ease;
+}
+
+.tp-split-copy-lg .tp-cta-icon .tp-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.tp-split-copy-lg .tp-btn:hover .tp-cta-icon {
+  transform: translate(2px, -2px) rotate(45deg);
+  background: color-mix(in srgb, var(--on-accent) 28%, transparent);
 }
 
 .tp-section .tp-eyebrow,

@@ -91,7 +91,10 @@ export function SiteMotion() {
     };
 
     const onMove = (event: PointerEvent) => {
-      const el = (event.target as HTMLElement | null)?.closest<HTMLElement>(".tp-btn") ?? null;
+      const found = (event.target as HTMLElement | null)?.closest<HTMLElement>(".tp-btn") ?? null;
+      // Static CTAs keep their CSS hover transform; magnetic inline transforms
+      // would otherwise override it and make them look unresponsive.
+      const el = found?.classList.contains("tp-static-cta") ? null : found;
       if (el !== active) {
         reset(active);
         active = el;
