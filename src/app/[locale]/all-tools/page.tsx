@@ -68,7 +68,7 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
       )}
 
       <div style={{ marginTop: 40 }}>
-        <Link href="/request" className="tp-text-link">
+        <Link href="/request" className="tp-btn tp-btn-primary">
           Missing a tool? Request it
           <ArrowRight className="tp-icon" aria-hidden="true" />
         </Link>

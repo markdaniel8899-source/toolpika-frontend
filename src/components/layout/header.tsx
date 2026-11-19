@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
 import { Dropdown } from "@/components/ui/dropdown";
 import { useWishlist } from "@/hooks/use-wishlist";
-import { getTool } from "@/lib/tools/registry";
+import { categories, getLiveTools, getTool } from "@/lib/tools/registry";
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "en", label: "English" },
@@ -38,6 +38,7 @@ export function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [wishOpen, setWishOpen] = useState(false);
+  const [toolsMenuOpen, setToolsMenuOpen] = useState(false);
   const wishRef = useRef<HTMLDivElement>(null);
   const { wishlist, count, isLoaded, toggleWishlist } = useWishlist();
 
@@ -95,6 +96,13 @@ export function Header() {
         .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
     : [];
 
+  const allTools = getLiveTools();
+  const toolGroups = categories.map((category) => ({
+    slug: category.slug,
+    label: category.label,
+    tools: allTools.filter((tool) => tool.category === category.slug),
+  }));
+
   return (
     <header className={cn("tp-header", scrolled && "shadow-[var(--shadow-sm)]")}>
       <div className="tp-container tp-header-inner">
@@ -106,6 +114,36 @@ export function Header() {
         <nav className="tp-nav" aria-label="Main">
           {navItems.map((item) => {
             const active = pathname === item.href;
+            if (item.href === "/all-tools") {
+              return (
+                <div
+                  key={item.href}
+                  className="tp-nav-tools"
+                  onMouseEnter={() => setToolsMenuOpen(true)}
+                  onMouseLeave={() => setToolsMenuOpen(false)}
+                >
+                  <Link href={item.href} aria-current={active ? "page" : undefined}>
+                    {item.label}
+                  </Link>
+                  {toolsMenuOpen && (
+                    <div className="tp-nav-mega">
+                      {toolGroups.map((group) => (
+                        <div className="tp-nav-mega-group" key={group.slug}>
+                          <Link href={`/category/${group.slug}`} className="tp-nav-mega-title" onClick={() => setToolsMenuOpen(false)}>
+                            {group.label}
+                          </Link>
+                          {group.tools.map((tool) => (
+                            <Link key={tool.slug} href={`/tools/${tool.slug}`} className="tp-nav-mega-link" onClick={() => setToolsMenuOpen(false)}>
+                              {tool.title}
+                            </Link>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
             return (
               <Link
                 key={item.href}

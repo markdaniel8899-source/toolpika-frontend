@@ -584,8 +584,8 @@ html.theme-transition .tp-dropdown-trigger {
   position: relative;
   padding: 4px 0;
   color: var(--text);
-  font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 14px;
+  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  font-size: 13.5px;
   font-weight: 500;
   letter-spacing: -0.01em;
   transition: color 200ms ease, transform 200ms ease;
@@ -614,6 +614,63 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-nav a:hover::after,
 .tp-nav a[aria-current="page"]::after {
   transform: scaleX(1);
+}
+
+/* All-tools mega menu (hover on the nav item) */
+.tp-nav-tools {
+  position: relative;
+}
+
+.tp-nav-mega {
+  position: absolute;
+  top: calc(100% + 26px);
+  left: 50%;
+  z-index: 70;
+  display: grid;
+  width: min(720px, 86vw);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--card-lift-shadow);
+  animation: tp-mega-in 200ms ease both;
+}
+
+@keyframes tp-mega-in {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.tp-nav-mega-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tp-nav-mega-title {
+  margin-bottom: 6px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tp-nav-mega-link {
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: 13px;
+  transition: color 200ms ease;
+}
+
+.tp-nav .tp-nav-mega a:hover {
+  color: var(--accent);
+}
+
+.tp-nav .tp-nav-mega a::after {
+  display: none;
 }
 
 .tp-header-actions {
@@ -3624,69 +3681,6 @@ html:has([data-admin="true"]) {
   }
 }
 
-/* ---------- All-tools hover card ---------- */
-
-.tp-tool-hover-wrap {
-  position: relative;
-  height: 100%;
-}
-
-.tp-tool-hover-wrap:hover {
-  z-index: 30;
-}
-
-.tp-tool-hover-card {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  left: 0;
-  z-index: 25;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  background: var(--surface);
-  box-shadow: var(--card-lift-shadow);
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-  transition: opacity 200ms ease, transform 200ms ease;
-}
-
-.tp-tool-hover-wrap:hover .tp-tool-hover-card {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-
-.tp-tool-hover-cat {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.tp-tool-hover-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.tp-tool-hover-link {
-  padding: 6px 8px;
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 12.5px;
-  transition: background-color 200ms ease, color 200ms ease;
-}
-
-.tp-tool-hover-link:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
 /* ---------- Philosophy band — dark in both themes ---------- */
 
 .tp-philosophy {
@@ -4025,6 +4019,30 @@ html:has([data-admin="true"]) {
     flex-direction: column;
     align-items: stretch;
   }
+}
+
+/* All-tools filter tabs — same tactile feel as the request button. */
+.tp-tab {
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 12%, transparent);
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 600ms var(--ease-reveal),
+    transform 600ms var(--ease-spring);
+}
+
+.tp-tab:hover:not(.is-active) {
+  transform: translateY(-2px) scale(0.99);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.tp-tab.is-active {
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+.tp-tab:active {
+  transform: scale(0.97);
 }
 
 /* ---------- Shared hover behaviour for every accent-filled button ---------- */
