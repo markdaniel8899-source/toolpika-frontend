@@ -915,8 +915,9 @@ html.theme-transition .tp-dropdown-trigger {
   height: 30px;
   place-items: center;
   border: 0;
-  border-radius: 8px;
-  background: transparent;
+  border-radius: 999px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-sm);
   color: var(--muted);
   opacity: 0;
   transform: scale(0.85);
@@ -940,7 +941,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-wish-btn.is-saved {
-  color: var(--accent);
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 .tp-wish-btn .tp-icon {
@@ -948,12 +950,23 @@ html.theme-transition .tp-dropdown-trigger {
   height: 16px;
   fill: none;
   stroke: var(--muted);
-  transition: fill 200ms ease, stroke 200ms ease;
+  transition: fill 200ms ease, stroke 200ms ease, transform 200ms ease;
+}
+
+.tp-wish-btn:hover .tp-icon {
+  transform: rotate(-10deg) scale(1.08);
 }
 
 .tp-wish-btn.is-saved .tp-icon {
-  fill: var(--accent);
-  stroke: var(--accent);
+  fill: var(--on-accent);
+  stroke: var(--on-accent);
+  animation: tp-heart-pop 420ms var(--ease-spring);
+}
+
+@keyframes tp-heart-pop {
+  0% { transform: scale(0.6) rotate(-28deg); }
+  60% { transform: scale(1.25) rotate(12deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 @media (hover: none) {
@@ -1661,6 +1674,47 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-tool-icon {
   display: flex;
   color: var(--accent);
+}
+
+/* Arrow sits in a circle that fills with accent on hover/click, and the
+   arrow rotates from up-right to right. */
+.tp-tool-arrow {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  place-items: center;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.tp-tool-arrow .tp-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.tp-tool-card-wrap:hover .tp-tool-arrow,
+.tp-tool-card-link:focus-visible .tp-tool-arrow {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  transform: translate(2px, -2px) scale(1.05);
+}
+
+.tp-tool-card-wrap:hover .tp-tool-arrow .tp-icon,
+.tp-tool-card-link:focus-visible .tp-tool-arrow .tp-icon {
+  opacity: 1;
+  transform: rotate(45deg);
+}
+
+.tp-tool-card-link:active .tp-tool-arrow {
+  transform: scale(0.92);
 }
 
 .tp-tool-title {
