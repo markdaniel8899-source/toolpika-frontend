@@ -637,6 +637,26 @@ html.theme-transition .tp-dropdown-trigger {
   position: relative;
 }
 
+/* Same underline and colour states as the other nav links. */
+.tp-nav-tools > a {
+  color: var(--muted);
+}
+
+.tp-nav-tools > a::after {
+  height: 2px;
+  background: var(--accent);
+}
+
+.tp-nav-tools:hover > a,
+.tp-nav-tools > a[aria-current="page"] {
+  color: var(--text);
+}
+
+.tp-nav-tools:hover > a::after,
+.tp-nav-tools > a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
 .tp-nav-mega {
   position: absolute;
   top: calc(100% + 10px);
@@ -1343,6 +1363,14 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-search input::placeholder {
   color: var(--muted-2);
+}
+
+/* Reveal wrappers create stacking contexts (filter/transform). Lift the
+   search wrapper above the following trust row so the dropdown is not
+   overlapped by it. Kept below the sticky header (z-index 50). */
+.tp-search-reveal {
+  position: relative;
+  z-index: 20;
 }
 
 /* Overlay card: opens right under the search bar like a normal dropdown,

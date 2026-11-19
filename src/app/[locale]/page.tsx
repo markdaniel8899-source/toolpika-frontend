@@ -46,7 +46,7 @@ export default async function HomePage({ params }: LocalePageProps) {
           <Reveal delay={340}>
             <p className="tp-lede">{t("subtitle")}</p>
           </Reveal>
-          <Reveal delay={450}>
+          <Reveal delay={450} className="tp-search-reveal">
             <SearchBar />
           </Reveal>
           <Reveal delay={560}>
