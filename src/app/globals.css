@@ -940,55 +940,67 @@ html.theme-transition .tp-dropdown-trigger {
   color: var(--accent);
 }
 
-/* Saved state stays soft — the heart, not the button, carries the focus. */
+/* Saved state = the heart path draws itself, then fills in. */
 .tp-wish-btn.is-saved {
-  background: var(--accent-soft);
+  background: transparent;
   color: var(--accent);
 }
 
-.tp-wish-btn::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  opacity: 0;
-  pointer-events: none;
+.tp-heart-svg {
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+  transition: transform 350ms ease;
 }
 
-.tp-wish-btn.is-saved::after {
-  animation: tp-heart-ring 480ms ease-out;
-}
-
-.tp-wish-btn .tp-icon {
-  width: 18px;
-  height: 18px;
+.tp-heart-path,
+.tp-heart-trail {
   fill: none;
   stroke: var(--muted);
-  transition: fill 350ms ease, stroke 350ms ease, transform 350ms ease;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: stroke 350ms ease, fill 350ms ease;
 }
 
-.tp-wish-btn:hover .tp-icon {
+.tp-heart-trail {
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0;
+}
+
+.tp-wish-btn:hover .tp-heart-path,
+.tp-wish-btn.is-saved .tp-heart-path {
+  stroke: var(--accent);
+}
+
+.tp-wish-btn:hover .tp-heart-svg {
   transform: rotate(-10deg) scale(1.08);
 }
 
-/* Click drops the heart into the saved collection, then it springs back in. */
-.tp-wish-btn.is-saved .tp-icon {
-  fill: var(--accent);
-  stroke: var(--accent);
-  animation: tp-heart-collect 520ms var(--ease-spring);
+/* Trail path draws first and fades, main path follows and fills. */
+.tp-wish-btn.is-saved .tp-heart-trail {
+  animation: tp-heart-trail 620ms ease-out forwards;
 }
 
-@keyframes tp-heart-collect {
-  0% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
-  35% { transform: scale(1.3) translateY(-5px) rotate(-14deg); opacity: 1; }
-  65% { transform: scale(0.5) translateY(12px) rotate(10deg); opacity: 0.45; }
-  100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
+.tp-wish-btn.is-saved .tp-heart-path {
+  animation: tp-heart-draw 680ms var(--ease-spring) forwards;
 }
 
-@keyframes tp-heart-ring {
-  from { transform: scale(0.6); opacity: 0.75; }
-  to { transform: scale(1.6); opacity: 0; }
+@keyframes tp-heart-trail {
+  0% { stroke-dashoffset: 100; opacity: 0.9; transform: scale(0.72) rotate(-20deg); }
+  60% { stroke-dashoffset: 0; opacity: 0.7; transform: scale(1.16) rotate(8deg); }
+  100% { stroke-dashoffset: 0; opacity: 0; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes tp-heart-draw {
+  0% { stroke-dashoffset: 100; fill: transparent; transform: scale(0.7) rotate(-18deg); }
+  55% { stroke-dashoffset: 0; fill: transparent; transform: scale(1.2) rotate(10deg); }
+  100% { stroke-dashoffset: 0; fill: var(--accent); transform: scale(1) rotate(0deg); }
 }
 
 @media (hover: none) {
