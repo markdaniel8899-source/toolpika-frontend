@@ -45,8 +45,7 @@ export function HeroWorkbench() {
     <div className="tp-wb-bezel" ref={bezelRef} onPointerMove={onPointerMove}>
       <div className="tp-wb-core">
         <div className="tp-wb-bar">
-          <span className="tp-wb-dots" aria-hidden="true"><i /><i /><i /></span>
-          <span className="tp-wb-url">toolpika.dev / live tools</span>
+          <span className="tp-wb-url">toolpika.site</span>
         </div>
 
         <div className="tp-wb-tabs" role="tablist" aria-label="Try a live tool">

@@ -17,6 +17,7 @@ export function Dropdown({
   triggerClassName,
   menuClassName,
   triggerLabel,
+  openOnHover = false,
 }: {
   id: string;
   value: string;
@@ -28,6 +29,7 @@ export function Dropdown({
   triggerClassName?: string;
   menuClassName?: string;
   triggerLabel?: string;
+  openOnHover?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
@@ -82,7 +84,12 @@ export function Dropdown({
   };
 
   return (
-    <div className="tp-dropdown" ref={rootRef}>
+    <div
+      className="tp-dropdown"
+      ref={rootRef}
+      onMouseEnter={openOnHover ? openMenu : undefined}
+      onMouseLeave={openOnHover ? () => setOpen(false) : undefined}
+    >
       <button
         ref={triggerRef}
         id={id}

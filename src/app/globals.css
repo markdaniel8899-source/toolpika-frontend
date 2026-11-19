@@ -21,7 +21,7 @@
   --border: #e5e2db;
   --border-strong: #d2cec5;
 
-  --accent: #6b5cff;
+  --accent: #5b4bff;
   --accent-hover: #5747e8;
   --accent-fill: #5b4bff;
   --accent-fill-hover: #4a3ae8;
@@ -86,7 +86,7 @@
   --border: #26272f;
   --border-strong: #353741;
 
-  --accent: #8f7dff;
+  --accent: #6a5bff;
   --accent-hover: #a697ff;
   --accent-fill: #6a5bff;
   --accent-fill-hover: #5b4bff;
@@ -442,9 +442,9 @@ html.theme-transition .tp-dropdown-trigger {
   transform: translateY(-6px) scale(0.98);
   transform-origin: top right;
   transition:
-    opacity 180ms var(--ease-out),
-    transform 180ms var(--ease-out),
-    visibility 180ms;
+    opacity 120ms var(--ease-out),
+    transform 120ms var(--ease-out),
+    visibility 120ms;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -538,10 +538,7 @@ html.theme-transition .tp-dropdown-trigger {
   padding: 6px 8px 6px 20px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  box-shadow: var(--card-lift-shadow);
+  background: var(--surface);
   pointer-events: auto;
 }
 
@@ -577,7 +574,7 @@ html.theme-transition .tp-dropdown-trigger {
   color: var(--muted);
   font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
   font-size: 13.5px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.01em;
   transition: color 200ms ease, transform 200ms ease;
 }
@@ -1263,7 +1260,9 @@ html.theme-transition .tp-dropdown-trigger {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--surface);
+  background-color: var(--surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow: var(--shadow-md);
 }
 
@@ -3707,18 +3706,6 @@ html:has([data-admin="true"]) {
   gap: 10px;
   padding: 14px 18px;
   border-bottom: 1px solid var(--border);
-}
-
-.tp-wb-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.tp-wb-dots i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--border-strong);
 }
 
 .tp-wb-url {

@@ -128,6 +128,7 @@ export function Header() {
             triggerLabel={locale.toUpperCase()}
             icon={<Globe className="tp-icon" aria-hidden="true" />}
             triggerClassName="tp-locale-trigger"
+            openOnHover
           />
 
           <div className="tp-wish-wrap" ref={wishRef}>
