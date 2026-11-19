@@ -18,7 +18,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[var(--accent-fill)] text-[var(--accent-fg)] hover:bg-[var(--accent-fill-hover)]",
+          "tp-ui-primary bg-[var(--accent-fill)] text-[var(--accent-fg)] hover:bg-[var(--accent-fill-hover)]",
         destructive:
           "bg-[var(--danger)] text-[var(--on-accent)] hover:bg-[var(--danger-hover)]",
         outline:

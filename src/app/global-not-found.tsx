@@ -18,7 +18,7 @@ export default function GlobalNotFound() {
           </p>
           <Link
             href="/en"
-            className="mt-7 inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-fill)] px-6 font-semibold text-[var(--on-accent)] transition-[background-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:bg-[var(--accent-fill-hover)] hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3 active:scale-[0.98]"
+            className="tp-ui-primary mt-7 inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-fill)] px-6 font-semibold text-[var(--on-accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-3"
           >
             Go home
           </Link>
