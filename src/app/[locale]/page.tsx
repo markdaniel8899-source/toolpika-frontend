@@ -33,23 +33,23 @@ export default async function HomePage({ params }: LocalePageProps) {
       {/* Hero */}
       <section className="tp-container tp-hero">
         <div className="tp-hero-copy">
-          <Reveal delay={0}>
+          <Reveal delay={120}>
             <p className="tp-eyebrow">Free tools, in your browser</p>
           </Reveal>
-          <Reveal delay={70}>
+          <Reveal delay={230}>
             <h1 className="tp-hero-title">
               {t.rich("title", {
                 display: (chunks: React.ReactNode) => <em>{chunks}</em>,
               })}
             </h1>
           </Reveal>
-          <Reveal delay={140}>
+          <Reveal delay={340}>
             <p className="tp-lede">{t("subtitle")}</p>
           </Reveal>
-          <Reveal delay={210}>
+          <Reveal delay={450}>
             <SearchBar />
           </Reveal>
-          <Reveal delay={270}>
+          <Reveal delay={560}>
             <div className="tp-trust" aria-label="Toolpika promises">
               <span><Check className="tp-icon" aria-hidden="true" /> No uploads</span>
               <span><Check className="tp-icon" aria-hidden="true" /> No sign-up</span>
@@ -58,7 +58,7 @@ export default async function HomePage({ params }: LocalePageProps) {
           </Reveal>
         </div>
 
-        <Reveal delay={160}>
+        <Reveal delay={620}>
           <HeroWorkbench />
         </Reveal>
       </section>
@@ -78,7 +78,7 @@ export default async function HomePage({ params }: LocalePageProps) {
 
         <div className="tp-tool-grid">
           {featuredTools.map((tool, index) => (
-            <Reveal key={tool.slug} delay={index * 40}>
+            <Reveal key={tool.slug} delay={index * 90}>
               <ToolCard tool={tool} />
             </Reveal>
           ))}
@@ -95,7 +95,7 @@ export default async function HomePage({ params }: LocalePageProps) {
               Small collections, each with one job. Start with the kind of work
               you are doing, not the name of a tool.
             </p>
-            <Link href="/categories" className="tp-text-link" style={{ marginTop: 26 }}>
+            <Link href="/categories" className="tp-btn tp-btn-primary" style={{ marginTop: 28 }}>
               View all categories
               <ArrowRight className="tp-icon" aria-hidden="true" />
             </Link>
@@ -156,36 +156,35 @@ export default async function HomePage({ params }: LocalePageProps) {
             <p className="tp-eyebrow">The philosophy</p>
             <h2 className="tp-philosophy-title">A quieter<br />kind of <em>software.</em></h2>
             <p className="tp-philosophy-sub">
-              No accounts. No uploads. No clutter. Just useful things that work
-              in the tab you already have open.
+              No accounts. No uploads. No clutter. Just tools that work.
             </p>
           </Reveal>
 
           <div className="tp-principle-list">
-            <Reveal delay={40}>
+            <Reveal delay={140}>
               <div className="tp-principle">
                 <span className="tp-principle-num">01</span>
                 <div>
                   <h3>On your device</h3>
-                  <p>Text and files are processed in your browser. Nothing is uploaded, stored or sent anywhere.</p>
+                  <p>Everything runs in your browser. Nothing is uploaded.</p>
                 </div>
               </div>
             </Reveal>
-            <Reveal delay={110}>
+            <Reveal delay={250}>
               <div className="tp-principle">
                 <span className="tp-principle-num">02</span>
                 <div>
                   <h3>Zero friction</h3>
-                  <p>Open a tool, do the job, close the tab. No account to create, no onboarding to sit through.</p>
+                  <p>Open a tool, do the job, close the tab.</p>
                 </div>
               </div>
             </Reveal>
-            <Reveal delay={180}>
+            <Reveal delay={360}>
               <div className="tp-principle">
                 <span className="tp-principle-num">03</span>
                 <div>
                   <h3>Built to last</h3>
-                  <p>Plain, fast, dependable pages that keep working — no matter how the web changes around them.</p>
+                  <p>Fast, plain pages that keep working.</p>
                 </div>
               </div>
             </Reveal>
@@ -194,20 +193,22 @@ export default async function HomePage({ params }: LocalePageProps) {
       </section>
 
       {/* Request CTA */}
-      <section className="tp-container tp-cta" id="request">
-        <div className="tp-cta-inner">
+      <section className="tp-cta-band" id="request">
+        <div className="tp-container tp-cta">
+          <div className="tp-cta-inner">
           <div>
             <p className="tp-eyebrow">Request</p>
             <h2>{t("requestTitle")}</h2>
           </div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 36 }}>
-            <p style={{ maxWidth: 320, margin: 0, color: "var(--muted)", fontSize: 15, lineHeight: 1.65 }}>
-              {t("requestSubtitle")}
-            </p>
-            <Link href="/request" className="tp-btn tp-btn-primary">
-              {t("requestCTA")}
-              <ArrowRight className="tp-icon" aria-hidden="true" />
-            </Link>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 36 }}>
+              <p style={{ maxWidth: 360, margin: 0, lineHeight: 1.6 }}>
+                {t("requestSubtitle")}
+              </p>
+              <Link href="/request" className="tp-btn tp-btn-primary">
+                {t("requestCTA")}
+                <ArrowRight className="tp-icon" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Flame, Sparkles } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { ToolCard } from "@/components/tools/tool-card";
 import { cn } from "@/lib/utils";
 import type { Tool } from "@/lib/tools/registry";
@@ -78,9 +79,25 @@ export function AllToolsBrowser({
       </div>
 
       <div className="tp-tool-grid">
-        {visible.map((tool) => (
-          <ToolCard key={tool.slug} tool={tool} />
-        ))}
+        {visible.map((tool) => {
+          const siblings = tools.filter((item) => item.category === tool.category);
+          const categoryLabel = categories.find((item) => item.slug === tool.category)?.label ?? tool.category;
+          return (
+            <div className="tp-tool-hover-wrap" key={tool.slug}>
+              <ToolCard tool={tool} />
+              <div className="tp-tool-hover-card">
+                <span className="tp-tool-hover-cat">{categoryLabel}</span>
+                <div className="tp-tool-hover-list">
+                  {siblings.map((item) => (
+                    <Link key={item.slug} href={`/tools/${item.slug}`} className="tp-tool-hover-link">
+                      {item.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { ToolCard } from "@/components/tools/tool-card";
 import { categories, getToolsByCategory } from "@/lib/tools/registry";
 
@@ -42,10 +40,6 @@ export default async function CategoriesPage({ params }: LocalePageProps) {
             <section key={item.slug} className="tp-category-section">
               <div className="tp-category-section-head">
                 <h2>{item.label}</h2>
-                <Link href={`/category/${item.slug}`} className="tp-text-link">
-                  {category("viewCategory")}
-                  <ArrowRight className="tp-icon" aria-hidden="true" />
-                </Link>
               </div>
               <div className="tp-tool-grid">
                 {tools.map((tool) => (

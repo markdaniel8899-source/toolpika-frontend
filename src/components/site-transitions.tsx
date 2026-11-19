@@ -41,12 +41,13 @@ export function SiteTransitions() {
     );
 
     // Hide synchronously before paint — no flash of unstyled content.
+    const baseDelay = 120;
     nodes.forEach((el) => {
       const siblings = el.parentElement
         ? Array.from(el.parentElement.children).filter((child) => nodes.includes(child as HTMLElement))
         : [];
       const index = siblings.indexOf(el);
-      el.style.setProperty("--tp-delay", `${Math.min(index, 8) * 60}ms`);
+      el.style.setProperty("--tp-delay", `${baseDelay + Math.min(index, 8) * 90}ms`);
       el.classList.add("tp-anim");
     });
 

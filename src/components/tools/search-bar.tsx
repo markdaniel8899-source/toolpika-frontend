@@ -100,7 +100,7 @@ export function SearchBar() {
   const maxResults = results.slice(0, 6);
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <div style={{ position: "relative", zIndex: 100, width: "100%" }}>
       <form onSubmit={handleSubmit}>
         <div className="tp-search">
           <Search className="tp-icon" aria-hidden="true" />

@@ -131,7 +131,12 @@ export function Header() {
             openOnHover
           />
 
-          <div className="tp-wish-wrap" ref={wishRef}>
+          <div
+            className="tp-wish-wrap"
+            ref={wishRef}
+            onMouseEnter={() => setWishOpen(true)}
+            onMouseLeave={() => setWishOpen(false)}
+          >
             <button
               type="button"
               onClick={() => setWishOpen((prev) => !prev)}

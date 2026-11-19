@@ -44,7 +44,7 @@ export function Reveal({
       ref={ref}
       data-reveal-wrap
       className={cn(
-        "transition-[opacity,transform,filter] duration-[var(--dur-slow)] ease-[var(--ease-reveal)]",
+        "transition-[opacity,transform,filter] duration-[900ms] ease-[var(--ease-reveal)]",
         className
       )}
       style={{
