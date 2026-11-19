@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { usePathname, useRouter } from "@/i18n/navigation";
-import { useLocale } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -14,12 +13,8 @@ function prefersReducedMotion() {
 
 export function SiteMotion() {
   const pathname = usePathname();
-  const router = useRouter();
-  const locale = useLocale();
-  const curtainRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const firstRender = useRef(true);
 
   /* Restore the chosen theme before paint on every locale navigation. */
   useIsomorphicLayoutEffect(() => {
@@ -126,64 +121,8 @@ export function SiteMotion() {
     };
   }, []);
 
-  /* Curtain reveal after route change */
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    const curtain = curtainRef.current;
-    if (!curtain || prefersReducedMotion()) return;
-    curtain.dataset.phase = "reveal";
-    const timer = window.setTimeout(() => {
-      curtain.dataset.phase = "idle";
-    }, 400);
-    return () => window.clearTimeout(timer);
-  }, [pathname]);
-
-  /* Curtain cover before internal navigation */
-  useEffect(() => {
-    const onClick = (event: MouseEvent) => {
-      if (prefersReducedMotion() || event.defaultPrevented || event.button !== 0) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-      const target = event.target as HTMLElement | null;
-      const anchor = target?.closest("a");
-      if (!anchor) return;
-
-      const href = anchor.getAttribute("href");
-      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || href.startsWith("data:")) return;
-      if (anchor.target === "_blank" || anchor.hasAttribute("download")) return;
-
-      const url = new URL(anchor.href, window.location.href);
-      if (url.origin !== window.location.origin) return;
-
-      const current = window.location.pathname + window.location.search + window.location.hash;
-      const next = url.pathname + url.search + url.hash;
-      if (next === current) return;
-
-      event.preventDefault();
-
-      const segments = url.pathname.split("/").filter(Boolean);
-      if (segments[0] === locale) segments.shift();
-      const internal = `/${segments.join("/")}${url.search}${url.hash}`;
-
-      const curtain = curtainRef.current;
-      if (!curtain) {
-        router.push(internal);
-        return;
-      }
-      curtain.dataset.phase = "cover";
-      window.setTimeout(() => router.push(internal), 360);
-    };
-
-    document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [locale, router]);
-
   return (
     <>
-      <div ref={curtainRef} className="tp-page-curtain" data-phase="idle" aria-hidden="true" />
       <div ref={dotRef} className="tp-cursor-dot" aria-hidden="true" />
       <div ref={ringRef} className="tp-cursor-ring" aria-hidden="true" />
     </>
