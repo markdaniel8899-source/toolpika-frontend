@@ -990,16 +990,18 @@ html.theme-transition .tp-dropdown-trigger {
   animation: tp-heart-draw 680ms var(--ease-spring) forwards;
 }
 
+/* Path draw only — no scale, so the heart and arrow stay the exact same
+   size (18.3px) through the whole active state. */
 @keyframes tp-heart-trail {
-  0% { stroke-dashoffset: 100; opacity: 0.9; transform: scale(0.72) rotate(-20deg); }
-  60% { stroke-dashoffset: 0; opacity: 0.7; transform: scale(1.16) rotate(8deg); }
-  100% { stroke-dashoffset: 0; opacity: 0; transform: scale(1) rotate(0deg); }
+  0% { stroke-dashoffset: 100; opacity: 0.9; transform: rotate(-14deg); }
+  60% { stroke-dashoffset: 0; opacity: 0.7; transform: rotate(6deg); }
+  100% { stroke-dashoffset: 0; opacity: 0; transform: rotate(0deg); }
 }
 
 @keyframes tp-heart-draw {
-  0% { stroke-dashoffset: 100; fill: transparent; stroke: var(--on-accent); transform: scale(0.7) rotate(-18deg); }
-  55% { stroke-dashoffset: 0; fill: transparent; stroke: var(--on-accent); transform: scale(1.2) rotate(10deg); }
-  100% { stroke-dashoffset: 0; fill: var(--on-accent); stroke: var(--on-accent); transform: scale(1) rotate(0deg); }
+  0% { stroke-dashoffset: 100; fill: transparent; stroke: var(--on-accent); transform: rotate(-8deg); }
+  55% { stroke-dashoffset: 0; fill: transparent; stroke: var(--on-accent); transform: rotate(4deg); }
+  100% { stroke-dashoffset: 0; fill: var(--on-accent); stroke: var(--on-accent); transform: rotate(0deg); }
 }
 
 /* Single-line tooltip card on heart hover, themed with tokens. */
@@ -1816,7 +1818,8 @@ html.theme-transition .tp-dropdown-trigger {
   width: 18.3px;
   height: 18.3px;
   opacity: 0.55;
-  transition: opacity 350ms ease, transform 350ms ease;
+  transform-origin: center;
+  transition: opacity 350ms ease, transform 600ms var(--ease-reveal);
 }
 
 /* Circle stays exactly in place on hover so it never falls out of line
