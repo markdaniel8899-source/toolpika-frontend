@@ -153,10 +153,10 @@ export default async function HomePage({ params }: LocalePageProps) {
       <section className="tp-philosophy" id="about">
         <div className="tp-container tp-philosophy-grid">
           <Reveal>
-            <p className="tp-eyebrow">The philosophy</p>
-            <h2 className="tp-philosophy-title">A quieter<br />kind of <em>software.</em></h2>
+            <p className="tp-eyebrow">Why Toolpika</p>
+            <h2 className="tp-philosophy-title">Every tool you need.<br /><em>Nothing extra.</em></h2>
             <p className="tp-philosophy-sub">
-              No accounts. No uploads. No clutter. Just tools that work.
+              Unlimited free tools, no sign-up, and no data leaving your device.
             </p>
           </Reveal>
 
@@ -165,8 +165,8 @@ export default async function HomePage({ params }: LocalePageProps) {
               <div className="tp-principle">
                 <span className="tp-principle-num">01</span>
                 <div>
-                  <h3>On your device</h3>
-                  <p>Everything runs in your browser. Nothing is uploaded.</p>
+                  <h3>No data leakage</h3>
+                  <p>Your files and text never leave your browser.</p>
                 </div>
               </div>
             </Reveal>
@@ -174,8 +174,8 @@ export default async function HomePage({ params }: LocalePageProps) {
               <div className="tp-principle">
                 <span className="tp-principle-num">02</span>
                 <div>
-                  <h3>Zero friction</h3>
-                  <p>Open a tool, do the job, close the tab.</p>
+                  <h3>No sign-up</h3>
+                  <p>Open a tool and start working right away.</p>
                 </div>
               </div>
             </Reveal>
@@ -183,8 +183,8 @@ export default async function HomePage({ params }: LocalePageProps) {
               <div className="tp-principle">
                 <span className="tp-principle-num">03</span>
                 <div>
-                  <h3>Built to last</h3>
-                  <p>Fast, plain pages that keep working.</p>
+                  <h3>Unlimited free tools</h3>
+                  <p>Use every tool as often as you like, at no cost.</p>
                 </div>
               </div>
             </Reveal>

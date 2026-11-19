@@ -1345,36 +1345,29 @@ html.theme-transition .tp-dropdown-trigger {
   color: var(--muted-2);
 }
 
-/* In-flow dropdown: opening it pushes the text below it down instead of
-   sitting on top of it. */
+/* Overlay card: opens right under the search bar like a normal dropdown,
+   without pushing the content below it out of place. */
 .tp-search-results {
-  position: relative;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
   z-index: 40;
   overflow: hidden;
-  max-height: 0;
-  margin-top: 0;
-  border: 0 solid var(--border);
+  border: 1px solid var(--border);
   border-radius: 12px;
   background-color: var(--surface);
-  box-shadow: none;
+  box-shadow: var(--shadow-md);
   opacity: 0;
+  visibility: hidden;
   transform: translateY(-8px);
   pointer-events: none;
-  transition:
-    max-height 300ms var(--ease-out),
-    margin-top 300ms var(--ease-out),
-    border-width 200ms ease,
-    box-shadow 200ms ease,
-    opacity 200ms ease,
-    transform 200ms ease;
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
 }
 
 .tp-search-results[data-open="true"] {
-  max-height: 420px;
-  margin-top: 8px;
-  border-width: 1px;
-  box-shadow: var(--shadow-md);
   opacity: 1;
+  visibility: visible;
   transform: none;
   pointer-events: auto;
 }

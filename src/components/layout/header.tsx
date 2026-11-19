@@ -39,7 +39,21 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [wishOpen, setWishOpen] = useState(false);
   const [toolsMenuOpen, setToolsMenuOpen] = useState(false);
+  const menuTimer = useRef<number | null>(null);
   const wishRef = useRef<HTMLDivElement>(null);
+
+  /* Keep hover menus open while the pointer travels from trigger to panel. */
+  const hoverOpen = (set: (value: boolean) => void) => {
+    if (menuTimer.current !== null) {
+      window.clearTimeout(menuTimer.current);
+      menuTimer.current = null;
+    }
+    set(true);
+  };
+  const hoverClose = (set: (value: boolean) => void) => {
+    if (menuTimer.current !== null) window.clearTimeout(menuTimer.current);
+    menuTimer.current = window.setTimeout(() => set(false), 260);
+  };
   const { wishlist, count, isLoaded, toggleWishlist } = useWishlist();
 
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -119,8 +133,8 @@ export function Header() {
                 <div
                   key={item.href}
                   className="tp-nav-tools"
-                  onMouseEnter={() => setToolsMenuOpen(true)}
-                  onMouseLeave={() => setToolsMenuOpen(false)}
+                  onMouseEnter={() => hoverOpen(setToolsMenuOpen)}
+                  onMouseLeave={() => hoverClose(setToolsMenuOpen)}
                 >
                   <Link href={item.href} aria-current={active ? "page" : undefined}>
                     {item.label}
@@ -172,8 +186,8 @@ export function Header() {
           <div
             className="tp-wish-wrap"
             ref={wishRef}
-            onMouseEnter={() => setWishOpen(true)}
-            onMouseLeave={() => setWishOpen(false)}
+            onMouseEnter={() => hoverOpen(setWishOpen)}
+            onMouseLeave={() => hoverClose(setWishOpen)}
           >
             <button
               type="button"

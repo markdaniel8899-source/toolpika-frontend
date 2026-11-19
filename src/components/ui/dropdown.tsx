@@ -35,6 +35,7 @@ export function Dropdown({
   const [highlight, setHighlight] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const hoverTimer = useRef<number | null>(null);
 
   const selectedIndex = options.findIndex((option) => option.value === value);
   const selectedLabel = selectedIndex >= 0 ? options[selectedIndex].label : placeholder;
@@ -87,8 +88,17 @@ export function Dropdown({
     <div
       className="tp-dropdown"
       ref={rootRef}
-      onMouseEnter={openOnHover ? openMenu : undefined}
-      onMouseLeave={openOnHover ? () => setOpen(false) : undefined}
+      onMouseEnter={openOnHover ? () => {
+        if (hoverTimer.current !== null) {
+          window.clearTimeout(hoverTimer.current);
+          hoverTimer.current = null;
+        }
+        openMenu();
+      } : undefined}
+      onMouseLeave={openOnHover ? () => {
+        if (hoverTimer.current !== null) window.clearTimeout(hoverTimer.current);
+        hoverTimer.current = window.setTimeout(() => setOpen(false), 260);
+      } : undefined}
     >
       <button
         ref={triggerRef}
