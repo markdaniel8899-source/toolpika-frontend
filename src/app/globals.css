@@ -550,7 +550,7 @@ html.theme-transition .tp-dropdown-trigger {
   padding: 6px 8px 6px 20px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   pointer-events: auto;
 }
 
@@ -583,9 +583,9 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-nav a {
   position: relative;
   padding: 4px 0;
-  color: var(--nav-ink);
-  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
-  font-size: 13.5px;
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.01em;
   transition: color 200ms ease, transform 200ms ease;
@@ -608,7 +608,7 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-nav a:hover,
 .tp-nav a[aria-current="page"] {
-  color: var(--accent);
+  color: var(--text);
 }
 
 .tp-nav a:hover::after,
@@ -1268,7 +1268,7 @@ html.theme-transition .tp-dropdown-trigger {
   top: calc(100% + 8px);
   right: 0;
   left: 0;
-  z-index: 100;
+  z-index: 200;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -1276,6 +1276,22 @@ html.theme-transition .tp-dropdown-trigger {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.99);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
+}
+
+.tp-search-results[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+.tp-search-option {
+  background: transparent;
 }
 
 .tp-search-option {

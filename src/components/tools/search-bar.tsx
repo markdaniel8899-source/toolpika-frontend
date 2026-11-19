@@ -100,7 +100,7 @@ export function SearchBar() {
   const maxResults = results.slice(0, 6);
 
   return (
-    <div style={{ position: "relative", zIndex: 100, width: "100%" }}>
+    <div style={{ position: "relative", zIndex: 200, isolation: "isolate", width: "100%" }}>
       <form onSubmit={handleSubmit}>
         <div className="tp-search">
           <Search className="tp-icon" aria-hidden="true" />
@@ -135,27 +135,32 @@ export function SearchBar() {
         </div>
       </form>
 
-      {isFocused && query && maxResults.length > 0 && (
-        <ul id={listboxId} role="listbox" aria-label={t("placeholder")} className="tp-search-results slide-up">
-          {maxResults.map((tool, index) => (
-            <li key={tool.slug} id={`tool-result-${index}`} role="option" aria-selected={index === activeIndex}>
-              <button
-                type="button"
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => go(tool.slug)}
-                onMouseEnter={() => setActiveIndex(index)}
-                className={cn("tp-search-option", index === activeIndex && "is-active")}
-              >
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-                  <ToolIcon name={tool.icon} className="tp-icon" style={{ width: 16, height: 16 }} aria-hidden="true" />
-                  <span style={{ fontWeight: 500 }}>{tool.title}</span>
-                </span>
-                <span style={{ color: "var(--muted)", fontSize: 13 }}>{tool.category}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul
+        id={listboxId}
+        role="listbox"
+        aria-label={t("placeholder")}
+        className="tp-search-results"
+        data-open={isFocused && query !== "" && maxResults.length > 0 ? "true" : "false"}
+        aria-hidden={!(isFocused && query !== "" && maxResults.length > 0)}
+      >
+        {maxResults.map((tool, index) => (
+          <li key={tool.slug} id={`tool-result-${index}`} role="option" aria-selected={index === activeIndex}>
+            <button
+              type="button"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => go(tool.slug)}
+              onMouseEnter={() => setActiveIndex(index)}
+              className={cn("tp-search-option", index === activeIndex && "is-active")}
+            >
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
+                <ToolIcon name={tool.icon} className="tp-icon" style={{ width: 16, height: 16 }} aria-hidden="true" />
+                <span style={{ fontWeight: 500 }}>{tool.title}</span>
+              </span>
+              <span style={{ color: "var(--muted)", fontSize: 13 }}>{tool.category}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
