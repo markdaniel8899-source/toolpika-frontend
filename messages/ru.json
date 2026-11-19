@@ -127,11 +127,11 @@
     "eyebrow": "Категория",
     "title": "Инструменты: {name}",
     "description": "Все инструменты «{name}» на Toolpika. Работают в браузере и не требуют аккаунта.",
-    "empty": "В этой категории пока нет инструментов."
-    ,"allEyebrow": "Browse"
-    ,"allTitle": "All categories"
-    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
-    ,"viewCategory": "View category"
+    "empty": "В этой категории пока нет инструментов.",
+    "allEyebrow": "Browse",
+    "allTitle": "All categories",
+    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
+    "viewCategory": "View category"
   },
   "notFound": {
     "title": "Страница не найдена",
@@ -224,5 +224,11 @@
     "base64Invalid": "Это не похоже на корректный Base64.",
     "pasteText": "Вставьте сюда текст.",
     "result": "Результат"
+  },
+  "wishlist": {
+    "label": "Избранное",
+    "empty": "Пока нет сохранённых инструментов.",
+    "add": "Добавить {title} в избранное",
+    "remove": "Удалить {title} из избранного"
   }
 }

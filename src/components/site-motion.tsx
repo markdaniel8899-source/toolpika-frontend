@@ -86,6 +86,46 @@ export function SiteMotion() {
     };
   }, []);
 
+  /* Magnetic buttons — small pointer-driven offset, spring return via CSS. */
+  useEffect(() => {
+    if (prefersReducedMotion() || !window.matchMedia("(pointer: fine)").matches) return;
+
+    let active: HTMLElement | null = null;
+    const reset = (el: HTMLElement | null) => {
+      if (el) el.style.transform = "";
+    };
+
+    const onMove = (event: PointerEvent) => {
+      const el = (event.target as HTMLElement | null)?.closest<HTMLElement>(".tp-btn") ?? null;
+      if (el !== active) {
+        reset(active);
+        active = el;
+      }
+      if (!active) return;
+      const r = active.getBoundingClientRect();
+      const dx = (event.clientX - r.left - r.width / 2) * 0.12;
+      const dy = (event.clientY - r.top - r.height / 2) * 0.16;
+      active.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+    };
+
+    const onOut = (event: PointerEvent) => {
+      const el = (event.target as HTMLElement | null)?.closest<HTMLElement>(".tp-btn") ?? null;
+      const next = event.relatedTarget as Node | null;
+      if (el && (!next || !el.contains(next))) {
+        reset(el);
+        if (active === el) active = null;
+      }
+    };
+
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerout", onOut);
+    return () => {
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerout", onOut);
+      reset(active);
+    };
+  }, []);
+
   /* Curtain reveal after route change */
   useEffect(() => {
     if (firstRender.current) {

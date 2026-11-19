@@ -127,11 +127,11 @@
     "eyebrow": "श्रेणी",
     "title": "{name} टूल",
     "description": "Toolpika पर सभी {name} टूल। ये ब्राउज़र में चलते हैं और अकाउंट नहीं चाहिए।",
-    "empty": "इस श्रेणी में अभी कोई टूल नहीं है।"
-    ,"allEyebrow": "Browse"
-    ,"allTitle": "All categories"
-    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
-    ,"viewCategory": "View category"
+    "empty": "इस श्रेणी में अभी कोई टूल नहीं है।",
+    "allEyebrow": "Browse",
+    "allTitle": "All categories",
+    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
+    "viewCategory": "View category"
   },
   "notFound": {
     "title": "पेज नहीं मिला",
@@ -224,5 +224,11 @@
     "base64Invalid": "यह मान्य Base64 नहीं लगता।",
     "pasteText": "अपना टेक्स्ट यहाँ पेस्ट करें।",
     "result": "परिणाम"
+  },
+  "wishlist": {
+    "label": "विशलिस्ट",
+    "empty": "अभी कोई टूल सेव नहीं किया गया।",
+    "add": "{title} को विशलिस्ट में जोड़ें",
+    "remove": "{title} को विशलिस्ट से हटाएँ"
   }
 }

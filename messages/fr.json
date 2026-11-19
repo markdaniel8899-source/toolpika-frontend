@@ -127,11 +127,11 @@
     "eyebrow": "Catégorie",
     "title": "Outils {name}",
     "description": "Tous les outils {name} de Toolpika. Ils s'exécutent dans votre navigateur et ne demandent aucun compte.",
-    "empty": "Aucun outil dans cette catégorie pour le moment."
-    ,"allEyebrow": "Browse"
-    ,"allTitle": "All categories"
-    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
-    ,"viewCategory": "View category"
+    "empty": "Aucun outil dans cette catégorie pour le moment.",
+    "allEyebrow": "Browse",
+    "allTitle": "All categories",
+    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
+    "viewCategory": "View category"
   },
   "notFound": {
     "title": "Page introuvable",
@@ -224,5 +224,11 @@
     "base64Invalid": "Cela ne ressemble pas à du Base64 valide.",
     "pasteText": "Collez votre texte ici.",
     "result": "Résultat"
+  },
+  "wishlist": {
+    "label": "Favoris",
+    "empty": "Aucun outil enregistré.",
+    "add": "Ajouter {title} aux favoris",
+    "remove": "Retirer {title} des favoris"
   }
 }

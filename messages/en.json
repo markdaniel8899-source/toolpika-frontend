@@ -127,11 +127,11 @@
     "eyebrow": "Category",
     "title": "{name} tools",
     "description": "All {name} tools on Toolpika. They run in your browser and need no account.",
-    "empty": "No tools in this category yet."
-    ,"allEyebrow": "Browse"
-    ,"allTitle": "All categories"
-    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
-    ,"viewCategory": "View category"
+    "empty": "No tools in this category yet.",
+    "allEyebrow": "Browse",
+    "allTitle": "All categories",
+    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
+    "viewCategory": "View category"
   },
   "notFound": {
     "title": "Page not found",
@@ -224,5 +224,11 @@
     "base64Invalid": "That does not look like valid Base64.",
     "pasteText": "Text",
     "result": "Result"
+  },
+  "wishlist": {
+    "label": "Wishlist",
+    "empty": "No saved tools yet.",
+    "add": "Save {title} to wishlist",
+    "remove": "Remove {title} from wishlist"
   }
 }

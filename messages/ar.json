@@ -127,11 +127,11 @@
     "eyebrow": "فئة",
     "title": "أدوات {name}",
     "description": "جميع أدوات {name} في Toolpika. تعمل في المتصفح ولا تحتاج إلى حساب.",
-    "empty": "لا توجد أدوات في هذه الفئة بعد."
-    ,"allEyebrow": "Browse"
-    ,"allTitle": "All categories"
-    ,"allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it."
-    ,"viewCategory": "View category"
+    "empty": "لا توجد أدوات في هذه الفئة بعد.",
+    "allEyebrow": "Browse",
+    "allTitle": "All categories",
+    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
+    "viewCategory": "View category"
   },
   "notFound": {
     "title": "الصفحة غير موجودة",
@@ -224,5 +224,11 @@
     "base64Invalid": "لا يبدو هذا Base64 صالحًا.",
     "pasteText": "الصق نصك هنا.",
     "result": "النتيجة"
+  },
+  "wishlist": {
+    "label": "قائمة الرغبات",
+    "empty": "لا توجد أدوات محفوظة بعد.",
+    "add": "إضافة {title} إلى قائمة الرغبات",
+    "remove": "إزالة {title} من قائمة الرغبات"
   }
 }

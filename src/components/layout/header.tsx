@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowRight, Globe, Menu, Moon, Sun, X, Zap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Globe, Heart, Menu, Moon, Sun, Trash2, X, Zap } from "lucide-react";
 import { usePathname, useRouter, Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
 import { Dropdown } from "@/components/ui/dropdown";
+import { useWishlist } from "@/hooks/useWishlist";
+import { getTool } from "@/lib/tools/registry";
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "en", label: "English" },
@@ -26,6 +28,7 @@ export function Header() {
   const t = useTranslations("nav");
   const tTools = useTranslations("tools");
   const tFooter = useTranslations("footer");
+  const tWish = useTranslations("wishlist");
   const l = useTranslations("language");
   const th = useTranslations("theme");
   const pathname = usePathname();
@@ -34,6 +37,9 @@ export function Header() {
   const scrolled = useScrolled(8);
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [wishOpen, setWishOpen] = useState(false);
+  const wishRef = useRef<HTMLDivElement>(null);
+  const { slugs, remove, count } = useWishlist();
 
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof document === "undefined") return "light";
@@ -44,6 +50,17 @@ export function Header() {
     document.body.classList.toggle("menu-open", menuOpen);
     return () => document.body.classList.remove("menu-open");
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!wishOpen) return;
+    const onDown = (event: PointerEvent) => {
+      if (wishRef.current && !wishRef.current.contains(event.target as Node)) {
+        setWishOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [wishOpen]);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
@@ -71,6 +88,10 @@ export function Header() {
     { href: "/guides", label: t("guides") },
     { href: "/about", label: tFooter("about") },
   ];
+
+  const savedTools = slugs
+    .map((slug) => getTool(slug))
+    .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool));
 
   return (
     <header className={cn("tp-header", scrolled && "shadow-[var(--shadow-sm)]")}>
@@ -106,6 +127,45 @@ export function Header() {
             icon={<Globe className="tp-icon" aria-hidden="true" />}
             triggerClassName="tp-locale-trigger"
           />
+
+          <div className="tp-wish-wrap" ref={wishRef}>
+            <button
+              type="button"
+              onClick={() => setWishOpen((prev) => !prev)}
+              aria-label={tWish("label")}
+              aria-expanded={wishOpen}
+              className="tp-icon-btn tp-icon-only tp-wish-trigger"
+            >
+              <Heart className="tp-icon" aria-hidden="true" />
+              {count > 0 && <span className="tp-wish-count">{count}</span>}
+            </button>
+
+            {wishOpen && (
+              <div className="tp-wish-panel">
+                <p className="tp-wish-title">{tWish("label")}</p>
+                {savedTools.length === 0 ? (
+                  <p className="tp-wish-empty">{tWish("empty")}</p>
+                ) : (
+                  savedTools.map((tool) => (
+                    <div className="tp-wish-row" key={tool.slug}>
+                      <Link href={`/tools/${tool.slug}`} onClick={() => setWishOpen(false)}>
+                        {tool.title}
+                      </Link>
+                      <button
+                        type="button"
+                        className="tp-wish-remove"
+                        onClick={() => remove(tool.slug)}
+                        aria-label={tWish("remove", { title: tool.title })}
+                        title={tWish("remove", { title: tool.title })}
+                      >
+                        <Trash2 className="tp-icon" aria-hidden="true" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
 
           <button
             type="button"
