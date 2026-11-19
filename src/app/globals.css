@@ -596,14 +596,14 @@ html.theme-transition .tp-dropdown-trigger {
   content: "";
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: -3px;
   left: 0;
   height: 2px;
   border-radius: 999px;
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  /* Slow, smooth underline — same feel as the mockup nav. */
+  /* One identical underline for every nav item, including All tools. */
   transition: transform 600ms var(--ease-reveal);
 }
 
@@ -1077,6 +1077,22 @@ html.theme-transition .tp-dropdown-trigger {
   max-width: 520px;
   font-size: 19px;
   line-height: 1.6;
+}
+
+/* View all categories button — same tactile transitions as other CTAs. */
+.tp-split-copy-lg .tp-btn {
+  transition:
+    background-color 600ms var(--ease-reveal),
+    box-shadow 600ms var(--ease-reveal),
+    transform 600ms var(--ease-spring);
+}
+
+.tp-split-copy-lg .tp-btn:hover {
+  transform: translateY(-2px) scale(0.99);
+}
+
+.tp-split-copy-lg .tp-btn:active {
+  transform: scale(0.97);
 }
 
 .tp-section .tp-eyebrow,
