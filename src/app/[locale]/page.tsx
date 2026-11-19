@@ -124,7 +124,9 @@ export default async function HomePage({ params }: LocalePageProps) {
                         <span className="tp-category-count">
                           {categoryTools.length} {categoryTools.length === 1 ? "tool" : "tools"}
                         </span>
-                        <ArrowRight className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)", opacity: 0.55 }} aria-hidden="true" />
+                        <span className="tp-tool-arrow" aria-hidden="true">
+                          <ArrowRight className="tp-icon" />
+                        </span>
                       </span>
                     </>
                   ) : (
@@ -133,7 +135,9 @@ export default async function HomePage({ params }: LocalePageProps) {
                         <span className="tp-icon-tile">
                           <Icon className="tp-icon" aria-hidden="true" />
                         </span>
-                        <ArrowUpRight className="tp-icon" style={{ width: 14, height: 14, color: "var(--accent)", opacity: 0.55 }} aria-hidden="true" />
+                        <span className="tp-tool-arrow" aria-hidden="true">
+                          <ArrowUpRight className="tp-icon" />
+                        </span>
                       </span>
                       <span className="tp-category-name">{category.label}</span>
                       <span className="tp-category-desc">{CATEGORY_DESCRIPTIONS[category.slug]}</span>

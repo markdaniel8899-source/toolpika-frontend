@@ -907,8 +907,8 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-wish-btn {
   position: absolute;
-  top: 14px;
-  right: 42px;
+  top: 20px;
+  right: 60px;
   z-index: 3;
   display: grid;
   width: 30px;
@@ -922,10 +922,10 @@ html.theme-transition .tp-dropdown-trigger {
   opacity: 0;
   transform: scale(0.85);
   transition:
-    opacity 200ms ease,
-    transform 200ms ease,
-    color 200ms ease,
-    background-color 200ms ease;
+    opacity 350ms ease,
+    transform 350ms ease,
+    color 350ms ease,
+    background-color 350ms ease;
 }
 
 .tp-tool-card-wrap:hover .tp-wish-btn,
@@ -940,33 +940,55 @@ html.theme-transition .tp-dropdown-trigger {
   color: var(--accent);
 }
 
+/* Saved state stays soft — the heart, not the button, carries the focus. */
 .tp-wish-btn.is-saved {
-  background: var(--accent-fill);
-  color: var(--on-accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-wish-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tp-wish-btn.is-saved::after {
+  animation: tp-heart-ring 480ms ease-out;
 }
 
 .tp-wish-btn .tp-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: var(--muted);
-  transition: fill 200ms ease, stroke 200ms ease, transform 200ms ease;
+  transition: fill 350ms ease, stroke 350ms ease, transform 350ms ease;
 }
 
 .tp-wish-btn:hover .tp-icon {
   transform: rotate(-10deg) scale(1.08);
 }
 
+/* Click drops the heart into the saved collection, then it springs back in. */
 .tp-wish-btn.is-saved .tp-icon {
-  fill: var(--on-accent);
-  stroke: var(--on-accent);
-  animation: tp-heart-pop 420ms var(--ease-spring);
+  fill: var(--accent);
+  stroke: var(--accent);
+  animation: tp-heart-collect 520ms var(--ease-spring);
 }
 
-@keyframes tp-heart-pop {
-  0% { transform: scale(0.6) rotate(-28deg); }
-  60% { transform: scale(1.25) rotate(12deg); }
-  100% { transform: scale(1) rotate(0deg); }
+@keyframes tp-heart-collect {
+  0% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
+  35% { transform: scale(1.3) translateY(-5px) rotate(-14deg); opacity: 1; }
+  65% { transform: scale(0.5) translateY(12px) rotate(10deg); opacity: 0.45; }
+  100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
+}
+
+@keyframes tp-heart-ring {
+  from { transform: scale(0.6); opacity: 0.75; }
+  to { transform: scale(1.6); opacity: 0; }
 }
 
 @media (hover: none) {
@@ -1688,33 +1710,44 @@ html.theme-transition .tp-dropdown-trigger {
   background: transparent;
   color: var(--accent);
   transition:
-    background-color 200ms ease,
-    color 200ms ease,
-    transform 200ms ease;
+    background-color 350ms ease,
+    color 350ms ease,
+    transform 350ms ease;
 }
 
 .tp-tool-arrow .tp-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   opacity: 0.55;
-  transition: opacity 200ms ease, transform 200ms ease;
+  transition: opacity 350ms ease, transform 350ms ease;
 }
 
 .tp-tool-card-wrap:hover .tp-tool-arrow,
-.tp-tool-card-link:focus-visible .tp-tool-arrow {
+.tp-tool-card-link:focus-visible .tp-tool-arrow,
+.tp-category-card:hover .tp-tool-arrow,
+.tp-category-card:focus-visible .tp-tool-arrow {
   background: var(--accent-fill);
   color: var(--on-accent);
   transform: translate(2px, -2px) scale(1.05);
 }
 
 .tp-tool-card-wrap:hover .tp-tool-arrow .tp-icon,
-.tp-tool-card-link:focus-visible .tp-tool-arrow .tp-icon {
+.tp-tool-card-link:focus-visible .tp-tool-arrow .tp-icon,
+.tp-category-card:hover .tp-tool-arrow .tp-icon,
+.tp-category-card:focus-visible .tp-tool-arrow .tp-icon {
   opacity: 1;
   transform: rotate(45deg);
 }
 
-.tp-tool-card-link:active .tp-tool-arrow {
+.tp-tool-card-link:active .tp-tool-arrow,
+.tp-category-card:active .tp-tool-arrow {
   transform: scale(0.92);
+}
+
+.tp-tool-icon .tp-icon,
+.tp-icon-tile .tp-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .tp-tool-title {
