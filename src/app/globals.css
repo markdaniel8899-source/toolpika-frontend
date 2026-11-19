@@ -30,6 +30,14 @@
   --accent-soft: #efedff;
   --accent-wash: #f5f3ff;
 
+  /* Dark philosophy band — intentionally dark in both themes. */
+  --philosophy-bg: #0b0b12;
+  --philosophy-text: #f5f4f0;
+  --philosophy-muted: rgba(245, 244, 240, 0.62);
+  --philosophy-line: rgba(245, 244, 240, 0.14);
+  --philosophy-accent: #b9aeff;
+  --philosophy-glow: rgba(107, 92, 255, 0.22);
+
   --field-bg: #faf9ff;
   --focus-ring: rgba(107, 92, 255, 0.32);
   --field-shadow: 0 10px 28px rgba(44, 36, 92, 0.12);
@@ -86,6 +94,13 @@
   --accent-fg: #ffffff;
   --accent-soft: rgba(143, 125, 255, 0.14);
   --accent-wash: #171625;
+
+  --philosophy-bg: #08080e;
+  --philosophy-text: #f5f3ef;
+  --philosophy-muted: rgba(245, 243, 239, 0.62);
+  --philosophy-line: rgba(245, 243, 239, 0.14);
+  --philosophy-accent: #c4b5ff;
+  --philosophy-glow: rgba(107, 92, 255, 0.26);
 
   --field-bg: #1b1c24;
   --focus-ring: rgba(143, 125, 255, 0.42);
@@ -890,6 +905,17 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-section-title {
   font-size: 36px;
+}
+
+.tp-section-title-lg {
+  font-size: clamp(40px, 4.4vw, 54px);
+  line-height: 1.05;
+}
+
+.tp-split-copy-lg p {
+  max-width: 480px;
+  font-size: 17px;
+  line-height: 1.65;
 }
 
 .tp-section .tp-eyebrow,
@@ -3540,6 +3566,362 @@ html:has([data-admin="true"]) {
   }
 }
 
+/* ---------- Philosophy band — dark in both themes ---------- */
+
+.tp-philosophy {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(88px, 11vw, 148px) 0;
+  background: var(--philosophy-bg);
+  color: var(--philosophy-text);
+}
+
+.tp-philosophy::before {
+  content: "";
+  position: absolute;
+  top: -22vw;
+  left: -8vw;
+  width: 46vw;
+  height: 46vw;
+  border-radius: 50%;
+  background: var(--philosophy-glow);
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.tp-philosophy-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(40px, 7vw, 110px);
+  align-items: start;
+}
+
+.tp-philosophy .tp-eyebrow {
+  margin-bottom: 18px;
+  color: var(--philosophy-accent);
+}
+
+.tp-philosophy-title {
+  margin: 0;
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+.tp-philosophy-title em {
+  font-family: var(--font-display), serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--philosophy-accent);
+}
+
+.tp-philosophy-sub {
+  max-width: 420px;
+  margin: 26px 0 0;
+  color: var(--philosophy-muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.tp-principle-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.tp-principle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  padding: 30px 0;
+  border-top: 1px solid var(--philosophy-line);
+}
+
+.tp-principle:last-child {
+  border-bottom: 1px solid var(--philosophy-line);
+}
+
+.tp-principle-num {
+  padding-top: 4px;
+  color: var(--philosophy-accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tp-principle h3 {
+  margin: 0;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.tp-principle p {
+  max-width: 440px;
+  margin: 10px 0 0;
+  color: var(--philosophy-muted);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+@media (max-width: 980px) {
+  .tp-philosophy-grid {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+}
+
+/* ---------- Hero live workbench (interactive product screen) ---------- */
+
+.tp-wb-bezel {
+  position: relative;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  box-shadow: var(--card-lift-shadow);
+}
+
+.tp-wb-bezel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(300px circle at var(--wb-x, 60%) var(--wb-y, 20%), var(--card-glow), transparent 70%);
+}
+
+.tp-wb-core {
+  position: relative;
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 60%, transparent);
+  overflow: hidden;
+}
+
+.tp-wb-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tp-wb-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.tp-wb-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.tp-wb-url {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.tp-wb-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 18px 0;
+}
+
+.tp-wb-tab {
+  padding: 7px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.tp-wb-tab.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-wb-body {
+  display: flex;
+  min-height: 252px;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+}
+
+.tp-wb-editor {
+  width: 100%;
+  min-height: 130px;
+  padding: 14px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: 0;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 13.5px;
+  line-height: 1.65;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.tp-wb-editor:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.tp-wb-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tp-wb-stat {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.tp-wb-stat b {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-wb-stat span {
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tp-wb-stat.is-primary {
+  border-color: transparent;
+  background: var(--accent-fill);
+}
+
+.tp-wb-stat.is-primary b,
+.tp-wb-stat.is-primary span {
+  color: var(--on-accent);
+}
+
+.tp-wb-body--password {
+  justify-content: center;
+  gap: 20px;
+}
+
+.tp-wb-password {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.tp-wb-password code {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-wb-generate {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.tp-wb-generate:hover {
+  background: var(--accent-fill-hover);
+  transform: translateY(-1px);
+}
+
+.tp-wb-length {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.tp-wb-length span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tp-wb-length b {
+  color: var(--text);
+}
+
+.tp-wb-length input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.tp-wb-strength {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.tp-wb-strength span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 200ms ease;
+}
+
+.tp-wb-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  .tp-wb-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tp-wb-password {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 /* ---------- Shared hover behaviour for every accent-filled button ---------- */
 /* Same colour glow, spring lift and press as the header "Request a tool" pill. */
 .tp-btn-primary,
@@ -3575,7 +3957,7 @@ html:has([data-admin="true"]) {
 .tp-anim {
   opacity: 0;
   translate: 0 22px;
-  filter: blur(8px);
+  filter: blur(14px);
   transition:
     opacity 800ms var(--ease-reveal) var(--tp-delay, 0ms),
     translate 800ms var(--ease-reveal) var(--tp-delay, 0ms),
