@@ -229,6 +229,17 @@
     "label": "Merkliste",
     "empty": "Noch keine gespeicherten Tools.",
     "add": "{title} zur Merkliste hinzufügen",
-    "remove": "{title} aus der Merkliste entfernen"
+    "remove": "{title} aus der Merkliste entfernen",
+    "title": "Merkliste",
+    "savedTools": "Tools, die du auf diesem Gerät gespeichert hast.",
+    "emptyPage": "Deine Merkliste ist leer. Stöbere durch die Tools und speichere deine Favoriten!",
+    "browseTools": "Tools entdecken",
+    "open": "{title} öffnen"
+  },
+  "cookies": {
+    "title": "Cookie-Einstellungen",
+    "text": "Wir verwenden Cookies, um dein Erlebnis zu verbessern und die Websitenutzung zu analysieren. Mit dem Fortfahren stimmst du der Verwendung von Cookies zu.",
+    "acceptAll": "Alle akzeptieren",
+    "reject": "Nicht notwendige ablehnen"
   }
 }

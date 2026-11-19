@@ -1,4 +1,4 @@
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Instrument_Serif, Inter, Plus_Jakarta_Sans } from "next/font/google";
 
 /**
  * Body / UI typeface - clean, neutral, highly readable.
@@ -7,6 +7,17 @@ import { Inter, Instrument_Serif } from "next/font/google";
 export const inter = Inter({
   subsets: ["latin", "latin-ext", "cyrillic"],
   variable: "--font-inter",
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+/**
+ * Navigation / UI accent typeface — the font used for the nav labels in the
+ * high-end mockup.
+ */
+export const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-jakarta",
   weight: ["400", "500", "600"],
   display: "swap",
 });

@@ -229,6 +229,17 @@
     "label": "Favoriler",
     "empty": "Henüz kaydedilen araç yok.",
     "add": "{title} aracını favorilere ekle",
-    "remove": "{title} aracını favorilerden çıkar"
+    "remove": "{title} aracını favorilerden çıkar",
+    "title": "Favoriler",
+    "savedTools": "Bu cihazda kaydettiğin araçlar.",
+    "emptyPage": "Favorilerin boş. Araçlara göz at ve favorilerini kaydet!",
+    "browseTools": "Araçlara göz at",
+    "open": "{title} aracını aç"
+  },
+  "cookies": {
+    "title": "Çerez tercihleri",
+    "text": "Deneyiminizi geliştirmek ve site trafiğini analiz etmek için çerezler kullanıyoruz. Devam ederek çerez kullanımını kabul etmiş olursunuz.",
+    "acceptAll": "Tümünü kabul et",
+    "reject": "Gereksiz olanları reddet"
   }
 }

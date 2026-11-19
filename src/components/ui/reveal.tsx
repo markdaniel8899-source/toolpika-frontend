@@ -42,6 +42,7 @@ export function Reveal({
   return (
     <div
       ref={ref}
+      data-reveal-wrap
       className={cn(
         "transition-[opacity,transform,filter] duration-[var(--dur-slow)] ease-[var(--ease-reveal)]",
         className

@@ -4,7 +4,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { WishlistButton } from "@/components/tools/wishlist-button";
-import { addToWishlist } from "@/hooks/useWishlist";
 import type { Tool, ToolCategory } from "@/lib/tools/registry";
 
 const CATEGORY_LABELS: Record<ToolCategory, string> = {
@@ -20,11 +19,7 @@ const CATEGORY_LABELS: Record<ToolCategory, string> = {
 export function ToolCard({ tool }: { tool: Tool }) {
   return (
     <div className="tp-tool-card-wrap">
-      <Link
-        href={`/tools/${tool.slug}`}
-        className="tp-card tp-tool-card tp-tool-card-link"
-        onClick={() => addToWishlist(tool.slug)}
-      >
+      <Link href={`/tools/${tool.slug}`} className="tp-card tp-tool-card tp-tool-card-link">
         <span className="tp-tool-top">
           <span className="tp-tool-icon">
             <ToolIcon name={tool.icon} className="tp-icon" aria-hidden="true" />

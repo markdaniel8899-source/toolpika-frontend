@@ -229,6 +229,17 @@
     "label": "Preferiti",
     "empty": "Nessuno strumento salvato.",
     "add": "Salva {title} nei preferiti",
-    "remove": "Rimuovi {title} dai preferiti"
+    "remove": "Rimuovi {title} dai preferiti",
+    "title": "Preferiti",
+    "savedTools": "Strumenti salvati su questo dispositivo.",
+    "emptyPage": "La tua lista dei preferiti è vuota. Esplora gli strumenti e salva i tuoi preferiti!",
+    "browseTools": "Esplora gli strumenti",
+    "open": "Apri {title}"
+  },
+  "cookies": {
+    "title": "Preferenze sui cookie",
+    "text": "Usiamo i cookie per migliorare la tua esperienza e analizzare il traffico del sito. Continuando, accetti l'uso dei cookie.",
+    "acceptAll": "Accetta tutti",
+    "reject": "Rifiuta non essenziali"
   }
 }

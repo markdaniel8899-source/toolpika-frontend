@@ -8,7 +8,7 @@ import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
 import { Dropdown } from "@/components/ui/dropdown";
-import { useWishlist } from "@/hooks/useWishlist";
+import { useWishlist } from "@/hooks/use-wishlist";
 import { getTool } from "@/lib/tools/registry";
 
 const LOCALES: { code: Locale; label: string }[] = [
@@ -39,7 +39,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [wishOpen, setWishOpen] = useState(false);
   const wishRef = useRef<HTMLDivElement>(null);
-  const { slugs, remove, count } = useWishlist();
+  const { wishlist, count, isLoaded, toggleWishlist } = useWishlist();
 
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof document === "undefined") return "light";
@@ -89,9 +89,11 @@ export function Header() {
     { href: "/about", label: tFooter("about") },
   ];
 
-  const savedTools = slugs
-    .map((slug) => getTool(slug))
-    .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool));
+  const savedTools = isLoaded
+    ? wishlist
+        .map((slug) => getTool(slug))
+        .filter((tool): tool is NonNullable<ReturnType<typeof getTool>> => Boolean(tool))
+    : [];
 
   return (
     <header className={cn("tp-header", scrolled && "shadow-[var(--shadow-sm)]")}>
@@ -137,10 +139,10 @@ export function Header() {
               className="tp-icon-btn tp-icon-only tp-wish-trigger"
             >
               <Heart className="tp-icon" aria-hidden="true" />
-              {count > 0 && <span className="tp-wish-count">{count}</span>}
+              {isLoaded && count > 0 && <span className="tp-wish-count">{count}</span>}
             </button>
 
-            {wishOpen && (
+            {wishOpen && isLoaded && (
               <div className="tp-wish-panel">
                 <p className="tp-wish-title">{tWish("label")}</p>
                 {savedTools.length === 0 ? (
@@ -154,7 +156,7 @@ export function Header() {
                       <button
                         type="button"
                         className="tp-wish-remove"
-                        onClick={() => remove(tool.slug)}
+                        onClick={() => toggleWishlist(tool.slug)}
                         aria-label={tWish("remove", { title: tool.title })}
                         title={tWish("remove", { title: tool.title })}
                       >
@@ -180,9 +182,11 @@ export function Header() {
             )}
           </button>
 
-          <Link href="/request" className="tp-btn tp-btn-primary tp-header-cta">
-            <ArrowRight className="tp-icon" aria-hidden="true" />
-            {t("request")}
+          <Link href="/request" className="tp-btn tp-btn-primary tp-header-cta tp-pill-cta">
+            <span className="tp-pill-label">{t("request")}</span>
+            <span className="tp-pill-icon">
+              <ArrowRight className="tp-icon" aria-hidden="true" />
+            </span>
           </Link>
 
           <button

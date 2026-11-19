@@ -229,6 +229,17 @@
     "label": "Wishlist",
     "empty": "No saved tools yet.",
     "add": "Save {title} to wishlist",
-    "remove": "Remove {title} from wishlist"
+    "remove": "Remove {title} from wishlist",
+    "title": "Wishlist",
+    "savedTools": "Tools you saved on this device.",
+    "emptyPage": "Your wishlist is empty. Browse tools and save your favorites!",
+    "browseTools": "Browse tools",
+    "open": "Open {title}"
+  },
+  "cookies": {
+    "title": "Cookie preferences",
+    "text": "We use cookies to enhance your experience and analyze site traffic. By continuing, you agree to our use of cookies.",
+    "acceptAll": "Accept All",
+    "reject": "Reject Non-Essential"
   }
 }
