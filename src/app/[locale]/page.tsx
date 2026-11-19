@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
-import { HeroWorkbench } from "@/components/home/hero-workbench";
+import { HeroDemo } from "@/components/hero/HeroDemo";
 import { categories, getLiveTools, getPopularTools } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
@@ -59,7 +59,7 @@ export default async function HomePage({ params }: LocalePageProps) {
         </div>
 
         <Reveal delay={620}>
-          <HeroWorkbench />
+          <HeroDemo />
         </Reveal>
       </section>
 

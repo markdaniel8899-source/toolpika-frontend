@@ -4221,6 +4221,412 @@ html:has([data-admin="true"]) {
   }
 }
 
+/* ---------- Hero auto-play demo (React + Framer Motion) ---------- */
+/* Authored on a fixed 560×384 set; one transform scales the whole scene.
+   Every colour below is a design token — no literals in components. */
+
+.tp-demo-float {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  will-change: transform;
+}
+
+.tp-demo-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 560 / 384;
+  overflow: hidden;
+}
+
+.tp-demo-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 560px;
+  height: 384px;
+  transform-origin: top left;
+}
+
+.tp-demo-bezel {
+  position: absolute;
+  inset: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+  box-shadow: var(--card-lift-shadow);
+}
+
+.tp-demo-core {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+.tp-demo-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  height: 38px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tp-demo-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+}
+
+.tp-demo-dot--red { background: var(--danger); }
+.tp-demo-dot--yellow { background: var(--warning); }
+.tp-demo-dot--green { background: var(--success); }
+
+.tp-demo-url {
+  margin-left: 10px;
+  padding: 3px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.tp-demo-tabs {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  left: 0;
+  display: flex;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tp-demo-tab {
+  display: inline-flex;
+  width: 146px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tp-demo-tab.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-demo-stage {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  bottom: 26px;
+  left: 0;
+}
+
+.tp-demo-scene-wrap,
+.tp-demo-scene {
+  position: absolute;
+  inset: 0;
+}
+
+.tp-demo-scene {
+  padding: 16px 18px;
+}
+
+/* Scenario 1 — Word Counter */
+.tp-demo-editor {
+  height: 132px;
+  overflow: hidden;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.tp-demo-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tp-demo-stat {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.tp-demo-stat b {
+  display: block;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-demo-stat span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.tp-demo-stat.is-primary {
+  border-color: transparent;
+  background: var(--accent-fill);
+}
+
+.tp-demo-stat.is-primary b,
+.tp-demo-stat.is-primary span {
+  color: var(--on-accent);
+}
+
+/* Scenario 2 — JSON Formatter */
+.tp-demo-panels {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tp-demo-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.tp-demo-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tp-demo-panel-body {
+  flex: 1;
+  padding: 12px;
+}
+
+.tp-demo-ok {
+  color: var(--accent);
+}
+
+.tp-demo-code {
+  margin: 0;
+  color: var(--text);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tp-demo-code-line {
+  display: block;
+  min-height: 18px;
+}
+
+.tp-demo-placeholder {
+  color: var(--muted-2);
+  font-size: 11px;
+  font-style: italic;
+}
+
+.tp-demo-key { color: var(--accent); }
+.tp-demo-str { color: var(--success); }
+.tp-demo-punc { color: var(--muted); }
+
+/* Scenario 3 — Password Generator */
+.tp-demo-pw-wrap {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.tp-demo-pw-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.tp-demo-pw-value {
+  overflow: hidden;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-demo-pw-badge {
+  flex: none;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.tp-demo-generate {
+  align-self: flex-end;
+  height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.tp-demo-strength {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.tp-demo-strength-head {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.tp-demo-strength-track {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.tp-demo-strength-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* Footer, blinking caret and the fake cursor */
+.tp-demo-foot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  height: 26px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-top: 1px solid var(--border);
+}
+
+.tp-demo-progress {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tp-demo-progress-dot {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.tp-demo-foot-label {
+  color: var(--muted);
+  font-size: 9.5px;
+}
+
+.tp-demo-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: -0.16em;
+  background: var(--accent);
+  animation: tp-demo-blink 1s steps(1) infinite;
+}
+
+@keyframes tp-demo-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.tp-demo-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  margin: -2px 0 0 -2px;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--text) 30%, transparent));
+}
+
+.tp-demo-cursor svg {
+  display: block;
+}
+
+.tp-demo-click {
+  position: absolute;
+  z-index: 4;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
 /* All-tools filter tabs — same tactile feel as the request button. */
 .tp-tab {
   box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 12%, transparent);
