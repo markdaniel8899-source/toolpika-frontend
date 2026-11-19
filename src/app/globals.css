@@ -908,11 +908,11 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-wish-btn {
   position: absolute;
   top: 20px;
-  right: 60px;
+  right: 62px;
   z-index: 3;
   display: grid;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   place-items: center;
   border: 0;
   border-radius: 999px;
@@ -947,8 +947,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-heart-svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   overflow: visible;
   transition: transform 350ms ease;
 }
@@ -1714,8 +1714,8 @@ html.theme-transition .tp-dropdown-trigger {
    arrow rotates from up-right to right. */
 .tp-tool-arrow {
   display: grid;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   flex: none;
   place-items: center;
   border-radius: 999px;
@@ -1728,8 +1728,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-tool-arrow .tp-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   opacity: 0.55;
   transition: opacity 350ms ease, transform 350ms ease;
 }
