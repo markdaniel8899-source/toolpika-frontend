@@ -1197,12 +1197,13 @@ html.theme-transition .tp-dropdown-trigger {
   box-shadow: var(--shadow-sm);
   color: var(--muted);
   opacity: 0;
+  transform-origin: center;
   transition:
-    opacity 350ms ease,
-    box-shadow 350ms ease,
-    color 350ms ease,
-    background-color 350ms ease,
-    transform 350ms var(--ease-spring);
+    opacity 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out),
+    color 260ms var(--ease-out),
+    background-color 260ms var(--ease-out),
+    transform 260ms var(--ease-out);
 }
 
 .tp-tool-card-wrap:hover .tp-wish-btn,
@@ -1211,27 +1212,38 @@ html.theme-transition .tp-dropdown-trigger {
   opacity: 1;
 }
 
+/* Gentle scale the moment the card is hovered; a touch more on direct hover.
+   transform-origin stays centered, so the icon never shifts out of its circle. */
+.tp-tool-card-wrap:hover .tp-wish-btn {
+  transform: scale(1.04);
+}
+
 .tp-wish-btn:hover {
   background: var(--accent-soft);
   color: var(--accent);
-  transform: scale(1.06);
 }
 
-/* Saved state matches the arrow circle: accent fill, white heart outline.
-   The ring keeps the saved heart legible on both themes. */
+.tp-wish-btn:hover,
+.tp-tool-card-wrap:hover .tp-wish-btn:hover {
+  transform: scale(1.08);
+}
+
+/* Saved state matches the arrow hover circle: same accent fill and same
+   soft ring + shadow, with the white outline left for the heart path. */
 .tp-wish-btn.is-saved {
   background: var(--accent-fill);
   color: var(--on-accent);
   box-shadow:
-    0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent),
-    0 6px 16px color-mix(in srgb, var(--accent) 30%, transparent);
+    0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 6px 14px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
-.tp-wish-btn.is-saved:hover {
+.tp-wish-btn.is-saved:hover,
+.tp-tool-card-wrap:hover .tp-wish-btn.is-saved:hover {
   transform: scale(1.08);
   box-shadow:
-    0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent),
-    0 8px 20px color-mix(in srgb, var(--accent) 40%, transparent);
+    0 0 0 2px color-mix(in srgb, var(--accent) 26%, transparent),
+    0 8px 18px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 /* Heart flying from a card into the header wishlist bucket. */
@@ -1770,9 +1782,7 @@ html.theme-transition .tp-dropdown-trigger {
   box-shadow: var(--card-shadow), var(--card-highlight);
   transition:
     box-shadow var(--dur-base) var(--ease-reveal),
-    transform 260ms var(--ease-out),
     background-color var(--dur-base) var(--ease-reveal);
-  will-change: transform;
 }
 
 .tp-card::before {
@@ -1792,9 +1802,10 @@ html.theme-transition .tp-dropdown-trigger {
   z-index: 1;
 }
 
+/* No translate on hover: the card, arrow and heart stay locked in place.
+   Only the shadow deepens, so nothing can drift or look displaced. */
 .tp-card:hover {
   box-shadow: var(--card-lift-shadow), var(--card-highlight);
-  transform: translateY(-2px);
 }
 
 .tp-card:hover::before {
@@ -1841,7 +1852,8 @@ html.theme-transition .tp-dropdown-trigger {
   line-height: 0;
   transition:
     background-color 260ms var(--ease-out),
-    color 260ms var(--ease-out);
+    color 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out);
 }
 
 .tp-tool-arrow .tp-icon {
@@ -1864,6 +1876,10 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-category-card:focus-visible .tp-tool-arrow {
   background: var(--accent-fill);
   color: var(--on-accent);
+  /* Same quiet ring + shadow as the saved heart, so both circles match. */
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 6px 14px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 .tp-tool-card-wrap:hover .tp-tool-arrow .tp-icon,
