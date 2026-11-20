@@ -3504,6 +3504,92 @@ html:has([data-admin="true"]) {
   background: var(--surface-2);
 }
 
+/* Inbox status control: a compact, theme-aware select with a status dot. */
+.tp-admin-status-select {
+  position: relative;
+  display: inline-flex;
+  width: 152px;
+  max-width: 100%;
+  align-items: center;
+}
+
+.tp-admin-status-select::before {
+  position: absolute;
+  left: 12px;
+  z-index: 1;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted-2);
+  content: "";
+  pointer-events: none;
+}
+
+.tp-admin-status-select[data-status="new"]::before {
+  background: var(--accent);
+}
+
+.tp-admin-status-select[data-status="in_progress"]::before {
+  background: var(--info);
+}
+
+.tp-admin-status-select[data-status="resolved"]::before {
+  background: var(--success);
+}
+
+.tp-admin-status-select[data-status="rejected"]::before {
+  background: var(--danger);
+}
+
+.tp-admin-status-select-input {
+  width: 100%;
+  height: 36px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  outline: 0;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 0 32px 0 28px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.tp-admin-status-select-input:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  background: var(--surface);
+}
+
+.tp-admin-status-select-input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.tp-admin-status-select-input:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.tp-admin-status-select-input option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.tp-admin-status-select-icon {
+  position: absolute;
+  right: 11px;
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
 /* Table row hover - subtle tone step for scanability. */
 .tp-admin-table tbody tr {
   transition: background-color var(--dur-fast) var(--ease-out);

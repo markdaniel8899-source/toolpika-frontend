@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Trash2 } from "lucide-react";
+import { ChevronDown, Trash2 } from "lucide-react";
 import { deleteRequest, updateRequestStatus } from "@/app/admin/actions";
 import type { AdminRequest, InboxStatus } from "@/lib/admin/row-types";
 import { DataTable, EmptyState } from "@/components/admin/ui";
@@ -167,28 +167,36 @@ export function RequestsInbox({
                 </time>
               </td>
               <td className="px-3 py-3">
-                <select
-                  aria-label={copy.status}
-                  value={request.status}
-                  disabled={pending}
-                  onChange={(event) =>
-                    setStatus(request.id, event.target.value as InboxStatus)
-                  }
-                  className="tp-field-input"
-                  style={{ width: "auto", minWidth: 140, height: 36, fontSize: 12.5 }}
+                <span
+                  className="tp-admin-status-select"
+                  data-status={request.status}
                 >
-                  {STATUS_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option === "new"
-                        ? copy.statusNew
-                        : option === "in_progress"
-                          ? copy.statusInProgress
-                          : option === "resolved"
-                            ? copy.statusResolved
-                            : copy.statusRejected}
-                    </option>
-                  ))}
-                </select>
+                  <select
+                    aria-label={copy.status}
+                    value={request.status}
+                    disabled={pending}
+                    onChange={(event) =>
+                      setStatus(request.id, event.target.value as InboxStatus)
+                    }
+                    className="tp-admin-status-select-input"
+                  >
+                    {STATUS_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option === "new"
+                          ? copy.statusNew
+                          : option === "in_progress"
+                            ? copy.statusInProgress
+                            : option === "resolved"
+                              ? copy.statusResolved
+                              : copy.statusRejected}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    className="tp-admin-status-select-icon"
+                    aria-hidden="true"
+                  />
+                </span>
               </td>
               <td className="px-3 py-3 text-right last:pr-0">
                 <form
