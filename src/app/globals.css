@@ -1855,6 +1855,32 @@ html.theme-transition .tp-dropdown-trigger {
   gap: 14px;
 }
 
+/* Tab switches swap the whole card set. Let cards settle in with a soft,
+   staggered fade-up instead of popping in place. `backwards` fill is key:
+   once the animation ends the wrapper falls back to its normal styles, so
+   the hover translateY(-4px) is never locked out by a finished animation. */
+@keyframes tp-tool-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tp-tool-grid[data-animate="true"] .tp-tool-card-wrap {
+  animation: tp-tool-card-in 380ms var(--ease-out) backwards;
+  animation-delay: calc(var(--tp-card-i, 0) * 24ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-tool-grid[data-animate="true"] .tp-tool-card-wrap {
+    animation: none;
+  }
+}
+
 .tp-tool-card {
   display: flex;
   min-height: 184px;

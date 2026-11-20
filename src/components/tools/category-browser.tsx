@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import { SlidingTabs } from "@/components/tools/sliding-tabs";
 import { ToolCard } from "@/components/tools/tool-card";
 import type { Tool } from "@/lib/tools/registry";
@@ -61,9 +62,13 @@ export function CategoryBrowser({
       />
 
       {view.tools.length > 0 ? (
-        <div className="tp-tool-grid">
-          {view.tools.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} />
+        <div key={active} className="tp-tool-grid" data-animate="true">
+          {view.tools.map((tool, index) => (
+            <ToolCard
+              key={tool.slug}
+              tool={tool}
+              style={{ "--tp-card-i": index } as CSSProperties}
+            />
           ))}
         </div>
       ) : (

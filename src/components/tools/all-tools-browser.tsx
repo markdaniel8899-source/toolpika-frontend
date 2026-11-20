@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import { Flame, Sparkles } from "lucide-react";
 import { SlidingTabs } from "@/components/tools/sliding-tabs";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -57,9 +58,15 @@ export function AllToolsBrowser({
         ariaLabel="Quick filters"
       />
 
-      <div className="tp-tool-grid">
-        {visible.map((tool) => (
-          <ToolCard key={tool.slug} tool={tool} />
+      {/* key={active} remounts the grid so the staggered card entrance
+          replays on every tab switch instead of cards popping in instantly. */}
+      <div key={active} className="tp-tool-grid" data-animate="true">
+        {visible.map((tool, index) => (
+          <ToolCard
+            key={tool.slug}
+            tool={tool}
+            style={{ "--tp-card-i": index } as CSSProperties}
+          />
         ))}
       </div>
     </>
