@@ -1169,7 +1169,7 @@ html.theme-transition .tp-dropdown-trigger {
   position: relative;
   height: 100%;
   transform-origin: center bottom;
-  transition: transform 260ms var(--ease-out);
+  transition: transform 420ms var(--ease-out);
 }
 
 /* Lift the whole wrapper, not just the card — the arrow (inside the card)
@@ -1207,11 +1207,11 @@ html.theme-transition .tp-dropdown-trigger {
   opacity: 0;
   transform-origin: center;
   transition:
-    opacity 260ms var(--ease-out),
-    box-shadow 260ms var(--ease-out),
-    color 260ms var(--ease-out),
-    background-color 260ms var(--ease-out),
-    transform 260ms var(--ease-out);
+    opacity 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out),
+    color 420ms var(--ease-out),
+    background-color 420ms var(--ease-out),
+    transform 420ms var(--ease-out);
 }
 
 .tp-tool-card-wrap:hover .tp-wish-btn,
@@ -1455,10 +1455,16 @@ html.theme-transition .tp-dropdown-trigger {
   line-height: 1.55;
 }
 
-/* Browse-by-category: quieter eyebrow/body, stronger heading, centred grid. */
+/* Browse-by-category: quieter eyebrow/body, slightly smaller heading,
+   content pulled up so the lower space can hold new category cards. */
+#categories {
+  padding-top: 40px;
+  padding-bottom: 24px;
+}
+
 #categories .tp-split {
-  gap: 48px;
-  align-items: center;
+  gap: 40px;
+  align-items: start;
 }
 
 #categories .tp-split .tp-eyebrow {
@@ -1467,12 +1473,12 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 #categories .tp-section-title-lg {
-  font-size: clamp(44px, 5vw, 62px);
+  font-size: clamp(40px, 4.6vw, 56px);
 }
 
 #categories .tp-split-copy.tp-split-copy-lg p {
   max-width: 460px;
-  margin-top: 14px;
+  margin-top: 12px;
   font-size: 15.5px;
   line-height: 1.6;
 }
@@ -1807,13 +1813,11 @@ html.theme-transition .tp-dropdown-trigger {
   border: 0;
   border-radius: var(--radius-card);
   background: var(--card-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--card-shadow), var(--card-highlight);
   transition:
-    box-shadow var(--dur-base) var(--ease-reveal),
-    background-color var(--dur-base) var(--ease-reveal),
-    transform 260ms var(--ease-out);
+    box-shadow 420ms var(--ease-out),
+    background-color 420ms var(--ease-out),
+    transform 420ms var(--ease-out);
 }
 
 .tp-card::before {
@@ -1825,7 +1829,7 @@ html.theme-transition .tp-dropdown-trigger {
   background: radial-gradient(300px circle at var(--x, 50%) var(--y, 50%), var(--card-glow), transparent 65%);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dur-base) var(--ease-out);
+  transition: opacity 420ms var(--ease-out);
 }
 
 .tp-card > * {
@@ -1882,9 +1886,9 @@ html.theme-transition .tp-dropdown-trigger {
   color: var(--accent);
   line-height: 0;
   transition:
-    background-color 260ms var(--ease-out),
-    color 260ms var(--ease-out),
-    box-shadow 260ms var(--ease-out);
+    background-color 420ms var(--ease-out),
+    color 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out);
 }
 
 .tp-tool-arrow .tp-icon {
@@ -1895,7 +1899,7 @@ html.theme-transition .tp-dropdown-trigger {
   opacity: 0.55;
   transform: translate3d(0, 0, 0) rotate(0deg);
   transform-origin: 50% 50%;
-  transition: opacity 220ms var(--ease-out), transform 320ms var(--ease-out);
+  transition: opacity 300ms var(--ease-out), transform 420ms var(--ease-out);
 }
 
 /* Circle stays exactly in place on hover so it never falls out of line
@@ -4067,7 +4071,10 @@ html:has([data-admin="true"]) {
   position: relative;
   width: 100%;
   aspect-ratio: 600 / 430;
+  /* Clip on the same radius as the bezel, or sub-pixel scaling cuts the
+     bottom rounded corners into sharp edges. */
   overflow: hidden;
+  border-radius: 30px;
 }
 
 .tp-demo-canvas {
