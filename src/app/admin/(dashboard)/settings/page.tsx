@@ -52,9 +52,9 @@ export default async function AdminSettingsPage() {
             {keyRows.map((row) => (
               <div
                 key={row.label}
-                className="flex items-center justify-between gap-4 rounded-[10px] bg-[var(--surface-2)] px-3 py-2.5"
+                className="tp-admin-status-row flex items-center justify-between gap-4 rounded-[10px] px-3 py-2.5"
               >
-                <span className="text-sm text-[var(--muted)]">{row.label}</span>
+                <span className="text-[13px] text-[var(--muted)]">{row.label}</span>
                 <StatusPill status={row.set ? "live" : "draft"} />
               </div>
             ))}

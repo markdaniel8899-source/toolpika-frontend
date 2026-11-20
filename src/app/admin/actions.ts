@@ -162,6 +162,16 @@ export async function updateRequestStatus(
   revalidatePath("/admin");
 }
 
+/** Permanently removes a tool request or contact message from the inbox. */
+export async function deleteRequest(id: string): Promise<void> {
+  const supabase = await requireUser();
+
+  await supabase.from("inbox_messages").delete().eq("id", id);
+
+  revalidatePath("/admin/requests");
+  revalidatePath("/admin");
+}
+
 /* -------------------------------------------------------------------------- */
 /* Blog                                                                       */
 /* -------------------------------------------------------------------------- */

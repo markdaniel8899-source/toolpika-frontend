@@ -3447,6 +3447,63 @@ html:has([data-admin="true"]) {
   transform: translateY(-2px);
 }
 
+/* Requests filter tabs are plain buttons (no sliding highlight), so they need
+   their own visible fill. Inactive pills use a tone step; active uses accent. */
+.tp-admin-tab {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.tp-admin-tab.is-active,
+.tp-admin-tab[data-active="true"] {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+/* Status pills follow the active theme instead of fixed alpha tint values. */
+.tp-status-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tp-status-pill[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--success) 45%, transparent);
+  background: color-mix(in srgb, var(--success) 12%, var(--surface));
+  color: var(--success);
+}
+
+.tp-status-pill[data-tone="accent"] {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+}
+
+.tp-status-pill[data-tone="danger"] {
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  color: var(--danger);
+}
+
+.tp-status-pill[data-tone="neutral"] {
+  border-color: var(--border);
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+.tp-admin-status-row {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
 /* Table row hover - subtle tone step for scanability. */
 .tp-admin-table tbody tr {
   transition: background-color var(--dur-fast) var(--ease-out);

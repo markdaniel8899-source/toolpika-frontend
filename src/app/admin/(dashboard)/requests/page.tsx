@@ -32,6 +32,9 @@ export default async function AdminRequestsPage() {
           statusRejected: t.statusRejected,
           empty: t.empty,
           statusNote: t.statusNote,
+          actions: adminMessages.common.actions,
+          delete: adminMessages.common.delete,
+          confirmDelete: adminMessages.common.confirmDelete,
         }}
       />
     </>

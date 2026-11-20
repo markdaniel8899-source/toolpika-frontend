@@ -20,7 +20,6 @@ export default function AdminLoginPage() {
             <ShieldCheck className="tp-icon" aria-hidden="true" />
           </span>
           <h1>{t.title}</h1>
-          <p>{t.description}</p>
         </div>
 
         <AdminLoginForm

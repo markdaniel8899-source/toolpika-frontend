@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateRequestStatus } from "@/app/admin/actions";
+import { Trash2 } from "lucide-react";
+import { deleteRequest, updateRequestStatus } from "@/app/admin/actions";
 import type { AdminRequest, InboxStatus } from "@/lib/admin/row-types";
 import { DataTable, EmptyState } from "@/components/admin/ui";
 
@@ -23,6 +24,9 @@ export interface RequestsCopy {
   statusRejected: string;
   empty: string;
   statusNote: string;
+  actions: string;
+  delete: string;
+  confirmDelete: string;
 }
 
 type Filter = "all" | "tool_request" | "contact";
@@ -113,7 +117,11 @@ export function RequestsInbox({
             role="tab"
             aria-selected={filter === item.value}
             onClick={() => setFilter(item.value)}
-            className={filter === item.value ? "tp-tab is-active" : "tp-tab"}
+            className={
+              filter === item.value
+                ? "tp-tab tp-admin-tab is-active"
+                : "tp-tab tp-admin-tab"
+            }
             data-active={filter === item.value ? "true" : undefined}
           >
             {item.label}
@@ -131,6 +139,7 @@ export function RequestsInbox({
             copy.userEmail,
             copy.date,
             copy.status,
+            copy.actions,
           ]}
         >
           {visible.map((request) => (
@@ -157,7 +166,7 @@ export function RequestsInbox({
                   {formatDate(request.created_at)}
                 </time>
               </td>
-              <td className="px-3 py-3 last:pr-0">
+              <td className="px-3 py-3">
                 <select
                   aria-label={copy.status}
                   value={request.status}
@@ -180,6 +189,26 @@ export function RequestsInbox({
                     </option>
                   ))}
                 </select>
+              </td>
+              <td className="px-3 py-3 text-right last:pr-0">
+                <form
+                  action={async () => {
+                    if (window.confirm(copy.confirmDelete)) {
+                      await deleteRequest(request.id);
+                      router.refresh();
+                    }
+                  }}
+                >
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className="tp-admin-icon"
+                    data-danger="true"
+                  >
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
+                    <span className="sr-only">{copy.delete}</span>
+                  </button>
+                </form>
               </td>
             </tr>
           ))}

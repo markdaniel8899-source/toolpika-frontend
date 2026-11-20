@@ -84,23 +84,20 @@ export function SectionCard({
   );
 }
 
-const STATUS_STYLES: Record<string, string> = {
-  live: "border-[var(--success)] bg-[var(--success)]/10 text-[var(--success)]",
-  published: "border-[var(--success)] bg-[var(--success)]/10 text-[var(--success)]",
-  draft: "border-[var(--border)] bg-[var(--bg)] text-[var(--muted)]",
-  hidden: "border-[var(--border)] bg-[var(--bg)] text-[var(--muted)]",
-  new: "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)]",
-  building: "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)]",
-  launched: "border-[var(--success)] bg-[var(--success)]/10 text-[var(--success)]",
+const STATUS_TONES: Record<string, string> = {
+  live: "success",
+  published: "success",
+  launched: "success",
+  new: "accent",
+  building: "accent",
+  rejected: "danger",
+  draft: "neutral",
+  hidden: "neutral",
 };
 
 export function StatusPill({ status }: { status: string }) {
   return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
-        STATUS_STYLES[status] ?? STATUS_STYLES.draft
-      }`}
-    >
+    <span className="tp-status-pill" data-tone={STATUS_TONES[status] ?? "neutral"}>
       {status}
     </span>
   );

@@ -36,12 +36,12 @@ export default async function AdminDashboardLayout({
     return (
       <html lang="en">
         <body className="flex min-h-dvh items-center justify-center bg-[var(--bg)] px-6 font-sans text-[var(--text)]">
-          <div className="text-center text-red-500">
-            <h1 style={{ fontSize: "22px", fontWeight: 600, letterSpacing: "-0.03em" }}>
+          <div className="max-w-2xl rounded-[14px] border border-[var(--border)] bg-[var(--surface)] p-8 text-center text-[var(--danger)]">
+            <h1 className="font-sans text-[22px] font-semibold tracking-[-0.03em]">
               Admin Dashboard Error
             </h1>
             <p className="mt-3 text-[var(--muted)]">{envUrlStatus}</p>
-            <pre className="mt-4 bg-gray-100 p-4 text-sm text-left w-full max-w-2xl overflow-x-auto rounded">
+            <pre className="mt-4 w-full overflow-x-auto rounded-[10px] border border-[var(--border)] bg-[var(--surface-2)] p-4 text-left text-[13px] text-[var(--text)]">
               {authError}
             </pre>
             <p className="mt-4 text-[var(--muted)] text-sm">
