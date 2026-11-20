@@ -100,7 +100,7 @@ export default async function HomePage({ params }: LocalePageProps) {
               href="/categories"
               size="lg"
               className="tp-category-cta"
-              style={{ marginTop: 28 }}
+              style={{ marginTop: 20 }}
             >
               View all categories
             </PillCta>
