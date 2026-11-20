@@ -1563,9 +1563,9 @@ html.theme-transition .tp-dropdown-trigger {
   align-items: center;
   justify-content: center;
   padding: 0 18px;
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
   border-radius: 999px;
-  background: var(--surface-2);
+  background: var(--surface);
   color: var(--muted);
   font-size: 14px;
   font-weight: 500;
@@ -1620,9 +1620,125 @@ html.theme-transition .tp-dropdown-trigger {
   .tp-tab:hover:not(.is-active) {
     color: var(--text);
     border-color: var(--accent);
-    background: var(--accent-wash);
-    transform: translateY(-1px);
+    background: var(--surface);
+    box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 16%, transparent);
+    transform: translateY(-2px);
   }
+}
+
+/* Stable sliding indicator: one persistent element per tab row, measured from
+   the active button. No layoutId remount, so the background cannot repeat. */
+.tp-tabs-sliding {
+  position: relative;
+}
+
+.tp-tabs-sliding .tp-tab {
+  z-index: 1;
+}
+
+.tp-tabs-sliding .tp-tab-highlight {
+  inset: auto;
+  top: var(--tp-tab-inset-top, 14px);
+  left: 0;
+  height: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--tp-tab-glide, 420ms) var(--ease-out),
+    width var(--tp-tab-glide, 420ms) var(--ease-out),
+    opacity 180ms ease;
+}
+
+.tp-tabs-secondary.tp-tabs-sliding {
+  --tp-tab-inset-top: 8px;
+}
+
+/* Style variants for the live mockup. */
+.tp-tabs-soft .tp-tab {
+  border-color: transparent;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.tp-tabs-soft .tp-tab-highlight {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.tp-tabs-outline .tp-tab {
+  border-color: var(--border);
+  background: transparent;
+}
+
+.tp-tabs-outline .tp-tab-highlight {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+
+.tp-tabs-outline .tp-tab.is-active {
+  color: var(--accent);
+}
+
+/* Live tab-style mockup page. */
+.tp-tab-demo-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.tp-tab-demo-card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.tp-tab-demo-card h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.tp-tab-demo-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.tp-tab-demo-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.tp-tab-demo-speed {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.tp-tab-demo-speed button {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    background-color 200ms var(--ease-out);
+}
+
+.tp-tab-demo-speed button[aria-pressed="true"] {
+  border-color: var(--accent-fill);
+  background: var(--accent-fill);
+  color: var(--on-accent);
 }
 
 /* ---------- Hero ---------- */

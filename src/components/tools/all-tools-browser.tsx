@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Flame, Sparkles } from "lucide-react";
+import { SlidingTabs } from "@/components/tools/sliding-tabs";
 import { ToolCard } from "@/components/tools/tool-card";
-import { cn } from "@/lib/utils";
 import type { Tool } from "@/lib/tools/registry";
 
 type CategoryTab = { slug: string; label: string };
@@ -19,8 +18,8 @@ export function AllToolsBrowser({
 }) {
   const [active, setActive] = useState<Filter>("all");
 
-  // 3.4 - grid content swaps instantly on tab change; only the accent
-  // indicator moves (handled by the layoutId pill below), no page transition.
+  // Grid content swaps instantly on tab change; only the shared indicator
+  // glides, measured from the active button so it never loops or remounts.
   const visible = (() => {
     if (active === "all") return tools;
     if (active === "popular") return tools.slice(0, 8);
@@ -28,55 +27,35 @@ export function AllToolsBrowser({
     return tools.filter((tool) => tool.category === active);
   })();
 
-  const tabs = [{ slug: "all", label: "All tools" }, ...categories];
-
-  /** One tab button with a single shared sliding indicator. */
-  const renderTab = (slug: string, label: string, icon?: React.ReactNode) => {
-    const isActive = active === slug;
-    return (
-      <button
-        key={slug}
-        type="button"
-        className={cn("tp-tab", isActive && "is-active")}
-        aria-pressed={isActive}
-        onClick={() => setActive(slug)}
-      >
-        {isActive && (
-          <motion.span
-            layoutId="all-tools-tab-highlight"
-            className="tp-tab-highlight"
-            initial={false}
-            transition={{ type: "spring", stiffness: 320, damping: 30, mass: 0.7 }}
-          />
-        )}
-        <span className="tp-tab-label tp-tab-inline">
-          {icon}
-          {label}
-        </span>
-      </button>
-    );
-  };
+  const primaryItems = [{ slug: "all", label: "All tools" }, ...categories];
+  const secondaryItems = [
+    {
+      slug: "popular",
+      label: "Popular",
+      icon: <Flame className="tp-icon tp-tab-icon" aria-hidden="true" />,
+    },
+    {
+      slug: "new",
+      label: "New",
+      icon: <Sparkles className="tp-icon tp-tab-icon" aria-hidden="true" />,
+    },
+  ];
 
   return (
     <>
-      <div className="tp-tabs" aria-label="Filter tools">
-        {tabs.map((tab) => renderTab(tab.slug, tab.label))}
-      </div>
-
-      {/* Popular / New live on the next line, in the exact same tab format.
-          Clicking them only slides the active background, never navigates. */}
-      <div className="tp-tabs tp-tabs-secondary" aria-label="Quick filters">
-        {renderTab(
-          "popular",
-          "Popular",
-          <Flame className="tp-icon tp-tab-icon" aria-hidden="true" />,
-        )}
-        {renderTab(
-          "new",
-          "New",
-          <Sparkles className="tp-icon tp-tab-icon" aria-hidden="true" />,
-        )}
-      </div>
+      <SlidingTabs
+        items={primaryItems}
+        active={active}
+        onChange={setActive}
+        ariaLabel="Filter tools"
+      />
+      <SlidingTabs
+        items={secondaryItems}
+        active={active}
+        onChange={setActive}
+        className="tp-tabs-secondary"
+        ariaLabel="Quick filters"
+      />
 
       <div className="tp-tool-grid">
         {visible.map((tool) => (
