@@ -49,17 +49,22 @@ export default async function CategoryPage({ params }: LocalePageProps) {
         </div>
       </section>
 
-      <div className="tp-tabs" aria-label="Categories">
-        {categories.map((item) => (
-          <Link
-            key={item.slug}
-            href={`/category/${item.slug}`}
-            className="tp-tab"
-            data-active={item.slug === category.slug ? "true" : undefined}
-          >
-            {item.label}
-          </Link>
-        ))}
+      <div className="tp-tabs tp-tabs-page" aria-label="Categories">
+        {categories.map((item) => {
+          const isActive = item.slug === category.slug;
+          return (
+            <Link
+              key={item.slug}
+              href={`/category/${item.slug}`}
+              className={`tp-tab${isActive ? " is-active" : ""}`}
+              data-active={isActive ? "true" : undefined}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {isActive && <span className="tp-tab-highlight" aria-hidden="true" />}
+              <span className="tp-tab-label">{item.label}</span>
+            </Link>
+          );
+        })}
       </div>
 
       {tools.length > 0 ? (

@@ -1540,6 +1540,11 @@ html.theme-transition .tp-dropdown-trigger {
   padding-bottom: 20px;
 }
 
+/* Category page tabs: give the pill row breathing room above the tool grid. */
+.tp-tabs-page {
+  padding-bottom: 24px;
+}
+
 .tp-tab {
   position: relative;
   isolation: isolate;
