@@ -628,6 +628,15 @@ html.theme-transition .tp-dropdown-trigger {
   transition: color 200ms ease, transform 200ms ease;
 }
 
+/* Same inline box for the three plain links and the All tools wrapper link,
+   so every underline sits at exactly the same distance from its label. */
+.tp-nav > a,
+.tp-nav-tools > a {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
 .tp-nav a::after,
 .tp-nav-tools > a::after {
   content: "";
@@ -668,6 +677,8 @@ html.theme-transition .tp-dropdown-trigger {
 /* All-tools mega menu (hover on the nav item) */
 .tp-nav-tools {
   position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .tp-nav-mega {
@@ -1205,7 +1216,7 @@ html.theme-transition .tp-dropdown-trigger {
   transform: scale(1.06);
 }
 
-/* Saved state matches the arrow circle exactly: accent fill, white icon.
+/* Saved state matches the arrow circle: accent fill, white heart outline.
    The ring keeps the saved heart legible on both themes. */
 .tp-wish-btn.is-saved {
   background: var(--accent-fill);
@@ -1283,9 +1294,15 @@ html.theme-transition .tp-dropdown-trigger {
   opacity: 0;
 }
 
-.tp-wish-btn:hover .tp-heart-path,
-.tp-wish-btn.is-saved .tp-heart-path {
+.tp-wish-btn:hover .tp-heart-path {
   stroke: var(--accent);
+}
+
+/* Saved heart keeps an indigo body with a white outline drawn around it. */
+.tp-wish-btn.is-saved .tp-heart-path,
+.tp-wish-btn.is-saved:hover .tp-heart-path {
+  fill: var(--accent-fill);
+  stroke: var(--on-accent);
 }
 
 .tp-wish-btn:hover .tp-heart-svg {
@@ -1312,7 +1329,7 @@ html.theme-transition .tp-dropdown-trigger {
 @keyframes tp-heart-draw {
   0% { stroke-dashoffset: 100; fill: transparent; stroke: var(--on-accent); transform: rotate(-8deg); }
   55% { stroke-dashoffset: 0; fill: transparent; stroke: var(--on-accent); transform: rotate(4deg); }
-  100% { stroke-dashoffset: 0; fill: var(--on-accent); stroke: var(--on-accent); transform: rotate(0deg); }
+  100% { stroke-dashoffset: 0; fill: var(--accent-fill); stroke: var(--on-accent); transform: rotate(0deg); }
 }
 
 /* Single-line tooltip card on heart hover, themed with tokens. */
@@ -1818,9 +1835,8 @@ html.theme-transition .tp-dropdown-trigger {
   background: transparent;
   color: var(--accent);
   transition:
-    background-color 350ms ease,
-    color 350ms ease,
-    transform 350ms ease;
+    background-color 260ms var(--ease-out),
+    color 260ms var(--ease-out);
 }
 
 .tp-tool-arrow .tp-icon {
@@ -1828,7 +1844,9 @@ html.theme-transition .tp-dropdown-trigger {
   height: 18.3px;
   opacity: 0.55;
   transform-origin: center;
-  transition: opacity 350ms ease, transform 600ms var(--ease-reveal);
+  backface-visibility: hidden;
+  transition: opacity 220ms var(--ease-out), transform 280ms var(--ease-out);
+  will-change: transform, opacity;
 }
 
 /* Circle stays exactly in place on hover so it never falls out of line
@@ -2455,6 +2473,12 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-footer .tp-footer-col a,
 .tp-footer .tp-footer-bottom {
   color: var(--footer-muted);
+}
+
+/* Rights statement is always visible, even if reveal JS is delayed. */
+.tp-footer .tp-footer-rights {
+  color: var(--footer-text);
+  opacity: 1;
 }
 
 .tp-footer-col h3,
@@ -4376,8 +4400,12 @@ html:has([data-admin="true"]) {
 }
 
 .tp-demo-format .tp-demo-mini-icon {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
+  color: inherit;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  opacity: 1;
 }
 
 .tp-demo-format[data-ready="true"] {
@@ -4385,6 +4413,11 @@ html:has([data-admin="true"]) {
   background: var(--accent-fill);
   color: var(--on-accent);
   box-shadow: 0 6px 14px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.tp-demo-format[data-ready="true"] .tp-demo-mini-icon {
+  color: var(--on-accent);
+  stroke: currentColor;
 }
 
 .tp-demo-panel-body {

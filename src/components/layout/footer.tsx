@@ -86,7 +86,7 @@ export function Footer() {
         </div>
 
         <div className="tp-footer-bottom">
-          <span>© {year} Toolpika. All rights reserved.</span>
+          <span className="tp-footer-rights">{t("copyright", { year })}</span>
           <Link href="/request" className="tp-text-link footer-link">
             Request a tool
             <ArrowRight className="tp-icon" aria-hidden="true" />
