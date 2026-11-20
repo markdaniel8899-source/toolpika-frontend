@@ -34,22 +34,25 @@ export function BarChart({
   const max = Math.max(...data.map((item) => item.value), 1);
 
   return (
-    <ul className="flex flex-col gap-3">
+    <ul className="flex flex-col gap-3.5">
       {data.map((item) => {
         const percent = Math.round((item.value / max) * 100);
 
         return (
           <li key={item.label} className="flex items-center gap-3">
-            <span className="w-28 shrink-0 truncate text-sm text-[var(--muted)]">
+            <span
+              className="w-24 shrink-0 truncate text-[12px] font-medium text-[var(--text)]"
+              title={item.label}
+            >
               {item.label}
             </span>
-            <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--bg)]">
+            <span className="h-2 flex-1 overflow-hidden rounded-full bg-[var(--surface-2)]">
               <span
                 className="block h-full rounded-full bg-[var(--accent-fill)]"
                 style={{ width: `${percent}%` }}
               />
             </span>
-            <span className="w-10 shrink-0 text-right text-sm font-bold tabular-nums">
+            <span className="w-9 shrink-0 text-right text-[12px] font-semibold tabular-nums text-[var(--muted)]">
               {item.value}
             </span>
           </li>
@@ -242,7 +245,7 @@ export function PieChart({
 
 function ChartEmpty({ label }: { label: string }) {
   return (
-    <p className="rounded-[10px] border border-dashed border-[var(--border)] bg-[var(--bg)] px-4 py-6 text-center text-sm leading-[1.6] text-[var(--muted)]">
+    <p className="rounded-[10px] border border-dashed border-[var(--border)] bg-[var(--surface-2)] px-4 py-6 text-center text-[12px] leading-[1.6] text-[var(--muted)]">
       {label}
     </p>
   );

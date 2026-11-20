@@ -27,6 +27,7 @@ const SELECTOR = [
   ".tp-split-copy .tp-eyebrow",
   ".tp-split-copy.tp-split-copy-lg p",
   ".tp-category-cta",
+  ".tp-category-card",
   ".tp-footer-brand",
   ".tp-footer-col h3",
   ".tp-footer-col li",

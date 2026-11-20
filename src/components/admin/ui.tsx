@@ -8,13 +8,13 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <header className="mb-7 flex flex-col gap-4 border-b border-[var(--border)] pb-6 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <h1 className="font-sans text-[30px] tracking-[-0.02em] sm:text-[34px]">
+        <h1 className="font-sans text-[28px] font-semibold leading-tight tracking-[-0.03em] sm:text-[32px]">
           {title}
         </h1>
         {subtitle ? (
-          <p className="mt-2 max-w-2xl leading-[1.6] text-[var(--muted)]">
+          <p className="mt-2 max-w-2xl text-[13px] leading-[1.6] text-[var(--muted)]">
             {subtitle}
           </p>
         ) : null}
@@ -34,15 +34,15 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="tp-admin-card p-5">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+    <div className="tp-admin-card tp-admin-stat p-5 sm:p-6">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
         {label}
       </p>
-      <p className="mt-2 font-sans text-[30px] font-bold leading-none tracking-[-0.02em] tabular-nums">
+      <p className="mt-3 font-sans text-[32px] font-semibold leading-none tracking-[-0.03em] tabular-nums">
         {value}
       </p>
       {hint ? (
-        <p className="mt-2 text-xs leading-[1.5] text-[var(--muted)]">{hint}</p>
+        <p className="mt-2.5 text-xs leading-[1.5] text-[var(--muted)]">{hint}</p>
       ) : null}
     </div>
   );
@@ -50,7 +50,7 @@ export function StatCard({
 
 export function EmptyState({ message }: { message: string }) {
   return (
-    <p className="rounded-[14px] border border-dashed border-[var(--border)] bg-[var(--surface-2)] px-5 py-8 text-center text-sm leading-[1.6] text-[var(--muted)]">
+    <p className="rounded-[14px] border border-dashed border-[var(--border)] bg-[var(--surface-2)] px-5 py-8 text-center text-[13px] leading-[1.6] text-[var(--muted)]">
       {message}
     </p>
   );
@@ -68,16 +68,14 @@ export function SectionCard({
   className?: string;
 }) {
   return (
-    <section
-      className={`tp-admin-card p-5 sm:p-6 ${className ?? ""}`}
-    >
+    <section className={`tp-admin-card p-5 sm:p-6 ${className ?? ""}`}>
       {title ? (
-        <h2 className="font-sans text-[20px] tracking-[-0.02em]">
+        <h2 className="font-sans text-[18px] font-semibold leading-snug tracking-[-0.02em]">
           {title}
         </h2>
       ) : null}
       {description ? (
-        <p className="mt-1.5 text-sm leading-[1.6] text-[var(--muted)]">
+        <p className="mt-1.5 text-[13px] leading-[1.6] text-[var(--muted)]">
           {description}
         </p>
       ) : null}
@@ -99,7 +97,7 @@ const STATUS_STYLES: Record<string, string> = {
 export function StatusPill({ status }: { status: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] ${
+      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${
         STATUS_STYLES[status] ?? STATUS_STYLES.draft
       }`}
     >
@@ -116,15 +114,15 @@ export function DataTable({
   children: React.ReactNode;
 }) {
   return (
-    <div data-ui className="-mx-5 overflow-x-auto sm:mx-0">
-      <table className="tp-admin-table w-full min-w-[640px] border-collapse text-left text-sm">
+    <div data-ui className="-mx-5 overflow-x-auto sm:-mx-6">
+      <table className="tp-admin-table w-full min-w-[640px] border-collapse text-left text-[13px]">
         <thead>
           <tr data-ui className="border-b border-[var(--border)]">
             {headers.map((header) => (
               <th
                 key={header}
                 scope="col"
-                className="px-3 py-2.5 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--muted)] first:pl-0 last:pr-0"
+                className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted)] first:pl-0 last:pr-0"
               >
                 {header}
               </th>
