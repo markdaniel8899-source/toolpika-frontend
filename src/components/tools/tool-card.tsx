@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { WishlistButton } from "@/components/tools/wishlist-button";
@@ -32,7 +32,7 @@ export function ToolCard({
             <ToolIcon name={tool.icon} className="tp-icon" aria-hidden="true" />
           </span>
           <span className="tp-tool-arrow" aria-hidden="true">
-            <ArrowUpRight className="tp-icon" />
+            <ArrowRight className="tp-icon" />
           </span>
         </span>
         <h3 className="tp-tool-title">{tool.title}</h3>

@@ -1919,21 +1919,15 @@ html.theme-transition .tp-dropdown-trigger {
     background-color 450ms var(--ease-reveal),
     color 450ms var(--ease-reveal),
     box-shadow 420ms var(--ease-out);
-
-  /* Force crisp GPU rendering to isolate from parent transform jitter */
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 
 .tp-tool-arrow .tp-icon {
   display: block;
-  width: 16px; /* Changed from 15.8px to prevent sub-pixel anti-aliasing jitter */
-  height: 16px; /* Changed from 15.8px */
+  width: 16px;
+  height: 16px;
   margin: auto;
   opacity: 0.55;
-  /* Explicitly override the global :where(*) transition to ensure NO transform is applied to the inner SVG */
-  transition: opacity 300ms var(--ease-out) !important;
+  transition: opacity 300ms var(--ease-out);
 }
 
 /* Hover: the circle glides + rotates once, exactly like the header
