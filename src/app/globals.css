@@ -1887,25 +1887,12 @@ html.theme-transition .tp-dropdown-trigger {
   background: transparent;
   color: var(--accent);
   line-height: 0;
+  /* Same calm transition as the header "Request a tool" arrow. */
   transition:
-    background-color 420ms var(--ease-out),
-    color 420ms var(--ease-out),
+    transform 450ms var(--ease-spring),
+    background-color 450ms var(--ease-reveal),
+    color 450ms var(--ease-reveal),
     box-shadow 420ms var(--ease-out);
-}
-
-/* Fix arrow icon jitter on hover */
-.tp-tool-arrow {
-  /* Override global transition to be snappy and specific */
-  transition: transform 300ms var(--ease-out), background-color 300ms var(--ease-out), color 300ms var(--ease-out) !important;
-
-  /* Force crisp GPU rendering for the SVG to stop sub-pixel shaking */
-  will-change: transform;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-
-  /* Ensure smooth rotation around the center */
-  transform-origin: center center;
 }
 
 .tp-tool-arrow .tp-icon {
@@ -1914,19 +1901,18 @@ html.theme-transition .tp-dropdown-trigger {
   height: 15.8px;
   margin: auto;
   opacity: 0.55;
-  transform: translate3d(0, 0, 0) rotate(0deg);
-  transform-origin: 50% 50%;
-  transition: opacity 300ms var(--ease-out), transform 420ms var(--ease-out);
+  transition: opacity 300ms var(--ease-out);
 }
 
-/* Circle stays exactly in place on hover so it never falls out of line
-   with the heart. Only the fill and the icon rotation change. */
+/* Hover: the circle glides + rotates once, exactly like the header
+   "Request a tool" arrow — no competing transform on the inner SVG. */
 .tp-tool-card-wrap:hover .tp-tool-arrow,
 .tp-tool-card-link:focus-visible .tp-tool-arrow,
 .tp-category-card:hover .tp-tool-arrow,
 .tp-category-card:focus-visible .tp-tool-arrow {
   background: var(--accent-fill);
   color: var(--on-accent);
+  transform: translate(2px, -2px) rotate(45deg);
   /* Same quiet ring + shadow as the saved heart, so both circles match. */
   box-shadow:
     0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent),
@@ -1938,7 +1924,6 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-category-card:hover .tp-tool-arrow .tp-icon,
 .tp-category-card:focus-visible .tp-tool-arrow .tp-icon {
   opacity: 1;
-  transform: translate3d(1px, -1px, 0) rotate(45deg);
 }
 
 .tp-tool-icon .tp-icon,
@@ -1987,6 +1972,10 @@ html.theme-transition .tp-dropdown-trigger {
   min-height: 176px;
   flex-direction: column;
   padding: 18px;
+  transition:
+    transform 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out),
+    background-color 420ms var(--ease-out);
 }
 
 .tp-category-card:hover {
