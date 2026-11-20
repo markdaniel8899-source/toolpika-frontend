@@ -245,6 +245,24 @@ button {
   color: var(--on-accent);
 }
 
+/* Hide scrollbars inside every floating submenu (scrolling still works). */
+.tp-dropdown-menu,
+.tp-wish-panel,
+.tp-search-results,
+.tp-nav-mega,
+.tp-mobile-panel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tp-dropdown-menu::-webkit-scrollbar,
+.tp-wish-panel::-webkit-scrollbar,
+.tp-search-results::-webkit-scrollbar,
+.tp-nav-mega::-webkit-scrollbar,
+.tp-mobile-panel::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---------- Theme switch transition ---------- */
 
 html.theme-transition body,
