@@ -4,6 +4,7 @@ import { ArrowRight, Heart } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useWishlist } from "@/hooks/use-wishlist";
+import { PillCta } from "@/components/ui/pill-cta";
 import { getTool } from "@/lib/tools/registry";
 
 export default function WishlistPage() {
@@ -30,10 +31,7 @@ export default function WishlistPage() {
               <Heart className="tp-icon" />
             </span>
             <p>{t("emptyPage")}</p>
-            <Link href="/all-tools" className="tp-btn tp-btn-primary">
-              {t("browseTools")}
-              <ArrowRight className="tp-icon" aria-hidden="true" />
-            </Link>
+            <PillCta href="/all-tools">{t("browseTools")}</PillCta>
           </div>
         ) : (
           <div className="tp-wishlist-grid">

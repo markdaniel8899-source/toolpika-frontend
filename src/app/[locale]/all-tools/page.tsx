@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
 import { AllToolsBrowser } from "@/components/tools/all-tools-browser";
+import { PillCta } from "@/components/ui/pill-cta";
 import { categories, getLiveTools } from "@/lib/tools/registry";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
@@ -68,10 +67,7 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
       )}
 
       <div style={{ marginTop: 40 }}>
-        <Link href="/request" className="tp-btn tp-btn-primary">
-          Missing a tool? Request it
-          <ArrowRight className="tp-icon" aria-hidden="true" />
-        </Link>
+        <PillCta href="/request">Missing a tool? Request it</PillCta>
       </div>
     </main>
   );

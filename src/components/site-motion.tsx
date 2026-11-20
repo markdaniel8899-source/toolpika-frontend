@@ -92,9 +92,9 @@ export function SiteMotion() {
 
     const onMove = (event: PointerEvent) => {
       const found = (event.target as HTMLElement | null)?.closest<HTMLElement>(".tp-btn") ?? null;
-      // Static CTAs keep their CSS hover transform; magnetic inline transforms
-      // would otherwise override it and make them look unresponsive.
-      const el = found?.classList.contains("tp-static-cta") ? null : found;
+      // Pill CTAs keep their own CSS hover transform; a magnetic inline
+      // transform would otherwise override it and make them look unresponsive.
+      const el = found && !found.classList.contains("tp-pill-cta") ? found : null;
       if (el !== active) {
         reset(active);
         active = el;

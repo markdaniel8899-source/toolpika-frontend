@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { ArrowRight } from "lucide-react";
+import { PillCta } from "@/components/ui/pill-cta";
 
 export default function NotFoundPage() {
   const t = useTranslations("notFound");
@@ -15,10 +14,9 @@ export default function NotFoundPage() {
       <p style={{ maxWidth: 420, marginTop: 12, color: "var(--muted)", fontSize: 15, lineHeight: 1.65 }}>
         {t("description")}
       </p>
-      <Link href="/" className="tp-btn tp-btn-primary" style={{ marginTop: 32 }}>
+      <PillCta href="/" style={{ marginTop: 32 }}>
         {t("back")}
-        <ArrowRight className="tp-icon" aria-hidden="true" />
-      </Link>
+      </PillCta>
     </main>
   );
 }

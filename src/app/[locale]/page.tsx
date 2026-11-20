@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
 import { HeroDemo } from "@/components/hero/HeroDemo";
+import { PillCta } from "@/components/ui/pill-cta";
 import { categories, getLiveTools, getPopularTools } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
@@ -95,10 +96,14 @@ export default async function HomePage({ params }: LocalePageProps) {
               Small collections, each with one job. Start with the kind of work
               you are doing, not the name of a tool.
             </p>
-            <Link href="/categories" className="tp-btn tp-btn-primary tp-static-cta" style={{ marginTop: 28 }}>
-              <span>View all categories</span>
-              <span className="tp-cta-icon"><ArrowRight className="tp-icon" aria-hidden="true" /></span>
-            </Link>
+            <PillCta
+              href="/categories"
+              size="lg"
+              className="tp-category-cta"
+              style={{ marginTop: 28 }}
+            >
+              View all categories
+            </PillCta>
           </div>
 
           <div className="tp-category-grid">
@@ -208,10 +213,7 @@ export default async function HomePage({ params }: LocalePageProps) {
               <p style={{ maxWidth: 360, margin: 0, lineHeight: 1.6 }}>
                 {t("requestSubtitle")}
               </p>
-              <Link href="/request" className="tp-btn tp-btn-primary">
-                {t("requestCTA")}
-                <ArrowRight className="tp-icon" aria-hidden="true" />
-              </Link>
+              <PillCta href="/request">{t("requestCTA")}</PillCta>
             </div>
           </div>
         </div>

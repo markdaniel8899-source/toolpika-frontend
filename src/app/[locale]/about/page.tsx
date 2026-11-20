@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { ArrowRight, ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SecondaryPage } from "@/components/layout/secondary-page";
+import { PillCta } from "@/components/ui/pill-cta";
 import { Reveal } from "@/components/ui/reveal";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
@@ -80,10 +81,9 @@ export default async function AboutPage({ params }: LocalePageProps) {
           <p className="tp-atlas-p" style={{ maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
             Tell us what you need and we will look at it. We read every request.
           </p>
-          <Link href="/request" className="tp-btn tp-btn-primary" style={{ marginTop: 24 }}>
+          <PillCta href="/request" style={{ marginTop: 24 }}>
             Request a tool
-            <ArrowRight className="tp-icon" aria-hidden="true" />
-          </Link>
+          </PillCta>
         </Reveal>
       </section>
     </SecondaryPage>

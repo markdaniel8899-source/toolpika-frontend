@@ -20,13 +20,11 @@ const SELECTOR = [
   ".tp-atlas-title",
   ".tp-atlas-lead",
   ".tp-atlas-h2",
-  ".tp-trust-card",
   ".tp-wishlist-item",
   ".tp-wishlist-empty",
   ".tp-cta-inner",
   ".tp-breadcrumbs",
   ".tp-tabs",
-  ".tp-suggestion",
   ".tp-footer-brand",
 ].join(",");
 
