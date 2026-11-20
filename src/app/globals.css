@@ -1205,10 +1205,10 @@ html.theme-transition .tp-dropdown-trigger {
   opacity: 1;
 }
 
-/* Gentle scale the moment the card is hovered; a touch more on direct hover.
-   transform-origin stays centered, so the icon never shifts out of its circle. */
+/* Heart stays at the same 32px size as the arrow in every state, so both
+   circles line up exactly instead of one growing on hover. */
 .tp-tool-card-wrap:hover .tp-wish-btn {
-  transform: scale(1.04);
+  transform: none;
 }
 
 .tp-wish-btn:hover {
@@ -1218,7 +1218,7 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-wish-btn:hover,
 .tp-tool-card-wrap:hover .tp-wish-btn:hover {
-  transform: scale(1.08);
+  transform: none;
 }
 
 /* Saved state matches the arrow hover circle: same accent fill and same
@@ -1233,7 +1233,7 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-wish-btn.is-saved:hover,
 .tp-tool-card-wrap:hover .tp-wish-btn.is-saved:hover {
-  transform: scale(1.08);
+  transform: none;
   box-shadow:
     0 0 0 2px color-mix(in srgb, var(--accent) 26%, transparent),
     0 8px 18px color-mix(in srgb, var(--accent) 24%, transparent);
@@ -1913,6 +1913,8 @@ html.theme-transition .tp-dropdown-trigger {
   background: transparent;
   color: var(--accent);
   line-height: 0;
+  /* ArrowRight rests at 1 o'clock; hover turns it to 3 o'clock. */
+  transform: rotate(-45deg);
   /* Same calm transition as the header "Request a tool" arrow. */
   transition:
     transform 450ms var(--ease-spring),
@@ -1938,11 +1940,11 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-category-card:focus-visible .tp-tool-arrow {
   background: var(--accent-fill);
   color: var(--on-accent);
-  transform: translate(2px, -2px) rotate(45deg);
-  /* Same quiet ring + shadow as the saved heart, so both circles match. */
+  transform: translate(2px, -2px) rotate(0deg);
+  /* Same ring + shadow as the saved heart's active state. */
   box-shadow:
-    0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent),
-    0 6px 14px color-mix(in srgb, var(--accent) 18%, transparent);
+    0 0 0 2px color-mix(in srgb, var(--accent) 26%, transparent),
+    0 8px 18px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 .tp-tool-card-wrap:hover .tp-tool-arrow .tp-icon,
