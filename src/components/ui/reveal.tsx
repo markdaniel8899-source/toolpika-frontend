@@ -44,13 +44,13 @@ export function Reveal({
       ref={ref}
       data-reveal-wrap
       className={cn(
-        "transition-[opacity,transform,filter] duration-[900ms] ease-[var(--ease-reveal)]",
+        "transition-[opacity,transform] duration-[900ms] ease-[var(--ease-reveal)]",
         className
       )}
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(26px)",
-        filter: inView ? "blur(0)" : "blur(14px)",
+        filter: inView ? "none" : "blur(14px)",
         transitionDelay: computedDelay > 0 ? `${computedDelay}ms` : undefined,
         ...style,
       }}

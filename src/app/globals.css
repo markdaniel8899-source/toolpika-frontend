@@ -153,8 +153,7 @@
     opacity,
     box-shadow,
     transform,
-    translate,
-    filter;
+    translate;
   transition-duration: var(--dur-base);
   transition-timing-function: var(--ease-out);
 }
@@ -1152,19 +1151,16 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-tool-card-wrap {
   position: relative;
   height: 100%;
-  transform-origin: center bottom;
+  transform-origin: center center;
   transition: transform 420ms var(--ease-out);
-  /* GPU compositing fixes to prevent sub-pixel text blur */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
 /* Lift the whole wrapper, not just the card — the arrow (inside the card)
    and the heart (absolute sibling) then move as one, with no displacement. */
 .tp-tool-card-wrap:hover {
-  /* Changed from 1.004 to 1.02. Fractional scales like 1.004 cause text blur. */
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-4px);
 }
 
 .tp-tool-card-wrap > .tp-card {
@@ -1834,8 +1830,7 @@ html.theme-transition .tp-dropdown-trigger {
   box-shadow: var(--card-shadow), var(--card-highlight);
   transition:
     box-shadow 420ms var(--ease-out),
-    background-color 420ms var(--ease-out),
-    transform 420ms var(--ease-out);
+    background-color 420ms var(--ease-out);
 }
 
 .tp-card > * {
@@ -1975,8 +1970,7 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-category-card:hover {
-  /* Changed from 1.004 to 1.02 for crisp rendering */
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-4px);
 }
 
 .tp-category-feature {
