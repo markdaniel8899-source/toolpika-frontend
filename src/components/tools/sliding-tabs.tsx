@@ -27,19 +27,25 @@ export function SlidingTabs({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const hasMeasuredRef = useRef(false);
   const [indicator, setIndicator] = useState({ x: 0, width: 0, ready: false });
 
   const measure = useCallback(() => {
     const container = containerRef.current;
-    const button = buttonRefs.current[active];
-    if (!container || !button) {
-      setIndicator((current) => (current.ready ? { ...current, ready: false } : current));
-      return;
-    }
+    if (!container) return;
+    // When the active tab lives in the other row, keep the last position so
+    // the hidden indicator never jumps back to the start on its way back.
+    const button =
+      buttonRefs.current[active] ??
+      (hasMeasuredRef.current
+        ? null
+        : Object.values(buttonRefs.current).find(Boolean));
+    if (!button) return;
     const containerBox = container.getBoundingClientRect();
     const buttonBox = button.getBoundingClientRect();
     const x = buttonBox.left - containerBox.left;
     const width = buttonBox.width;
+    hasMeasuredRef.current = true;
     setIndicator((current) =>
       current.x === x && current.width === width && current.ready
         ? current
@@ -57,6 +63,8 @@ export function SlidingTabs({
     return () => observer.disconnect();
   }, [measure]);
 
+  const isActiveInRow = items.some((item) => item.slug === active);
+
   return (
     <div
       ref={containerRef}
@@ -71,7 +79,7 @@ export function SlidingTabs({
         style={{
           transform: indicator.ready ? `translateX(${indicator.x}px)` : undefined,
           width: indicator.ready ? indicator.width : undefined,
-          opacity: indicator.ready ? 1 : 0,
+          opacity: indicator.ready && isActiveInRow ? 1 : 0,
         }}
       />
       {items.map((item) => {

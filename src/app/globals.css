@@ -1103,7 +1103,7 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-nav-mega,
 .tp-mobile-panel {
   scrollbar-width: thin;
-  scrollbar-color: var(--accent-fill) transparent;
+  scrollbar-color: color-mix(in srgb, var(--accent) 60%, transparent) transparent;
 }
 
 .tp-dropdown-menu::-webkit-scrollbar,
@@ -1111,8 +1111,18 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-search-results::-webkit-scrollbar,
 .tp-nav-mega::-webkit-scrollbar,
 .tp-mobile-panel::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
+}
+
+.tp-dropdown-menu::-webkit-scrollbar-button,
+.tp-wish-panel::-webkit-scrollbar-button,
+.tp-search-results::-webkit-scrollbar-button,
+.tp-nav-mega::-webkit-scrollbar-button,
+.tp-mobile-panel::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .tp-dropdown-menu::-webkit-scrollbar-track,
@@ -1129,7 +1139,7 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-nav-mega::-webkit-scrollbar-thumb,
 .tp-mobile-panel::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: var(--accent-fill);
+  background: color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .tp-dropdown-menu::-webkit-scrollbar-thumb:hover,
