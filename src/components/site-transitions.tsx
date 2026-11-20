@@ -25,7 +25,14 @@ const SELECTOR = [
   ".tp-cta-inner",
   ".tp-breadcrumbs",
   ".tp-tabs",
+  ".tp-split-copy .tp-eyebrow",
+  ".tp-split-copy.tp-split-copy-lg p",
+  ".tp-category-cta",
   ".tp-footer-brand",
+  ".tp-footer-col h3",
+  ".tp-footer-col li",
+  ".tp-footer-bottom > span",
+  ".tp-footer-bottom .footer-link",
 ].join(",");
 
 export function SiteTransitions() {
