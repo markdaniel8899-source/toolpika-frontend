@@ -58,11 +58,6 @@ export function Header() {
   };
   const { wishlist, count, isLoaded, toggleWishlist } = useWishlist();
 
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof document === "undefined") return "light";
-    return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
-  });
-
   useEffect(() => {
     document.body.classList.toggle("menu-open", menuOpen);
     return () => document.body.classList.remove("menu-open");
@@ -80,10 +75,10 @@ export function Header() {
   }, [wishOpen]);
 
   const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
     const root = document.documentElement;
+    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const next = current === "dark" ? "light" : "dark";
     root.classList.add("theme-transition");
-    setTheme(next);
     root.setAttribute("data-theme", next);
     try {
       localStorage.setItem("theme", next);
@@ -291,11 +286,8 @@ export function Header() {
             aria-label={th("toggle")}
             className="tp-icon-btn tp-icon-only"
           >
-            {theme === "dark" ? (
-              <Sun className="tp-icon" aria-hidden="true" />
-            ) : (
-              <Moon className="tp-icon" aria-hidden="true" />
-            )}
+            <Moon className="tp-icon tp-theme-icon--moon" aria-hidden="true" />
+            <Sun className="tp-icon tp-theme-icon--sun" aria-hidden="true" />
           </button>
 
           <PillCta href="/request" className="tp-header-cta">

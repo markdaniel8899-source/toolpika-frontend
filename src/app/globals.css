@@ -395,6 +395,20 @@ html.theme-transition .tp-dropdown-trigger {
   padding: 0;
 }
 
+/* ThemeScript sets data-theme before paint. CSS swaps the icon instead of
+   client state, so SSR and hydration render the same markup. */
+.tp-theme-icon--sun {
+  display: none;
+}
+
+[data-theme="dark"] .tp-theme-icon--sun {
+  display: block;
+}
+
+[data-theme="dark"] .tp-theme-icon--moon {
+  display: none;
+}
+
 /* ---------- Dropdown menus ---------- */
 
 .tp-dropdown {
@@ -3948,30 +3962,6 @@ html:has([data-admin="true"]) {
   }
 }
 
-/* Live badge sits outside the browser shell so it reads at a glance. */
-.tp-demo-badge {
-  position: absolute;
-  top: -15px;
-  right: 24px;
-  z-index: 8;
-  display: inline-flex;
-  height: 30px;
-  align-items: center;
-  gap: 7px;
-  padding: 0 13px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--text) 45%, transparent);
-  color: var(--text);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
 .tp-demo-viewport {
   position: relative;
   width: 100%;
@@ -3986,6 +3976,13 @@ html:has([data-admin="true"]) {
   width: 600px;
   height: 430px;
   transform-origin: top left;
+}
+
+/* The browser shell zooms around the demo cursor; the cursor stays 1:1. */
+.tp-demo-zoom {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
 }
 
 .tp-demo-bezel {
@@ -4069,16 +4066,6 @@ html:has([data-admin="true"]) {
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.02em;
-}
-
-.tp-demo-live-dot {
-  width: 6px;
-  height: 6px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
-  animation: tp-demo-pulse 2s ease-in-out infinite;
 }
 
 /* Tabs */
@@ -4590,7 +4577,7 @@ html:has([data-admin="true"]) {
   z-index: 5;
   margin: -2px 0 0 -2px;
   pointer-events: none;
-  filter: drop-shadow(0 3px 4px color-mix(in srgb, var(--text) 28%, transparent));
+  filter: drop-shadow(0 4px 6px color-mix(in srgb, var(--text) 18%, transparent));
 }
 
 .tp-demo-cursor svg {
@@ -4692,6 +4679,7 @@ html:has([data-admin="true"]) {
    interpolated by CSS, or the two animations fight each other. */
 .tp-cursor-dot,
 .tp-demo-float,
+.tp-demo-zoom,
 .tp-demo-cursor,
 .tp-demo-click,
 .tp-demo-tab-pill,

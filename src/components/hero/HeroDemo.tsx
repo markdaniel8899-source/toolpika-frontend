@@ -24,7 +24,8 @@ import {
  * ------------------------------------------------------------------ */
 
 const CANVAS_W = 600;
-const SCENE_MS = 6800;
+/* Each scene types for ~3.5s, holds its finished result briefly, then cuts. */
+const SCENE_MS = 5200;
 const TAB_CENTERS = [144, 300, 456] as const;
 const TAB_Y = 65;
 
@@ -34,9 +35,11 @@ const PASSWORD_LENGTH = 16;
 const PASSWORD_CHARSET =
   "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*-_=+";
 
-const TYPE_START = 820;
-const JSON_TYPE_START = 1320;
-const TYPE_CHAR_MS = 46;
+const TYPE_START = 950;
+const JSON_TYPE_START = 1050;
+const TYPE_CHAR_MS = 92;
+const PASSWORD_START = 1180;
+const PASSWORD_REVEAL_MS = 3000;
 
 /** Spaces move faster, punctuation pauses — a more human typewriter. */
 function charDelay(text: string, index: number) {
@@ -79,23 +82,23 @@ const CURSOR_STOPS: CursorStop[][] = [
   [
     { at: 0, x: TAB_CENTERS[0], y: TAB_Y },
     { at: 520, x: TAB_CENTERS[0], y: TAB_Y, click: true },
-    { at: 940, x: 186, y: 224 },
-    { at: 1060, x: 186, y: 224, click: true },
-    { at: 3980, x: 106, y: 348 },
+    { at: 900, x: 186, y: 224, click: true },
+    { at: 4380, x: 106, y: 348 },
+    { at: 4520, x: 106, y: 348, click: true },
   ],
   [
     { at: 0, x: TAB_CENTERS[1], y: TAB_Y },
     { at: 520, x: TAB_CENTERS[1], y: TAB_Y, click: true },
-    { at: 1240, x: 172, y: 208 },
-    { at: 1360, x: 172, y: 208, click: true },
-    { at: 4020, x: 456, y: 214 },
+    { at: 1010, x: 172, y: 208, click: true },
+    { at: 4200, x: 456, y: 214 },
+    { at: 4340, x: 456, y: 214, click: true },
   ],
   [
     { at: 0, x: TAB_CENTERS[2], y: TAB_Y },
     { at: 520, x: TAB_CENTERS[2], y: TAB_Y, click: true },
-    { at: 980, x: 520, y: 248 },
-    { at: 1160, x: 520, y: 248, click: true },
-    { at: 2900, x: 286, y: 194 },
+    { at: 1080, x: 520, y: 248, click: true },
+    { at: 4050, x: 286, y: 194 },
+    { at: 4180, x: 286, y: 194, click: true },
   ],
 ];
 
@@ -141,6 +144,34 @@ function useTypewriter(text: string, startAt: number, reduced: boolean) {
   return reduced ? text : typed;
 }
 
+/** Reveal a prepared value over time — used by the password generator. */
+function useRevealedText(text: string, startAt: number, duration: number, reduced: boolean) {
+  const [shown, setShown] = useState("");
+
+  useEffect(() => {
+    if (!text || reduced) return;
+
+    let frame = 0;
+    let lastCount = -1;
+    const startsAt = performance.now() + startAt;
+
+    const tick = (now: number) => {
+      const progress = Math.min(1, Math.max(0, (now - startsAt) / duration));
+      const count = Math.floor(progress * text.length);
+      if (count !== lastCount) {
+        lastCount = count;
+        setShown(text.slice(0, count));
+      }
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [text, startAt, duration, reduced]);
+
+  return reduced ? text : shown;
+}
+
 /** Real JSON parse + pretty-print. Incomplete input stays invalid. */
 function useFormattedJson(text: string) {
   return useMemo(() => {
@@ -164,18 +195,15 @@ function FakeCursor({ x, y, press, pressed }: { x: number; y: number; press: num
         initial={false}
         animate={{ x, y, scale: pressed ? 0.86 : 1 }}
         transition={{
-          x: { type: "spring", stiffness: 150, damping: 22, mass: 0.9 },
-          y: { type: "spring", stiffness: 150, damping: 22, mass: 0.9 },
-          scale: { duration: 0.16, ease: "easeOut" },
+          x: { type: "spring", stiffness: 120, damping: 24, mass: 0.85 },
+          y: { type: "spring", stiffness: 120, damping: 24, mass: 0.85 },
+          scale: { duration: 0.18, ease: "easeOut" },
         }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
             d="M4 2.5 4 19l4.6-4.5 3 6.6 2.6-1.2-3-6.5H18z"
-            fill="var(--surface)"
-            stroke="var(--text)"
-            strokeWidth="1.35"
-            strokeLinejoin="round"
+            fill="var(--accent)"
           />
         </svg>
       </motion.div>
@@ -225,7 +253,7 @@ function WordCounterScene({ reduced }: { reduced: boolean }) {
           ) : (
             <span className="tp-demo-typing-dot" aria-hidden="true" />
           )}
-          {done ? "Counted live" : "Typing…"}
+          {done ? "Counted live" : "Counting live"}
         </span>
       </div>
 
@@ -238,7 +266,14 @@ function WordCounterScene({ reduced }: { reduced: boolean }) {
       <div className="tp-demo-stats">
         {STAT_META.map(({ Icon, label }, index) => (
           <div key={label} className={`tp-demo-stat${index === 0 ? " is-primary" : ""}`}>
-            <b>{values[index]}</b>
+            <motion.b
+              key={`${label}-${values[index]}`}
+              initial={reduced ? false : { opacity: 0.45, y: -3 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduced ? 0 : 0.2, ease: "easeOut" }}
+            >
+              {values[index]}
+            </motion.b>
             <span><Icon className="tp-demo-mini-icon" />{label}</span>
           </div>
         ))}
@@ -286,7 +321,7 @@ function JsonFormatterScene({ reduced }: { reduced: boolean }) {
         <div className="tp-demo-panel">
           <div className="tp-demo-panel-head">
             <span><Braces className="tp-demo-mini-icon" />Input</span>
-            <span className="tp-demo-panel-tag">RAW</span>
+            <span className="tp-demo-panel-tag">{typed.length ? `${typed.length} chars` : "RAW"}</span>
           </div>
           <div className="tp-demo-panel-body">
             <pre className="tp-demo-code"><span>{typed}</span><Caret /></pre>
@@ -297,7 +332,7 @@ function JsonFormatterScene({ reduced }: { reduced: boolean }) {
           <div className="tp-demo-panel-head">
             <span><CircleCheck className="tp-demo-mini-icon" />Output</span>
             <span className={valid ? "tp-demo-panel-tag is-valid" : "tp-demo-panel-tag"}>
-              {valid ? "VALID" : typed ? "WAITING" : "READY"}
+              {valid ? "VALID" : typed ? "PARSING" : "READY"}
             </span>
           </div>
           <div className="tp-demo-panel-body">
@@ -346,22 +381,17 @@ const STRENGTH_LABELS = ["Waiting", "Weak", "Fair", "Strong", "Very strong"] as 
 const STRENGTH_BADGES = ["…", "WEAK", "FAIR", "STRONG", "VERY STRONG"] as const;
 
 function PasswordScene({ reduced }: { reduced: boolean }) {
-  const [password, setPassword] = useState(() => (reduced ? generatePassword() : ""));
+  const [secret, setSecret] = useState("");
 
+  // Generate once after mount so the server and client render the same markup.
   useEffect(() => {
-    const reset = window.setTimeout(() => {
-      setPassword(reduced ? generatePassword() : "");
-    }, 0);
-    if (reduced) return () => window.clearTimeout(reset);
+    const timer = window.setTimeout(() => setSecret(generatePassword()), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
-    // The fake cursor clicks Generate at 1160ms; the password lands just after.
-    const timer = window.setTimeout(() => setPassword(generatePassword()), 1200);
-    return () => {
-      window.clearTimeout(reset);
-      window.clearTimeout(timer);
-    };
-  }, [reduced]);
-
+  // The fake cursor clicks Generate at ~1.1s; characters then fill in live.
+  const password = useRevealedText(secret, PASSWORD_START, PASSWORD_REVEAL_MS, reduced);
+  const done = secret.length > 0 && password.length === secret.length;
   const entropy = password
     ? Math.round(password.length * Math.log2(PASSWORD_CHARSET.length))
     : 0;
@@ -372,14 +402,21 @@ function PasswordScene({ reduced }: { reduced: boolean }) {
       <div className="tp-demo-pw-wrap">
         <div className="tp-demo-pw-box">
           <span className="tp-demo-pw-value" data-empty={!password}>
-            {password || "••••••••••••••••"}
+            {password ? (
+              <>
+                {password}
+                {done ? null : <Caret />}
+              </>
+            ) : (
+              "••••••••••••••••"
+            )}
           </span>
           <span className="tp-demo-copy" aria-hidden="true"><Copy className="tp-demo-mini-icon" /></span>
         </div>
 
         <div className="tp-demo-pw-actions">
           <span className="tp-demo-pw-note"><ShieldCheck className="tp-demo-mini-icon" />Generated with Web Crypto</span>
-          <span className={password ? "tp-demo-generate is-done" : "tp-demo-generate"}>
+          <span className={done ? "tp-demo-generate is-done" : "tp-demo-generate"}>
             <KeyRound className="tp-demo-mini-icon" />Generate
           </span>
         </div>
@@ -396,7 +433,7 @@ function PasswordScene({ reduced }: { reduced: boolean }) {
                 className="tp-demo-strength-bar"
                 initial={false}
                 animate={{ opacity: score > index ? 1 : 0.18, scaleY: score > index ? 1 : 0.7 }}
-                transition={{ duration: reduced ? 0 : 0.32, delay: reduced ? 0 : index * 0.06 }}
+                transition={{ duration: reduced ? 0 : 0.32, delay: reduced ? 0 : index * 0.04 }}
               />
             ))}
           </div>
@@ -430,6 +467,7 @@ export function HeroDemo() {
     pressed: false,
   });
   const [scale, setScale] = useState(0.9);
+  const [zoom, setZoom] = useState(1.002);
   const viewportRef = useRef<HTMLDivElement>(null);
 
   /* One scale transform keeps the fixed canvas responsive on every width. */
@@ -495,6 +533,20 @@ export function HeroDemo() {
     return () => timers.forEach((timer) => window.clearTimeout(timer));
   }, [toolIndex, reduced]);
 
+  /* Every cursor hop gives the set a small, cursor-anchored zoom pulse. */
+  useEffect(() => {
+    if (reduced) {
+      const reset = window.setTimeout(() => setZoom(1), 0);
+      return () => window.clearTimeout(reset);
+    }
+    const pulse = window.setTimeout(() => setZoom(1.014), 0);
+    const release = window.setTimeout(() => setZoom(1.002), 380);
+    return () => {
+      window.clearTimeout(pulse);
+      window.clearTimeout(release);
+    };
+  }, [cursor.x, cursor.y, reduced]);
+
   return (
     <motion.div
       className="tp-demo-float"
@@ -506,77 +558,84 @@ export function HeroDemo() {
       onBlurCapture={() => setPaused(false)}
       aria-hidden="true"
     >
-      <span className="tp-demo-badge">
-        <span className="tp-demo-live-dot" />
-        Live demo
-      </span>
-
       <div className="tp-demo-viewport" ref={viewportRef}>
         <div className="tp-demo-canvas" style={{ transform: `scale(${scale})` }}>
-          <div className="tp-demo-bezel">
-            <div className="tp-demo-core">
-              <div className="tp-demo-bar">
-                <span className="tp-demo-dot tp-demo-dot--red" />
-                <span className="tp-demo-dot tp-demo-dot--yellow" />
-                <span className="tp-demo-dot tp-demo-dot--green" />
-                <span className="tp-demo-url">toolpika.site</span>
-                <span className="tp-demo-bar-note">Real tools · running locally</span>
-              </div>
-
-              <div className="tp-demo-tabs">
-                {TOOLS.map(({ label, Icon }, index) => (
-                  <span
-                    key={label}
-                    className={`tp-demo-tab${shownTab === index ? " is-active" : ""}`}
-                  >
-                    {shownTab === index ? (
-                      <motion.span
-                        className="tp-demo-tab-pill"
-                        layoutId="tp-demo-tab-pill"
-                        transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                      />
-                    ) : null}
-                    <Icon className="tp-demo-tab-icon" />
-                    <span className="tp-demo-tab-label">{label}</span>
-                  </span>
-                ))}
-              </div>
-
-              <div className="tp-demo-stage">
-                <AnimatePresence initial={false}>
-                  <motion.div
-                    key={toolIndex}
-                    className="tp-demo-scene-wrap"
-                    initial={reduced ? false : { opacity: 0, y: 12, scale: 0.985 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={reduced ? undefined : { opacity: 0, y: -10, scale: 0.99 }}
-                    transition={{ duration: reduced ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {toolIndex === 0 ? (
-                      <WordCounterScene reduced={reduced} />
-                    ) : toolIndex === 1 ? (
-                      <JsonFormatterScene reduced={reduced} />
-                    ) : (
-                      <PasswordScene reduced={reduced} />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              <div className="tp-demo-foot">
-                <div className="tp-demo-timeline">
-                  <motion.span
-                    key={toolIndex}
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: reduced ? 0 : SCENE_MS / 1000, ease: "linear" }}
-                  />
+          <motion.div
+            className="tp-demo-zoom"
+            style={{ transformOrigin: `${cursor.x}px ${cursor.y}px` }}
+            animate={{ scale: reduced ? 1 : zoom }}
+            transition={reduced ? undefined : {
+              type: "spring",
+              stiffness: 220,
+              damping: 26,
+              mass: 0.6,
+            }}
+          >
+            <div className="tp-demo-bezel">
+              <div className="tp-demo-core">
+                <div className="tp-demo-bar">
+                  <span className="tp-demo-dot tp-demo-dot--red" />
+                  <span className="tp-demo-dot tp-demo-dot--yellow" />
+                  <span className="tp-demo-dot tp-demo-dot--green" />
+                  <span className="tp-demo-url">toolpika.site</span>
+                  <span className="tp-demo-bar-note">Real tools · running locally</span>
                 </div>
-                <span className="tp-demo-foot-note"><ShieldCheck className="tp-demo-mini-icon" />Runs in your browser</span>
-                <span className="tp-demo-foot-count">0{toolIndex + 1} / 03</span>
+
+                <div className="tp-demo-tabs">
+                  {TOOLS.map(({ label, Icon }, index) => (
+                    <span
+                      key={label}
+                      className={`tp-demo-tab${shownTab === index ? " is-active" : ""}`}
+                    >
+                      {shownTab === index ? (
+                        <motion.span
+                          className="tp-demo-tab-pill"
+                          layoutId="tp-demo-tab-pill"
+                          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                        />
+                      ) : null}
+                      <Icon className="tp-demo-tab-icon" />
+                      <span className="tp-demo-tab-label">{label}</span>
+                    </span>
+                  ))}
+                </div>
+
+                <div className="tp-demo-stage">
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      key={toolIndex}
+                      className="tp-demo-scene-wrap"
+                      initial={reduced ? false : { opacity: 0, y: 12, scale: 0.985 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={reduced ? undefined : { opacity: 0, y: -10, scale: 0.99 }}
+                      transition={{ duration: reduced ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {toolIndex === 0 ? (
+                        <WordCounterScene reduced={reduced} />
+                      ) : toolIndex === 1 ? (
+                        <JsonFormatterScene reduced={reduced} />
+                      ) : (
+                        <PasswordScene reduced={reduced} />
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <div className="tp-demo-foot">
+                  <div className="tp-demo-timeline">
+                    <motion.span
+                      key={toolIndex}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: reduced ? 0 : SCENE_MS / 1000, ease: "linear" }}
+                    />
+                  </div>
+                  <span className="tp-demo-foot-note"><ShieldCheck className="tp-demo-mini-icon" />Runs in your browser</span>
+                  <span className="tp-demo-foot-count">0{toolIndex + 1} / 03</span>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {reduced ? null : (
             <FakeCursor x={cursor.x} y={cursor.y} press={cursor.press} pressed={cursor.pressed} />
