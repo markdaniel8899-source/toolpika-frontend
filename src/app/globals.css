@@ -245,34 +245,6 @@ button {
   color: var(--on-accent);
 }
 
-/* ---------- Custom scrollbars ---------- */
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
-}
-
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--border-strong);
-  background-clip: content-box;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-  background-clip: content-box;
-}
-
 /* ---------- Theme switch transition ---------- */
 
 html.theme-transition body,
@@ -1090,68 +1062,6 @@ html.theme-transition .tp-dropdown-trigger {
   animation: tp-wish-in 300ms ease both;
 }
 
-/* Indigo scrollbar only for floating submenus, never the page scrollbar.
-   IMPORTANT: `scrollbar-color` must stay `auto` here. In Blink, giving it a
-   colour disables every ::-webkit-scrollbar-* rule and falls back to the
-   native scrollbar — which is exactly what draws the two arrow buttons.
-   Keeping it auto lets the pseudo-elements below take full control. */
-.tp-dropdown-menu,
-.tp-wish-panel,
-.tp-search-results,
-.tp-nav-mega,
-.tp-mobile-panel {
-  scrollbar-width: thin;
-  scrollbar-color: auto;
-}
-
-.tp-dropdown-menu::-webkit-scrollbar,
-.tp-wish-panel::-webkit-scrollbar,
-.tp-search-results::-webkit-scrollbar,
-.tp-nav-mega::-webkit-scrollbar,
-.tp-mobile-panel::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-.tp-dropdown-menu::-webkit-scrollbar-button,
-.tp-wish-panel::-webkit-scrollbar-button,
-.tp-search-results::-webkit-scrollbar-button,
-.tp-nav-mega::-webkit-scrollbar-button,
-.tp-mobile-panel::-webkit-scrollbar-button {
-  display: none !important;
-  -webkit-appearance: none;
-  appearance: none;
-  width: 0;
-  height: 0;
-  background: transparent;
-  border: 0;
-}
-
-.tp-dropdown-menu::-webkit-scrollbar-track,
-.tp-wish-panel::-webkit-scrollbar-track,
-.tp-search-results::-webkit-scrollbar-track,
-.tp-nav-mega::-webkit-scrollbar-track,
-.tp-mobile-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tp-dropdown-menu::-webkit-scrollbar-thumb,
-.tp-wish-panel::-webkit-scrollbar-thumb,
-.tp-search-results::-webkit-scrollbar-thumb,
-.tp-nav-mega::-webkit-scrollbar-thumb,
-.tp-mobile-panel::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 62%, transparent);
-}
-
-.tp-dropdown-menu::-webkit-scrollbar-thumb:hover,
-.tp-wish-panel::-webkit-scrollbar-thumb:hover,
-.tp-search-results::-webkit-scrollbar-thumb:hover,
-.tp-nav-mega::-webkit-scrollbar-thumb:hover,
-.tp-mobile-panel::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
 @keyframes tp-wish-in {
   from { opacity: 0; transform: translateY(-8px) scale(0.98); }
   to { opacity: 1; transform: none; }
@@ -1226,13 +1136,17 @@ html.theme-transition .tp-dropdown-trigger {
   height: 100%;
   transform-origin: center bottom;
   transition: transform 420ms var(--ease-out);
-  will-change: transform;
+  /* GPU compositing fixes to prevent sub-pixel text blur */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Lift the whole wrapper, not just the card — the arrow (inside the card)
    and the heart (absolute sibling) then move as one, with no displacement. */
 .tp-tool-card-wrap:hover {
-  transform: translateY(-2px) scale(1.004);
+  /* Changed from 1.004 to 1.02. Fractional scales like 1.004 cause text blur. */
+  transform: translateY(-4px) scale(1.02);
 }
 
 .tp-tool-card-wrap > .tp-card {
@@ -2043,7 +1957,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-category-card:hover {
-  transform: translateY(-2px) scale(1.004);
+  /* Changed from 1.004 to 1.02 for crisp rendering */
+  transform: translateY(-4px) scale(1.02);
 }
 
 .tp-category-feature {
