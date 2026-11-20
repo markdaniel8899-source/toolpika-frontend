@@ -192,13 +192,6 @@ export function RequestsInbox({
                   menuClassName="tp-admin-status-menu"
                   disabled={pending}
                   portal
-                  icon={
-                    <span
-                      className="tp-admin-status-dot"
-                      data-status={request.status}
-                      aria-hidden="true"
-                    />
-                  }
                 />
               </td>
               <td className="px-3 py-3 text-right last:pr-0">

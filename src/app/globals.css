@@ -3511,7 +3511,7 @@ html:has([data-admin="true"]) {
   min-width: 0;
   height: 36px;
   gap: 8px;
-  padding: 0 10px;
+  padding: 0 12px;
   justify-content: flex-start;
   border: 1px solid var(--border);
   border-radius: var(--radius-control);
@@ -3542,31 +3542,6 @@ html:has([data-admin="true"]) {
 .tp-admin-status-trigger:disabled {
   cursor: wait;
   opacity: 0.6;
-}
-
-.tp-admin-status-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--muted-2);
-}
-
-.tp-admin-status-dot[data-status="new"] {
-  background: var(--accent);
-}
-
-.tp-admin-status-dot[data-status="in_progress"] {
-  background: var(--info);
-}
-
-.tp-admin-status-dot[data-status="resolved"] {
-  background: var(--success);
-}
-
-.tp-admin-status-dot[data-status="rejected"] {
-  background: var(--danger);
 }
 
 /* Portaled menu keeps the language card look but can escape table overflow. */
