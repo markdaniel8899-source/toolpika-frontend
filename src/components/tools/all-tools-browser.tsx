@@ -45,7 +45,8 @@ export function AllToolsBrowser({
           <motion.span
             layoutId="all-tools-tab-highlight"
             className="tp-tab-highlight"
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            initial={false}
+            transition={{ type: "spring", stiffness: 320, damping: 30, mass: 0.7 }}
           />
         )}
         <span className="tp-tab-label tp-tab-inline">
