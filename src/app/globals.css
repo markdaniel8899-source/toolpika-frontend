@@ -494,8 +494,6 @@ html.theme-transition .tp-dropdown-trigger {
     opacity 300ms var(--ease-out),
     transform 300ms var(--ease-out),
     visibility 300ms;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 .tp-dropdown-menu[data-open="true"] {
@@ -503,10 +501,6 @@ html.theme-transition .tp-dropdown-trigger {
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0) scale(1);
-}
-
-.tp-dropdown-menu::-webkit-scrollbar {
-  display: none;
 }
 
 .tp-dropdown-option {
@@ -1096,14 +1090,18 @@ html.theme-transition .tp-dropdown-trigger {
   animation: tp-wish-in 300ms ease both;
 }
 
-/* Indigo scrollbar only for floating submenus, never the page scrollbar. */
+/* Indigo scrollbar only for floating submenus, never the page scrollbar.
+   IMPORTANT: `scrollbar-color` must stay `auto` here. In Blink, giving it a
+   colour disables every ::-webkit-scrollbar-* rule and falls back to the
+   native scrollbar — which is exactly what draws the two arrow buttons.
+   Keeping it auto lets the pseudo-elements below take full control. */
 .tp-dropdown-menu,
 .tp-wish-panel,
 .tp-search-results,
 .tp-nav-mega,
 .tp-mobile-panel {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--accent) 60%, transparent) transparent;
+  scrollbar-color: auto;
 }
 
 .tp-dropdown-menu::-webkit-scrollbar,
@@ -1120,9 +1118,13 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-search-results::-webkit-scrollbar-button,
 .tp-nav-mega::-webkit-scrollbar-button,
 .tp-mobile-panel::-webkit-scrollbar-button {
-  display: none;
+  display: none !important;
+  -webkit-appearance: none;
+  appearance: none;
   width: 0;
   height: 0;
+  background: transparent;
+  border: 0;
 }
 
 .tp-dropdown-menu::-webkit-scrollbar-track,
@@ -1139,7 +1141,7 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-nav-mega::-webkit-scrollbar-thumb,
 .tp-mobile-panel::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 62%, transparent);
 }
 
 .tp-dropdown-menu::-webkit-scrollbar-thumb:hover,
