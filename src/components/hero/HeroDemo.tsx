@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  type MotionValue,
+} from "framer-motion";
 import {
   Braces,
   CircleCheck,
@@ -19,34 +27,107 @@ import {
  * a coordinate on that set, so the choreography stays exact at any
  * viewport width. No video, no canvas — only React and Framer Motion.
  *
- * The demo is not a mock-up: counts are computed from the typed text,
- * JSON is parsed and re-serialised, and passwords come from Web Crypto.
+ * The demo is a single input-driven timeline: the cursor moves, clicks,
+ * then the tool reacts. Nothing types or transforms before its click.
  * ------------------------------------------------------------------ */
 
 const CANVAS_W = 600;
-/* Each scene types for ~3.5s, holds its finished result briefly, then cuts. */
-const SCENE_MS = 5200;
+/* Core starts 13px into the bezel; the 42px bar + 46px tabs put tab
+ * centres at y=78. Earlier y=65 landed in the browser chrome. */
+const TAB_Y = 78;
 const TAB_CENTERS = [144, 300, 456] as const;
-const TAB_Y = 65;
 
 const WORD_TEXT = "The quiet utility of doing one thing well.";
 const JSON_TEXT = '{"name":"Toolpika","live":true}';
-const PASSWORD_LENGTH = 16;
-const PASSWORD_CHARSET =
-  "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*-_=+";
 
-const TYPE_START = 950;
-const JSON_TYPE_START = 1050;
-const TYPE_CHAR_MS = 92;
-const PASSWORD_START = 1180;
-const PASSWORD_REVEAL_MS = 3000;
+const WORD_FIELD = { x: 190, y: 212 };
+const WORD_TEXT_START = { x: 54, y: 189 };
+const WORD_CHAR_W = 7.35;
+
+const JSON_INPUT = { x: 158, y: 214 };
+const JSON_TEXT_START = { x: 48, y: 181 };
+const JSON_CHAR_W = 7.05;
+const JSON_FORMAT = { x: 258, y: 138 };
+
+const PW_DIFFICULTY = { x: 460, y: 139 };
+const PW_GENERATE = { x: 510, y: 259 };
+
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+const REDUCED_PASSWORD = "Tp!7kQ2#sM9@uR4x";
+
+const DIFFICULTIES = [
+  {
+    label: "Basic",
+    length: 12,
+    charset: "abcdefghijkmnopqrstuvwxyz23456789",
+  },
+  {
+    label: "Strong",
+    length: 16,
+    charset: "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*-_=+",
+  },
+  {
+    label: "Ultra",
+    length: 24,
+    charset: "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*-_=+",
+  },
+] as const;
+
+type Phase =
+  | "word-focus"
+  | "word-click"
+  | "word-type"
+  | "word-hold"
+  | "json-tab-move"
+  | "json-tab-click"
+  | "json-field-move"
+  | "json-field-click"
+  | "json-type"
+  | "json-format-move"
+  | "json-format-click"
+  | "json-hold"
+  | "pw-tab-move"
+  | "pw-tab-click"
+  | "pw-difficulty-move"
+  | "pw-difficulty-click"
+  | "pw-generate-move"
+  | "pw-generate-click"
+  | "pw-reveal"
+  | "pw-hold"
+  | "word-tab-move"
+  | "word-tab-click";
+
+const PHASE_PROGRESS: Record<Phase, number> = {
+  "word-focus": 0.08,
+  "word-click": 0.16,
+  "word-type": 0.5,
+  "word-hold": 1,
+  "json-tab-move": 0.02,
+  "json-tab-click": 0.06,
+  "json-field-move": 0.18,
+  "json-field-click": 0.24,
+  "json-type": 0.55,
+  "json-format-move": 0.72,
+  "json-format-click": 0.86,
+  "json-hold": 1,
+  "pw-tab-move": 0.02,
+  "pw-tab-click": 0.06,
+  "pw-difficulty-move": 0.28,
+  "pw-difficulty-click": 0.42,
+  "pw-generate-move": 0.62,
+  "pw-generate-click": 0.78,
+  "pw-reveal": 0.94,
+  "pw-hold": 1,
+  "word-tab-move": 0.02,
+  "word-tab-click": 0.06,
+};
 
 /** Spaces move faster, punctuation pauses — a more human typewriter. */
-function charDelay(text: string, index: number) {
+function charDelay(text: string, index: number, base: number) {
   const ch = text[index];
-  if (ch === " ") return TYPE_CHAR_MS * 0.55;
-  if ('.!?,:;{}[]"'.includes(ch)) return TYPE_CHAR_MS * 1.45;
-  return TYPE_CHAR_MS * (0.9 + ((index * 37) % 5) * 0.06);
+  if (ch === " ") return base * 0.55;
+  if ('.!?,:;{}[]"'.includes(ch)) return base * 1.45;
+  return base * (0.9 + ((index * 37) % 5) * 0.06);
 }
 
 /** Real counters, recomputed from whatever has actually been typed. */
@@ -64,141 +145,48 @@ function countText(text: string) {
 }
 
 /** Cryptographically random password — the same approach as the real tool. */
-function generatePassword(length = PASSWORD_LENGTH) {
+function generatePassword(length: number, charset: string) {
   if (typeof crypto === "undefined" || !crypto.getRandomValues) return "";
   const values = new Uint32Array(length);
   crypto.getRandomValues(values);
   let output = "";
   for (let index = 0; index < length; index += 1) {
-    output += PASSWORD_CHARSET[values[index] % PASSWORD_CHARSET.length];
+    output += charset[values[index] % charset.length];
   }
   return output;
 }
 
-type CursorStop = { at: number; x: number; y: number; click?: boolean };
-
-/** Cursor choreography per tool. Stops marked `click` fire the ripple. */
-const CURSOR_STOPS: CursorStop[][] = [
-  [
-    { at: 0, x: TAB_CENTERS[0], y: TAB_Y },
-    { at: 520, x: TAB_CENTERS[0], y: TAB_Y, click: true },
-    { at: 900, x: 186, y: 224, click: true },
-    { at: 4380, x: 106, y: 348 },
-    { at: 4520, x: 106, y: 348, click: true },
-  ],
-  [
-    { at: 0, x: TAB_CENTERS[1], y: TAB_Y },
-    { at: 520, x: TAB_CENTERS[1], y: TAB_Y, click: true },
-    { at: 1010, x: 172, y: 208, click: true },
-    { at: 4200, x: 456, y: 214 },
-    { at: 4340, x: 456, y: 214, click: true },
-  ],
-  [
-    { at: 0, x: TAB_CENTERS[2], y: TAB_Y },
-    { at: 520, x: TAB_CENTERS[2], y: TAB_Y, click: true },
-    { at: 1080, x: 520, y: 248, click: true },
-    { at: 4050, x: 286, y: 194 },
-    { at: 4180, x: 286, y: 194, click: true },
-  ],
-];
-
-/* ---------------------------- hooks -------------------------------- */
-
-/**
- * Reveal text one character at a time on the animation frame clock.
- * A rAF loop keeps the caret and the text perfectly in step, even when
- * the tab is busy or a frame is dropped.
- */
-function useTypewriter(text: string, startAt: number, reduced: boolean) {
-  const [typed, setTyped] = useState("");
-
-  useEffect(() => {
-    if (reduced) return;
-
-    let frame = 0;
-    let index = 0;
-    let nextCharAt = performance.now() + startAt;
-    let needsReset = true;
-
-    const tick = (now: number) => {
-      // Reset on the frame clock, not in the effect body, so React never
-      // sees a synchronous state update during commit.
-      if (needsReset) {
-        setTyped("");
-        needsReset = false;
-      }
-      let changed = false;
-      while (index < text.length && now >= nextCharAt) {
-        index += 1;
-        nextCharAt += charDelay(text, index - 1);
-        changed = true;
-      }
-      if (changed) setTyped(text.slice(0, index));
-      if (index < text.length) frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [text, startAt, reduced]);
-
-  return reduced ? text : typed;
-}
-
-/** Reveal a prepared value over time — used by the password generator. */
-function useRevealedText(text: string, startAt: number, duration: number, reduced: boolean) {
-  const [shown, setShown] = useState("");
-
-  useEffect(() => {
-    if (!text || reduced) return;
-
-    let frame = 0;
-    let lastCount = -1;
-    const startsAt = performance.now() + startAt;
-
-    const tick = (now: number) => {
-      const progress = Math.min(1, Math.max(0, (now - startsAt) / duration));
-      const count = Math.floor(progress * text.length);
-      if (count !== lastCount) {
-        lastCount = count;
-        setShown(text.slice(0, count));
-      }
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [text, startAt, duration, reduced]);
-
-  return reduced ? text : shown;
-}
-
 /** Real JSON parse + pretty-print. Incomplete input stays invalid. */
-function useFormattedJson(text: string) {
-  return useMemo(() => {
-    if (!text.trim()) return { valid: false, pretty: "" };
-    try {
-      const value: unknown = JSON.parse(text);
-      return { valid: true, pretty: JSON.stringify(value, null, 2) };
-    } catch {
-      return { valid: false, pretty: "" };
-    }
-  }, [text]);
+function formatJson(text: string) {
+  if (!text.trim()) return { valid: false, pretty: "" };
+  try {
+    const value: unknown = JSON.parse(text);
+    return { valid: true, pretty: JSON.stringify(value, null, 2) };
+  } catch {
+    return { valid: false, pretty: "" };
+  }
 }
 
-/* -------------------------- fake cursor ---------------------------- */
+/* ---------------------------- fake cursor ---------------------------- */
 
-function FakeCursor({ x, y, press, pressed }: { x: number; y: number; press: number; pressed: boolean }) {
+type Ripple = { id: number; x: number; y: number };
+
+function FakeCursor({
+  x,
+  y,
+  scale,
+  ripple,
+}: {
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+  scale: MotionValue<number>;
+  ripple: Ripple | null;
+}) {
   return (
     <>
       <motion.div
         className="tp-demo-cursor"
-        initial={false}
-        animate={{ x, y, scale: pressed ? 0.86 : 1 }}
-        transition={{
-          x: { type: "spring", stiffness: 120, damping: 24, mass: 0.85 },
-          y: { type: "spring", stiffness: 120, damping: 24, mass: 0.85 },
-          scale: { duration: 0.18, ease: "easeOut" },
-        }}
+        style={{ x, y, scale }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
@@ -208,11 +196,11 @@ function FakeCursor({ x, y, press, pressed }: { x: number; y: number; press: num
         </svg>
       </motion.div>
       <AnimatePresence>
-        {press > 0 ? (
+        {ripple ? (
           <motion.span
-            key={press}
+            key={ripple.id}
             className="tp-demo-click"
-            style={{ left: x, top: y }}
+            style={{ left: ripple.x, top: ripple.y }}
             initial={{ opacity: 0.85, scale: 0.35 }}
             animate={{ opacity: 0, scale: 2 }}
             exit={{ opacity: 0 }}
@@ -237,8 +225,7 @@ const STAT_META = [
   { Icon: ListOrdered, label: "Lines" },
 ] as const;
 
-function WordCounterScene({ reduced }: { reduced: boolean }) {
-  const typed = useTypewriter(WORD_TEXT, TYPE_START, reduced);
+function WordCounterScene({ typed, reduced }: { typed: string; reduced: boolean }) {
   const done = typed.length === WORD_TEXT.length;
   const counts = countText(typed);
   const values = [counts.words, counts.characters, counts.sentences, counts.lines];
@@ -310,10 +297,18 @@ function highlightJson(line: string) {
   return parts;
 }
 
-function JsonFormatterScene({ reduced }: { reduced: boolean }) {
-  const typed = useTypewriter(JSON_TEXT, JSON_TYPE_START, reduced);
-  const { valid, pretty } = useFormattedJson(typed);
-  const lines = pretty ? pretty.split("\n") : [];
+function JsonFormatterScene({
+  typed,
+  formatted,
+  reduced,
+}: {
+  typed: string;
+  formatted: boolean;
+  reduced: boolean;
+}) {
+  const result = useMemo(() => formatJson(typed), [typed]);
+  const showPretty = formatted && result.valid;
+  const lines = showPretty ? result.pretty.split("\n") : [];
 
   return (
     <div className="tp-demo-scene">
@@ -321,7 +316,9 @@ function JsonFormatterScene({ reduced }: { reduced: boolean }) {
         <div className="tp-demo-panel">
           <div className="tp-demo-panel-head">
             <span><Braces className="tp-demo-mini-icon" />Input</span>
-            <span className="tp-demo-panel-tag">{typed.length ? `${typed.length} chars` : "RAW"}</span>
+            <span className="tp-demo-format" data-ready={result.valid}>
+              <WandIcon />Format
+            </span>
           </div>
           <div className="tp-demo-panel-body">
             <pre className="tp-demo-code"><span>{typed}</span><Caret /></pre>
@@ -331,13 +328,13 @@ function JsonFormatterScene({ reduced }: { reduced: boolean }) {
         <div className="tp-demo-panel">
           <div className="tp-demo-panel-head">
             <span><CircleCheck className="tp-demo-mini-icon" />Output</span>
-            <span className={valid ? "tp-demo-panel-tag is-valid" : "tp-demo-panel-tag"}>
-              {valid ? "VALID" : typed ? "PARSING" : "READY"}
+            <span className={showPretty ? "tp-demo-panel-tag is-valid" : "tp-demo-panel-tag"}>
+              {showPretty ? "VALID" : typed ? "UNFORMATTED" : "READY"}
             </span>
           </div>
           <div className="tp-demo-panel-body">
             <AnimatePresence mode="wait">
-              {valid ? (
+              {showPretty ? (
                 <motion.pre
                   key="pretty"
                   className="tp-demo-code"
@@ -377,38 +374,60 @@ function JsonFormatterScene({ reduced }: { reduced: boolean }) {
   );
 }
 
+function WandIcon() {
+  return (
+    <svg className="tp-demo-mini-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="m4 20 11-11M15 4v4m-2-2h4M19 12v4m-2-2h4" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const STRENGTH_LABELS = ["Waiting", "Weak", "Fair", "Strong", "Very strong"] as const;
 const STRENGTH_BADGES = ["…", "WEAK", "FAIR", "STRONG", "VERY STRONG"] as const;
 
-function PasswordScene({ reduced }: { reduced: boolean }) {
-  const [secret, setSecret] = useState("");
-
-  // Generate once after mount so the server and client render the same markup.
-  useEffect(() => {
-    const timer = window.setTimeout(() => setSecret(generatePassword()), 0);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  // The fake cursor clicks Generate at ~1.1s; characters then fill in live.
-  const password = useRevealedText(secret, PASSWORD_START, PASSWORD_REVEAL_MS, reduced);
-  const done = secret.length > 0 && password.length === secret.length;
+function PasswordScene({
+  difficulty,
+  password,
+  complete,
+  reduced,
+}: {
+  difficulty: number;
+  password: string;
+  complete: boolean;
+  reduced: boolean;
+}) {
+  const config = DIFFICULTIES[difficulty];
   const entropy = password
-    ? Math.round(password.length * Math.log2(PASSWORD_CHARSET.length))
+    ? Math.round(password.length * Math.log2(config.charset.length))
     : 0;
   const score = entropy >= 80 ? 4 : entropy >= 60 ? 3 : entropy >= 40 ? 2 : entropy > 0 ? 1 : 0;
 
   return (
     <div className="tp-demo-scene">
       <div className="tp-demo-pw-wrap">
+        <div className="tp-demo-pw-setup">
+          <span className="tp-demo-pw-setup-label">Difficulty</span>
+          <div className="tp-demo-difficulty">
+            {DIFFICULTIES.map((option, index) => (
+              <span
+                key={option.label}
+                className={`tp-demo-difficulty-chip${difficulty === index ? " is-active" : ""}`}
+              >
+                {option.label}
+              </span>
+            ))}
+          </div>
+        </div>
+
         <div className="tp-demo-pw-box">
           <span className="tp-demo-pw-value" data-empty={!password}>
             {password ? (
               <>
                 {password}
-                {done ? null : <Caret />}
+                {complete ? null : <Caret />}
               </>
             ) : (
-              "••••••••••••••••"
+              "\u00a0"
             )}
           </span>
           <span className="tp-demo-copy" aria-hidden="true"><Copy className="tp-demo-mini-icon" /></span>
@@ -416,7 +435,7 @@ function PasswordScene({ reduced }: { reduced: boolean }) {
 
         <div className="tp-demo-pw-actions">
           <span className="tp-demo-pw-note"><ShieldCheck className="tp-demo-mini-icon" />Generated with Web Crypto</span>
-          <span className={done ? "tp-demo-generate is-done" : "tp-demo-generate"}>
+          <span className={complete ? "tp-demo-generate is-done" : "tp-demo-generate"}>
             <KeyRound className="tp-demo-mini-icon" />Generate
           </span>
         </div>
@@ -457,18 +476,32 @@ const TOOLS = [
 
 export function HeroDemo() {
   const reduced = useReducedMotion() ?? false;
-  const [toolIndex, setToolIndex] = useState(0);
+  const [sceneIndex, setSceneIndex] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
+  const [phase, setPhase] = useState<Phase>("word-focus");
+  const [wordTyped, setWordTyped] = useState("");
+  const [jsonTyped, setJsonTyped] = useState("");
+  const [jsonFormatted, setJsonFormatted] = useState(false);
+  const [difficulty, setDifficulty] = useState(0);
+  const [secret, setSecret] = useState("");
+  const [passwordShown, setPasswordShown] = useState("");
+  const secretRef = useRef("");
+  const [pressing, setPressing] = useState(false);
+  const [ripple, setRipple] = useState<Ripple | null>(null);
   const [paused, setPaused] = useState(false);
-  const [cursor, setCursor] = useState<{ x: number; y: number; press: number; pressed: boolean }>({
-    x: TAB_CENTERS[0],
-    y: TAB_Y,
-    press: 0,
-    pressed: false,
-  });
   const [scale, setScale] = useState(0.9);
-  const [zoom, setZoom] = useState(1.002);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(paused);
+
+  const cursorX = useMotionValue<number>(TAB_CENTERS[0]);
+  const cursorY = useMotionValue<number>(TAB_Y);
+  const cursorScale = useMotionValue<number>(1);
+  const zoom = useMotionValue<number>(1.006);
+  const transformOrigin = useMotionTemplate`${cursorX}px ${cursorY}px`;
+
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
 
   /* One scale transform keeps the fixed canvas responsive on every width. */
   useEffect(() => {
@@ -485,67 +518,331 @@ export function HeroDemo() {
     return () => observer.disconnect();
   }, []);
 
-  /* Controller: advance through the three tools on a steady loop. */
+  /* Reduced motion gets the finished states, without a moving pointer. */
   useEffect(() => {
-    if (reduced || paused) return;
-    const id = window.setInterval(() => setToolIndex((current) => (current + 1) % 3), SCENE_MS);
-    return () => window.clearInterval(id);
-  }, [reduced, paused]);
-
-  /* The tab lights up on the click, not on the cut. */
-  useEffect(() => {
-    if (reduced) return;
-    const timer = window.setTimeout(() => setActiveTab(toolIndex), 560);
+    if (!reduced) return;
+    const timer = window.setTimeout(() => {
+      setSceneIndex(0);
+      setActiveTab(0);
+      setWordTyped(WORD_TEXT);
+      setJsonTyped(JSON_TEXT);
+      setJsonFormatted(true);
+      setDifficulty(1);
+      secretRef.current = REDUCED_PASSWORD;
+      setSecret(REDUCED_PASSWORD);
+      setPasswordShown(REDUCED_PASSWORD);
+      cursorX.set(TAB_CENTERS[0]);
+      cursorY.set(TAB_Y);
+      zoom.set(1);
+    }, 0);
     return () => window.clearTimeout(timer);
-  }, [toolIndex, reduced]);
+  }, [reduced, cursorX, cursorY, zoom]);
 
-  const shownTab = reduced ? toolIndex : activeTab;
-
-  /* Drive the fake cursor through the current tool's choreography. */
+  /* Camera focus tracks the real pointer position, and leans in on action. */
   useEffect(() => {
     if (reduced) return;
-    const [first, ...rest] = CURSOR_STOPS[toolIndex];
-
-    // New scene, new start: place the pointer on the tab instantly instead of
-    // sweeping it across the whole canvas from the previous scene. Deferred so
-    // the state update never happens synchronously inside the effect.
-    const timers: number[] = [];
-    timers.push(window.setTimeout(() => {
-      setCursor((previous) => ({ x: first.x, y: first.y, press: previous.press, pressed: false }));
-    }, 0));
-
-    rest.forEach((stop) => {
-      timers.push(window.setTimeout(() => {
-        setCursor((previous) => ({
-          x: stop.x,
-          y: stop.y,
-          press: stop.click ? previous.press + 1 : previous.press,
-          pressed: Boolean(stop.click),
-        }));
-        if (stop.click) {
-          timers.push(window.setTimeout(
-            () => setCursor((previous) => ({ ...previous, pressed: false })),
-            160,
-          ));
-        }
-      }, stop.at));
+    const acting =
+      phase.includes("click") ||
+      phase === "word-type" ||
+      phase === "json-type" ||
+      phase === "pw-reveal";
+    const target = pressing ? 1.03 : acting ? 1.018 : 1.006;
+    const controls = animate(zoom, target, {
+      type: "spring",
+      stiffness: 180,
+      damping: 24,
+      mass: 0.65,
     });
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [toolIndex, reduced]);
+    return () => controls.stop();
+  }, [phase, pressing, reduced, zoom]);
 
-  /* Every cursor hop gives the set a small, cursor-anchored zoom pulse. */
   useEffect(() => {
-    if (reduced) {
-      const reset = window.setTimeout(() => setZoom(1), 0);
-      return () => window.clearTimeout(reset);
-    }
-    const pulse = window.setTimeout(() => setZoom(1.014), 0);
-    const release = window.setTimeout(() => setZoom(1.002), 380);
-    return () => {
-      window.clearTimeout(pulse);
-      window.clearTimeout(release);
+    if (reduced) return;
+    const controls = animate(cursorScale, pressing ? 0.86 : 1, {
+      duration: 0.16,
+      ease: "easeOut",
+    });
+    return () => controls.stop();
+  }, [pressing, reduced, cursorScale]);
+
+  /* The whole demo is one cancellable input-driven timeline. */
+  useEffect(() => {
+    if (reduced) return;
+
+    let cancelled = false;
+    let frame = 0;
+    const controls: Array<{ stop: () => void }> = [];
+
+    const track = <T extends { stop: () => void }>(control: T) => {
+      controls.push(control);
+      return control;
     };
-  }, [cursor.x, cursor.y, reduced]);
+
+    const waitForResume = () =>
+      new Promise<void>((resolve) => {
+        const check = () => {
+          if (cancelled || !pausedRef.current) {
+            resolve();
+            return;
+          }
+          frame = requestAnimationFrame(check);
+        };
+        check();
+      });
+
+    const sleep = (ms: number) =>
+      new Promise<void>((resolve) => {
+        let startedAt = performance.now();
+        const tick = (now: number) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+          if (pausedRef.current) {
+            startedAt = now;
+            frame = requestAnimationFrame(tick);
+            return;
+          }
+          if (now - startedAt >= ms) {
+            resolve();
+            return;
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      });
+
+    const moveTo = async (x: number, y: number, duration = 0.6) => {
+      await waitForResume();
+      if (cancelled) return;
+      const motionX = track(animate(cursorX, x, { duration, ease: EASE }));
+      const motionY = track(animate(cursorY, y, { duration, ease: EASE }));
+      await Promise.all([motionX, motionY]);
+    };
+
+    const click = async (action: () => void) => {
+      await waitForResume();
+      if (cancelled) return;
+      setRipple({ id: Date.now(), x: cursorX.get(), y: cursorY.get() });
+      setPressing(true);
+      action();
+      await sleep(120);
+      if (!cancelled) setPressing(false);
+      await sleep(80);
+    };
+
+    const typeText = async (
+      text: string,
+      startX: number,
+      y: number,
+      charWidth: number,
+      baseDelay: number,
+      onUpdate: (value: string) => void,
+    ) => {
+      await waitForResume();
+      if (cancelled) return;
+
+      await new Promise<void>((resolve) => {
+        let elapsed = 0;
+        let last = performance.now();
+
+        const tick = (now: number) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+          if (pausedRef.current) {
+            last = now;
+            frame = requestAnimationFrame(tick);
+            return;
+          }
+          elapsed += now - last;
+          last = now;
+
+          let count = 0;
+          let used = 0;
+          while (count < text.length && elapsed >= used + charDelay(text, count, baseDelay)) {
+            used += charDelay(text, count, baseDelay);
+            count += 1;
+          }
+          const delay = count < text.length ? charDelay(text, count, baseDelay) : 0;
+          const fraction = count < text.length ? (elapsed - used) / delay : 1;
+          const position = Math.min(text.length, count + Math.max(0, Math.min(1, fraction)));
+
+          onUpdate(text.slice(0, count));
+          cursorX.set(startX + position * charWidth);
+          cursorY.set(y);
+
+          if (count >= text.length) {
+            resolve();
+            return;
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      });
+    };
+
+    const revealText = async (text: string, onUpdate: (value: string) => void) => {
+      await waitForResume();
+      if (cancelled) return;
+
+      await new Promise<void>((resolve) => {
+        let elapsed = 0;
+        let last = performance.now();
+        const duration = 1500;
+
+        const tick = (now: number) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+          if (pausedRef.current) {
+            last = now;
+            frame = requestAnimationFrame(tick);
+            return;
+          }
+          elapsed += now - last;
+          last = now;
+          const count = Math.min(text.length, Math.floor((elapsed / duration) * text.length));
+          onUpdate(text.slice(0, count));
+          if (count >= text.length) {
+            resolve();
+            return;
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      });
+    };
+
+    const run = async () => {
+      switch (phase) {
+        case "word-focus":
+          await moveTo(WORD_FIELD.x, WORD_FIELD.y, 0.45);
+          if (!cancelled) setPhase("word-click");
+          break;
+        case "word-click":
+          await click(() => undefined);
+          if (!cancelled) setPhase("word-type");
+          break;
+        case "word-type":
+          setWordTyped("");
+          await typeText(WORD_TEXT, WORD_TEXT_START.x, WORD_TEXT_START.y, WORD_CHAR_W, 68, setWordTyped);
+          if (!cancelled) setPhase("word-hold");
+          break;
+        case "word-hold":
+          await sleep(380);
+          if (!cancelled) setPhase("json-tab-move");
+          break;
+
+        case "json-tab-move":
+          await moveTo(TAB_CENTERS[1], TAB_Y, 0.55);
+          if (!cancelled) setPhase("json-tab-click");
+          break;
+        case "json-tab-click":
+          await click(() => {
+            setActiveTab(1);
+            setSceneIndex(1);
+            setJsonTyped("");
+            setJsonFormatted(false);
+          });
+          if (!cancelled) setPhase("json-field-move");
+          break;
+        case "json-field-move":
+          await moveTo(JSON_INPUT.x, JSON_INPUT.y, 0.5);
+          if (!cancelled) setPhase("json-field-click");
+          break;
+        case "json-field-click":
+          await click(() => undefined);
+          if (!cancelled) setPhase("json-type");
+          break;
+        case "json-type":
+          await typeText(JSON_TEXT, JSON_TEXT_START.x, JSON_TEXT_START.y, JSON_CHAR_W, 52, setJsonTyped);
+          if (!cancelled) setPhase("json-format-move");
+          break;
+        case "json-format-move":
+          await moveTo(JSON_FORMAT.x, JSON_FORMAT.y, 0.42);
+          if (!cancelled) setPhase("json-format-click");
+          break;
+        case "json-format-click":
+          await click(() => setJsonFormatted(true));
+          if (!cancelled) setPhase("json-hold");
+          break;
+        case "json-hold":
+          await sleep(480);
+          if (!cancelled) setPhase("pw-tab-move");
+          break;
+
+        case "pw-tab-move":
+          await moveTo(TAB_CENTERS[2], TAB_Y, 0.55);
+          if (!cancelled) setPhase("pw-tab-click");
+          break;
+        case "pw-tab-click":
+          await click(() => {
+            setActiveTab(2);
+            setSceneIndex(2);
+            setDifficulty(0);
+            secretRef.current = "";
+            setSecret("");
+            setPasswordShown("");
+          });
+          if (!cancelled) setPhase("pw-difficulty-move");
+          break;
+        case "pw-difficulty-move":
+          await moveTo(PW_DIFFICULTY.x, PW_DIFFICULTY.y, 0.48);
+          if (!cancelled) setPhase("pw-difficulty-click");
+          break;
+        case "pw-difficulty-click":
+          await click(() => setDifficulty(1));
+          if (!cancelled) setPhase("pw-generate-move");
+          break;
+        case "pw-generate-move":
+          await moveTo(PW_GENERATE.x, PW_GENERATE.y, 0.48);
+          if (!cancelled) setPhase("pw-generate-click");
+          break;
+        case "pw-generate-click":
+          await click(() => {
+            const next = generatePassword(DIFFICULTIES[1].length, DIFFICULTIES[1].charset);
+            secretRef.current = next;
+            setPasswordShown("");
+            setSecret(next);
+          });
+          if (!cancelled) setPhase("pw-reveal");
+          break;
+        case "pw-reveal":
+          if (secretRef.current) await revealText(secretRef.current, setPasswordShown);
+          if (!cancelled) setPhase("pw-hold");
+          break;
+        case "pw-hold":
+          await sleep(480);
+          if (!cancelled) setPhase("word-tab-move");
+          break;
+
+        case "word-tab-move":
+          await moveTo(TAB_CENTERS[0], TAB_Y, 0.55);
+          if (!cancelled) setPhase("word-tab-click");
+          break;
+        case "word-tab-click":
+          await click(() => {
+            setActiveTab(0);
+            setSceneIndex(0);
+            setWordTyped("");
+          });
+          if (!cancelled) setPhase("word-focus");
+          break;
+      }
+    };
+
+    void run();
+
+    return () => {
+      cancelled = true;
+      if (frame) cancelAnimationFrame(frame);
+      controls.forEach((control) => control.stop());
+      setPressing(false);
+    };
+  }, [phase, reduced, cursorX, cursorY]);
 
   return (
     <motion.div
@@ -562,14 +859,7 @@ export function HeroDemo() {
         <div className="tp-demo-canvas" style={{ transform: `scale(${scale})` }}>
           <motion.div
             className="tp-demo-zoom"
-            style={{ transformOrigin: `${cursor.x}px ${cursor.y}px` }}
-            animate={{ scale: reduced ? 1 : zoom }}
-            transition={reduced ? undefined : {
-              type: "spring",
-              stiffness: 220,
-              damping: 26,
-              mass: 0.6,
-            }}
+            style={{ transformOrigin, scale: zoom }}
           >
             <div className="tp-demo-bezel">
               <div className="tp-demo-core">
@@ -585,9 +875,9 @@ export function HeroDemo() {
                   {TOOLS.map(({ label, Icon }, index) => (
                     <span
                       key={label}
-                      className={`tp-demo-tab${shownTab === index ? " is-active" : ""}`}
+                      className={`tp-demo-tab${activeTab === index ? " is-active" : ""}`}
                     >
-                      {shownTab === index ? (
+                      {activeTab === index ? (
                         <motion.span
                           className="tp-demo-tab-pill"
                           layoutId="tp-demo-tab-pill"
@@ -603,19 +893,24 @@ export function HeroDemo() {
                 <div className="tp-demo-stage">
                   <AnimatePresence initial={false}>
                     <motion.div
-                      key={toolIndex}
+                      key={sceneIndex}
                       className="tp-demo-scene-wrap"
                       initial={reduced ? false : { opacity: 0, y: 12, scale: 0.985 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={reduced ? undefined : { opacity: 0, y: -10, scale: 0.99 }}
                       transition={{ duration: reduced ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      {toolIndex === 0 ? (
-                        <WordCounterScene reduced={reduced} />
-                      ) : toolIndex === 1 ? (
-                        <JsonFormatterScene reduced={reduced} />
+                      {sceneIndex === 0 ? (
+                        <WordCounterScene typed={wordTyped} reduced={reduced} />
+                      ) : sceneIndex === 1 ? (
+                        <JsonFormatterScene typed={jsonTyped} formatted={jsonFormatted} reduced={reduced} />
                       ) : (
-                        <PasswordScene reduced={reduced} />
+                        <PasswordScene
+                          difficulty={difficulty}
+                          password={passwordShown}
+                          complete={secret.length > 0 && passwordShown.length === secret.length}
+                          reduced={reduced}
+                        />
                       )}
                     </motion.div>
                   </AnimatePresence>
@@ -624,21 +919,20 @@ export function HeroDemo() {
                 <div className="tp-demo-foot">
                   <div className="tp-demo-timeline">
                     <motion.span
-                      key={toolIndex}
                       initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ duration: reduced ? 0 : SCENE_MS / 1000, ease: "linear" }}
+                      animate={{ scaleX: PHASE_PROGRESS[phase] }}
+                      transition={{ duration: reduced ? 0 : 0.35, ease: "easeOut" }}
                     />
                   </div>
                   <span className="tp-demo-foot-note"><ShieldCheck className="tp-demo-mini-icon" />Runs in your browser</span>
-                  <span className="tp-demo-foot-count">0{toolIndex + 1} / 03</span>
+                  <span className="tp-demo-foot-count">0{sceneIndex + 1} / 03</span>
                 </div>
               </div>
             </div>
           </motion.div>
 
           {reduced ? null : (
-            <FakeCursor x={cursor.x} y={cursor.y} press={cursor.press} pressed={cursor.pressed} />
+            <FakeCursor x={cursorX} y={cursorY} scale={cursorScale} ripple={ripple} />
           )}
         </div>
       </div>

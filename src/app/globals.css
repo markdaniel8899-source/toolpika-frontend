@@ -4089,16 +4089,28 @@ html:has([data-admin="true"]) {
   display: inline-flex;
   width: 148px;
   height: 32px;
+  flex: 0 0 148px;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 6px;
+  padding: 0 8px;
   border: 1px solid transparent;
   border-radius: 999px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   transition: color 220ms ease;
+}
+
+.tp-demo-tab-label {
+  display: inline-flex;
+  min-width: 0;
+  flex: 1;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
 }
 
 .tp-demo-tab-pill {
@@ -4115,8 +4127,8 @@ html:has([data-admin="true"]) {
 }
 
 .tp-demo-tab-icon {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   flex: none;
 }
 
@@ -4316,6 +4328,40 @@ html:has([data-admin="true"]) {
   color: var(--accent);
 }
 
+.tp-demo-format {
+  display: inline-flex;
+  height: 22px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 300ms var(--ease-reveal),
+    transform 300ms var(--ease-spring);
+}
+
+.tp-demo-format .tp-demo-mini-icon {
+  width: 11px;
+  height: 11px;
+}
+
+.tp-demo-format[data-ready="true"] {
+  border-color: transparent;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
 .tp-demo-panel-body {
   flex: 1;
   padding: 13px;
@@ -4373,16 +4419,65 @@ html:has([data-admin="true"]) {
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: center;
-  gap: 18px;
+  gap: 14px;
+  padding-top: 2px;
+}
+
+.tp-demo-pw-setup {
+  display: flex;
+  height: 34px;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tp-demo-pw-setup-label {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tp-demo-difficulty {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.tp-demo-difficulty-chip {
+  display: grid;
+  min-width: 64px;
+  height: 28px;
+  place-items: center;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 300ms var(--ease-reveal);
+}
+
+.tp-demo-difficulty-chip.is-active {
+  border-color: transparent;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 .tp-demo-pw-box {
   display: flex;
+  min-height: 58px;
+  flex: none;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 18px 20px;
+  padding: 14px 18px;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--surface-2);
@@ -4391,7 +4486,7 @@ html:has([data-admin="true"]) {
 .tp-demo-pw-value {
   overflow: hidden;
   font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-  font-size: 17px;
+  font-size: 15.5px;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-overflow: ellipsis;
@@ -4400,7 +4495,10 @@ html:has([data-admin="true"]) {
 
 .tp-demo-pw-value[data-empty="true"] {
   color: var(--muted-2);
-  letter-spacing: 0.14em;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .tp-demo-copy {
@@ -4417,6 +4515,8 @@ html:has([data-admin="true"]) {
 
 .tp-demo-pw-actions {
   display: flex;
+  height: 36px;
+  flex: none;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -4453,7 +4553,7 @@ html:has([data-admin="true"]) {
 .tp-demo-strength {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .tp-demo-strength-head,
