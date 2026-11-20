@@ -1192,6 +1192,7 @@ html.theme-transition .tp-dropdown-trigger {
   place-items: center;
   border: 0;
   border-radius: 999px;
+  line-height: 0;
   background: var(--surface-2);
   box-shadow: var(--shadow-sm);
   color: var(--muted);
@@ -1268,8 +1269,10 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-heart-svg {
-  width: 18.3px;
-  height: 18.3px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: auto;
   overflow: visible;
   transition: transform 350ms ease;
 }
@@ -1278,7 +1281,7 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-heart-trail {
   fill: none;
   stroke: var(--muted);
-  stroke-width: 1.8;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 100;
@@ -1290,7 +1293,7 @@ html.theme-transition .tp-dropdown-trigger {
 
 .tp-heart-trail {
   stroke: var(--on-accent);
-  stroke-width: 1.2;
+  stroke-width: 1;
   opacity: 0;
 }
 
@@ -1319,7 +1322,7 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 /* Path draw only — no scale, so the heart and arrow stay the exact same
-   size (18.3px) through the whole active state. */
+   size (16px) through the whole active state. */
 @keyframes tp-heart-trail {
   0% { stroke-dashoffset: 100; opacity: 0.9; transform: rotate(-14deg); }
   60% { stroke-dashoffset: 0; opacity: 0.7; transform: rotate(6deg); }
@@ -1767,8 +1770,9 @@ html.theme-transition .tp-dropdown-trigger {
   box-shadow: var(--card-shadow), var(--card-highlight);
   transition:
     box-shadow var(--dur-base) var(--ease-reveal),
-    transform 500ms var(--ease-spring),
+    transform 260ms var(--ease-out),
     background-color var(--dur-base) var(--ease-reveal);
+  will-change: transform;
 }
 
 .tp-card::before {
@@ -1834,16 +1838,19 @@ html.theme-transition .tp-dropdown-trigger {
   border-radius: 999px;
   background: transparent;
   color: var(--accent);
+  line-height: 0;
   transition:
     background-color 260ms var(--ease-out),
     color 260ms var(--ease-out);
 }
 
 .tp-tool-arrow .tp-icon {
-  width: 18.3px;
-  height: 18.3px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: auto;
   opacity: 0.55;
-  transform-origin: center;
+  transform-origin: 50% 50%;
   backface-visibility: hidden;
   transition: opacity 220ms var(--ease-out), transform 280ms var(--ease-out);
   will-change: transform, opacity;
