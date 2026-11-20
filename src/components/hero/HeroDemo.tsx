@@ -40,18 +40,17 @@ const WORD_TEXT = "The quiet utility of doing one thing well.";
 const JSON_TEXT = '{"name":"Toolpika","live":true}';
 
 const WORD_FIELD = { x: 190, y: 212 };
-const WORD_TEXT_START = { x: 54, y: 189 };
-const WORD_CHAR_W = 7.35;
+const WORD_ASIDE = { x: 430, y: 248 };
 
 const JSON_INPUT = { x: 158, y: 214 };
-const JSON_TEXT_START = { x: 48, y: 181 };
-const JSON_CHAR_W = 7.05;
+const JSON_ASIDE = { x: 250, y: 250 };
 const JSON_FORMAT = { x: 258, y: 138 };
 
 const PW_DIFFICULTY = { x: 460, y: 139 };
 const PW_GENERATE = { x: 510, y: 259 };
 
-const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+const CLICK_MS = 200;
+const REVEAL_MS = 1500;
 const REDUCED_PASSWORD = "Tp!7kQ2#sM9@uR4x";
 
 const DIFFICULTIES = [
@@ -75,12 +74,14 @@ const DIFFICULTIES = [
 type Phase =
   | "word-focus"
   | "word-click"
+  | "word-aside-move"
   | "word-type"
   | "word-hold"
   | "json-tab-move"
   | "json-tab-click"
   | "json-field-move"
   | "json-field-click"
+  | "json-aside-move"
   | "json-type"
   | "json-format-move"
   | "json-format-click"
@@ -106,31 +107,6 @@ type DemoAction =
   | "tab-1"
   | "tab-2";
 
-const PHASE_PROGRESS: Record<Phase, number> = {
-  "word-focus": 0.08,
-  "word-click": 0.16,
-  "word-type": 0.5,
-  "word-hold": 1,
-  "json-tab-move": 0.02,
-  "json-tab-click": 0.06,
-  "json-field-move": 0.18,
-  "json-field-click": 0.24,
-  "json-type": 0.55,
-  "json-format-move": 0.72,
-  "json-format-click": 0.86,
-  "json-hold": 1,
-  "pw-tab-move": 0.02,
-  "pw-tab-click": 0.06,
-  "pw-difficulty-move": 0.28,
-  "pw-difficulty-click": 0.42,
-  "pw-generate-move": 0.62,
-  "pw-generate-click": 0.78,
-  "pw-reveal": 0.94,
-  "pw-hold": 1,
-  "word-tab-move": 0.02,
-  "word-tab-click": 0.06,
-};
-
 /** Spaces move faster, punctuation pauses — a more human typewriter. */
 function charDelay(text: string, index: number, base: number) {
   const ch = text[index];
@@ -138,6 +114,48 @@ function charDelay(text: string, index: number, base: number) {
   if ('.!?,:;{}[]"'.includes(ch)) return base * 1.45;
   return base * (0.9 + ((index * 37) % 5) * 0.06);
 }
+
+/** The typing clock is shared with the timeline so both finish together. */
+function typeDuration(text: string, base: number) {
+  let total = 0;
+  for (let index = 0; index < text.length; index += 1) {
+    total += charDelay(text, index, base);
+  }
+  return total;
+}
+
+const TYPE_WORD_MS = typeDuration(WORD_TEXT, 68);
+const TYPE_JSON_MS = typeDuration(JSON_TEXT, 52);
+
+/** Every phase's real timespan; the progress bar is derived from these. */
+const PHASE_MS: Record<Phase, number> = {
+  "word-focus": 450,
+  "word-click": CLICK_MS,
+  "word-aside-move": 260,
+  "word-type": TYPE_WORD_MS,
+  "word-hold": 280,
+  "json-tab-move": 550,
+  "json-tab-click": CLICK_MS,
+  "json-field-move": 500,
+  "json-field-click": CLICK_MS,
+  "json-aside-move": 240,
+  "json-type": TYPE_JSON_MS,
+  "json-format-move": 420,
+  "json-format-click": CLICK_MS,
+  "json-hold": 480,
+  "pw-tab-move": 550,
+  "pw-tab-click": CLICK_MS,
+  "pw-difficulty-move": 480,
+  "pw-difficulty-click": CLICK_MS,
+  "pw-generate-move": 480,
+  "pw-generate-click": CLICK_MS,
+  "pw-reveal": REVEAL_MS,
+  "pw-hold": 480,
+  "word-tab-move": 550,
+  "word-tab-click": CLICK_MS,
+};
+
+const TOTAL_MS = Object.values(PHASE_MS).reduce((sum, ms) => sum + ms, 0);
 
 /** Real counters, recomputed from whatever has actually been typed. */
 function countText(text: string) {
@@ -528,6 +546,7 @@ export function HeroDemo() {
   const [secret, setSecret] = useState("");
   const [passwordShown, setPasswordShown] = useState("");
   const secretRef = useRef("");
+  const cycleElapsed = useRef(0);
   const [pressing, setPressing] = useState(false);
   const [pressedAction, setPressedAction] = useState<DemoAction | null>(null);
   const [ripple, setRipple] = useState<Ripple | null>(null);
@@ -539,6 +558,7 @@ export function HeroDemo() {
   const cursorX = useMotionValue<number>(TAB_CENTERS[0]);
   const cursorY = useMotionValue<number>(TAB_Y);
   const cursorScale = useMotionValue<number>(1);
+  const timelineProgress = useMotionValue<number>(0);
 
   useEffect(() => {
     pausedRef.current = paused;
@@ -574,9 +594,10 @@ export function HeroDemo() {
       setPasswordShown(REDUCED_PASSWORD);
       cursorX.set(TAB_CENTERS[0]);
       cursorY.set(TAB_Y);
+      timelineProgress.set(1);
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [reduced, cursorX, cursorY]);
+  }, [reduced, cursorX, cursorY, timelineProgress]);
 
   useEffect(() => {
     if (reduced) return;
@@ -591,14 +612,13 @@ export function HeroDemo() {
   useEffect(() => {
     if (reduced) return;
 
+    if (phase === "word-focus") {
+      cycleElapsed.current = 0;
+      timelineProgress.set(0);
+    }
+
     let cancelled = false;
     let frame = 0;
-    const controls: Array<{ stop: () => void }> = [];
-
-    const track = <T extends { stop: () => void }>(control: T) => {
-      controls.push(control);
-      return control;
-    };
 
     const waitForResume = () =>
       new Promise<void>((resolve) => {
@@ -612,20 +632,33 @@ export function HeroDemo() {
         check();
       });
 
+    /* The timeline advances on the same frames as the actions, so the line
+       never waits for a phase change to jump to another hard-coded value. */
+    const advanceClock = (delta: number) => {
+      if (pausedRef.current) return;
+      cycleElapsed.current = Math.min(TOTAL_MS, cycleElapsed.current + delta);
+      timelineProgress.set(cycleElapsed.current / TOTAL_MS);
+    };
+
     const sleep = (ms: number) =>
       new Promise<void>((resolve) => {
-        let startedAt = performance.now();
+        let elapsed = 0;
+        let last = performance.now();
         const tick = (now: number) => {
           if (cancelled) {
             resolve();
             return;
           }
           if (pausedRef.current) {
-            startedAt = now;
+            last = now;
             frame = requestAnimationFrame(tick);
             return;
           }
-          if (now - startedAt >= ms) {
+          const delta = now - last;
+          last = now;
+          elapsed += delta;
+          advanceClock(delta);
+          if (elapsed >= ms) {
             resolve();
             return;
           }
@@ -637,9 +670,41 @@ export function HeroDemo() {
     const moveTo = async (x: number, y: number, duration = 0.6) => {
       await waitForResume();
       if (cancelled) return;
-      const motionX = track(animate(cursorX, x, { duration, ease: EASE }));
-      const motionY = track(animate(cursorY, y, { duration, ease: EASE }));
-      await Promise.all([motionX, motionY]);
+      const fromX = cursorX.get();
+      const fromY = cursorY.get();
+      const total = duration * 1000;
+
+      await new Promise<void>((resolve) => {
+        let elapsed = 0;
+        let last = performance.now();
+        const tick = (now: number) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+          if (pausedRef.current) {
+            last = now;
+            frame = requestAnimationFrame(tick);
+            return;
+          }
+          const delta = Math.min(now - last, Math.max(0, total - elapsed));
+          last = now;
+          elapsed += delta;
+          advanceClock(delta);
+
+          const fraction = total > 0 ? elapsed / total : 1;
+          const eased = 1 - Math.pow(1 - fraction, 4);
+          cursorX.set(fromX + (x - fromX) * eased);
+          cursorY.set(fromY + (y - fromY) * eased);
+
+          if (elapsed >= total) {
+            resolve();
+            return;
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      });
     };
 
     const click = async (action: () => void, target?: DemoAction) => {
@@ -654,14 +719,12 @@ export function HeroDemo() {
         setPressing(false);
         setPressedAction(null);
       }
-      await sleep(80);
+      await sleep(CLICK_MS - 120);
     };
 
+    /* Cursor stays parked beside the field; only the text writes itself. */
     const typeText = async (
       text: string,
-      startX: number,
-      y: number,
-      charWidth: number,
       baseDelay: number,
       onUpdate: (value: string) => void,
     ) => {
@@ -682,8 +745,10 @@ export function HeroDemo() {
             frame = requestAnimationFrame(tick);
             return;
           }
-          elapsed += now - last;
+          const delta = now - last;
           last = now;
+          elapsed += delta;
+          advanceClock(delta);
 
           let count = 0;
           let used = 0;
@@ -691,13 +756,8 @@ export function HeroDemo() {
             used += charDelay(text, count, baseDelay);
             count += 1;
           }
-          const delay = count < text.length ? charDelay(text, count, baseDelay) : 0;
-          const fraction = count < text.length ? (elapsed - used) / delay : 1;
-          const position = Math.min(text.length, count + Math.max(0, Math.min(1, fraction)));
 
           onUpdate(text.slice(0, count));
-          cursorX.set(startX + position * charWidth);
-          cursorY.set(y);
 
           if (count >= text.length) {
             resolve();
@@ -716,7 +776,6 @@ export function HeroDemo() {
       await new Promise<void>((resolve) => {
         let elapsed = 0;
         let last = performance.now();
-        const duration = 1500;
 
         const tick = (now: number) => {
           if (cancelled) {
@@ -728,9 +787,11 @@ export function HeroDemo() {
             frame = requestAnimationFrame(tick);
             return;
           }
-          elapsed += now - last;
+          const delta = now - last;
           last = now;
-          const count = Math.min(text.length, Math.floor((elapsed / duration) * text.length));
+          elapsed += delta;
+          advanceClock(delta);
+          const count = Math.min(text.length, Math.floor((elapsed / REVEAL_MS) * text.length));
           onUpdate(text.slice(0, count));
           if (count >= text.length) {
             resolve();
@@ -750,15 +811,19 @@ export function HeroDemo() {
           break;
         case "word-click":
           await click(() => undefined, "word-field");
+          if (!cancelled) setPhase("word-aside-move");
+          break;
+        case "word-aside-move":
+          await moveTo(WORD_ASIDE.x, WORD_ASIDE.y, 0.26);
           if (!cancelled) setPhase("word-type");
           break;
         case "word-type":
           setWordTyped("");
-          await typeText(WORD_TEXT, WORD_TEXT_START.x, WORD_TEXT_START.y, WORD_CHAR_W, 68, setWordTyped);
+          await typeText(WORD_TEXT, 68, setWordTyped);
           if (!cancelled) setPhase("word-hold");
           break;
         case "word-hold":
-          await sleep(380);
+          await sleep(280);
           if (!cancelled) setPhase("json-tab-move");
           break;
 
@@ -781,10 +846,14 @@ export function HeroDemo() {
           break;
         case "json-field-click":
           await click(() => undefined, "json-field");
+          if (!cancelled) setPhase("json-aside-move");
+          break;
+        case "json-aside-move":
+          await moveTo(JSON_ASIDE.x, JSON_ASIDE.y, 0.24);
           if (!cancelled) setPhase("json-type");
           break;
         case "json-type":
-          await typeText(JSON_TEXT, JSON_TEXT_START.x, JSON_TEXT_START.y, JSON_CHAR_W, 52, setJsonTyped);
+          await typeText(JSON_TEXT, 52, setJsonTyped);
           if (!cancelled) setPhase("json-format-move");
           break;
         case "json-format-move":
@@ -865,11 +934,10 @@ export function HeroDemo() {
     return () => {
       cancelled = true;
       if (frame) cancelAnimationFrame(frame);
-      controls.forEach((control) => control.stop());
       setPressing(false);
       setPressedAction(null);
     };
-  }, [phase, reduced, cursorX, cursorY]);
+  }, [phase, reduced, cursorX, cursorY, timelineProgress]);
 
   return (
     <motion.div
@@ -955,11 +1023,7 @@ export function HeroDemo() {
 
               <div className="tp-demo-foot">
                 <div className="tp-demo-timeline">
-                  <motion.span
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: PHASE_PROGRESS[phase] }}
-                    transition={{ duration: reduced ? 0 : 0.35, ease: "easeOut" }}
-                  />
+                  <motion.span style={{ scaleX: timelineProgress }} />
                 </div>
                 <span className="tp-demo-foot-note"><ShieldCheck className="tp-demo-mini-icon" />Runs in your browser</span>
                 <span className="tp-demo-foot-count">0{sceneIndex + 1} / 03</span>

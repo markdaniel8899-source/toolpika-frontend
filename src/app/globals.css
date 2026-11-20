@@ -2472,6 +2472,18 @@ html.theme-transition .tp-dropdown-trigger {
     transform 260ms var(--ease-out);
 }
 
+/* Keep the arrow locked to the label instead of wrapping to its own line. */
+.tp-footer-bottom .footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.tp-footer-bottom .footer-link .tp-icon {
+  flex: none;
+}
+
 .tp-footer-col a:hover,
 .tp-footer-bottom .footer-link:hover {
   color: var(--footer-text);
@@ -4108,12 +4120,11 @@ html:has([data-admin="true"]) {
 }
 
 .tp-demo-tab-label {
-  display: inline-flex;
-  min-width: 0;
-  flex: 1;
-  justify-content: center;
+  display: inline;
+  flex: none;
   line-height: 1;
   text-align: center;
+  white-space: nowrap;
 }
 
 .tp-demo-tab-pill {
@@ -4551,8 +4562,8 @@ html:has([data-admin="true"]) {
   display: inline-flex;
   height: 36px;
   align-items: center;
-  gap: 7px;
-  padding: 0 16px;
+  gap: 6px;
+  padding: 0 14px;
   border-radius: 10px;
   background: var(--accent-fill);
   color: var(--on-accent);
