@@ -1176,8 +1176,8 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-wish-btn {
   position: absolute;
   top: 20px;
-  /* 32px arrow + 20px card padding + 7.8px breathing room. */
-  right: 59.8px;
+  /* 32px arrow + 20px card padding + 3px breathing room. */
+  right: 55px;
   z-index: 3;
   display: grid;
   width: 32px;
