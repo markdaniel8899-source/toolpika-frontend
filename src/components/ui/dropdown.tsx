@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export type DropdownOption = { value: string; label: string };
 
@@ -18,6 +22,8 @@ export function Dropdown({
   menuClassName,
   triggerLabel,
   openOnHover = false,
+  portal = false,
+  disabled = false,
 }: {
   id: string;
   value: string;
@@ -30,12 +36,17 @@ export function Dropdown({
   menuClassName?: string;
   triggerLabel?: string;
   openOnHover?: boolean;
+  /** Render the menu in document.body so scroll/overflow parents cannot clip it. */
+  portal?: boolean;
+  disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const hoverTimer = useRef<number | null>(null);
+  const [portalPos, setPortalPos] = useState({ top: 0, left: 0 });
 
   const selectedIndex = options.findIndex((option) => option.value === value);
   const selectedLabel = selectedIndex >= 0 ? options[selectedIndex].label : placeholder;
@@ -43,13 +54,49 @@ export function Dropdown({
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+      const target = event.target as Node;
+      if (!rootRef.current?.contains(target) && !menuRef.current?.contains(target)) {
+        setOpen(false);
+      }
     };
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
 
+  useIsomorphicLayoutEffect(() => {
+    if (!open || !portal) return;
+
+    const place = () => {
+      const trigger = triggerRef.current;
+      const menu = menuRef.current;
+      if (!trigger || !menu) return;
+
+      const rect = trigger.getBoundingClientRect();
+      const menuRect = menu.getBoundingClientRect();
+      const below = rect.bottom + 8;
+      const top =
+        below + menuRect.height > window.innerHeight
+          ? Math.max(8, rect.top - 8 - menuRect.height)
+          : below;
+      const left = Math.min(
+        Math.max(8, rect.right - menuRect.width),
+        Math.max(8, window.innerWidth - menuRect.width - 8),
+      );
+
+      setPortalPos({ top, left });
+    };
+
+    place();
+    window.addEventListener("resize", place);
+    window.addEventListener("scroll", place, true);
+    return () => {
+      window.removeEventListener("resize", place);
+      window.removeEventListener("scroll", place, true);
+    };
+  }, [open, portal]);
+
   const openMenu = () => {
+    if (disabled) return;
     setHighlight(selectedIndex >= 0 ? selectedIndex : 0);
     setOpen(true);
   };
@@ -84,6 +131,47 @@ export function Dropdown({
     }
   };
 
+  const menu = (
+    <div
+      ref={menuRef}
+      className={cn("tp-dropdown-menu", menuClassName)}
+      data-open={open}
+      role="listbox"
+      aria-label={ariaLabel}
+      aria-activedescendant={open ? `${id}-option-${options[highlight].value}` : undefined}
+      aria-hidden={!open}
+      inert={!open}
+      onKeyDown={onKeyDown}
+      style={
+        portal
+          ? { position: "fixed", top: portalPos.top, left: portalPos.left, right: "auto" }
+          : undefined
+      }
+    >
+      {options.map((option, index) => (
+        <button
+          key={option.value}
+          id={`${id}-option-${option.value}`}
+          type="button"
+          role="option"
+          aria-selected={option.value === value}
+          className={cn(
+            "tp-dropdown-option",
+            index === highlight && "is-highlighted",
+            option.value === value && "is-selected",
+          )}
+          onMouseEnter={() => setHighlight(index)}
+          onClick={() => choose(option.value)}
+        >
+          <span>{option.label}</span>
+          {option.value === value && (
+            <Check className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
+          )}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
     <div
       className="tp-dropdown"
@@ -108,6 +196,7 @@ export function Dropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={ariaLabel}
+        disabled={disabled}
         onClick={() => (open ? setOpen(false) : openMenu())}
         onKeyDown={onKeyDown}
       >
@@ -122,38 +211,9 @@ export function Dropdown({
         />
       </button>
 
-      <div
-        className={cn("tp-dropdown-menu", menuClassName)}
-        data-open={open}
-        role="listbox"
-        aria-label={ariaLabel}
-        aria-activedescendant={open ? `${id}-option-${options[highlight].value}` : undefined}
-        aria-hidden={!open}
-        inert={!open}
-        onKeyDown={onKeyDown}
-      >
-        {options.map((option, index) => (
-          <button
-            key={option.value}
-            id={`${id}-option-${option.value}`}
-            type="button"
-            role="option"
-            aria-selected={option.value === value}
-            className={cn(
-              "tp-dropdown-option",
-              index === highlight && "is-highlighted",
-              option.value === value && "is-selected",
-            )}
-            onMouseEnter={() => setHighlight(index)}
-            onClick={() => choose(option.value)}
-          >
-            <span>{option.label}</span>
-            {option.value === value && (
-              <Check className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
-            )}
-          </button>
-        ))}
-      </div>
+      {portal
+        ? open && typeof document !== "undefined" ? createPortal(menu, document.body) : null
+        : menu}
     </div>
   );
 }

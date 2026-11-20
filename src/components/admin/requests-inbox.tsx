@@ -2,10 +2,11 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { deleteRequest, updateRequestStatus } from "@/app/admin/actions";
 import type { AdminRequest, InboxStatus } from "@/lib/admin/row-types";
 import { DataTable, EmptyState } from "@/components/admin/ui";
+import { Dropdown } from "@/components/ui/dropdown";
 
 export interface RequestsCopy {
   toolName: string;
@@ -92,6 +93,18 @@ export function RequestsInbox({
     { value: "contact", label: copy.filterContact },
   ];
 
+  const statusOptions = STATUS_OPTIONS.map((option) => ({
+    value: option,
+    label:
+      option === "new"
+        ? copy.statusNew
+        : option === "in_progress"
+          ? copy.statusInProgress
+          : option === "resolved"
+            ? copy.statusResolved
+            : copy.statusRejected,
+  }));
+
   const setStatus = (id: string, status: InboxStatus) => {
     startTransition(async () => {
       await updateRequestStatus(id, status);
@@ -167,36 +180,26 @@ export function RequestsInbox({
                 </time>
               </td>
               <td className="px-3 py-3">
-                <span
-                  className="tp-admin-status-select"
-                  data-status={request.status}
-                >
-                  <select
-                    aria-label={copy.status}
-                    value={request.status}
-                    disabled={pending}
-                    onChange={(event) =>
-                      setStatus(request.id, event.target.value as InboxStatus)
-                    }
-                    className="tp-admin-status-select-input"
-                  >
-                    {STATUS_OPTIONS.map((option) => (
-                      <option key={option} value={option}>
-                        {option === "new"
-                          ? copy.statusNew
-                          : option === "in_progress"
-                            ? copy.statusInProgress
-                            : option === "resolved"
-                              ? copy.statusResolved
-                              : copy.statusRejected}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    className="tp-admin-status-select-icon"
-                    aria-hidden="true"
-                  />
-                </span>
+                <Dropdown
+                  id={`request-status-${request.id}`}
+                  value={request.status}
+                  options={statusOptions}
+                  onChange={(value) =>
+                    setStatus(request.id, value as InboxStatus)
+                  }
+                  ariaLabel={copy.status}
+                  triggerClassName="tp-admin-status-trigger"
+                  menuClassName="tp-admin-status-menu"
+                  disabled={pending}
+                  portal
+                  icon={
+                    <span
+                      className="tp-admin-status-dot"
+                      data-status={request.status}
+                      aria-hidden="true"
+                    />
+                  }
+                />
               </td>
               <td className="px-3 py-3 text-right last:pr-0">
                 <form
