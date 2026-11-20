@@ -12,7 +12,6 @@ const useIsomorphicLayoutEffect =
  * and re-runs after each route change. Reduced-motion users get no animation.
  */
 const SELECTOR = [
-  ".tp-card",
   ".tp-section-title",
   ".tp-page-title h1",
   ".tp-page-title p",

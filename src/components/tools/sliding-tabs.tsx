@@ -14,7 +14,6 @@ export function SlidingTabs({
   items,
   active,
   onChange,
-  variant = "classic",
   duration = 420,
   className,
   ariaLabel,
@@ -22,7 +21,6 @@ export function SlidingTabs({
   items: SlidingTabItem[];
   active: string;
   onChange: (slug: string) => void;
-  variant?: "classic" | "soft" | "outline";
   duration?: number;
   className?: string;
   ariaLabel: string;
@@ -62,7 +60,7 @@ export function SlidingTabs({
   return (
     <div
       ref={containerRef}
-      className={cn("tp-tabs tp-tabs-sliding", `tp-tabs-${variant}`, className)}
+      className={cn("tp-tabs tp-tabs-sliding", className)}
       style={{ "--tp-tab-glide": `${duration}ms` } as CSSProperties}
       role="tablist"
       aria-label={ariaLabel}
