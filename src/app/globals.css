@@ -1893,6 +1893,21 @@ html.theme-transition .tp-dropdown-trigger {
     box-shadow 420ms var(--ease-out);
 }
 
+/* Fix arrow icon jitter on hover */
+.tp-tool-arrow {
+  /* Override global transition to be snappy and specific */
+  transition: transform 300ms var(--ease-out), background-color 300ms var(--ease-out), color 300ms var(--ease-out) !important;
+
+  /* Force crisp GPU rendering for the SVG to stop sub-pixel shaking */
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  /* Ensure smooth rotation around the center */
+  transform-origin: center center;
+}
+
 .tp-tool-arrow .tp-icon {
   display: block;
   width: 15.8px;
