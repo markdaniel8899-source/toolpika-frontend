@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from "react";
 import React from "react";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -141,7 +141,7 @@ export default async function HomePage({ params }: LocalePageProps) {
                           <Icon className="tp-icon" aria-hidden="true" />
                         </span>
                         <span className="tp-tool-arrow" aria-hidden="true">
-                          <ArrowUpRight className="tp-icon" />
+                          <ArrowRight className="tp-icon" />
                         </span>
                       </span>
                       <span className="tp-category-name">{category.label}</span>
