@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ShieldCheck } from "lucide-react";
+import { HelpCircle, Laptop, ShieldCheck, Zap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { Reveal } from "@/components/ui/reveal";
 import { ToolCard } from "@/components/tools/tool-card";
 import { getSiteUrl } from "@/lib/site-url";
 import { ToolWorkspace } from "@/components/tools/tool-workspace";
@@ -16,6 +17,9 @@ import { getToolSeoContent } from "@/lib/tools/seo-content";
 const LOCALES = [
   "en", "de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi",
 ] as const;
+
+/** One icon per SEO content card, in section order. */
+const FEATURE_ICONS = [Zap, Laptop, ShieldCheck];
 
 type LocalePageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -179,32 +183,71 @@ export default async function ToolPage({ params }: LocalePageProps) {
           <ToolWorkspace slug={tool.slug} />
         </section>
 
-        {/* 4.5 - Per-tool SEO content in natural language. */}
-        <section className="tp-tool-seo">
-          <h2 className="tp-tool-page-section-title">{`About ${tool.title}`}</h2>
-          <p className="tp-tool-seo-lead">{seo.intro}</p>
-          {seo.sections.map((section) => (
-            <div key={section.heading} className="tp-tool-seo-block">
-              <h3 className="tp-tool-seo-subtitle">{section.heading}</h3>
-              {section.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          ))}
-        </section>
+        {/* 4.5 - SEO content: intro statement + interactive feature cards.
+             Every word of seo.intro / seo.sections is rendered verbatim. */}
+        <Reveal>
+          <section className="tp-content-canvas">
+            <div className="tp-content-inner">
+              <h2 className="tp-content-h2">{`About ${tool.title}`}</h2>
+              <p className="tp-content-lead">{seo.intro}</p>
 
-        {/* 4.6 - FAQs fully visible: H3 question + paragraph answer, no accordion. */}
-        <section className="tp-tool-faq">
-          <h2 className="tp-tool-page-section-title">{tHow("faqTitle")}</h2>
-          <div className="tp-tool-faq-list">
-            {seo.faqs.map((faq) => (
-              <div key={faq.question} className="tp-tool-faq-item">
-                <h3 className="tp-tool-faq-question">{faq.question}</h3>
-                <p className="tp-tool-faq-answer">{faq.answer}</p>
+              <div className="tp-feature-grid">
+                {seo.sections.map((section, index) => {
+                  const Icon = FEATURE_ICONS[index % FEATURE_ICONS.length];
+                  return (
+                    <Reveal
+                      key={section.heading}
+                      stagger
+                      index={index}
+                      className="h-full"
+                    >
+                      <article className="tp-feature-card">
+                        <span className="tp-feature-icon">
+                          <Icon className="tp-icon" aria-hidden="true" />
+                        </span>
+                        <h3 className="tp-feature-title">{section.heading}</h3>
+                        {section.paragraphs.map((paragraph) => (
+                          <p key={paragraph} className="tp-feature-copy">
+                            {paragraph}
+                          </p>
+                        ))}
+                      </article>
+                    </Reveal>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* 4.6 - FAQs stay fully open for SEO, styled as interactive cards. */}
+        <Reveal delay={80}>
+          <section className="tp-faq-canvas">
+            <div className="tp-content-inner">
+              <h2 className="tp-content-h2">{tHow("faqTitle")}</h2>
+              <div className="tp-faq-grid">
+                {seo.faqs.map((faq, index) => (
+                  <Reveal
+                    key={faq.question}
+                    stagger
+                    index={index}
+                    className="h-full"
+                  >
+                    <article className="tp-faq-card">
+                      <span className="tp-faq-icon">
+                        <HelpCircle className="tp-icon" aria-hidden="true" />
+                      </span>
+                      <div>
+                        <h3 className="tp-faq-q">{faq.question}</h3>
+                        <p className="tp-faq-a">{faq.answer}</p>
+                      </div>
+                    </article>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </section>
+        </Reveal>
 
         {/* 4.7 - Related tools, last on the page. */}
         {related.length > 0 && (
