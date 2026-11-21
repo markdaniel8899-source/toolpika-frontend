@@ -28,12 +28,16 @@ export function ToolField({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label
-        htmlFor={htmlFor}
-        className="text-sm font-medium text-[var(--text)]"
-      >
-        {label}
-      </label>
+      {htmlFor ? (
+        <label
+          htmlFor={htmlFor}
+          className="text-sm font-medium text-[var(--text)]"
+        >
+          {label}
+        </label>
+      ) : (
+        <span className="text-sm font-medium text-[var(--text)]">{label}</span>
+      )}
       {children}
       {hint ? (
         <p className="text-xs leading-[1.5] text-[var(--muted)]">{hint}</p>

@@ -5,8 +5,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeftRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
-import { OutputEmpty, ToolField, selectClassName } from "../workspace-ui";
+import { OutputEmpty, ToolField } from "../workspace-ui";
 
 type Category = "length" | "weight" | "temperature";
 
@@ -62,6 +63,11 @@ export default function UnitConverter() {
     if (category === "weight") return Object.keys(WEIGHT);
     return [...TEMPERATURE];
   }, [category]);
+
+  const unitOptions = useMemo(
+    () => units.map((unit) => ({ value: unit, label: unit })),
+    [units],
+  );
 
   const result = useMemo(() => {
     const numeric = Number(value);
@@ -121,26 +127,21 @@ export default function UnitConverter() {
             />
           </ToolField>
 
-          <div className="grid items-end gap-3 sm:grid-cols-[1fr_auto_1fr]">
-            <ToolField label={t("from")} htmlFor="unit-from">
-              <select
-                id="unit-from"
-                className={selectClassName}
+          <div className="tp-convert-card grid items-end gap-3 sm:grid-cols-[1fr_auto_1fr]">
+            <ToolField label={t("from")}>
+              <ThemedSelect
                 value={from}
-                onChange={(event) => setFrom(event.target.value)}
-              >
-                {units.map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
+                onValueChange={setFrom}
+                options={unitOptions}
+                ariaLabel={t("from")}
+              />
             </ToolField>
 
             <Button
               type="button"
               variant="secondary"
               size="icon"
+              className="tp-swap-button"
               aria-label={t("swap")}
               onClick={() => {
                 setFrom(to);
@@ -150,32 +151,26 @@ export default function UnitConverter() {
               <ArrowLeftRight aria-hidden="true" />
             </Button>
 
-            <ToolField label={t("to")} htmlFor="unit-to">
-              <select
-                id="unit-to"
-                className={selectClassName}
+            <ToolField label={t("to")}>
+              <ThemedSelect
                 value={to}
-                onChange={(event) => setTo(event.target.value)}
-              >
-                {units.map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
+                onValueChange={setTo}
+                options={unitOptions}
+                ariaLabel={t("to")}
+              />
             </ToolField>
           </div>
         </div>
       }
       output={
         formatted ? (
-          <div className="flex h-full flex-col justify-center gap-3">
-            <p className="text-xs font-medium uppercase tracking-[0.1em] text-[var(--muted)]">
+          <div className="tp-result-card flex h-full flex-col justify-center gap-2">
+            <p className="text-sm text-[var(--muted)]">
               {value} {from} = {to}
             </p>
             <output className="break-words font-sans text-[40px] font-bold leading-none tracking-[-0.02em] tabular-nums">
               {formatted}
-              <span className="ml-2 text-[20px] text-[var(--muted)]">{to}</span>
+              <span className="tp-unit-chip">{to}</span>
             </output>
           </div>
         ) : (
