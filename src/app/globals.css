@@ -3844,9 +3844,12 @@ html:has([data-admin="true"]) {
   max-width: none;
 }
 
-/* Reading measure: ~68 characters per line at body size. */
+/* Reading measure: ~68 characters per line at body size.
+   Plus Jakarta Sans has more open letterforms than Inter, so long-form copy
+   reads cleaner here. It is already loaded for the nav (--font-jakarta). */
 .tp-tool-seo {
   max-width: 720px;
+  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
 }
 
 /* The opening statement is the one large thought; the rest is body text. */
@@ -3873,21 +3876,26 @@ html:has([data-admin="true"]) {
 .tp-tool-seo-block:nth-child(4) { animation-delay: 140ms; }
 .tp-tool-seo-block:nth-child(5) { animation-delay: 200ms; }
 
+.tp-tool-seo .tp-tool-page-section-title {
+  letter-spacing: -0.015em;
+}
+
 .tp-tool-seo-subtitle {
   margin: 0 0 10px;
   color: var(--text);
   font-size: 19px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.25;
 }
 
-/* Body copy sits close to full ink — muted grey at 15px read as unfinished. */
+/* Body copy sits close to full ink — muted grey read as unfinished. */
 .tp-tool-seo-block p {
   margin: 0 0 14px;
-  color: color-mix(in srgb, var(--text) 82%, var(--muted));
+  color: color-mix(in srgb, var(--text) 92%, var(--muted));
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.7;
+  letter-spacing: 0;
   max-width: 68ch;
 }
 
