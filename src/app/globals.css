@@ -262,6 +262,13 @@ button {
   display: none;
 }
 
+/* Remove the up/down arrow buttons from every scrollbar, everywhere. */
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* ---------- Theme switch transition ---------- */
 
 html.theme-transition body,
@@ -2422,7 +2429,7 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-workspace-pane textarea {
   width: 100%;
   min-width: 0;
-  padding: 22px 24px;
+  padding: 14px 16px;
   resize: none;
 }
 
@@ -2466,7 +2473,7 @@ html.theme-transition .tp-dropdown-trigger {
   min-height: 340px;
   flex: 1 1 auto;
   resize: vertical;
-  padding: 22px 24px;
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius-control) + 2px);
   outline: 0;
