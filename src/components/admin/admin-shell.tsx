@@ -14,6 +14,7 @@ import {
   Menu,
   PenLine,
   Settings,
+  Workflow,
   Wrench,
   X,
   Zap,
@@ -41,6 +42,7 @@ export type AdminIconName =
   | "requests"
   | "blog"
   | "analytics"
+  | "pipeline"
   | "settings"
   | "editor";
 
@@ -50,6 +52,7 @@ const ADMIN_ICON_MAP: Record<AdminIconName, LucideIcon> = {
   requests: Inbox,
   blog: FileText,
   analytics: BarChart3,
+  pipeline: Workflow,
   settings: Settings,
   editor: PenLine,
 };
