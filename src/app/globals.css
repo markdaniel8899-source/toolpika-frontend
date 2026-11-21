@@ -3844,22 +3844,30 @@ html:has([data-admin="true"]) {
   max-width: none;
 }
 
-/* Reading measure: ~68 characters per line at body size.
-   Plus Jakarta Sans has more open letterforms than Inter, so long-form copy
-   reads cleaner here. It is already loaded for the nav (--font-jakarta). */
+/* Three clear levels: Jakarta for headings, Inter for reading.
+   Everything sat at one size and one dark tone before — that was the flat wall. */
 .tp-tool-seo {
-  max-width: 720px;
-  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  max-width: 700px;
 }
 
-/* The opening statement is the one large thought; the rest is body text. */
+.tp-tool-seo .tp-tool-page-section-title {
+  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+
+/* Level 1 — the opening thought. Largest text, full ink. */
 .tp-tool-seo-lead {
-  margin: 0 0 22px;
+  margin: 0 0 26px;
   color: var(--text);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 1.6;
-  max-width: 62ch;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  max-width: 58ch;
 }
 
 @keyframes tp-seo-in {
@@ -3868,7 +3876,7 @@ html:has([data-admin="true"]) {
 }
 
 .tp-tool-seo-block {
-  margin-top: 30px;
+  margin-top: 34px;
   animation: tp-seo-in 320ms var(--ease-out) both;
 }
 
@@ -3876,27 +3884,26 @@ html:has([data-admin="true"]) {
 .tp-tool-seo-block:nth-child(4) { animation-delay: 140ms; }
 .tp-tool-seo-block:nth-child(5) { animation-delay: 200ms; }
 
-.tp-tool-seo .tp-tool-page-section-title {
-  letter-spacing: -0.015em;
-}
-
+/* Level 2 — subheads. Jakarta, bold, full ink. */
 .tp-tool-seo-subtitle {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   color: var(--text);
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  font-family: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
 }
 
-/* Body copy sits close to full ink — muted grey read as unfinished. */
+/* Level 3 — body. Inter, a tone softer than the headings but still solid. */
 .tp-tool-seo-block p {
-  margin: 0 0 14px;
-  color: color-mix(in srgb, var(--text) 92%, var(--muted));
-  font-size: 16px;
-  line-height: 1.7;
+  margin: 0 0 16px;
+  color: color-mix(in srgb, var(--text) 78%, var(--muted));
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.8;
   letter-spacing: 0;
-  max-width: 68ch;
+  max-width: 62ch;
 }
 
 @media (prefers-reduced-motion: reduce) {
