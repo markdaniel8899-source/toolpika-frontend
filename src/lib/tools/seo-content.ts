@@ -71,21 +71,29 @@ export function getToolSeoContent(
 
   const faqs: ToolSeoContent["faqs"] = [
     {
-      question: `Is ${name} free?`,
+      question: `Is ${name} free to use?`,
       answer:
-        `Yes. ${name} is free, with no account or limits on everyday ${category} use.`,
+        `Yes. ${name} is free, with no account and no limits on everyday ${category} use. ` +
+        `You can open it, use it and leave without paying or signing up for anything.`,
     },
     {
-      question: `Is my content uploaded?`,
-      answer: `No. ${name} runs in your browser — nothing is uploaded or stored.`,
+      question: `Does ${name} upload or store my content?`,
+      answer:
+        `No. ${name} runs in your browser, so your content never reaches a server. ` +
+        `There is no upload step and nothing is saved after you close the tab.`,
     },
     {
-      question: `Anything to install?`,
-      answer: `Nothing. Any modern browser on a phone or computer runs ${name}.`,
+      question: `Do I need to install anything to use ${name}?`,
+      answer:
+        `Nothing to install. ${name} is a web page, so any modern browser on a computer ` +
+        `or phone can run this ${category} tool. Just open the page and start.`,
     },
     {
-      question: `Works on mobile?`,
-      answer: `Yes. ${name} fits small screens, so a quick ${category} task stays one-handed.`,
+      question: `Can I use ${name} on my phone?`,
+      answer:
+        `Yes. ${name} is built for small screens as well as large ones, so you can do a ` +
+        `quick ${category} task one-handed. The result can be copied or downloaded right ` +
+        `from the page.`,
     },
   ];
 

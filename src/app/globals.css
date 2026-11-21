@@ -3745,29 +3745,13 @@ html:has([data-admin="true"]) {
 .tp-admin-login-submit { animation-delay: 300ms; }
 
 /* ==========================================================================
-   Individual tool page — H1 → centred tool → How to use → About → FAQs → related
+   Individual tool page - fixed top-to-bottom order:
+   name → how to use → numbered steps → workspace → SEO → FAQs → related
    ========================================================================== */
 
-/* Sections settle in with a short staggered rise. */
-@keyframes tp-tool-page-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: none; }
-}
-
-.tp-tool-page > * {
-  animation: tp-tool-page-in 320ms var(--ease-out) both;
-}
-
-.tp-tool-page > *:nth-child(1) { animation-delay: 0ms; }
-.tp-tool-page > *:nth-child(2) { animation-delay: 60ms; }
-.tp-tool-page > *:nth-child(3) { animation-delay: 120ms; }
-.tp-tool-page > *:nth-child(4) { animation-delay: 180ms; }
-.tp-tool-page > *:nth-child(5) { animation-delay: 240ms; }
-.tp-tool-page > *:nth-child(6) { animation-delay: 300ms; }
-
+/* 4.1 - Tool name at the very top. */
 .tp-tool-page-head {
-  padding-top: 40px;
-  text-align: center;
+  padding-top: 32px;
 }
 
 .tp-tool-page-title {
@@ -3779,78 +3763,83 @@ html:has([data-admin="true"]) {
   line-height: 1.1;
 }
 
-/* The tool is the centrepiece. */
-.tp-tool-page-workspace {
-  max-width: 980px;
-  margin: 28px auto 0;
+.tp-tool-page-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
 }
 
-/* Shared section heading — tighter than before. */
+.tp-tool-page-sub .tp-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--accent);
+}
+
+/* 4.2 / 4.5 / 4.6 / 4.7 - shared section heading. */
 .tp-tool-page-section-title {
-  margin: 40px 0 16px;
+  margin: 48px 0 20px;
   color: var(--text);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.2;
 }
 
-/* Three compact steps. */
+/* 4.3 - Counting list; each number is an accent circle. */
 .tp-how-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   margin: 0;
   padding: 0;
   list-style: none;
+  counter-reset: none;
 }
 
 .tp-how-item {
   display: flex;
   align-items: flex-start;
-  gap: 11px;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  background: var(--surface);
-  transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out);
-}
-
-.tp-how-item:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  gap: 14px;
 }
 
 .tp-how-number {
   display: grid;
   flex: none;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--accent);
   border-radius: 50%;
   background: var(--accent-soft);
   color: var(--accent);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .tp-how-item p {
-  margin: 2px 0 0;
+  margin: 3px 0 0;
   color: var(--text);
-  font-size: 13.5px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
+/* 4.4 - The workspace sits directly below the steps. */
+.tp-tool-page-workspace {
+  margin-top: 32px;
+}
+
+/* 4.5 - Per-tool SEO prose. */
 .tp-tool-seo,
 .tp-tool-faq {
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
 }
 
+/* Related tools use the full container so all cards line up evenly. */
 .tp-tool-related {
   max-width: none;
 }
@@ -3858,70 +3847,60 @@ html:has([data-admin="true"]) {
 .tp-tool-seo-lead {
   margin: 0;
   color: var(--text);
-  font-size: 15.5px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
 .tp-tool-seo-block {
-  margin-top: 22px;
+  margin-top: 28px;
 }
 
 .tp-tool-seo-subtitle {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: var(--text);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
 .tp-tool-seo-block p {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   color: var(--muted);
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-/* Compact FAQ cards in two even columns. */
+/* 4.6 - FAQs always open: H3 question + paragraph answer. */
 .tp-tool-faq-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .tp-tool-faq-item {
-  padding: 14px 16px;
+  padding: 18px 20px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   background: var(--surface);
-  transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out);
-}
-
-.tp-tool-faq-item:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  box-shadow: var(--soft-shadow);
 }
 
 .tp-tool-faq-question {
   margin: 0;
   color: var(--text);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  transition: color 200ms var(--ease-out);
-}
-
-.tp-tool-faq-item:hover .tp-tool-faq-question {
-  color: var(--accent);
 }
 
 .tp-tool-faq-answer {
-  margin: 5px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.55;
+  font-size: 14.5px;
+  line-height: 1.65;
 }
 
-/* Related tools — full width, equal-height aligned cards. */
+/* 4.7 - Related tools, last. */
 .tp-tool-related-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
@@ -3932,8 +3911,9 @@ html:has([data-admin="true"]) {
   min-height: 164px;
 }
 
-.tp-tool-related .tp-tool-desc {
-  font-size: 13px;
+.tp-tool-related-link {
+  display: inline-flex;
+  margin-top: 28px;
 }
 
 /* ---------- All categories page ---------- */
@@ -3965,17 +3945,6 @@ html:has([data-admin="true"]) {
 @media (max-width: 980px) {
   .tp-tool-related-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .tp-how-list,
-  .tp-tool-faq-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tp-tool-page > * {
-    animation: none;
   }
 }
 

@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "Comment l'utiliser",
-    "step1": "Ajoutez votre contenu dans la zone de saisie.",
-    "step2": "Lisez le résultat pendant la saisie.",
-    "step3": "Copiez le résultat lorsque vous avez terminé.",
+    "step1": "Ajoutez votre contenu dans la zone de saisie à gauche.",
+    "step2": "Ajustez les options. Les réglages par défaut conviennent à la plupart des fichiers.",
+    "step3": "Lisez le résultat à droite, puis copiez-le ou téléchargez-le.",
     "faqTitle": "Questions fréquentes",
     "faqQuestion1": "Mes fichiers sont-ils envoyés ?",
     "faqAnswer1": "Non. Tout s'exécute dans votre navigateur, votre contenu n'atteint jamais un serveur.",

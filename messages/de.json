@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "So verwenden Sie es",
-    "step1": "Geben Sie Ihren Inhalt im Eingabefeld ein.",
-    "step2": "Lesen Sie das Ergebnis während der Eingabe.",
-    "step3": "Kopieren Sie das Ergebnis, wenn Sie fertig sind.",
+    "step1": "Fügen Sie Ihren Inhalt links in das Eingabefeld ein.",
+    "step2": "Passen Sie die Optionen an. Die Standardwerte passen für die meisten Dateien.",
+    "step3": "Lesen Sie das Ergebnis rechts und kopieren oder laden Sie es herunter.",
     "faqTitle": "Häufige Fragen",
     "faqQuestion1": "Werden meine Dateien hochgeladen?",
     "faqAnswer1": "Nein. Alles läuft in Ihrem Browser, Ihre Inhalte erreichen nie einen Server.",

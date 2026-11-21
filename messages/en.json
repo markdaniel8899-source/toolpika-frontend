@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "How to use",
-    "step1": "Add your content in the input box.",
-    "step2": "Read the result as you type.",
-    "step3": "Copy the result when you're done.",
+    "step1": "Add your content on the left.",
+    "step2": "Adjust any options in the panel. The defaults work for most files.",
+    "step3": "Read the result on the right, then copy or download it.",
     "faqTitle": "Frequently asked questions",
     "faqQuestion1": "Are my files uploaded?",
     "faqAnswer1": "No. Everything runs in your browser, so your content never reaches a server.",
