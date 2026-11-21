@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "Como usar",
-    "step1": "Adicione seu conteúdo na área de entrada à esquerda.",
-    "step2": "Ajuste as opções. Os padrões atendem à maioria dos arquivos.",
-    "step3": "Leia o resultado à direita e copie ou baixe.",
+    "step1": "Adicione seu conteúdo na caixa de entrada.",
+    "step2": "Leia o resultado enquanto digita.",
+    "step3": "Copie o resultado quando terminar.",
     "faqTitle": "Perguntas frequentes",
     "faqQuestion1": "Meus arquivos são enviados?",
     "faqAnswer1": "Não. Tudo roda no seu navegador, então seu conteúdo nunca chega a um servidor.",

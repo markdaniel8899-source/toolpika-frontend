@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "Come usarlo",
-    "step1": "Aggiungi il tuo contenuto nell'area di input a sinistra.",
-    "step2": "Regola le opzioni: i valori predefiniti vanno bene per quasi tutti i file.",
-    "step3": "Leggi il risultato a destra, poi copialo o scaricalo.",
+    "step1": "Aggiungi il tuo contenuto nella casella di input.",
+    "step2": "Leggi il risultato mentre scrivi.",
+    "step3": "Copia il risultato quando hai finito.",
     "faqTitle": "Domande frequenti",
     "faqQuestion1": "I miei file vengono caricati?",
     "faqAnswer1": "No. Tutto gira nel browser, quindi i tuoi contenuti non raggiungono mai un server.",

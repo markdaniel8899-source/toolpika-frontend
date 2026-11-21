@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ShieldCheck } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { ToolCard } from "@/components/tools/tool-card";
 import { getSiteUrl } from "@/lib/site-url";
 import { ToolWorkspace } from "@/components/tools/tool-workspace";
@@ -152,34 +150,30 @@ export default async function ToolPage({ params }: LocalePageProps) {
         }}
       />
       <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
-        {/* 4.1 - Tool name first, H1. */}
+        {/* Tool name first — plain H1, nothing ornamental. */}
         <header className="tp-tool-page-head">
           <h1 className="tp-tool-page-title">{tool.title}</h1>
-          <p className="tp-tool-page-sub">
-            <ShieldCheck className="tp-icon" aria-hidden="true" />
-            {t("runsInBrowser")}
-          </p>
         </header>
 
-        {/* 4.2 - How to use heading. */}
-        <h2 className="tp-tool-page-section-title">{tHow("howToTitle")}</h2>
-
-        {/* 4.3 - Numbered steps with accent circles. */}
-        <ol className="tp-how-list">
-          {steps.map((step, index) => (
-            <li key={index} className="tp-how-item">
-              <span className="tp-how-number" aria-hidden="true">{index + 1}</span>
-              <p>{step}</p>
-            </li>
-          ))}
-        </ol>
-
-        {/* 4.4 - The actual tool workspace, below the steps. */}
+        {/* The tool itself, front and centre. */}
         <section className="tp-tool-page-workspace" aria-label={`${tool.title} tool`}>
           <ToolWorkspace slug={tool.slug} />
         </section>
 
-        {/* 4.5 - Per-tool SEO content in natural language. */}
+        {/* How to use. */}
+        <section className="tp-tool-how">
+          <h2 className="tp-tool-page-section-title">{tHow("howToTitle")}</h2>
+          <ol className="tp-how-list">
+            {steps.map((step, index) => (
+              <li key={index} className="tp-how-item">
+                <span className="tp-how-number" aria-hidden="true">{index + 1}</span>
+                <p>{step}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* About the tool. */}
         <section className="tp-tool-seo">
           <h2 className="tp-tool-page-section-title">{`About ${tool.title}`}</h2>
           <p className="tp-tool-seo-lead">{seo.intro}</p>
@@ -193,7 +187,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
           ))}
         </section>
 
-        {/* 4.6 - FAQs fully visible: H3 question + paragraph answer, no accordion. */}
+        {/* Short, visible FAQs. */}
         <section className="tp-tool-faq">
           <h2 className="tp-tool-page-section-title">{tHow("faqTitle")}</h2>
           <div className="tp-tool-faq-list">
@@ -206,7 +200,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
           </div>
         </section>
 
-        {/* 4.7 - Related tools, last on the page. */}
+        {/* Related tools, last. */}
         {related.length > 0 && (
           <section className="tp-tool-related">
             <h2 className="tp-tool-page-section-title">{tHow("relatedTitle")}</h2>
@@ -215,9 +209,6 @@ export default async function ToolPage({ params }: LocalePageProps) {
                 <ToolCard key={item.slug} tool={item} />
               ))}
             </div>
-            <Link href="/request" className="tp-text-link tp-tool-related-link">
-              Missing a tool? Request it
-            </Link>
           </section>
         )}
       </main>

@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "Nasıl kullanılır",
-    "step1": "İçeriğinizi soldaki giriş alanına ekleyin.",
-    "step2": "Seçenekleri ayarlayın. Varsayılanlar çoğu dosya için yeterlidir.",
-    "step3": "Sağdaki sonucu okuyun, kopyalayın veya indirin.",
+    "step1": "İçeriğinizi giriş kutusuna ekleyin.",
+    "step2": "Sonucu yazarken görün.",
+    "step3": "Bittiğinde sonucu kopyalayın.",
     "faqTitle": "Sık sorulan sorular",
     "faqQuestion1": "Dosyalarım yükleniyor mu?",
     "faqAnswer1": "Hayır. Her şey tarayıcınızda çalışır, içeriğiniz hiçbir sunucuya ulaşmaz.",

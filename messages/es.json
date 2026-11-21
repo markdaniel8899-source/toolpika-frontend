@@ -155,9 +155,9 @@
   },
   "toolPage": {
     "howToTitle": "Cómo usarlo",
-    "step1": "Añade tu contenido en el área de entrada de la izquierda.",
-    "step2": "Ajusta las opciones: los valores por defecto sirven para la mayoría de archivos.",
-    "step3": "Lee el resultado de la derecha y cópialo o descárgalo.",
+    "step1": "Añade tu contenido en el campo de entrada.",
+    "step2": "Lee el resultado mientras escribes.",
+    "step3": "Copia el resultado cuando termines.",
     "faqTitle": "Preguntas frecuentes",
     "faqQuestion1": "¿Se suben mis archivos?",
     "faqAnswer1": "No. Todo se ejecuta en tu navegador, así que tu contenido nunca llega a un servidor.",
