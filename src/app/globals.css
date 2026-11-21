@@ -3844,30 +3844,57 @@ html:has([data-admin="true"]) {
   max-width: none;
 }
 
+/* Reading measure: ~68 characters per line at body size. */
+.tp-tool-seo {
+  max-width: 720px;
+}
+
+/* The opening statement is the one large thought; the rest is body text. */
 .tp-tool-seo-lead {
-  margin: 0;
+  margin: 0 0 22px;
   color: var(--text);
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+@keyframes tp-seo-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
 }
 
 .tp-tool-seo-block {
-  margin-top: 28px;
+  margin-top: 30px;
+  animation: tp-seo-in 320ms var(--ease-out) both;
 }
+
+.tp-tool-seo-block:nth-child(3) { animation-delay: 80ms; }
+.tp-tool-seo-block:nth-child(4) { animation-delay: 140ms; }
+.tp-tool-seo-block:nth-child(5) { animation-delay: 200ms; }
 
 .tp-tool-seo-subtitle {
   margin: 0 0 10px;
   color: var(--text);
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
+/* Body copy sits close to full ink — muted grey at 15px read as unfinished. */
 .tp-tool-seo-block p {
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.7;
+  margin: 0 0 14px;
+  color: color-mix(in srgb, var(--text) 82%, var(--muted));
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 68ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-tool-seo-block {
+    animation: none;
+  }
 }
 
 /* 4.6 - FAQs always open: H3 question + paragraph answer. */
