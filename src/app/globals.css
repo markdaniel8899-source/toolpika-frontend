@@ -2512,15 +2512,6 @@ html.theme-transition .tp-dropdown-trigger {
   text-transform: none;
 }
 
-.tp-pane-head h2::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  flex: none;
-  border-radius: 2px;
-  background: var(--accent);
-}
-
 .tp-pane-hint {
   color: var(--muted-2);
   font-size: 12px;
@@ -2606,10 +2597,9 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-result-card {
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  background: var(--accent-soft);
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .tp-unit-chip {
@@ -4005,7 +3995,7 @@ html:has([data-admin="true"]) {
 .tp-content-lead {
   margin: 0 0 32px;
   color: var(--muted);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
 }
 
@@ -4026,7 +4016,7 @@ html:has([data-admin="true"]) {
 .tp-article-copy {
   margin: 0 0 14px;
   color: var(--muted);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
 }
 
@@ -4093,7 +4083,7 @@ html:has([data-admin="true"]) {
 .tp-faq-a {
   margin: 0;
   color: var(--muted);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
 }
 
