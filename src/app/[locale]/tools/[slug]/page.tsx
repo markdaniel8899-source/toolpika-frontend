@@ -201,8 +201,8 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
               <p className="tp-article-copy tp-article-close">
                 Everything on this page runs in your browser. Open {tool.title},
-                add what you need, and take the result with you — no setup, no
-                sign-in and nothing to install.
+                add what you need, and take the result with you. There is no
+                setup, no sign-in and nothing to install.
               </p>
             </div>
           </section>
