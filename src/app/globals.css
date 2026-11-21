@@ -2422,6 +2422,8 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-workspace-pane textarea {
   width: 100%;
   min-width: 0;
+  padding: 22px 24px;
+  resize: none;
 }
 
 .tp-pane-head {
@@ -2464,10 +2466,11 @@ html.theme-transition .tp-dropdown-trigger {
   min-height: 340px;
   flex: 1 1 auto;
   resize: vertical;
-  padding: 20px;
+  padding: 22px 24px;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius-control) + 2px);
   outline: 0;
+  resize: none;
   background: var(--field-bg);
   color: var(--text);
   font-size: 15px;
