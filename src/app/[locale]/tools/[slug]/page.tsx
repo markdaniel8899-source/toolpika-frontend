@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { HelpCircle, Laptop, ShieldCheck, Zap } from "lucide-react";
+import { HelpCircle, ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Reveal } from "@/components/ui/reveal";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -17,9 +17,6 @@ import { getToolSeoContent } from "@/lib/tools/seo-content";
 const LOCALES = [
   "en", "de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi",
 ] as const;
-
-/** One icon per SEO content card, in section order. */
-const FEATURE_ICONS = [Zap, Laptop, ShieldCheck];
 
 type LocalePageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -183,57 +180,43 @@ export default async function ToolPage({ params }: LocalePageProps) {
           <ToolWorkspace slug={tool.slug} />
         </section>
 
-        {/* 4.5 - SEO content: intro statement + interactive feature cards.
-             Every word of seo.intro / seo.sections is rendered verbatim. */}
+        {/* 4.5 - SEO content as a readable article. Every word of seo.intro
+             and seo.sections is rendered verbatim. */}
         <Reveal>
           <section className="tp-content-canvas">
-            <div className="tp-content-inner">
+            <div className="tp-content-inner tp-article">
               <h2 className="tp-content-h2">{`About ${tool.title}`}</h2>
               <p className="tp-content-lead">{seo.intro}</p>
 
-              <div className="tp-feature-grid">
-                {seo.sections.map((section, index) => {
-                  const Icon = FEATURE_ICONS[index % FEATURE_ICONS.length];
-                  return (
-                    <Reveal
-                      key={section.heading}
-                      stagger
-                      index={index}
-                      className="h-full"
-                    >
-                      <article className="tp-feature-card">
-                        <span className="tp-feature-icon">
-                          <Icon className="tp-icon" aria-hidden="true" />
-                        </span>
-                        <h3 className="tp-feature-title">{section.heading}</h3>
-                        {section.paragraphs.map((paragraph) => (
-                          <p key={paragraph} className="tp-feature-copy">
-                            {paragraph}
-                          </p>
-                        ))}
-                      </article>
-                    </Reveal>
-                  );
-                })}
-              </div>
+              {seo.sections.map((section) => (
+                <div key={section.heading} className="tp-article-block">
+                  <h3 className="tp-article-h3">{section.heading}</h3>
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph} className="tp-article-copy">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              ))}
+
+              <p className="tp-article-copy tp-article-close">
+                Everything on this page runs in your browser. Open {tool.title},
+                add what you need, and take the result with you — no setup, no
+                sign-in and nothing to install.
+              </p>
             </div>
           </section>
         </Reveal>
 
-        {/* 4.6 - FAQs stay fully open for SEO, styled as interactive cards. */}
+        {/* 4.6 - FAQs stay fully open for SEO, in a single vertical column. */}
         <Reveal delay={80}>
           <section className="tp-faq-canvas">
-            <div className="tp-content-inner">
+            <div className="tp-content-inner tp-article">
               <h2 className="tp-content-h2">{tHow("faqTitle")}</h2>
-              <div className="tp-faq-grid">
+              <div className="tp-faq-list">
                 {seo.faqs.map((faq, index) => (
-                  <Reveal
-                    key={faq.question}
-                    stagger
-                    index={index}
-                    className="h-full"
-                  >
-                    <article className="tp-faq-card">
+                  <Reveal key={faq.question} stagger index={index}>
+                    <article className="tp-faq-row">
                       <span className="tp-faq-icon">
                         <HelpCircle className="tp-icon" aria-hidden="true" />
                       </span>
