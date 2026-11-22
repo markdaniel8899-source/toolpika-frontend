@@ -166,6 +166,7 @@ export interface StudioContextDigest {
   tool_count?: number;
   published_count?: number;
   locales?: string[];
+  tools?: { slug: string; name: string }[];
   relevant_slugs?: string[];
 }
 
@@ -211,11 +212,36 @@ export interface StudioDraft {
   updated_at?: string;
 }
 
+export interface StudioPipelineStep {
+  key: string;
+  stage: string;
+  label: string;
+  status: "pending" | "running" | "done" | "error" | "skipped";
+  logs: string[];
+  started_at?: string | null;
+  finished_at?: string | null;
+}
+
+export interface StudioPipelineState {
+  running: boolean;
+  idea?: string | null;
+  started_at?: string | null;
+  finished_at?: string | null;
+  steps: StudioPipelineStep[];
+}
+
 export interface StudioBundle {
   session: StudioSession;
   messages: StudioMessage[];
   draft: StudioDraft | null;
   context: StudioContextDigest;
+  pipeline: StudioPipelineState;
+}
+
+export interface StudioAutoRunInput {
+  idea?: string;
+  source_url?: string;
+  locales?: string[];
 }
 
 export interface StudioSessionInput {
@@ -324,6 +350,18 @@ export function publishStudio(sessionId: string): Promise<StudioBundle> {
   return request<StudioBundle>(
     `/api/studio/sessions/${encodeURIComponent(sessionId)}/publish`,
     { method: "POST" },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Run the complete pipeline for a tool already decided in chat. */
+export function autoRunStudio(
+  sessionId: string,
+  payload: StudioAutoRunInput = {},
+): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/auto-run`,
+    { method: "POST", body: JSON.stringify(payload) },
     STUDIO_TIMEOUT,
   );
 }
