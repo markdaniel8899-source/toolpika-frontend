@@ -16,8 +16,31 @@ export interface ToolIdea {
   why_trending: string;
   short_description: string;
   estimated_difficulty: "Easy" | "Medium" | "Hard" | string;
+  search_volume?: string;
+  competition?: string;
+  report_details?: {
+    search_volume?: string;
+    competition?: string;
+    target_audience?: string;
+    estimated_difficulty?: string;
+    [key: string]: unknown;
+  } | null;
   status: IdeaStatus | string;
   created_at?: string | null;
+}
+
+export interface ChatTurn {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface ChatResponse {
+  reply: string;
+  action: "chat" | "run_research" | string;
+  topic?: string | null;
+  ideas: ToolIdea[];
+  research?: { sources_count?: number; queries_run?: number };
+  context_tool_count?: number;
 }
 
 export interface ResearchResult {
@@ -88,9 +111,29 @@ async function request<T>(path: string, init?: RequestInit, timeoutMs = 15_000):
   return (await response.json()) as T;
 }
 
-/** Trigger one research scout run. */
-export function runResearch(): Promise<ResearchResult> {
-  return request<ResearchResult>("/api/pipeline/research", { method: "POST" }, 180_000);
+/** Trigger one research scout run, optionally focused on a topic. */
+export function runResearch(topic?: string): Promise<ResearchResult> {
+  return request<ResearchResult>(
+    "/api/pipeline/research",
+    { method: "POST", body: JSON.stringify({ topic: topic?.trim() || null }) },
+    180_000,
+  );
+}
+
+/** Chat with the RAG-aware strategist; research commands run the scout. */
+export function chatWithStrategist(
+  message: string,
+  mode?: "chat" | "research",
+  history: ChatTurn[] = [],
+): Promise<ChatResponse> {
+  return request<ChatResponse>(
+    "/api/admin/chat",
+    {
+      method: "POST",
+      body: JSON.stringify({ message, mode: mode ?? null, history }),
+    },
+    180_000,
+  );
 }
 
 /** Fetch all scouted ideas, newest first. */
