@@ -79,14 +79,18 @@ export function getBackendUrl(): string {
   return url.toString().replace(/\/$/, "");
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function request<T>(
+  path: string,
+  init?: RequestInit,
+  timeoutMs = 15_000,
+): Promise<T> {
   const url = `${getBackendUrl()}${path}`;
   let response: Response;
   try {
     response = await fetch(url, {
       ...init,
       cache: "no-store",
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(timeoutMs),
       headers: {
         Accept: "application/json",
         ...(init?.body ? { "Content-Type": "application/json" } : {}),
@@ -141,4 +145,185 @@ export function translateTool(
 /** Read safe pipeline configuration exposed by the backend. */
 export function getBackendConfig(): Promise<BackendConfig> {
   return request<BackendConfig>("/api/admin/config");
+}
+
+/* -------------------------------------------------------------------------- */
+/* Tool Studio                                                                */
+/* -------------------------------------------------------------------------- */
+
+const STUDIO_TIMEOUT = 240_000;
+
+export interface StudioConfig {
+  enabled: boolean;
+  model: string;
+  translation_model: string;
+  locales: string[];
+  qa_max_retries: number;
+  frontend_path_configured: boolean;
+}
+
+export interface StudioContextDigest {
+  tool_count?: number;
+  published_count?: number;
+  locales?: string[];
+  relevant_slugs?: string[];
+}
+
+export interface StudioSession {
+  id: string;
+  title: string;
+  idea?: string | null;
+  source_url?: string | null;
+  stage: string;
+  status: string;
+  context: Record<string, unknown>;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface StudioMessage {
+  id: string;
+  session_id: string;
+  role: "user" | "assistant";
+  content: string;
+  artifacts: Record<string, unknown>;
+  created_at?: string;
+}
+
+export interface StudioCodeFile {
+  path: string;
+  content: string;
+  kind: "module" | "manifest" | "registry" | "content";
+}
+
+export interface StudioDraft {
+  id: string;
+  session_id: string;
+  slug: string;
+  blueprint: Record<string, unknown>;
+  spec?: Record<string, unknown> | null;
+  code_files?: StudioCodeFile[];
+  qa?: Record<string, unknown>;
+  status: string;
+  preview_url?: string | null;
+  pr_url?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface StudioBundle {
+  session: StudioSession;
+  messages: StudioMessage[];
+  draft: StudioDraft | null;
+  context: StudioContextDigest;
+}
+
+export interface StudioSessionInput {
+  title?: string;
+  idea?: string;
+  source_url?: string;
+}
+
+/** Read Studio configuration and live provider settings. */
+export function getStudioConfig(): Promise<StudioConfig> {
+  return request<StudioConfig>("/api/studio/config", undefined, 30_000);
+}
+
+/** List recent Studio chat sessions. */
+export function listStudioSessions(): Promise<StudioSession[]> {
+  return request<StudioSession[]>("/api/studio/sessions", undefined, 30_000);
+}
+
+/** Create a new Studio chat session. */
+export function createStudioSession(
+  payload: StudioSessionInput,
+): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    "/api/studio/sessions",
+    { method: "POST", body: JSON.stringify(payload) },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Load one Studio session with its messages and current draft. */
+export function getStudioSession(sessionId: string): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}`,
+    undefined,
+    30_000,
+  );
+}
+
+/** Send one chat message to the RAG-enabled Studio assistant. */
+export function chatStudio(
+  sessionId: string,
+  message: string,
+  autoPlan = true,
+): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/chat`,
+    {
+      method: "POST",
+      body: JSON.stringify({ message, auto_plan: autoPlan }),
+    },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Explicitly research an idea or competitor URL and build a blueprint. */
+export function planStudio(
+  sessionId: string,
+  idea?: string,
+  sourceUrl?: string,
+): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/plan`,
+    {
+      method: "POST",
+      body: JSON.stringify({ idea: idea || null, source_url: sourceUrl || null }),
+    },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Generate and QA the ToolSpec plus the runnable TypeScript module. */
+export function generateStudio(sessionId: string): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/generate`,
+    { method: "POST" },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Write the generated files into the frontend checkout. */
+export function applyStudio(sessionId: string): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/apply`,
+    { method: "POST" },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Translate the current draft's ToolSpec with Groq. */
+export function translateStudio(
+  sessionId: string,
+  locales?: string[],
+): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/translate`,
+    {
+      method: "POST",
+      body: JSON.stringify({ locales: locales?.length ? locales : null }),
+    },
+    STUDIO_TIMEOUT,
+  );
+}
+
+/** Publish the current draft to Supabase. */
+export function publishStudio(sessionId: string): Promise<StudioBundle> {
+  return request<StudioBundle>(
+    `/api/studio/sessions/${encodeURIComponent(sessionId)}/publish`,
+    { method: "POST" },
+    STUDIO_TIMEOUT,
+  );
 }

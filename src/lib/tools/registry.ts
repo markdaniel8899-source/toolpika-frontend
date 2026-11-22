@@ -6,6 +6,7 @@ import {
   LayoutGrid,
   Shield,
 } from "lucide-react";
+import { generatedTools } from "./generated/tools";
 
 export type ToolCategory = "text" | "image" | "file" | "code" | "converter" | "calculator" | "security";
 
@@ -42,6 +43,7 @@ const CATEGORY_ICONS: Record<ToolCategory, ComponentType> = {
  * (public.tools.usage_count) and are never invented (AGENTS.md - no fake proof).
  */
 export const tools: Tool[] = [
+  ...generatedTools,
   {
     id: "word-counter",
     slug: "word-counter",

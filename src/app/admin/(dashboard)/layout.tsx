@@ -68,6 +68,7 @@ export default async function AdminDashboardLayout({
     { href: "/admin/blog", label: t.blog, iconName: "blog" },
     { href: "/admin/analytics", label: t.analytics, iconName: "analytics" },
     { href: "/admin/pipeline", label: t.pipeline, iconName: "pipeline" },
+    { href: "/admin/studio", label: t.studio, iconName: "studio" },
     { href: "/admin/settings", label: t.settings, iconName: "settings" },
   ];
 
