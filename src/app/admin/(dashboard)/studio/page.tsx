@@ -519,6 +519,19 @@ export default function AdminStudioPage() {
                 <p className="text-[11px] text-[var(--muted)]">{t.slug}</p>
                 <p className="font-semibold">{draft.slug}</p>
               </div>
+              {draft.pr_url ? (
+                <div>
+                  <p className="text-[11px] text-[var(--muted)]">{t.pullRequest}</p>
+                  <a
+                    href={draft.pr_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="tp-text-link break-all text-[12px]"
+                  >
+                    {draft.pr_url}
+                  </a>
+                </div>
+              ) : null}
               {draft.qa && Object.keys(draft.qa).length > 0 ? (
                 <details>
                   <summary className="cursor-pointer text-[12px] font-semibold">
@@ -591,11 +604,15 @@ export default function AdminStudioPage() {
                   <p className="break-all">{config.model}</p>
                   <p className="mt-2 text-[var(--muted)]">{t.translationModel}</p>
                   <p>{config.translation_model}</p>
-                  <p className="mt-2 text-[var(--muted)]">{t.frontendPath}</p>
+                  <p className="mt-2 text-[var(--muted)]">{t.github}</p>
                   <p>
-                    {config.frontend_path_configured
-                      ? t.frontendPathReady
-                      : t.frontendPathMissing}
+                    {config.github_configured
+                      ? `${t.githubReady}${config.github_repo ? ` · ${config.github_repo}` : ""}`
+                      : t.githubMissing}
+                  </p>
+                  <p className="mt-1">
+                    {config.github_base_branch} · {t.autoMerge}:{" "}
+                    {config.auto_merge_pr ? "on" : "off"}
                   </p>
                 </div>
               ) : null}

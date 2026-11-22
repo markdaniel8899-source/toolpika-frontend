@@ -160,6 +160,10 @@ export interface StudioConfig {
   locales: string[];
   qa_max_retries: number;
   frontend_path_configured: boolean;
+  github_configured: boolean;
+  github_repo?: string | null;
+  github_base_branch: string;
+  auto_merge_pr: boolean;
 }
 
 export interface StudioContextDigest {

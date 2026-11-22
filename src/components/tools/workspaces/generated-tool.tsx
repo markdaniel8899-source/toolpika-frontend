@@ -12,16 +12,33 @@ import {
 import { WorkspaceLayout } from "../workspace-layout";
 import { CopyButton, OutputEmpty } from "../workspace-ui";
 
+export interface GeneratedToolMetaLike {
+  slug: string;
+  title?: string;
+  archetype?: string;
+  inputLabel?: string;
+  inputPlaceholder?: string;
+  runLabel?: string;
+  outputLabel?: string;
+  examples?: { input: string; output: string }[];
+}
+
 /**
- * Generic workspace for tools created in Tool Studio. The generated module is
- * a pure `run(input: string): string` function, so the same renderer works for
- * every generated tool without shipping model-written React to visitors.
+ * Shared renderer for tools created in Tool Studio. The generated module is a
+ * pure `run(input: string): string` function, so no model-written React ever
+ * reaches visitors - only the operation and its metadata.
  */
-export function GeneratedTool({ slug }: { slug: string }) {
+export function GeneratedToolWorkspace({
+  slug,
+  run,
+  meta,
+}: {
+  slug: string;
+  run: (input: string) => string;
+  meta?: GeneratedToolMetaLike;
+}) {
   const t = useTranslations("tools");
   const tUi = useTranslations("toolUi");
-  const meta = getGeneratedToolMeta(slug);
-  const runner = getGeneratedRunner(slug);
 
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -34,13 +51,12 @@ export function GeneratedTool({ slug }: { slug: string }) {
   const outputLabel = meta?.outputLabel || t("result");
 
   async function handleRun(value = input) {
-    if (!runner) return;
     setRunning(true);
     setError(null);
     try {
       // Yield once so the busy state can paint before the operation runs.
       await Promise.resolve();
-      const result = runner(value);
+      const result = run(value);
       if (typeof result !== "string") {
         throw new Error("The tool did not return text.");
       }
@@ -71,7 +87,7 @@ export function GeneratedTool({ slug }: { slug: string }) {
           <Button
             type="button"
             onClick={() => void handleRun()}
-            disabled={!runner || running}
+            disabled={running}
             className="self-start"
           >
             <Play aria-hidden="true" />
@@ -139,6 +155,19 @@ export function GeneratedTool({ slug }: { slug: string }) {
           </div>
         </div>
       }
+    />
+  );
+}
+
+/** Registry-driven wrapper used by the local (non-GitHub) apply path. */
+export default function GeneratedTool({ slug }: { slug: string }) {
+  const runner = getGeneratedRunner(slug);
+  if (!runner) return null;
+  return (
+    <GeneratedToolWorkspace
+      slug={slug}
+      run={runner}
+      meta={getGeneratedToolMeta(slug) ?? undefined}
     />
   );
 }
