@@ -7,15 +7,14 @@ import { createClient } from "@/lib/supabase/client";
 import { AdminThemeToggle } from "@/components/admin/admin-theme-toggle";
 import {
   BarChart3,
-  Bot,
   FileText,
   Inbox,
   LayoutGrid,
+  Lightbulb,
   LogOut,
   Menu,
   PenLine,
   Settings,
-  Workflow,
   Wrench,
   X,
   Zap,
@@ -43,8 +42,7 @@ export type AdminIconName =
   | "requests"
   | "blog"
   | "analytics"
-  | "pipeline"
-  | "studio"
+  | "ideas"
   | "settings"
   | "editor";
 
@@ -54,8 +52,7 @@ const ADMIN_ICON_MAP: Record<AdminIconName, LucideIcon> = {
   requests: Inbox,
   blog: FileText,
   analytics: BarChart3,
-  pipeline: Workflow,
-  studio: Bot,
+  ideas: Lightbulb,
   settings: Settings,
   editor: PenLine,
 };

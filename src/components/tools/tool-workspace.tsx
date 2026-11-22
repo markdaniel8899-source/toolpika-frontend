@@ -4,13 +4,8 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { WorkspaceLayout } from "./workspace-layout";
 import { WorkspaceSkeleton } from "@/components/ui/skeleton";
-import { generatedTools } from "@/lib/tools/generated/tools";
-import { generatedComponents } from "./generated-components";
 
-/**
- * Tool workspaces are client-only islands and each one is code-split, so a
- * visitor only downloads the tool they opened.
- */
+/** Each tool workspace is a code-split client island. */
 const loading = () => <WorkspaceSkeleton />;
 const WordCounter = dynamic(() => import("./workspaces/word-counter"), { loading });
 const CaseConverter = dynamic(() => import("./workspaces/case-converter"), { loading });
@@ -20,10 +15,6 @@ const UnitConverter = dynamic(() => import("./workspaces/unit-converter"), { loa
 const PasswordGenerator = dynamic(() => import("./workspaces/password-generator"), { loading });
 const UrlEncoder = dynamic(() => import("./workspaces/url-encoder"), { loading });
 const Base64Encoder = dynamic(() => import("./workspaces/base64-encoder"), { loading });
-const GeneratedTool = dynamic(
-  () => import("./workspaces/generated-tool").then((module) => module.default),
-  { loading },
-);
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -39,21 +30,7 @@ const WORKSPACES = {
 export function ToolWorkspace({ slug }: { slug: string }) {
   const t = useTranslations("tools");
   const Workspace = WORKSPACES[slug as keyof typeof WORKSPACES];
-  const GeneratedComponent = generatedComponents[slug];
-  const isGenerated = generatedTools.some((tool) => tool.slug === slug);
 
-  // GitHub PR path: a dedicated component file was merged into the repo.
-  if (!Workspace && GeneratedComponent) {
-    return <GeneratedComponent />;
-  }
-
-  // Local apply path: a runner was written into the generated registry.
-  if (!Workspace && isGenerated) {
-    return <GeneratedTool slug={slug} />;
-  }
-
-  // A tool that exists in the registry but has no workspace yet still renders
-  // a readable page instead of an empty gap.
   if (!Workspace) {
     return (
       <WorkspaceLayout

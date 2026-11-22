@@ -1,5 +1,4 @@
 import type { Tool } from "@/lib/tools/registry";
-import { getGeneratedToolContent } from "@/lib/tools/generated/content";
 
 /**
  * Per-tool SEO copy, generated from the registry entry - never one identical
@@ -25,9 +24,6 @@ export function getToolSeoContent(
   tool: Tool,
   categoryLabel: string,
 ): ToolSeoContent {
-  const generated = getGeneratedToolContent(tool.slug);
-  if (generated) return generated;
-
   const name = tool.title;
   const category = categoryLabel.toLowerCase();
   const what = lowerFirst(tool.description.replace(/\.$/, ""));

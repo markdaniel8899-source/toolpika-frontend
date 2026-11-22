@@ -9,17 +9,15 @@ export const dynamic = "force-dynamic";
 export default async function AdminSettingsPage() {
   const t = adminMessages.settings;
 
-  const [settings, envUrl, envAnon, envGroq] = await Promise.all([
+  const [settings, envUrl, envAnon] = await Promise.all([
     getSettings(),
     Promise.resolve(process.env.NEXT_PUBLIC_SUPABASE_URL ?? ""),
     Promise.resolve(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""),
-    Promise.resolve(process.env.GROQ_API_KEY ?? ""),
   ]);
 
   const keyRows = [
     { label: t.keySupabaseUrl, set: Boolean(envUrl) },
     { label: t.keySupabaseAnon, set: Boolean(envAnon) },
-    { label: t.keyGroq, set: Boolean(envGroq) },
   ];
 
   return (
