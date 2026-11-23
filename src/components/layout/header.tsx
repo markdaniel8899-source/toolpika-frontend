@@ -6,6 +6,7 @@ import { usePathname, useRouter, Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { setTheme } from "@/lib/theme";
 import { useScrolled } from "@/hooks/useScrolled";
 import { Dropdown } from "@/components/ui/dropdown";
 import { PillCta } from "@/components/ui/pill-cta";
@@ -85,15 +86,7 @@ export function Header() {
   const toggleTheme = () => {
     const root = document.documentElement;
     const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-    const next = current === "dark" ? "light" : "dark";
-    root.classList.add("theme-transition");
-    root.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-      // Storage can be blocked; the attribute still updates for this session.
-    }
-    window.setTimeout(() => root.classList.remove("theme-transition"), 240);
+    setTheme(current === "dark" ? "light" : "dark");
   };
 
   const changeLocale = (next: Locale) => {

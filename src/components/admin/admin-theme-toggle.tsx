@@ -1,6 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
+import { setTheme } from "@/lib/theme";
 
 /**
  * Admin theme toggle.
@@ -15,17 +16,7 @@ export function AdminThemeToggle({ label }: { label: string }) {
   function toggleTheme() {
     const root = document.documentElement;
     const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-    const next = current === "dark" ? "light" : "dark";
-
-    root.classList.add("theme-transition");
-    root.setAttribute("data-theme", next);
-    window.setTimeout(() => root.classList.remove("theme-transition"), 240);
-
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-      // Storage can be blocked; the attribute still updates for this session.
-    }
+    setTheme(current === "dark" ? "light" : "dark");
   }
 
   return (

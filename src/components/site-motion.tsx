@@ -40,12 +40,16 @@ export function SiteMotion() {
     let ringX = -100;
     let ringY = -100;
     let frame = 0;
+    let running = false;
 
     const onMove = (event: PointerEvent) => {
       targetX = event.clientX;
       targetY = event.clientY;
       dot.style.opacity = "1";
       ring.style.opacity = "1";
+      // Move the dot immediately; the ring catches up on the next frames.
+      dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+      start();
     };
 
     const onOver = (event: PointerEvent) => {
@@ -63,15 +67,30 @@ export function SiteMotion() {
     const tick = () => {
       ringX += (targetX - ringX) * 0.18;
       ringY += (targetY - ringY) * 0.18;
-      dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
       ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+
+      // Stop the loop once the ring has settled. A permanent rAF loop keeps
+      // the compositor busy even while the pointer is idle, which makes the
+      // rest of the page (typing, scrolling) feel less responsive.
+      if (Math.abs(targetX - ringX) > 0.5 || Math.abs(targetY - ringY) > 0.5) {
+        frame = window.requestAnimationFrame(tick);
+      } else {
+        ringX = targetX;
+        ringY = targetY;
+        ring.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+        running = false;
+      }
+    };
+
+    const start = () => {
+      if (running) return;
+      running = true;
       frame = window.requestAnimationFrame(tick);
     };
 
     document.addEventListener("pointermove", onMove);
     document.addEventListener("pointerover", onOver);
     document.addEventListener("pointerout", onOut);
-    frame = window.requestAnimationFrame(tick);
 
     return () => {
       document.removeEventListener("pointermove", onMove);

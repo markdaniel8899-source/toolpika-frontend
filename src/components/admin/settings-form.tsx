@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { saveSettings } from "@/app/admin/actions";
+import { setTheme } from "@/lib/theme";
 
 export interface SettingsCopy {
   siteTitle: string;
@@ -77,21 +78,10 @@ export function SettingsForm({
         // Storage may be blocked.
       }
       const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const root = document.documentElement;
-      root.classList.add("theme-transition");
-      root.setAttribute("data-theme", systemDark ? "dark" : "light");
-      window.setTimeout(() => root.classList.remove("theme-transition"), 240);
+      setTheme(systemDark ? "dark" : "light", false);
       return;
     }
-    const root = document.documentElement;
-    root.classList.add("theme-transition");
-    root.setAttribute("data-theme", value);
-    window.setTimeout(() => root.classList.remove("theme-transition"), 240);
-    try {
-      localStorage.setItem("theme", value);
-    } catch {
-      // Storage may be blocked; the attribute still updates.
-    }
+    setTheme(value === "dark" ? "dark" : "light");
   }
 
   return (

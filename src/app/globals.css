@@ -30,6 +30,10 @@
   --accent-soft: #efedff;
   --accent-wash: #f5f3ff;
 
+  /* Kept in both themes so the ambient wash layer has identical gradient
+     values on each side of a theme switch; only its opacity changes. */
+  --glow-strength: 0.5;
+
   /* Dark philosophy band — intentionally dark in both themes. */
   --philosophy-bg: #0b0b12;
   --philosophy-text: #f5f4f0;
@@ -274,7 +278,12 @@ button {
   height: 0;
 }
 
-/* ---------- Theme switch transition ---------- */
+/* ---------- Theme switch transition ----------
+ * Components that declare their own `transition` (often only transform or a
+ * subset of colors) would otherwise snap while the rest of the page fades.
+ * Cover those surfaces during the switch so every visible layer moves together.
+ * Ambient gradients live on pseudo-elements and cross-fade via their own
+ * opacity transition further down this file. */
 
 html.theme-transition body,
 html.theme-transition .tp-header,
@@ -291,7 +300,25 @@ html.theme-transition .tp-admin-login-card,
 html.theme-transition .tp-admin-login-wash,
 html.theme-transition .tp-field-input,
 html.theme-transition .tp-dropdown-menu,
-html.theme-transition .tp-dropdown-trigger {
+html.theme-transition .tp-dropdown-trigger,
+html.theme-transition .tp-icon-btn,
+html.theme-transition .tp-nav-mega,
+html.theme-transition .tp-nav-mega-cat,
+html.theme-transition .tp-nav-mega-cat-icon,
+html.theme-transition .tp-nav-mega-cat-count,
+html.theme-transition .tp-nav-mega-tool,
+html.theme-transition .tp-nav-mega-tool-icon,
+html.theme-transition .tp-mobile-panel,
+html.theme-transition .tp-wish-panel,
+html.theme-transition .tp-search-results,
+html.theme-transition .tp-tool-page,
+html.theme-transition .tp-content-canvas,
+html.theme-transition .tp-hero,
+html.theme-transition .tp-brand-mark,
+html.theme-transition .tp-icon-tile,
+html.theme-transition .tp-category-card,
+html.theme-transition .tp-wish-btn,
+html.theme-transition .tp-tool-arrow {
   transition:
     background-color 220ms ease,
     color 220ms ease,
@@ -396,18 +423,46 @@ html.theme-transition .tp-dropdown-trigger {
   padding: 0;
 }
 
-/* ThemeScript sets data-theme before paint. CSS swaps the icon instead of
-   client state, so SSR and hydration render the same markup. */
-.tp-theme-icon--sun {
-  display: none;
+/* ThemeScript sets data-theme before paint. Both glyphs stay in the DOM and
+   cross-fade on opacity, so SSR and hydration render the same markup and the
+   toggle never hard-cuts between icons. */
+.tp-icon-btn,
+.tp-admin-icon {
+  position: relative;
 }
 
-[data-theme="dark"] .tp-theme-icon--sun {
-  display: block;
+.tp-theme-icon--moon,
+.tp-theme-icon--sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  transition:
+    opacity var(--dur-base) ease,
+    transform var(--dur-base) var(--ease-out);
+}
+
+.tp-theme-icon--moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.tp-theme-icon--sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.7);
+  pointer-events: none;
 }
 
 [data-theme="dark"] .tp-theme-icon--moon {
-  display: none;
+  opacity: 0;
+  transform: rotate(90deg) scale(0.7);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .tp-theme-icon--sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  pointer-events: auto;
 }
 
 /* ---------- Dropdown menus ---------- */
@@ -1166,15 +1221,21 @@ html.theme-transition .tp-dropdown-trigger {
   position: relative;
   height: 100%;
   transform-origin: center center;
-  transition: transform 420ms var(--ease-out);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* Lift the whole wrapper, not just the card — the arrow (inside the card)
-   and the heart (absolute sibling) then move as one, with no displacement. */
-.tp-tool-card-wrap:hover {
-  transform: translateY(-4px);
+/* The wrapper must stay put: it is the hover hit area. Lifting it moved the
+   bottom edge out from under the cursor, which flipped :hover off, dropped the
+   card back down and repeated — the "shake". Lift the visuals with `translate`
+   instead (a separate property so the arrow/heart's own transforms survive),
+   keeping the hit target stationary. */
+.tp-tool-card-wrap:hover > .tp-card,
+.tp-tool-card-wrap:has(.tp-tool-card-link:focus-visible) > .tp-card,
+.tp-tool-card-wrap:hover > .tp-wish-btn,
+.tp-tool-card-wrap:has(.tp-tool-card-link:focus-visible) > .tp-wish-btn,
+.tp-wish-btn:focus-visible {
+  translate: 0 -4px;
 }
 
 .tp-tool-card-wrap > .tp-card {
@@ -1210,7 +1271,8 @@ html.theme-transition .tp-dropdown-trigger {
     box-shadow 420ms var(--ease-out),
     color 420ms var(--ease-out),
     background-color 420ms var(--ease-out),
-    transform 420ms var(--ease-out);
+    transform 420ms var(--ease-out),
+    translate 420ms var(--ease-out);
 }
 
 .tp-tool-card-wrap:hover .tp-wish-btn,
@@ -1849,7 +1911,8 @@ html.theme-transition .tp-dropdown-trigger {
   box-shadow: var(--card-shadow), var(--card-highlight);
   transition:
     box-shadow 420ms var(--ease-out),
-    background-color 420ms var(--ease-out);
+    background-color 420ms var(--ease-out),
+    translate 420ms var(--ease-out);
 }
 
 .tp-card > * {
@@ -3930,6 +3993,7 @@ html:has([data-admin="true"]) {
 /* 4.3 - Counting list; each number is an accent circle. */
 .tp-how-list {
   display: flex;
+  max-width: 64ch;
   flex-direction: column;
   gap: 14px;
   margin: 0;
@@ -3963,8 +4027,9 @@ html:has([data-admin="true"]) {
 .tp-how-item p {
   margin: 3px 0 0;
   color: var(--text);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.65;
+  text-wrap: pretty;
 }
 
 /* 4.4 - The workspace sits directly below the steps. */
@@ -3982,13 +4047,15 @@ html:has([data-admin="true"]) {
 .tp-content-inner {
   width: 100%;
   max-width: 1100px;
-  margin-inline: auto;
-  padding-inline: clamp(20px, 4vw, 40px);
+  margin-inline: 0;
+  padding-inline: 0;
 }
 
-/* One comfortable reading column for prose, aligned to the page's left edge. */
+/* One comfortable reading column for prose, aligned to the page's left edge.
+   64ch lands around 75-80 rendered characters with Inter, instead of letting
+   lines run the full width of the workspace. */
 .tp-article {
-  max-width: 820px;
+  max-width: 64ch;
   margin-inline: 0;
 }
 
@@ -4003,10 +4070,12 @@ html:has([data-admin="true"]) {
 }
 
 .tp-content-lead {
+  max-width: 64ch;
   margin: 0 0 32px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 16.5px;
   line-height: 1.7;
+  text-wrap: pretty;
 }
 
 .tp-article-block {
@@ -4024,10 +4093,11 @@ html:has([data-admin="true"]) {
 }
 
 .tp-article-copy {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   color: var(--muted);
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 1.75;
+  text-wrap: pretty;
 }
 
 .tp-article-close {
@@ -4093,8 +4163,9 @@ html:has([data-admin="true"]) {
 .tp-faq-a {
   margin: 0;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 15.5px;
   line-height: 1.7;
+  text-wrap: pretty;
 }
 
 /* 4.7 - Related tools, last. */
@@ -5284,12 +5355,29 @@ html:has([data-admin="true"]) {
  * colors or components: every value is derived from the existing palette
  * and scaled by --glow-strength (0.5 by default).
  * ------------------------------------------------------------------ */
-[data-theme="dark"] body {
+/* The ambient wash is painted on a fixed layer instead of using
+   `background-attachment: fixed` on <body>. Fixed background attachment
+   repaints the whole viewport on every scroll frame and was the main cause
+   of the heavy, laggy scrolling on long tool pages. A fixed pseudo-element
+   is composited once and stays cheap while scrolling. It exists in both
+   themes with identical gradients; only opacity follows the theme so the
+   wash fades in/out instead of popping over the whole page on a switch. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
   background-image:
     radial-gradient(900px 520px at 82% -8%, rgba(106, 91, 255, calc(0.16 * var(--glow-strength))), transparent 62%),
     radial-gradient(760px 520px at 6% 32%, rgba(72, 103, 255, calc(0.075 * var(--glow-strength))), transparent 60%),
     radial-gradient(1000px 600px at 50% 108%, rgba(143, 125, 255, calc(0.07 * var(--glow-strength))), transparent 65%);
-  background-attachment: fixed;
+}
+
+[data-theme="dark"] body::before {
+  opacity: 1;
 }
 
 [data-theme="dark"] .tp-header-inner {
@@ -5301,12 +5389,12 @@ html:has([data-admin="true"]) {
   filter: drop-shadow(0 0 8px rgba(106, 91, 255, calc(0.55 * var(--glow-strength))));
 }
 
-[data-theme="dark"] .tp-hero {
+.tp-hero {
   position: relative;
   isolation: isolate;
 }
 
-[data-theme="dark"] .tp-hero::before {
+.tp-hero::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -5315,8 +5403,14 @@ html:has([data-admin="true"]) {
   width: min(620px, 52%);
   height: 440px;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
   background: radial-gradient(ellipse at center, rgba(106, 91, 255, calc(0.13 * var(--glow-strength))), transparent 68%);
   filter: blur(24px);
+}
+
+[data-theme="dark"] .tp-hero::before {
+  opacity: 1;
 }
 
 [data-theme="dark"] .tp-hero-title em {
@@ -5358,7 +5452,8 @@ html:has([data-admin="true"]) {
   box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
-[data-theme="dark"] .tp-nav-mega-tool-icon {
+[data-theme="dark"] .tp-nav-mega-tool-icon,
+[data-theme="dark"] .tp-nav-mega-cat-icon {
   border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
   background: var(--accent-soft);
   color: var(--accent-hover);
@@ -5368,6 +5463,24 @@ html:has([data-admin="true"]) {
   border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
   background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
   color: var(--accent-hover);
+}
+
+/* Count pills and numbered list markers follow the same bright ink as the
+   mega-menu icons, so dark-theme counts are readable at a glance. */
+[data-theme="dark"] .tp-nav-mega-cat-count {
+  background: var(--accent-soft);
+  color: var(--icon-ink);
+}
+
+[data-theme="dark"] .tp-nav .tp-nav-mega-cat:hover .tp-nav-mega-cat-count {
+  background: color-mix(in srgb, var(--accent) 28%, var(--surface-2));
+  color: var(--icon-ink);
+}
+
+[data-theme="dark"] .tp-category-count,
+[data-theme="dark"] .tp-page-count,
+[data-theme="dark"] .tp-demo-foot-count {
+  color: var(--muted);
 }
 
 
@@ -5385,8 +5498,9 @@ html:has([data-admin="true"]) {
 
 .tp-tool-page-byline {
   margin: 10px 0 0;
-  color: var(--muted-2);
-  font-size: 13px;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.5;
 }
 
 .tp-article-code {
@@ -5408,7 +5522,7 @@ html:has([data-admin="true"]) {
 }
 
 .tp-article-list li {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 /* Full template pages: no divider under the tool, even section rhythm. */
@@ -5444,6 +5558,8 @@ html:has([data-admin="true"]) {
  * ------------------------------------------------------------------ */
 [data-theme="dark"] .tp-tool-icon,
 [data-theme="dark"] .tp-nav-mega-tool-icon,
+[data-theme="dark"] .tp-nav-mega-cat-icon,
+[data-theme="dark"] .tp-nav-mega-cat-count,
 [data-theme="dark"] .tp-icon-tile,
 [data-theme="dark"] .tp-how-number {
   color: var(--icon-ink);
@@ -5453,16 +5569,38 @@ html:has([data-admin="true"]) {
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
 }
 
-[data-theme="dark"] .tp-tool-page {
+/* Full-bleed tool-page mesh. Painting it on the 1180px container left two
+   hard vertical edges, which made the page look boxed in. The pseudo-element
+   spans the viewport while the content keeps its readable width. */
+.tp-tool-page {
+  position: relative;
+}
+
+.tp-tool-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: -1;
+  width: 100vw;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
   background-image:
-    radial-gradient(620px 340px at 10% 2%, rgba(106, 91, 255, 0.055), transparent 70%),
-    radial-gradient(540px 320px at 90% 18%, rgba(125, 155, 255, 0.045), transparent 70%),
-    radial-gradient(760px 420px at 50% 100%, rgba(143, 125, 255, 0.035), transparent 70%);
+    radial-gradient(620px 340px at 10% 2%, rgba(106, 91, 255, 0.06), transparent 70%),
+    radial-gradient(540px 320px at 90% 18%, rgba(125, 155, 255, 0.05), transparent 70%),
+    radial-gradient(760px 420px at 50% 100%, rgba(143, 125, 255, 0.04), transparent 70%);
+}
+
+[data-theme="dark"] .tp-tool-page::before {
+  opacity: 1;
 }
 
 [data-theme="dark"] .tp-article-copy,
 [data-theme="dark"] .tp-faq-a,
 [data-theme="dark"] .tp-atlas-tile p,
 [data-theme="dark"] .tp-atlas-list {
-  color: color-mix(in srgb, var(--text) 78%, var(--muted));
+  color: color-mix(in srgb, var(--text) 84%, var(--muted));
 }
