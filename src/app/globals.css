@@ -147,11 +147,15 @@
 }
 
 /*
- * Baseline interaction transitions for every element.
- * Zero specificity (:where) so any component rule can override it cleanly.
- * This is what makes hover feedback feel consistent across the whole site.
+ * Baseline interaction transitions, scoped to the controls that actually get
+ * hover/focus feedback. The old universal selector also matched every static
+ * element and pseudo-element on the page, so changing data-theme kicked off
+ * thousands of simultaneous colour/shadow transitions and the switch stuttered.
+ * Themed surfaces that need to cross-fade are listed explicitly in the
+ * `html.theme-transition` block below, and ambient gradients animate their own
+ * opacity. Zero specificity (:where) keeps component overrides effortless.
  */
-:where(*, *::before, *::after) {
+:where(a, button, input, textarea, select, [role="button"]) {
   transition-property:
     color,
     background-color,
@@ -1993,10 +1997,15 @@ html.theme-transition .tp-tool-arrow {
   line-height: 0;
   /* ArrowRight rests at 1 o'clock; hover turns it to 3 o'clock. */
   transform: rotate(-45deg);
+  /* Keep the 2px nudge in its own property so `transform` stays a single
+     rotate() on both sides of the hover. Mixing translate() into transform
+     forced matrix interpolation, which made the glyph wobble mid-rotation. */
+  translate: 0 0;
   /* Non-overshooting ease: the spring curve used to rotate past 3 o'clock
      and snap back, which looked like a shake on hover. */
   transition:
     transform 450ms var(--ease-out),
+    translate 450ms var(--ease-out),
     background-color 450ms var(--ease-reveal),
     color 450ms var(--ease-reveal),
     box-shadow 420ms var(--ease-out);
@@ -2019,7 +2028,8 @@ html.theme-transition .tp-tool-arrow {
 .tp-category-card:focus-visible .tp-tool-arrow {
   background: var(--accent-fill);
   color: var(--on-accent);
-  transform: translate(2px, -2px) rotate(0deg);
+  transform: rotate(0deg);
+  translate: 2px -2px;
   /* Same ring + shadow as the saved heart's active state. */
   box-shadow:
     0 0 0 2px color-mix(in srgb, var(--accent) 26%, transparent),
