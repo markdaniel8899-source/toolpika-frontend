@@ -101,6 +101,9 @@
   --accent-soft: rgba(143, 125, 255, 0.14);
   --accent-wash: #171625;
 
+  /* Ambient light wash strength for the dark theme (0 = off, 1 = full). */
+  --glow-strength: 0.5;
+
   --philosophy-bg: #08080e;
   --philosophy-text: #f5f3ef;
   --philosophy-muted: rgba(245, 243, 239, 0.62);
@@ -5266,4 +5269,57 @@ html:has([data-admin="true"]) {
     translate: 0 0 !important;
     filter: none !important;
   }
+}
+
+/* ------------------------------------------------------------------ *
+ * Dark theme — ambient light wash
+ * A single quiet layer of fixed, low-opacity accent gradients. No new
+ * colors or components: every value is derived from the existing palette
+ * and scaled by --glow-strength (0.5 by default).
+ * ------------------------------------------------------------------ */
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(900px 520px at 82% -8%, rgba(106, 91, 255, calc(0.16 * var(--glow-strength))), transparent 62%),
+    radial-gradient(760px 520px at 6% 32%, rgba(72, 103, 255, calc(0.075 * var(--glow-strength))), transparent 60%),
+    radial-gradient(1000px 600px at 50% 108%, rgba(143, 125, 255, calc(0.07 * var(--glow-strength))), transparent 65%);
+  background-attachment: fixed;
+}
+
+[data-theme="dark"] .tp-header-inner {
+  border-color: color-mix(in srgb, var(--accent) calc(18% * var(--glow-strength)), var(--border));
+  box-shadow: 0 12px 40px -28px rgba(106, 91, 255, calc(0.5 * var(--glow-strength)));
+}
+
+[data-theme="dark"] .tp-brand-mark {
+  filter: drop-shadow(0 0 8px rgba(106, 91, 255, calc(0.55 * var(--glow-strength))));
+}
+
+[data-theme="dark"] .tp-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="dark"] .tp-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 2%;
+  width: min(620px, 52%);
+  height: 440px;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(106, 91, 255, calc(0.13 * var(--glow-strength))), transparent 68%);
+  filter: blur(24px);
+}
+
+[data-theme="dark"] .tp-hero-title em {
+  text-shadow: 0 0 30px rgba(143, 125, 255, calc(0.35 * var(--glow-strength)));
+}
+
+[data-theme="dark"] .tp-demo-bezel {
+  box-shadow:
+    0 40px 90px -38px color-mix(in srgb, var(--text) 48%, transparent),
+    0 0 70px -34px rgba(106, 91, 255, calc(0.7 * var(--glow-strength))),
+    0 16px 34px -22px color-mix(in srgb, var(--accent) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--surface) 75%, transparent);
 }
