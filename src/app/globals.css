@@ -684,8 +684,10 @@ html.theme-transition .tp-dropdown-trigger {
   border: 1px solid var(--border);
   border-radius: 22px;
   background: var(--surface);
+  /* Fixed dark shadow: using var(--text) made a light halo under the menu
+     in the dark theme. */
   box-shadow:
-    0 32px 70px -28px color-mix(in srgb, var(--text) 38%, transparent),
+    0 32px 70px -28px rgba(0, 0, 0, 0.55),
     var(--shadow-sm);
   backdrop-filter: blur(24px) saturate(140%);
   -webkit-backdrop-filter: blur(24px) saturate(140%);
@@ -866,10 +868,10 @@ html.theme-transition .tp-dropdown-trigger {
   width: 32px;
   height: 32px;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  border: 1px solid var(--border);
   border-radius: 9px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface);
+  color: var(--muted);
   transition:
     background-color 220ms ease,
     border-color 220ms ease,
@@ -1906,21 +1908,10 @@ html.theme-transition .tp-dropdown-trigger {
   gap: 12px;
 }
 
+/* Light theme: bare glyph, no tile. The tinted tile is dark-theme only. */
 .tp-tool-icon {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  flex: none;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
-  border-radius: 11px;
-  background: var(--accent-soft);
+  display: flex;
   color: var(--accent);
-  transition:
-    background-color 220ms ease,
-    border-color 220ms ease,
-    color 220ms ease,
-    box-shadow 260ms var(--ease-out);
 }
 
 /* Arrow sits in a circle that fills with accent on hover/click, and the
@@ -1983,14 +1974,7 @@ html.theme-transition .tp-dropdown-trigger {
   height: 20px;
 }
 
-/* Tool card icon — filled on hover/focus, matching the mockup direction. */
-.tp-tool-card-wrap:hover .tp-tool-icon,
-.tp-tool-card-link:focus-visible .tp-tool-icon {
-  background: var(--accent-fill);
-  border-color: var(--accent-fill);
-  color: var(--on-accent);
-  box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--accent) 70%, transparent);
-}
+
 
 .tp-tool-title {
   margin: 16px 0 5px;
@@ -5345,9 +5329,36 @@ html:has([data-admin="true"]) {
     inset 0 1px 0 color-mix(in srgb, var(--surface) 75%, transparent);
 }
 
-/* Darker surfaces need the lighter accent variant to stay legible. */
-[data-theme="dark"] .tp-tool-icon,
+/* Dark theme only: quiet tinted tiles behind icons. Light theme keeps the
+   original bare glyphs so the UI does not get visually noisy. */
+[data-theme="dark"] .tp-tool-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  border-radius: 11px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 260ms var(--ease-out);
+}
+
+[data-theme="dark"] .tp-tool-card-wrap:hover .tp-tool-icon,
+[data-theme="dark"] .tp-tool-card-link:focus-visible .tp-tool-icon {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
 [data-theme="dark"] .tp-nav-mega-tool-icon {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+  background: var(--accent-soft);
   color: var(--accent-hover);
 }
 
