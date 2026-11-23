@@ -134,7 +134,7 @@
         "exampleTitle": "Beispiel",
         "exampleLabel": "Ein kurzer Satz",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "Fügen Sie diesen Text in das obige Tool ein, um dieselben Zahlen zu sehen.",
         "featuresTitle": "Funktionen",
         "features": "Live-Zählungen::Jede Zahl wird aktualisiert, sobald Sie tippen oder einfügen.\nSieben Messgrößen::Wörter, Zeichen, Zeichen ohne Leerzeichen, Sätze, Absätze, Zeilen und Lesezeit.\nStatistiken kopieren::Kopieren Sie alle Zählungen mit einem Klick als reinen Text.\nBeispiel testen::Füllen Sie das Feld mit Beispieldaten, um das Tool in Aktion zu sehen.\nPrivatsphäre durch Design::Das gesamte Zählen erfolgt in Ihrem Browser; es wird nichts hochgeladen.",

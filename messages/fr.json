@@ -134,7 +134,7 @@
         "exampleTitle": "Exemple",
         "exampleLabel": "Une courte phrase",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "Essayez de coller ce texte dans l'outil ci-dessus pour voir les mêmes chiffres.",
         "featuresTitle": "Fonctionnalités",
         "features": "Comptages en direct::Chaque chiffre se met à jour dès que vous tapez ou collez du texte.\nSept mesures::Mots, caractères, caractères sans espaces, phrases, paragraphes, lignes et temps de lecture.\nCopier les statistiques::Copiez tous les comptages en texte brut en un clic.\nEssayer un exemple::Remplissez la zone avec un texte d'exemple pour voir l'outil en action.\nPrivé par conception::Tout le comptage se fait dans votre navigateur ; rien n'est téléversé.",

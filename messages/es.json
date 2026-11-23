@@ -134,7 +134,7 @@
         "exampleTitle": "Ejemplo",
         "exampleLabel": "Una oración corta",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "Prueba a pegar este texto en la herramienta de arriba para ver los mismos números.",
         "featuresTitle": "Características",
         "features": "Conteos en tiempo real::Cada número se actualiza en cuanto escribes o pegas.\nSiete medidas::Palabras, caracteres, caracteres sin espacios, oraciones, párrafos, líneas y tiempo de lectura.\nCopiar estadísticas::Copia todos los conteos como texto plano con un solo clic.\nProbar con ejemplo::Rellena el cuadro con texto de muestra para ver la herramienta en acción.\nPrivado por diseño::Todo el conteo se realiza en tu navegador; no se sube nada.",

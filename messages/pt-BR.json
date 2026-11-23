@@ -134,7 +134,7 @@
         "exampleTitle": "Exemplo",
         "exampleLabel": "Uma frase curta",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "Tente colar este texto na ferramenta acima para ver os mesmos números.",
         "featuresTitle": "Recursos",
         "features": "Contagens em tempo real::Cada número é atualizado assim que você digita ou cola.\nSete medidas::Palavras, caracteres, caracteres sem espaços, frases, parágrafos, linhas e tempo de leitura.\nCopiar estatísticas::Copie todas as contagens como texto simples com um clique.\nTestar exemplo::Preencha a caixa com texto de exemplo para ver a ferramenta em ação.\nPrivado por design::Toda a contagem acontece no seu navegador; nada é enviado.",

@@ -134,7 +134,7 @@
         "exampleTitle": "Example",
         "exampleLabel": "A short sentence",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "Try pasting this text into the tool above to see the same numbers.",
         "featuresTitle": "Features",
         "features": "Live counts::Every number updates as soon as you type or paste.\nSeven measures::Words, characters, characters without spaces, sentences, paragraphs, lines and reading time.\nCopy stats::Copy all counts as plain text in one click.\nTry sample::Fill the box with sample text to see the tool working.\nPrivate by design::All counting happens in your browser; nothing is uploaded.",

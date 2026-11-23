@@ -134,7 +134,7 @@
         "exampleTitle": "Örnek",
         "exampleLabel": "Kısa bir cümle",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "Aynı sayıları görmek için bu metni yukarıdaki araca yapıştırın.",
         "featuresTitle": "Özellikler",
         "features": "Canlı sayılar::Her sayı yazdıkça veya yapıştırdıkça güncellenir.\nYedi ölçüm::Kelime, karakter, boşluksuz karakter, cümle, paragraf, satır ve okuma süresi.\nİstatistikleri kopyala::Tüm sayıları düz metin olarak tek tıkla kopyalayın.\nÖrneği deneyin::Aracın çalıştığını görmek için kutuyu örnek metinle doldurun.\nTasarım gereği gizli::Tüm sayım tarayıcınızda gerçekleşir; hiçbir şey yüklenmez.",

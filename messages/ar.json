@@ -134,7 +134,7 @@
         "exampleTitle": "مثال",
         "exampleLabel": "جملة قصيرة",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "جرّب لصق هذا النص في الأداة أعلاه لرؤية نفس الأرقام.",
         "featuresTitle": "الميزات",
         "features": "عدّ فوري::يتحدّث كل رقم فور الكتابة أو اللصق.\nسبعة مقاييس::الكلمات، الأحرف، الأحرف بدون مسافات، الجمل، الفقرات، الأسطر، ووقت القراءة.\nنسخ الإحصاءات::انسخ جميع العدّات كنص عادي بنقرة واحدة.\nجرّب عينة::املأ الصندوق بنص تجريبي لرؤية الأداة تعمل.\nخصوصية بالتصميم::يتم العدّ داخل متصفحك؛ لا يتم رفع أي شيء.",

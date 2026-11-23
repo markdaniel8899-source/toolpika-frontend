@@ -134,7 +134,7 @@
         "exampleTitle": "उदाहरण",
         "exampleLabel": "एक छोटा सा वाक्य",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
         "exampleNote": "उपरोक्त टूल में यह टेक्स्ट पेस्ट करके देखें कि क्या वही संख्याएँ मिलती हैं।",
         "featuresTitle": "विशेषताएँ",
         "features": "लाइव गणनाएँ::जैसे ही आप टाइप या पेस्ट करते हैं, हर संख्या तुरंत अपडेट होती है।\nसात मापदंड::शब्द, वर्ण, बिना स्पेस के वर्ण, वाक्य, अनुच्छेद, पंक्तियाँ और पठन समय।\nआँकड़े कॉपी करें::एक क्लिक में सभी गणनाओं को सादा टेक्स्ट के रूप में कॉपी करें।\nनमूना आज़माएँ::टूल को काम करते देखने के लिए बॉक्स में नमूना टेक्स्ट भरें।\nडिज़ाइन के अनुसार निजी::सभी गणनाएँ आपके ब्राउज़र में होती हैं; कुछ भी अपलोड नहीं किया जाता।",
