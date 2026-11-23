@@ -1995,20 +1995,16 @@ html.theme-transition .tp-tool-arrow {
   background: transparent;
   color: var(--accent);
   line-height: 0;
-  /* ArrowRight rests at 1 o'clock; hover turns it to 3 o'clock. */
-  transform: rotate(-45deg);
-  /* Keep the 2px nudge in its own property so `transform` stays a single
-     rotate() on both sides of the hover. Mixing translate() into transform
-     forced matrix interpolation, which made the glyph wobble mid-rotation. */
-  translate: 0 0;
-  /* Non-overshooting ease: the spring curve used to rotate past 3 o'clock
-     and snap back, which looked like a shake on hover. */
+  /* Same motion recipe as the header "Request a tool" arrow: one transform
+     property carries both the nudge and the rotation, with the same function
+     list on both sides so the browser interpolates each function directly
+     instead of decomposing a matrix. The old version also animated box-shadow
+     on this rotating node, which repainted every frame and read as a shake. */
+  transform: translate(0, 0) rotate(-45deg);
   transition:
-    transform 450ms var(--ease-out),
-    translate 450ms var(--ease-out),
+    transform 450ms var(--ease-spring),
     background-color 450ms var(--ease-reveal),
-    color 450ms var(--ease-reveal),
-    box-shadow 420ms var(--ease-out);
+    color 450ms var(--ease-reveal);
 }
 
 .tp-tool-arrow .tp-icon {
@@ -2028,9 +2024,9 @@ html.theme-transition .tp-tool-arrow {
 .tp-category-card:focus-visible .tp-tool-arrow {
   background: var(--accent-fill);
   color: var(--on-accent);
-  transform: rotate(0deg);
-  translate: 2px -2px;
-  /* Same ring + shadow as the saved heart's active state. */
+  transform: translate(2px, -2px) rotate(0deg);
+  /* Ring + shadow appear instantly instead of animating on the rotating
+     element (that per-frame paint was the visible jitter). */
   box-shadow:
     0 0 0 2px color-mix(in srgb, var(--accent) 26%, transparent),
     0 8px 18px color-mix(in srgb, var(--accent) 24%, transparent);
