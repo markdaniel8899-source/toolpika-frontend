@@ -866,10 +866,10 @@ html.theme-transition .tp-dropdown-trigger {
   width: 32px;
   height: 32px;
   place-items: center;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
   border-radius: 9px;
-  background: var(--surface);
-  color: var(--muted);
+  background: var(--accent-soft);
+  color: var(--accent);
   transition:
     background-color 220ms ease,
     border-color 220ms ease,
@@ -877,8 +877,8 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-nav .tp-nav-mega-tool:hover .tp-nav-mega-tool-icon {
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
-  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  color: var(--accent-hover);
 }
 
 .tp-nav-mega-tool-icon .tp-icon {
@@ -1907,8 +1907,20 @@ html.theme-transition .tp-dropdown-trigger {
 }
 
 .tp-tool-icon {
-  display: flex;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  border-radius: 11px;
+  background: var(--accent-soft);
   color: var(--accent);
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 260ms var(--ease-out);
 }
 
 /* Arrow sits in a circle that fills with accent on hover/click, and the
@@ -1969,6 +1981,15 @@ html.theme-transition .tp-dropdown-trigger {
 .tp-icon-tile .tp-icon {
   width: 20px;
   height: 20px;
+}
+
+/* Tool card icon — filled on hover/focus, matching the mockup direction. */
+.tp-tool-card-wrap:hover .tp-tool-icon,
+.tp-tool-card-link:focus-visible .tp-tool-icon {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--on-accent);
+  box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
 .tp-tool-title {
@@ -5322,4 +5343,16 @@ html:has([data-admin="true"]) {
     0 0 70px -34px rgba(106, 91, 255, calc(0.7 * var(--glow-strength))),
     0 16px 34px -22px color-mix(in srgb, var(--accent) 28%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--surface) 75%, transparent);
+}
+
+/* Darker surfaces need the lighter accent variant to stay legible. */
+[data-theme="dark"] .tp-tool-icon,
+[data-theme="dark"] .tp-nav-mega-tool-icon {
+  color: var(--accent-hover);
+}
+
+[data-theme="dark"] .tp-how-number {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
+  color: var(--accent-hover);
 }
