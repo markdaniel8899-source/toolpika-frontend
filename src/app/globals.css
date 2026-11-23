@@ -5408,3 +5408,31 @@ html:has([data-admin="true"]) {
 .tp-article-list li {
   margin-bottom: 8px;
 }
+
+/* Full template pages: no divider under the tool, even section rhythm. */
+.tp-content-canvas--flush {
+  margin-top: 44px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.tp-content-canvas--flush .tp-content-h2:not(:first-child) {
+  margin-top: 48px;
+}
+
+.tp-content-canvas--flush .tp-how-list {
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.tp-content-canvas--flush .tp-article-code {
+  margin: 14px 0 12px;
+}
+
+.tp-content-canvas--flush .tp-article-list {
+  margin-top: 10px;
+}
+
+.tp-content-canvas--flush .tp-article-h3 {
+  margin-top: 30px;
+}

@@ -53,7 +53,7 @@ export function FullToolPage({
       </section>
 
       <Reveal>
-        <section className="tp-content-canvas">
+        <section className="tp-content-canvas tp-content-canvas--flush">
           <div className="tp-content-inner tp-article">
             <h2 className="tp-content-h2">{content.whatIsTitle}</h2>
             {content.whatIsParagraphs.map((paragraph) => (
@@ -149,7 +149,7 @@ export function FullToolPage({
       ) : null}
 
       <Reveal>
-        <section className="tp-content-canvas">
+        <section className="tp-content-canvas tp-content-canvas--flush">
           <div className="tp-content-inner tp-article">
             <h2 className="tp-content-h2">
               <ShieldCheck className="tp-icon" aria-hidden="true" /> {content.trustTitle}
