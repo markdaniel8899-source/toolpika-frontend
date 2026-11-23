@@ -107,7 +107,23 @@
       "seo": {
         "title": "Contador de Palavras Online Gratuito | Conte Palavras e Caracteres",
         "description": "Conte palavras, caracteres, frases e parágrafos instantaneamente no seu navegador. Gratuito, privado e sem cadastro."
-      }
+      },
+      "trySample": "Experimentar exemplo",
+      "paste": "Colar",
+      "clear": "Limpar",
+      "reset": "Redefinir opções",
+      "copyStats": "Copiar estatísticas",
+      "copied": "Copiado",
+      "emptyHint": "Nada para contar ainda. Cole o texto ou experimente o exemplo.",
+      "inputHint": "Seu texto permanece neste dispositivo.",
+      "statusEmpty": "Aguardando texto",
+      "statusLive": "Contagem em tempo real",
+      "liveCharacters": "{count, plural, one {# caractere} other {# caracteres}}",
+      "optionsTitle": "Opções de contagem",
+      "wordsPerMinute": "Palavras por minuto",
+      "includeReadingTime": "Incluir tempo de leitura",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copia as estatísticas",
+      "pasteUnavailable": "Acesso à área de transferência bloqueado. Use Ctrl/Cmd + V."
     },
     "case-converter": {
       "title": "Conversor de Maiúsculas e Minúsculas",

@@ -107,7 +107,23 @@
       "seo": {
         "title": "عدّاد كلمات مجاني عبر الإنترنت | عدّ الكلمات والحروف",
         "description": "عدّ الكلمات والحروف والجمل والفقرات فورًا في متصفحك. مجاني وخاص ولا يتطلب تسجيلًا."
-      }
+      },
+      "trySample": "جرّب عينة",
+      "paste": "لصق",
+      "clear": "مسح",
+      "reset": "إعادة تعيين الخيارات",
+      "copyStats": "نسخ الإحصائيات",
+      "copied": "تم النسخ",
+      "emptyHint": "لا يوجد نص بعد. الصق النص أو جرّب العينة.",
+      "inputHint": "يبقى نصك على هذا الجهاز.",
+      "statusEmpty": "بانتظار النص",
+      "statusLive": "العد جارٍ مباشرة",
+      "liveCharacters": "{count, plural, one {# حرف} other {# أحرف}}",
+      "optionsTitle": "خيارات العد",
+      "wordsPerMinute": "الكلمات في الدقيقة",
+      "includeReadingTime": "تضمين وقت القراءة",
+      "shortcutHint": "Ctrl/Cmd + Shift + C لنسخ الإحصائيات",
+      "pasteUnavailable": "تم حظر الوصول إلى الحافظة. استخدم Ctrl/Cmd + V بدلاً من ذلك."
     },
     "case-converter": {
       "title": "محوّل حالة الأحرف",

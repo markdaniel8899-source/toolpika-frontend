@@ -107,7 +107,23 @@
       "seo": {
         "title": "Kostenloser Online-Wortzähler | Wörter & Zeichen zählen",
         "description": "Zählen Sie Wörter, Zeichen, Sätze und Absätze sofort in Ihrem Browser. Kostenlos, privat und ohne Registrierung."
-      }
+      },
+      "trySample": "Beispiel testen",
+      "paste": "Einfügen",
+      "clear": "Leeren",
+      "reset": "Optionen zurücksetzen",
+      "copyStats": "Statistiken kopieren",
+      "copied": "Kopiert",
+      "emptyHint": "Noch nichts zu zählen. Text einfügen oder Beispiel testen.",
+      "inputHint": "Ihr Text bleibt auf diesem Gerät.",
+      "statusEmpty": "Warte auf Text",
+      "statusLive": "Live-Zählung",
+      "liveCharacters": "{count, plural, one {# Zeichen} other {# Zeichen}}",
+      "optionsTitle": "Zähloptionen",
+      "wordsPerMinute": "Wörter pro Minute",
+      "includeReadingTime": "Lesezeit einbeziehen",
+      "shortcutHint": "Strg/Cmd + Umschalt + C kopiert die Statistiken",
+      "pasteUnavailable": "Zugriff auf die Zwischenablage ist blockiert. Verwenden Sie stattdessen Strg/Cmd + V."
     },
     "case-converter": {
       "title": "Groß-/Kleinschreibung umwandeln",

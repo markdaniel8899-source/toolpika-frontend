@@ -107,7 +107,23 @@
       "seo": {
         "title": "Ücretsiz Çevrimiçi Kelime Sayacı | Kelime ve Karakter Sayma",
         "description": "Kelime, karakter, cümle ve paragrafları tarayıcınızda anında sayın. Ücretsiz, gizli ve kayıt gerektirmez."
-      }
+      },
+      "trySample": "Örneği dene",
+      "paste": "Yapıştır",
+      "clear": "Temizle",
+      "reset": "Seçenekleri sıfırla",
+      "copyStats": "İstatistikleri kopyala",
+      "copied": "Kopyalandı",
+      "emptyHint": "Henüz sayılacak bir şey yok. Metni yapıştırın veya örneği deneyin.",
+      "inputHint": "Metniniz bu cihazda kalır.",
+      "statusEmpty": "Metin bekleniyor",
+      "statusLive": "Canlı sayım",
+      "liveCharacters": "{count, plural, one {# karakter} other {# karakter}}",
+      "optionsTitle": "Sayma seçenekleri",
+      "wordsPerMinute": "Dakikadaki kelime sayısı",
+      "includeReadingTime": "Okuma süresini dahil et",
+      "shortcutHint": "Ctrl/Cmd + Shift + C istatistikleri kopyalar",
+      "pasteUnavailable": "Pano erişimi engellendi. Bunun yerine Ctrl/Cmd + V kullanın."
     },
     "case-converter": {
       "title": "Harf Boyutu Dönüştürücü",

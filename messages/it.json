@@ -107,7 +107,23 @@
       "seo": {
         "title": "Contatore di parole online gratuito | Conta parole e caratteri",
         "description": "Conta parole, caratteri, frasi e paragrafi istantaneamente nel tuo browser. Gratuito, privato e senza registrazione."
-      }
+      },
+      "trySample": "Prova un esempio",
+      "paste": "Incolla",
+      "clear": "Cancella",
+      "reset": "Ripristina opzioni",
+      "copyStats": "Copia statistiche",
+      "copied": "Copiato",
+      "emptyHint": "Nessun testo da contare. Incolla del testo o prova l'esempio.",
+      "inputHint": "Il tuo testo resta su questo dispositivo.",
+      "statusEmpty": "In attesa di testo",
+      "statusLive": "Conteggio in tempo reale",
+      "liveCharacters": "{count, plural, one {# carattere} other {# caratteri}}",
+      "optionsTitle": "Opzioni di conteggio",
+      "wordsPerMinute": "Parole al minuto",
+      "includeReadingTime": "Includi tempo di lettura",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copia le statistiche",
+      "pasteUnavailable": "L'accesso alla clipboard è bloccato. Usa Ctrl/Cmd + V invece."
     },
     "case-converter": {
       "title": "Convertitore di maiuscole e minuscole",

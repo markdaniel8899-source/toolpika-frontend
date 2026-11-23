@@ -5367,3 +5367,166 @@ html:has([data-admin="true"]) {
   background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
   color: var(--accent-hover);
 }
+
+/* ------------------------------------------------------------------ *
+ * Enhanced tool box — header bar, options and status line.
+ * Opt-in via .tp-workspace-enhanced; every other tool keeps its
+ * original two-pane markup and styling.
+ * ------------------------------------------------------------------ */
+.tp-workspace.tp-workspace-enhanced {
+  display: block;
+}
+
+.tp-workspace-head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), var(--surface));
+}
+
+.tp-workspace-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.tp-workspace-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+}
+
+.tp-workspace-enhanced .tp-workspace-pane:first-child,
+.tp-workspace-enhanced .tp-workspace-pane:last-child {
+  border-radius: 0;
+}
+
+.tp-workspace-enhanced .tp-workspace-pane {
+  min-height: 420px;
+}
+
+.tp-workspace-enhanced .tp-workspace-pane:last-child {
+  background: color-mix(in srgb, var(--bg) 88%, var(--surface));
+}
+
+.tp-workspace-pane > .tp-status-pill {
+  width: auto;
+  align-self: flex-start;
+  padding: 5px 10px;
+}
+
+.tp-workspace-pane > .tp-workspace-pane-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 0;
+}
+
+.tp-workspace-pane > .tp-workspace-empty {
+  display: flex;
+  min-height: 160px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-control);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.tp-workspace-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.tp-workspace-options-title {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tp-workspace-option-range {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.tp-workspace-option-range strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-workspace-option-range input[type="range"] {
+  width: 180px;
+  accent-color: var(--accent-fill);
+}
+
+.tp-workspace-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.tp-workspace-privacy {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tp-workspace-privacy .tp-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
+@media (max-width: 980px) {
+  .tp-workspace-body {
+    grid-template-columns: 1fr;
+  }
+
+  .tp-workspace-enhanced .tp-workspace-pane {
+    min-height: 0;
+  }
+
+  .tp-workspace-enhanced .tp-workspace-pane + .tp-workspace-pane {
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+
+  .tp-workspace-head {
+    justify-content: flex-start;
+  }
+
+  .tp-workspace-status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .tp-workspace-pane > .tp-workspace-pane-foot {
+    flex-wrap: wrap;
+  }
+}

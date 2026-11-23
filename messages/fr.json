@@ -107,7 +107,23 @@
       "seo": {
         "title": "Compteur de mots en ligne gratuit | Comptez les mots et les caractères",
         "description": "Comptez instantanément les mots, caractères, phrases et paragraphes dans votre navigateur. Gratuit, privé et sans inscription."
-      }
+      },
+      "trySample": "Essayer un exemple",
+      "paste": "Coller",
+      "clear": "Effacer",
+      "reset": "Réinitialiser les options",
+      "copyStats": "Copier les statistiques",
+      "copied": "Copié",
+      "emptyHint": "Rien à compter pour l'instant. Collez du texte ou essayez l'exemple.",
+      "inputHint": "Votre texte reste sur cet appareil.",
+      "statusEmpty": "En attente de texte",
+      "statusLive": "Comptage en direct",
+      "liveCharacters": "{count, plural, one {# caractère} other {# caractères}}",
+      "optionsTitle": "Options de comptage",
+      "wordsPerMinute": "Mots par minute",
+      "includeReadingTime": "Inclure le temps de lecture",
+      "shortcutHint": "Ctrl/Cmd + Maj + C copie les statistiques",
+      "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez Ctrl/Cmd + V à la place."
     },
     "case-converter": {
       "title": "Convertisseur de casse",

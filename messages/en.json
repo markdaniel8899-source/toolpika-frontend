@@ -107,7 +107,23 @@
       "seo": {
         "title": "Free Word Counter Online | Count Words & Characters",
         "description": "Count words, characters, sentences and paragraphs instantly in your browser. Free, private and no sign-up."
-      }
+      },
+      "trySample": "Try sample",
+      "paste": "Paste",
+      "clear": "Clear",
+      "reset": "Reset options",
+      "copyStats": "Copy stats",
+      "copied": "Copied",
+      "emptyHint": "Nothing to count yet. Paste text or try the sample.",
+      "inputHint": "Your text stays on this device.",
+      "statusEmpty": "Waiting for text",
+      "statusLive": "Counting live",
+      "liveCharacters": "{count, plural, one {# character} other {# characters}}",
+      "optionsTitle": "Counting options",
+      "wordsPerMinute": "Words per minute",
+      "includeReadingTime": "Include reading time",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copies the stats",
+      "pasteUnavailable": "Clipboard access is blocked. Use Ctrl/Cmd + V instead."
     },
     "case-converter": {
       "title": "Case Converter",

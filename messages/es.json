@@ -107,7 +107,23 @@
       "seo": {
         "title": "Contador de palabras en línea gratis | Cuenta palabras y caracteres",
         "description": "Cuenta palabras, caracteres, oraciones y párrafos al instante en tu navegador. Gratis, privado y sin registro."
-      }
+      },
+      "trySample": "Probar ejemplo",
+      "paste": "Pegar",
+      "clear": "Borrar",
+      "reset": "Restablecer opciones",
+      "copyStats": "Copiar estadísticas",
+      "copied": "Copiado",
+      "emptyHint": "Aún no hay nada que contar. Pega un texto o prueba el ejemplo.",
+      "inputHint": "Tu texto se queda en este dispositivo.",
+      "statusEmpty": "Esperando texto",
+      "statusLive": "Conteo en vivo",
+      "liveCharacters": "{count, plural, one {# carácter} other {# caracteres}}",
+      "optionsTitle": "Opciones de conteo",
+      "wordsPerMinute": "Palabras por minuto",
+      "includeReadingTime": "Incluir tiempo de lectura",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copia las estadísticas",
+      "pasteUnavailable": "El acceso al portapapeles está bloqueado. Usa Ctrl/Cmd + V en su lugar."
     },
     "case-converter": {
       "title": "Convertidor de mayúsculas y minúsculas",
