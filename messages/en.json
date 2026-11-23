@@ -123,7 +123,32 @@
       "wordsPerMinute": "Words per minute",
       "includeReadingTime": "Include reading time",
       "shortcutHint": "Ctrl/Cmd + Shift + C copies the stats",
-      "pasteUnavailable": "Clipboard access is blocked. Use Ctrl/Cmd + V instead."
+      "pasteUnavailable": "Clipboard access is blocked. Use Ctrl/Cmd + V instead.",
+      "page": {
+        "byline": "By the Toolpika team · Last updated 23 November 2026",
+        "directAnswer": "Word Counter counts words, characters, sentences, paragraphs and lines as you type or paste text. Everything happens in your browser, so your writing never leaves the device. You get instant, exact results with no sign-up, no upload and no waiting.",
+        "whatIsTitle": "What is a word counter?",
+        "whatIs": "A word counter is a small tool that reads a piece of text and reports how many words, characters, sentences, paragraphs and lines it contains. It removes the manual work of selecting text and guessing at length, which matters when an editor, form or submission sets a strict limit.\n\nMost counters split words on whitespace: any run of letters or numbers between spaces becomes one word. That is why a hyphenated term such as \"well-known\" counts as one word in most tools, while \"well known\" counts as two. Punctuation attached to a word does not create a new word. Character counts usually include spaces, so a 200-word paragraph may contain well over 1,000 characters.\n\nSentence detection looks for full stops, question marks and exclamation marks. Paragraph detection looks for a blank line between blocks. Line counts follow line breaks, not visual wrapping, so a long line that wraps on screen is still one line. Reading time is an estimate based on an average adult speed of 200 words per minute; it is a guide, not a promise about how fast you will read.\n\nWord counts also behave differently across scripts. Languages such as English use spaces to separate words, while Chinese, Japanese and Korean do not. A whitespace-based counter will report very few words for those languages even though the text is long. Use the character count instead when working with scripts that do not use spaces.",
+        "howToTitle": "How to use Word Counter",
+        "howTo": "Paste or type your text into the input box on the left.\nRead the live counts in the result panel on the right.\nCopy the full set of counts when you need to share or record it.\nClear the box to start again with a new piece of text.",
+        "exampleTitle": "Example",
+        "exampleLabel": "A short sentence",
+        "exampleInput": "Hello world. This is a test.",
+        "exampleOutput": "Words: 6 · Characters: 28 · Characters (no spaces): 23 · Sentences: 2 · Paragraphs: 1 · Lines: 1 · Reading time: 1 min",
+        "exampleNote": "Try pasting this text into the tool above to see the same numbers.",
+        "featuresTitle": "Features",
+        "features": "Live counts::Every number updates as soon as you type or paste.\nSeven measures::Words, characters, characters without spaces, sentences, paragraphs, lines and reading time.\nCopy stats::Copy all counts as plain text in one click.\nTry sample::Fill the box with sample text to see the tool working.\nPrivate by design::All counting happens in your browser; nothing is uploaded.",
+        "useCasesTitle": "When to use Word Counter",
+        "useCases": "Meet an assignment limit::Check an essay or blog draft before you submit it.\nPlan a blog post::See whether an introduction is too long or too short.\nCheck form input::Verify text before pasting it into a field with a character cap.\nReview translations::Compare the length of two versions of the same paragraph.",
+        "mistakesTitle": "Common mistakes and limits",
+        "limitsTitle": "Limits",
+        "mistakes": "Ignoring spaces::Character counts include spaces. Use the no-spaces count when a form excludes them.\nPasting from PDFs::Copied text can carry hard line breaks that inflate the line count. Check the text before relying on it.\nMixing line endings::Windows and Unix line endings both count as one line here, but pasted content may include extra blank lines.",
+        "limits": "Very long text can be slow on older phones.\nWord counts for scripts without spaces are approximate.\nReading time assumes 200 words per minute and is only an estimate.",
+        "faqTitle": "Frequently asked questions",
+        "faqs": "Does Word Counter count spaces as characters?::Yes. The Characters count includes spaces and punctuation, so it matches what most form fields count. If a submission limit ignores whitespace, use Characters (no spaces) instead. The tool shows both numbers side by side so you can pick the right one for your form.\nHow does the tool count a word?::It treats each run of non-whitespace characters as one word. A hyphenated term such as well-known counts as one word, and punctuation attached to a word does not create another. Numbers and symbols separated by spaces count as their own words, which matches the common whitespace rule used by most plain-text counters.\nWill my text be uploaded?::No. All counting runs inside your browser, so your text never reaches a server. Nothing is stored after you close the tab, and there is no account to create. The tool works the same way on every visit, whether you paste a single sentence or a long draft.\nWhy is my word count different in another editor?::Editors differ on hyphens, numbers and symbols. This tool uses a whitespace-based rule, which is the common approach for plain text. An editor that counts punctuation as separate tokens may report a higher number. Check the rule used by the site or form that set your limit before trusting either count.\nDoes it work for Chinese or Japanese text?::Character, line and paragraph counts work well for those scripts. Word counts rely on spaces, so a dense passage may show very few words even when it is long. Use the character count as the main measure when working with languages that do not separate words with spaces.\nIs reading time accurate?::It is an estimate based on an average adult speed of 200 words per minute, not a measurement of your own pace. Technical text, references and careful editing take longer. Use the figure to compare drafts or plan a deadline, and adjust it to match how fast you actually read.",
+        "trustTitle": "About this tool",
+        "trustBody": "Built by the Toolpika team. Every tool in the collection runs in your browser and is checked before release. Last updated 23 November 2026."
+      }
     },
     "case-converter": {
       "title": "Case Converter",

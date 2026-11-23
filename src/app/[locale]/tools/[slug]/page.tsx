@@ -13,8 +13,12 @@ import {
   getToolsByCategory,
   toolTitleKey,
   toolDescriptionKey,
+  toolSeoTitleKey,
+  toolSeoDescriptionKey,
 } from "@/lib/tools/registry";
 import { getToolSeoContent } from "@/lib/tools/seo-content";
+import { getToolPageContent } from "@/lib/tools/tool-content";
+import { FullToolPage } from "@/components/tools/full-tool-page";
 
 const LOCALES = [
   "en", "de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi",
@@ -39,12 +43,12 @@ export async function generateMetadata({
   if (!tool) return { title: t("notFound") };
 
   const siteUrl = getSiteUrl();
-  const toolTitle = t(toolTitleKey(tool));
-  const toolDescription = t(toolDescriptionKey(tool));
+  const pageTitle = t(toolSeoTitleKey(tool));
+  const pageDescription = t(toolSeoDescriptionKey(tool));
 
   return {
-    title: `${toolTitle} | ${t("online")}`,
-    description: toolDescription,
+    title: pageTitle,
+    description: pageDescription,
     alternates: {
       canonical: `${siteUrl}/${locale}/tools/${tool.slug}`,
       languages: {
@@ -55,8 +59,8 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: `${toolTitle} | Toolpika`,
-      description: toolDescription,
+      title: pageTitle,
+      description: pageDescription,
       type: "website",
       url: `${siteUrl}/${locale}/tools/${tool.slug}`,
     },
@@ -89,11 +93,13 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const toolTitle = t(toolTitleKey(tool));
   const toolDescription = t(toolDescriptionKey(tool));
   const categoryLabel = getCategoryLabel(tool.category, t);
+  const fullContent = getToolPageContent(t, slug);
   const seo = getToolSeoContent(t, {
     name: toolTitle,
     category: categoryLabel,
     description: toolDescription,
   });
+  const faqs = fullContent ? fullContent.faqs : seo.faqs;
 
   // 4.7 - same-category tools first; top popular as fallback when < 3.
   const related = getToolsByCategory(tool.category)
@@ -116,6 +122,17 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "Organization",
+        name: "Toolpika",
+        url: siteUrl,
+      },
+      {
+        "@type": "WebSite",
+        name: "Toolpika",
+        url: siteUrl,
+        inLanguage: locale,
+      },
       {
         "@type": "WebApplication",
         name: toolTitle,
@@ -143,7 +160,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
       // 4.6 - FAQPage schema for the fully visible FAQs rendered below.
       {
         "@type": "FAQPage",
-        mainEntity: seo.faqs.map((faq) => ({
+        mainEntity: faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: faq.answer },
@@ -151,6 +168,28 @@ export default async function ToolPage({ params }: LocalePageProps) {
       },
     ],
   };
+
+  if (fullContent) {
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+        <FullToolPage
+          tool={tool}
+          title={toolTitle}
+          content={fullContent}
+          related={related}
+          homeLabel={t("home")}
+          categoryLabel={categoryLabel}
+          relatedTitle={tHow("relatedTitle")}
+        />
+      </>
+    );
+  }
 
   const steps = [tHow("step1"), tHow("step2"), tHow("step3")];
 

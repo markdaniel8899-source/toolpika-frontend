@@ -37,6 +37,12 @@ const SKIP_VALUES = new Set([
   "Contact", "Blog", "Legal", "Home", "Input", "Privacy",
 ]);
 
+// Code-like values that must stay byte-identical in every locale.
+const SKIP_KEYS = new Set([
+  "tools.word-counter.page.exampleInput",
+  "tools.word-counter.page.exampleOutput",
+]);
+
 // Small batches + a pause between requests keep us under Groq's per-minute
 // output-token (OTPM) limit. Each batch is saved immediately so an
 // interrupted run can resume without re-translating finished strings.
@@ -210,6 +216,7 @@ async function main() {
 
     for (const [path, value] of Object.entries(sourceFlat)) {
       if (typeof value !== "string") continue;
+      if (!options.force && SKIP_KEYS.has(path)) continue;
       // Keep intentional English values as-is when the key already exists.
       if (!options.force && SKIP_VALUES.has(value) && targetFlat[path] !== undefined) continue;
       if (!options.force && targetFlat[path] === value) {
