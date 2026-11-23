@@ -105,8 +105,8 @@
       "title": "Kelime Sayacı",
       "shortDesc": "Metninizdeki kelimeleri, karakterleri, cümleleri ve paragrafları sayın.",
       "seo": {
-        "title": "Ücretsiz Çevrimiçi Kelime Sayacı | Kelime ve Karakter Sayma",
-        "description": "Kelime, karakter, cümle ve paragrafları tarayıcınızda anında sayın. Ücretsiz, gizli ve kayıt gerektirmez."
+        "title": "Kelime sayacı - Anında ve gizli sonuçlar",
+        "description": "Bu ücretsiz kelime sayacıyla kelime, karakter, cümle ve paragraf sayılarını anında öğrenin. Tarayıcınızda gizli çalışır ve hemen kullanıma hazırdır."
       },
       "trySample": "Örneği dene",
       "paste": "Yapıştır",
@@ -125,7 +125,7 @@
       "shortcutHint": "Ctrl/Cmd + Shift + C istatistikleri kopyalar",
       "pasteUnavailable": "Pano erişimi engellendi. Bunun yerine Ctrl/Cmd + V kullanın.",
       "page": {
-        "byline": "Toolpika ekibi tarafından · Son güncelleme: 23 Kasım 2026",
+        "byline": "Toolpika ekibi tarafından · Son güncelleme: 24 Kasım 2026",
         "directAnswer": "Kelime Sayacı, metin yazdıkça veya yapıştırdıkça kelimeleri, karakterleri, cümleleri, paragrafları ve satırları sayar. Her şey tarayıcınızda gerçekleştiği için yazılarınız asla cihazınızdan ayrılmaz. Kayıt olmadan, yükleme yapmadan ve beklemeden anında ve kesin sonuçlar alırsınız.",
         "whatIsTitle": "Kelime sayacı nedir?",
         "whatIs": "Bir kelime sayacı, bir metin parçasını okuyup kaç kelime, karakter, cümle, paragraf ve satır içerdiğini raporlayan küçük bir araçtır. Metni seçme ve uzunluğu tahmin etme gibi manuel işleri ortadan kaldırır; bu da bir editör, form veya gönderim katı bir sınır belirlediğinde önemlidir.\n\nÇoğu sayacı boşluklara göre kelimeleri ayırır: Boşluklar arasındaki herhangi bir harf veya rakam dizisi bir kelime olarak sayılır. Bu nedenle \"well-known\" gibi tireli terimler çoğu araçta bir kelime olarak sayılırken, \"well known\" iki kelime olarak sayılır. Bir kelimeye eklenen noktalama işaretleri yeni bir kelime oluşturmaz. Karakter sayıları genellikle boşlukları da içerir, bu nedenle 200 kelimelik bir paragraf 1.000'den fazla karakter içerebilir.\n\nCümle algılama, nokta, soru işareti ve ünlem arar. Paragraf algılama, bloklar arasındaki boş satırı arar. Satır sayıları, görsel sarmalamayı değil, satır sonlarını takip eder; bu nedenle ekranda sarılan uzun bir satır hâlâ tek bir satırdır. Okuma süresi, dakikada 200 kelime olan ortalama yetişkin hızına dayalı bir tahmindir; ne kadar hızlı okuyacağınız hakkında bir vaat değil, bir kılavuzdur.\n\nKelime sayıları farklı yazı sistemlerinde farklı davranır. İngilizce gibi diller kelimeleri ayırmak için boşluk kullanırken Çince, Japonca ve Korece kullanmaz. Boşluk tabanlı bir sayacı, bu diller için metin uzun olsa bile çok az kelime raporlayacaktır. Boşluk kullanmayan yazı sistemleriyle çalışırken bunun yerine karakter sayısını kullanın.",
@@ -147,7 +147,9 @@
         "faqTitle": "Sıkça sorulan sorular",
         "faqs": "Kelime Sayacı boşlukları karakter olarak sayar mı?::Evet. Karakter sayısı, boşlukları ve noktalama işaretlerini içerir; bu da çoğu form alanının saydığıyla eşleşir. Bir gönderim sınırı boşlukları yok sayıyorsa, bunun yerine Boşluk Hariç Karakter sayısını kullanın. Araç, formunuz için doğru olanı seçebilmeniz için her iki sayıyı yan yana gösterir.\nAraç bir kelimeyi nasıl sayar?::Boş olmayan karakterlerin her ardışık dizisini bir kelime olarak kabul eder. İyi-bilinen gibi tireli bir terim bir kelime olarak sayılır ve bir kelimeye bitişik noktalama işareti başka bir kelime oluşturmaz. Boşluklarla ayrılmış sayılar ve semboller kendi başlarına kelime olarak sayılır; bu da çoğu düz metin sayıcısının kullandığı genel boşluk kuralıyla eşleşir.\nMetnim yüklenecek mi?::Hayır. Tüm sayım tarayıcınızın içinde gerçekleşir, bu nedenle metniniz asla bir sunucuya ulaşmaz. Sekmeyi kapattıktan sonra hiçbir şey saklanmaz ve oluşturulacak bir hesap yoktur. Araç, tek bir cümle yapıştırıp yapıştırmadığınız veya uzun bir taslakla çalışıp çalışmadığınız her ziyarette aynı şekilde çalışır.\nKelime sayımım başka bir editörde neden farklı?::Editörler tireler, sayılar ve semboller konusunda farklılık gösterir. Bu araç, düz metin için yaygın yaklaşım olan boşluk tabanlı bir kural kullanır. Noktalama işaretlerini ayrı belirteçler olarak sayan bir editör daha yüksek bir sayı raporlayabilir. Sınırınızı belirleyen site veya formun kullandığı kuralı, her iki sayıya da güvenmeden önce kontrol edin.\nÇince veya Japonca metinler için çalışır mı?::Karakter, satır ve paragraf sayıları bu yazı sistemleri için iyi çalışır. Kelime sayıları boşluklara dayanır, bu nedenle yoğun bir pasaj uzun olsa bile çok az kelime gösterebilir. Kelimeleri boşluklarla ayırmayan dillerle çalışırken ana ölçü olarak karakter sayısını kullanın.\nOkuma süresi doğru mu?::Bu, kendi hızınızın bir ölçümü değil, dakikada 200 kelime olan ortalama yetişkin hızına dayalı bir tahmindir. Teknik metinler, referanslar ve dikkatli düzenleme daha uzun sürer. Bu rakamı taslakları karşılaştırmak veya bir son tarihi planlamak için kullanın ve aslında ne kadar hızlı okuduğunuza göre ayarlayın.",
         "trustTitle": "Bu araç hakkında",
-        "trustBody": "Toolpika ekibi tarafından geliştirildi. Koleksiyondaki her araç tarayıcınızda çalışır ve yayınlanmadan önce kontrol edilir. Son güncelleme: 23 Kasım 2026."
+        "trustBody": "Toolpika ekibi tarafından geliştirildi. Koleksiyondaki her araç tarayıcınızda çalışır ve yayınlanmadan önce kontrol edilir. Son güncelleme: 24 Kasım 2026.",
+        "aboutTitle": "Kelime sayacı hakkında",
+        "contextualLink": "Aynı metnin büyük/küçük harflerini değiştirmek mi istiyorsunuz? {tool} aracını deneyin."
       }
     },
     "case-converter": {
@@ -225,7 +227,8 @@
       "installA": "Kuracak bir şey yok. {name} bir web sayfasıdır, bu nedenle bilgisayar veya telefonunuzdaki herhangi bir modern tarayıcı bu {category} aracını çalıştırabilir. Sadece sayfayı açın ve başlayın.",
       "phoneQ": "{name} uygulamasını telefonumda kullanabilir miyim?",
       "phoneA": "Evet. {name}, hem küçük hem de büyük ekranlar için tasarlanmıştır, bu sayede tek elle hızlı bir {category} işi yapabilirsiniz. Sonuç, doğrudan sayfadan kopyalanabilir veya indirilebilir."
-    }
+    },
+    "aboutLink": "Toolpika hakkında daha fazla bilgi →"
   },
   "search": {
     "placeholder": "Ara",

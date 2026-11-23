@@ -105,8 +105,8 @@
       "title": "Contador de palabras",
       "shortDesc": "Cuenta palabras, caracteres, oraciones y párrafos en tu texto.",
       "seo": {
-        "title": "Contador de palabras en línea gratis | Cuenta palabras y caracteres",
-        "description": "Cuenta palabras, caracteres, oraciones y párrafos al instante en tu navegador. Gratis, privado y sin registro."
+        "title": "Contador de palabras - Gratis e instantáneo",
+        "description": "Cuenta palabras, caracteres, oraciones y párrafos al instante con este contador de palabras gratuito. Privado, rápido y listo para usar en tu navegador."
       },
       "trySample": "Probar ejemplo",
       "paste": "Pegar",
@@ -125,7 +125,7 @@
       "shortcutHint": "Ctrl/Cmd + Shift + C copia las estadísticas",
       "pasteUnavailable": "El acceso al portapapeles está bloqueado. Usa Ctrl/Cmd + V en su lugar.",
       "page": {
-        "byline": "Por el equipo de Toolpika · Última actualización: 23 de noviembre de 2026",
+        "byline": "Por el equipo de Toolpika · Última actualización: 24 de noviembre de 2026",
         "directAnswer": "Word Counter cuenta palabras, caracteres, oraciones, párrafos y líneas mientras escribes o pegas texto. Todo ocurre en tu navegador, por lo que tu texto nunca sale del dispositivo. Obtienes resultados instantáneos y exactos sin registro, sin carga de archivos y sin esperas.",
         "whatIsTitle": "¿Qué es un contador de palabras?",
         "whatIs": "Un contador de palabras es una herramienta pequeña que lee un fragmento de texto e informa cuántas palabras, caracteres, oraciones, párrafos y líneas contiene. Elimina el trabajo manual de seleccionar texto y estimar la longitud, lo cual es importante cuando un editor, formulario o envío establece un límite estricto.\n\nLa mayoría de los contadores dividen las palabras por espacios en blanco: cualquier secuencia de letras o números entre espacios se considera una palabra. Por eso, un término con guion como \"well-known\" se cuenta como una palabra en la mayoría de las herramientas, mientras que \"well known\" se cuenta como dos. La puntuación adjunta a una palabra no crea una palabra nueva. Los recuentos de caracteres suelen incluir espacios, por lo que un párrafo de 200 palabras puede contener más de 1.000 caracteres.\n\nLa detección de oraciones busca puntos, signos de interrogación y signos de exclamación. La detección de párrafos busca una línea en blanco entre bloques. Los recuentos de líneas siguen los saltos de línea, no el ajuste visual, por lo que una línea larga que se envuelve en la pantalla sigue siendo una sola línea. El tiempo de lectura es una estimación basada en una velocidad media de lectura de un adulto de 200 palabras por minuto; es una guía, no una promesa sobre la velocidad a la que leerás.\n\nLos recuentos de palabras también se comportan de manera diferente entre escrituras. Idiomas como el inglés usan espacios para separar palabras, mientras que el chino, el japonés y el coreano no. Un contador basado en espacios en blanco informará de muy pocas palabras para esos idiomas, aunque el texto sea largo. Usa el recuento de caracteres en su lugar cuando trabajes con escrituras que no usan espacios.",
@@ -147,7 +147,9 @@
         "faqTitle": "Preguntas frecuentes",
         "faqs": "¿El contador de palabras cuenta los espacios como caracteres?::Sí. El recuento de caracteres incluye espacios y puntuación, por lo que coincide con lo que cuentan la mayoría de los campos de formulario. Si un límite de envío ignora los espacios en blanco, usa Caracteres (sin espacios) en su lugar. La herramienta muestra ambos números lado a lado para que elijas el adecuado para tu formulario.\n¿Cómo cuenta la herramienta una palabra?::Trata cada secuencia de caracteres que no son espacios en blanco como una palabra. Un término con guion, como bien-conocido, cuenta como una palabra, y la puntuación adjunta a una palabra no crea otra. Los números y símbolos separados por espacios cuentan como palabras propias, lo cual coincide con la regla común de espacios en blanco utilizada por la mayoría de los contadores de texto plano.\n¿Se subirá mi texto?::No. Todo el conteo se realiza dentro de tu navegador, por lo que tu texto nunca llega a un servidor. Nada se guarda después de cerrar la pestaña, y no hay ninguna cuenta que crear. La herramienta funciona de la misma manera en cada visita, ya sea que pegues una sola frase o un borrador largo.\n¿Por qué mi recuento de palabras es diferente en otro editor?::Los editores difieren en el manejo de guiones, números y símbolos. Esta herramienta utiliza una regla basada en espacios en blanco, que es el enfoque común para el texto plano. Un editor que cuente la puntuación como tokens separados puede informar un número más alto. Revisa la regla utilizada por el sitio o formulario que estableció tu límite antes de confiar en cualquiera de los recuentos.\n¿Funciona para texto en chino o japonés?::Los recuentos de caracteres, líneas y párrafos funcionan bien para esos sistemas de escritura. Los recuentos de palabras dependen de los espacios, por lo que un pasaje denso puede mostrar muy pocas palabras incluso cuando es largo. Usa el recuento de caracteres como medida principal al trabajar con idiomas que no separan las palabras con espacios.\n¿Es preciso el tiempo de lectura?::Es una estimación basada en una velocidad promedio de adulto de 200 palabras por minuto, no una medición de tu propio ritmo. El texto técnico, las referencias y la edición cuidadosa toman más tiempo. Usa la cifra para comparar borradores o planificar un plazo, y ajústala para que coincida con la velocidad a la que realmente lees.",
         "trustTitle": "Sobre esta herramienta",
-        "trustBody": "Desarrollado por el equipo de Toolpika. Cada herramienta de la colección se ejecuta en tu navegador y se verifica antes de su publicación. Última actualización: 23 de noviembre de 2026."
+        "trustBody": "Desarrollado por el equipo de Toolpika. Cada herramienta de la colección se ejecuta en tu navegador y se verifica antes de su publicación. Última actualización: 24 de noviembre de 2026.",
+        "aboutTitle": "Sobre el contador de palabras",
+        "contextualLink": "¿Quieres cambiar las mayúsculas de ese texto? Prueba {tool}."
       }
     },
     "case-converter": {
@@ -225,7 +227,8 @@
       "installA": "No hay nada que instalar. {name} es una página web, por lo que cualquier navegador moderno en un ordenador o teléfono puede ejecutar esta herramienta de {category}. Solo abre la página y empieza.",
       "phoneQ": "¿Puedo usar {name} en mi teléfono?",
       "phoneA": "Sí. {name} está diseñado para pantallas pequeñas y grandes, por lo que puedes realizar una tarea rápida de {category} con una sola mano. El resultado se puede copiar o descargar directamente desde la página."
-    }
+    },
+    "aboutLink": "Más información sobre Toolpika →"
   },
   "search": {
     "placeholder": "Buscar",

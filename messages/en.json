@@ -105,8 +105,8 @@
       "title": "Word Counter",
       "shortDesc": "Count words, characters, sentences and paragraphs in your text.",
       "seo": {
-        "title": "Free Word Counter Online | Count Words & Characters",
-        "description": "Count words, characters, sentences and paragraphs instantly in your browser. Free, private and no sign-up."
+        "title": "Word Counter - Instant, Private Counting",
+        "description": "Count words, characters, sentences and paragraphs instantly with this free word counter. Private, browser-based and ready when you are."
       },
       "trySample": "Try sample",
       "paste": "Paste",
@@ -125,7 +125,7 @@
       "shortcutHint": "Ctrl/Cmd + Shift + C copies the stats",
       "pasteUnavailable": "Clipboard access is blocked. Use Ctrl/Cmd + V instead.",
       "page": {
-        "byline": "By the Toolpika team · Last updated 23 November 2026",
+        "byline": "By the Toolpika team · Last updated 24 November 2026",
         "directAnswer": "Word Counter counts words, characters, sentences, paragraphs and lines as you type or paste text. Everything happens in your browser, so your writing never leaves the device. You get instant, exact results with no sign-up, no upload and no waiting.",
         "whatIsTitle": "What is a word counter?",
         "whatIs": "A word counter is a small tool that reads a piece of text and reports how many words, characters, sentences, paragraphs and lines it contains. It removes the manual work of selecting text and guessing at length, which matters when an editor, form or submission sets a strict limit.\n\nMost counters split words on whitespace: any run of letters or numbers between spaces becomes one word. That is why a hyphenated term such as \"well-known\" counts as one word in most tools, while \"well known\" counts as two. Punctuation attached to a word does not create a new word. Character counts usually include spaces, so a 200-word paragraph may contain well over 1,000 characters.\n\nSentence detection looks for full stops, question marks and exclamation marks. Paragraph detection looks for a blank line between blocks. Line counts follow line breaks, not visual wrapping, so a long line that wraps on screen is still one line. Reading time is an estimate based on an average adult speed of 200 words per minute; it is a guide, not a promise about how fast you will read.\n\nWord counts also behave differently across scripts. Languages such as English use spaces to separate words, while Chinese, Japanese and Korean do not. A whitespace-based counter will report very few words for those languages even though the text is long. Use the character count instead when working with scripts that do not use spaces.",
@@ -147,7 +147,9 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Yes. The Characters count includes spaces and punctuation, so it matches what most form fields count. If a submission limit ignores whitespace, use Characters (no spaces) instead. The tool shows both numbers side by side so you can pick the right one for your form.\nHow does the tool count a word?::It treats each run of non-whitespace characters as one word. A hyphenated term such as well-known counts as one word, and punctuation attached to a word does not create another. Numbers and symbols separated by spaces count as their own words, which matches the common whitespace rule used by most plain-text counters.\nWill my text be uploaded?::No. All counting runs inside your browser, so your text never reaches a server. Nothing is stored after you close the tab, and there is no account to create. The tool works the same way on every visit, whether you paste a single sentence or a long draft.\nWhy is my word count different in another editor?::Editors differ on hyphens, numbers and symbols. This tool uses a whitespace-based rule, which is the common approach for plain text. An editor that counts punctuation as separate tokens may report a higher number. Check the rule used by the site or form that set your limit before trusting either count.\nDoes it work for Chinese or Japanese text?::Character, line and paragraph counts work well for those scripts. Word counts rely on spaces, so a dense passage may show very few words even when it is long. Use the character count as the main measure when working with languages that do not separate words with spaces.\nIs reading time accurate?::It is an estimate based on an average adult speed of 200 words per minute, not a measurement of your own pace. Technical text, references and careful editing take longer. Use the figure to compare drafts or plan a deadline, and adjust it to match how fast you actually read.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. Every tool in the collection runs in your browser and is checked before release. Last updated 23 November 2026."
+        "trustBody": "Built by the Toolpika team. Every tool in the collection runs in your browser and is checked before release. Last updated 24 November 2026.",
+        "aboutTitle": "About Word Counter",
+        "contextualLink": "Need to change the case of the same text? Try {tool}."
       }
     },
     "case-converter": {
@@ -225,7 +227,8 @@
       "installA": "Nothing to install. {name} is a web page, so any modern browser on a computer or phone can run this {category} tool. Just open the page and start.",
       "phoneQ": "Can I use {name} on my phone?",
       "phoneA": "Yes. {name} is built for small screens as well as large ones, so you can do a quick {category} task one-handed. The result can be copied or downloaded right from the page."
-    }
+    },
+    "aboutLink": "Learn more about Toolpika →"
   },
   "search": {
     "placeholder": "Search",

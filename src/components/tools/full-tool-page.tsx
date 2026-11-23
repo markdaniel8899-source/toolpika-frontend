@@ -20,6 +20,11 @@ export function FullToolPage({
   homeLabel,
   categoryLabel,
   relatedTitle,
+  aboutLinkLabel,
+  inputLabel,
+  outputLabel,
+  workspaceLabel,
+  contextualTool,
 }: {
   tool: Tool;
   title: string;
@@ -28,7 +33,14 @@ export function FullToolPage({
   homeLabel: string;
   categoryLabel: string;
   relatedTitle: string;
+  aboutLinkLabel: string;
+  inputLabel: string;
+  outputLabel: string;
+  workspaceLabel: string;
+  contextualTool?: Tool;
 }) {
+  const contextualParts = content.contextualLink.split("{tool}");
+
   return (
     <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
       <Reveal>
@@ -48,19 +60,30 @@ export function FullToolPage({
 
       <p className="tp-content-lead" style={{ marginTop: 12 }}>{content.directAnswer}</p>
 
-      <section className="tp-tool-page-workspace" aria-label={`${title} tool`}>
+      <section className="tp-tool-page-workspace" aria-label={workspaceLabel}>
         <ToolWorkspace slug={tool.slug} />
       </section>
 
       <Reveal>
         <section className="tp-content-canvas tp-content-canvas--flush">
           <div className="tp-content-inner tp-article">
-            <h2 className="tp-content-h2">{content.whatIsTitle}</h2>
+            <h2 className="tp-content-h2">{content.aboutTitle}</h2>
+
+            <h3 className="tp-article-h3">{content.whatIsTitle}</h3>
             {content.whatIsParagraphs.map((paragraph) => (
               <p key={paragraph.slice(0, 40)} className="tp-article-copy">{paragraph}</p>
             ))}
+            {contextualTool ? (
+              <p className="tp-article-copy">
+                {contextualParts[0]}
+                <Link href={`/tools/${contextualTool.slug}`} className="tp-text-link">
+                  {contextualTool.title}
+                </Link>
+                {contextualParts[1] ?? ""}
+              </p>
+            ) : null}
 
-            <h2 className="tp-content-h2">{content.howToTitle}</h2>
+            <h3 className="tp-article-h3">{content.howToTitle}</h3>
             <ol className="tp-how-list">
               {content.howToSteps.map((step, index) => (
                 <li key={step} className="tp-how-item">
@@ -70,14 +93,14 @@ export function FullToolPage({
               ))}
             </ol>
 
-            <h2 className="tp-content-h2">{content.exampleTitle}</h2>
+            <h3 className="tp-article-h3">{content.exampleTitle}</h3>
             <p className="tp-article-copy"><strong>{content.exampleLabel}</strong></p>
             <pre className="tp-article-code">
-              <code>{`Input:\n${content.exampleInput}\n\nOutput:\n${content.exampleOutput}`}</code>
+              <code>{`${inputLabel}:\n${content.exampleInput}\n\n${outputLabel}:\n${content.exampleOutput}`}</code>
             </pre>
             <p className="tp-article-copy">{content.exampleNote}</p>
 
-            <h2 className="tp-content-h2">{content.featuresTitle}</h2>
+            <h3 className="tp-article-h3">{content.featuresTitle}</h3>
             <ul className="tp-article-list">
               {content.features.map((feature) => (
                 <li key={feature.title} className="tp-article-copy">
@@ -86,7 +109,7 @@ export function FullToolPage({
               ))}
             </ul>
 
-            <h2 className="tp-content-h2">{content.useCasesTitle}</h2>
+            <h3 className="tp-article-h3">{content.useCasesTitle}</h3>
             <ul className="tp-article-list">
               {content.useCases.map((useCase) => (
                 <li key={useCase.title} className="tp-article-copy">
@@ -95,7 +118,7 @@ export function FullToolPage({
               ))}
             </ul>
 
-            <h2 className="tp-content-h2">{content.mistakesTitle}</h2>
+            <h3 className="tp-article-h3">{content.mistakesTitle}</h3>
             <ul className="tp-article-list">
               {content.mistakes.map((mistake) => (
                 <li key={mistake.title} className="tp-article-copy">
@@ -155,7 +178,7 @@ export function FullToolPage({
               <ShieldCheck className="tp-icon" aria-hidden="true" /> {content.trustTitle}
             </h2>
             <p className="tp-article-copy">{content.trustBody}</p>
-            <Link href="/about" className="tp-text-link">Toolpika about page →</Link>
+            <Link href="/about" className="tp-text-link">{aboutLinkLabel}</Link>
           </div>
         </section>
       </Reveal>

@@ -105,8 +105,8 @@
       "title": "Compteur de mots",
       "shortDesc": "Comptez les mots, caractères, phrases et paragraphes de votre texte.",
       "seo": {
-        "title": "Compteur de mots en ligne gratuit | Comptez les mots et les caractères",
-        "description": "Comptez instantanément les mots, caractères, phrases et paragraphes dans votre navigateur. Gratuit, privé et sans inscription."
+        "title": "Compteur de mots - Gratuit et instantané",
+        "description": "Comptez les mots, caractères, phrases et paragraphes avec ce compteur de mots gratuit. Privé, rapide et prêt à l'emploi dans votre navigateur."
       },
       "trySample": "Essayer un exemple",
       "paste": "Coller",
@@ -125,7 +125,7 @@
       "shortcutHint": "Ctrl/Cmd + Maj + C copie les statistiques",
       "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez Ctrl/Cmd + V à la place.",
       "page": {
-        "byline": "Par l'équipe Toolpika · Dernière mise à jour le 23 novembre 2026",
+        "byline": "Par l'équipe Toolpika · Dernière mise à jour le 24 novembre 2026",
         "directAnswer": "Le compteur de mots compte les mots, les caractères, les phrases, les paragraphes et les lignes à mesure que vous tapez ou collez du texte. Tout se passe dans votre navigateur, votre écriture ne quitte donc jamais l'appareil. Vous obtenez des résultats instantanés et précis, sans inscription, sans téléversement et sans attente.",
         "whatIsTitle": "Qu'est-ce qu'un compteur de mots ?",
         "whatIs": "Un compteur de mots est un petit outil qui lit un texte et indique le nombre de mots, de caractères, de phrases, de paragraphes et de lignes qu'il contient. Il supprime le travail manuel de sélection du texte et d'estimation de la longueur, ce qui est important lorsqu'un éditeur, un formulaire ou une soumission impose une limite stricte.\n\nLa plupart des compteurs séparent les mots par les espaces : toute suite de lettres ou de chiffres entre des espaces est considérée comme un mot. C'est pourquoi un terme avec un trait d'union comme « bien connu » compte comme un seul mot dans la plupart des outils, tandis que « bien connu » compte comme deux. La ponctuation attachée à un mot ne crée pas un nouveau mot. Les comptes de caractères incluent généralement les espaces, donc un paragraphe de 200 mots peut contenir plus de 1 000 caractères.\n\nLa détection des phrases recherche les points, les points d'interrogation et les points d'exclamation. La détection des paragraphes recherche une ligne vide entre les blocs. Les comptes de lignes suivent les retours à la ligne, et non le retour à la ligne visuel, donc une longue ligne qui se replie à l'écran reste une seule ligne. Le temps de lecture est une estimation basée sur une vitesse moyenne de lecture d'un adulte de 200 mots par minute ; c'est un guide, pas une promesse sur la vitesse à laquelle vous lirez.\n\nLes comptes de mots se comportent également différemment selon les écritures. Des langues comme l'anglais utilisent des espaces pour séparer les mots, tandis que le chinois, le japonais et le coréen n'en utilisent pas. Un compteur basé sur les espaces indiquera très peu de mots pour ces langues, même si le texte est long. Utilisez plutôt le compte de caractères lorsque vous travaillez avec des écritures qui n'utilisent pas d'espaces.",
@@ -147,7 +147,9 @@
         "faqTitle": "Questions fréquentes",
         "faqs": "Le compteur de mots compte-t-il les espaces comme des caractères ?::Oui. Le nombre de caractères inclut les espaces et la ponctuation, ce qui correspond à ce que comptent la plupart des champs de formulaire. Si la limite de soumission ignore les espaces, utilisez plutôt « Caractères (sans espaces) ». L'outil affiche les deux nombres côte à côte pour que vous puissiez choisir celui qui convient à votre formulaire.\nComment l'outil compte-t-il un mot ?::Il considère chaque suite de caractères non-espaces comme un mot. Un terme hyphené comme « bien-connu » compte comme un seul mot, et la ponctuation attachée à un mot n'en crée pas un autre. Les nombres et symboles séparés par des espaces comptent comme des mots à part entière, ce qui correspond à la règle courante basée sur les espaces utilisée par la plupart des compteurs de texte brut.\nMon texte sera-t-il téléversé ?::Non. Tout le comptage s'effectue dans votre navigateur, votre texte n'atteint jamais un serveur. Rien n'est stocké après la fermeture de l'onglet, et il n'y a pas de compte à créer. L'outil fonctionne de la même manière à chaque visite, que vous colliez une seule phrase ou un long brouillon.\nPourquoi mon nombre de mots est-il différent dans un autre éditeur ?::Les éditeurs diffèrent sur les traits d'union, les nombres et les symboles. Cet outil utilise une règle basée sur les espaces, qui est l'approche courante pour le texte brut. Un éditeur qui compte la ponctuation comme des jetons séparés peut afficher un nombre plus élevé. Vérifiez la règle utilisée par le site ou le formulaire qui a défini votre limite avant de faire confiance à l'un ou l'autre des comptes.\nFonctionne-t-il pour le texte en chinois ou en japonais ?::Les comptes de caractères, de lignes et de paragraphes fonctionnent bien pour ces écritures. Les comptes de mots reposent sur les espaces, donc un passage dense peut afficher très peu de mots même s'il est long. Utilisez le nombre de caractères comme mesure principale lorsque vous travaillez avec des langues qui ne séparent pas les mots par des espaces.\nLe temps de lecture est-il précis ?::C'est une estimation basée sur une vitesse moyenne de 200 mots par minute pour un adulte, et non une mesure de votre propre rythme. Les textes techniques, les références et la relecture attentive prennent plus de temps. Utilisez ce chiffre pour comparer des brouillons ou planifier une échéance, et ajustez-le selon votre vitesse de lecture réelle.",
         "trustTitle": "À propos de cet outil",
-        "trustBody": "Développé par l'équipe Toolpika. Chaque outil de la collection s'exécute dans votre navigateur et est vérifié avant sa publication. Dernière mise à jour le 23 novembre 2026."
+        "trustBody": "Développé par l'équipe Toolpika. Chaque outil de la collection s'exécute dans votre navigateur et est vérifié avant sa publication. Dernière mise à jour le 24 novembre 2026.",
+        "aboutTitle": "À propos du compteur de mots",
+        "contextualLink": "Vous voulez modifier la casse de ce texte ? Essayez {tool}."
       }
     },
     "case-converter": {
@@ -225,7 +227,8 @@
       "installA": "Rien à installer. {name} est une page web, tout navigateur moderne sur ordinateur ou téléphone peut donc exécuter cet outil {category}. Il suffit d'ouvrir la page et de commencer.",
       "phoneQ": "Puis-je utiliser {name} sur mon téléphone ?",
       "phoneA": "Oui. {name} est conçu pour les petits comme pour les grands écrans, ce qui vous permet d'effectuer une tâche de {category} rapide d'une seule main. Le résultat peut être copié ou téléchargé directement depuis la page."
-    }
+    },
+    "aboutLink": "En savoir plus sur Toolpika →"
   },
   "search": {
     "placeholder": "Rechercher",

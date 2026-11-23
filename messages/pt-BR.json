@@ -105,8 +105,8 @@
       "title": "Contador de Palavras",
       "shortDesc": "Conte palavras, caracteres, frases e parágrafos no seu texto.",
       "seo": {
-        "title": "Contador de Palavras Online Gratuito | Conte Palavras e Caracteres",
-        "description": "Conte palavras, caracteres, frases e parágrafos instantaneamente no seu navegador. Gratuito, privado e sem cadastro."
+        "title": "Contador de palavras - Grátis e instantâneo",
+        "description": "Conte palavras, caracteres, frases e parágrafos na hora com este contador de palavras gratuito. Privado, rápido e pronto para usar no navegador."
       },
       "trySample": "Experimentar exemplo",
       "paste": "Colar",
@@ -125,7 +125,7 @@
       "shortcutHint": "Ctrl/Cmd + Shift + C copia as estatísticas",
       "pasteUnavailable": "Acesso à área de transferência bloqueado. Use Ctrl/Cmd + V.",
       "page": {
-        "byline": "Pela equipe Toolpika · Última atualização em 23 de novembro de 2026",
+        "byline": "Pela equipe Toolpika · Última atualização em 24 de novembro de 2026",
         "directAnswer": "O Contador de Palavras conta palavras, caracteres, frases, parágrafos e linhas conforme você digita ou cola o texto. Tudo acontece no seu navegador, então sua escrita nunca sai do dispositivo. Você obtém resultados instantâneos e exatos, sem cadastro, sem upload e sem espera.",
         "whatIsTitle": "O que é um contador de palavras?",
         "whatIs": "Um contador de palavras é uma ferramenta pequena que lê um trecho de texto e informa quantas palavras, caracteres, frases, parágrafos e linhas ele contém. Ele elimina o trabalho manual de selecionar o texto e estimar o comprimento, o que é importante quando um editor, formulário ou envio estabelece um limite estrito.\n\nA maioria dos contadores divide palavras por espaços em branco: qualquer sequência de letras ou números entre espaços se torna uma palavra. É por isso que um termo com hífen, como \"bem-conhecido\", conta como uma palavra na maioria das ferramentas, enquanto \"bem conhecido\" conta como duas. Pontuação anexada a uma palavra não cria uma nova palavra. As contagens de caracteres geralmente incluem espaços, então um parágrafo de 200 palavras pode conter muito mais de 1.000 caracteres.\n\nA detecção de frases procura pontos finais, pontos de interrogação e exclamação. A detecção de parágrafos procura uma linha em branco entre blocos. As contagens de linhas seguem quebras de linha, não a quebra visual, então uma linha longa que quebra na tela ainda é uma linha. O tempo de leitura é uma estimativa baseada em uma velocidade média de adulto de 200 palavras por minuto; é um guia, não uma promessa sobre a velocidade com que você lerá.\n\nAs contagens de palavras também se comportam de forma diferente entre sistemas de escrita. Idiomas como o inglês usam espaços para separar palavras, enquanto o chinês, o japonês e o coreano não. Um contador baseado em espaços em branco reportará muito poucas palavras para esses idiomas, mesmo que o texto seja longo. Use a contagem de caracteres em vez disso ao trabalhar com sistemas de escrita que não usam espaços.",
@@ -147,7 +147,9 @@
         "faqTitle": "Perguntas frequentes",
         "faqs": "O Contador de Palavras conta espaços como caracteres?::Sim. A contagem de Caracteres inclui espaços e pontuação, correspondendo ao que a maioria dos campos de formulário conta. Se o limite de envio ignorar espaços em branco, use Caracteres (sem espaços) em vez disso. A ferramenta exibe ambos os números lado a lado para que você possa escolher o adequado para o seu formulário.\nComo a ferramenta conta uma palavra?::Ela trata cada sequência de caracteres não em branco como uma palavra. Um termo com hífen, como bem-conhecido, conta como uma palavra, e a pontuação anexada a uma palavra não cria outra. Números e símbolos separados por espaços contam como palavras próprias, o que corresponde à regra comum de espaços em branco usada pela maioria dos contadores de texto simples.\nMeu texto será enviado?::Não. Toda a contagem é executada no seu navegador, então seu texto nunca chega a um servidor. Nada é armazenado após você fechar a aba, e não há conta para criar. A ferramenta funciona da mesma forma em cada visita, seja você colando uma única frase ou um rascunho longo.\nPor que minha contagem de palavras é diferente em outro editor?::Os editores diferem em relação a hífens, números e símbolos. Esta ferramenta usa uma regra baseada em espaços em branco, que é a abordagem comum para texto simples. Um editor que conta a pontuação como tokens separados pode relatar um número maior. Verifique a regra usada pelo site ou formulário que definiu seu limite antes de confiar em qualquer contagem.\nFunciona para texto em chinês ou japonês?::As contagens de caracteres, linhas e parágrafos funcionam bem para esses sistemas de escrita. As contagens de palavras dependem de espaços, então um trecho denso pode mostrar muito poucas palavras mesmo quando é longo. Use a contagem de caracteres como a principal medida ao trabalhar com idiomas que não separam palavras com espaços.\nO tempo de leitura é preciso?::É uma estimativa baseada em uma velocidade média de adulto de 200 palavras por minuto, não uma medição do seu próprio ritmo. Texto técnico, referências e edição cuidadosa levam mais tempo. Use o número para comparar rascunhos ou planejar um prazo e ajuste-o para corresponder à velocidade com que você realmente lê.",
         "trustTitle": "Sobre esta ferramenta",
-        "trustBody": "Desenvolvido pela equipe Toolpika. Todas as ferramentas da coleção são executadas no seu navegador e verificadas antes do lançamento. Última atualização em 23 de novembro de 2026."
+        "trustBody": "Desenvolvido pela equipe Toolpika. Todas as ferramentas da coleção são executadas no seu navegador e verificadas antes do lançamento. Última atualização em 24 de novembro de 2026.",
+        "aboutTitle": "Sobre o contador de palavras",
+        "contextualLink": "Quer mudar a caixa do mesmo texto? Experimente {tool}."
       }
     },
     "case-converter": {
@@ -225,7 +227,8 @@
       "installA": "Nada para instalar. {name} é uma página da web, então qualquer navegador moderno em um computador ou celular pode executar esta ferramenta de {category}. Basta abrir a página e começar.",
       "phoneQ": "Posso usar {name} no meu celular?",
       "phoneA": "Sim. {name} foi feito para telas pequenas e grandes, permitindo que você execute uma tarefa rápida de {category} com uma mão. O resultado pode ser copiado ou baixado diretamente da página."
-    }
+    },
+    "aboutLink": "Saiba mais sobre a Toolpika →"
   },
   "search": {
     "placeholder": "Buscar",

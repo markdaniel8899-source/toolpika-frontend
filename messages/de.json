@@ -105,8 +105,8 @@
       "title": "Wortzähler",
       "shortDesc": "Zählen Sie Wörter, Zeichen, Sätze und Absätze in Ihrem Text.",
       "seo": {
-        "title": "Kostenloser Online-Wortzähler | Wörter & Zeichen zählen",
-        "description": "Zählen Sie Wörter, Zeichen, Sätze und Absätze sofort in Ihrem Browser. Kostenlos, privat und ohne Registrierung."
+        "title": "Wortzähler - Sofort, kostenlos & privat",
+        "description": "Zählen Sie Wörter, Zeichen, Sätze und Absätze sofort mit diesem kostenlosen Wortzähler. Läuft privat im Browser und ist sofort einsatzbereit."
       },
       "trySample": "Beispiel testen",
       "paste": "Einfügen",
@@ -125,7 +125,7 @@
       "shortcutHint": "Strg/Cmd + Umschalt + C kopiert die Statistiken",
       "pasteUnavailable": "Zugriff auf die Zwischenablage ist blockiert. Verwenden Sie stattdessen Strg/Cmd + V.",
       "page": {
-        "byline": "Vom Toolpika-Team · Zuletzt aktualisiert am 23. November 2026",
+        "byline": "Vom Toolpika-Team · Zuletzt aktualisiert am 24. November 2026",
         "directAnswer": "Der Wortzähler zählt Wörter, Zeichen, Sätze, Absätze und Zeilen, während Sie Text eingeben oder einfügen. Alles erfolgt in Ihrem Browser, sodass Ihr Text das Gerät nie verlässt. Sie erhalten sofortige und genaue Ergebnisse ohne Registrierung, Upload oder Wartezeit.",
         "whatIsTitle": "Was ist ein Wortzähler?",
         "whatIs": "Ein Wortzähler ist ein kleines Werkzeug, das einen Text liest und meldet, wie viele Wörter, Zeichen, Sätze, Absätze und Zeilen er enthält. Er erspart die manuelle Arbeit, Text auszuwählen und die Länge zu schätzen, was wichtig ist, wenn ein Editor, ein Formular oder eine Einreichung strenge Grenzen setzt.\n\nDie meisten Zähler trennen Wörter anhand von Leerzeichen: Jeder zusammenhängende Buchstaben- oder Zahlenblock zwischen Leerzeichen gilt als ein Wort. Deshalb wird ein Bindestrichwort wie \"gut bekannt\" in den meisten Tools als ein Wort gezählt, während \"gut bekannt\" als zwei Wörter gezählt wird. Interpunktion, die an ein Wort angehängt ist, erzeugt kein neues Wort. Zeichenzahlen umfassen in der Regel Leerzeichen, sodass ein 200-Wörter-Absatz gut über 1.000 Zeichen enthalten kann.\n\nDie Satzerkennung sucht nach Punkten, Fragezeichen und Ausrufezeichen. Die Absatzerkennung sucht nach einer Leerzeile zwischen Blöcken. Zeilenzahlen folgen Zeilenumbrüchen, nicht der visuellen Umbruchdarstellung, sodass eine lange Zeile, die auf dem Bildschirm umgebrochen wird, immer noch als eine Zeile gezählt wird. Die Lesezeit ist eine Schätzung basierend auf einer durchschnittlichen Lesegeschwindigkeit von 200 Wörtern pro Minute für Erwachsene; sie ist eine Orientierung, keine Garantie dafür, wie schnell Sie lesen werden.\n\nWortzählungen verhalten sich auch je nach Schriftsystem unterschiedlich. Sprachen wie Englisch verwenden Leerzeichen zur Worttrennung, während Chinesisch, Japanisch und Koreanisch dies nicht tun. Ein auf Leerzeichen basierender Zähler meldet für diese Sprachen sehr wenige Wörter, obwohl der Text lang ist. Verwenden Sie bei Schriftsystemen ohne Leerzeichen stattdessen die Zeichenzahl.",
@@ -147,7 +147,9 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Zählt der Wortzähler Leerzeichen als Zeichen?::Ja. Die Zeichenanzahl umfasst Leerzeichen und Satzzeichen, sodass sie mit dem übereinstimmt, was die meisten Formularfelder zählen. Wenn ein Übermittlungslimit Leerzeichen ignoriert, verwenden Sie stattdessen Zeichen (ohne Leerzeichen). Das Tool zeigt beide Zahlen nebeneinander an, damit Sie die richtige für Ihr Formular auswählen können.\nWie zählt das Tool ein Wort?::Es behandelt jede Abfolge von Nicht-Whitespace-Zeichen als ein Wort. Ein Bindestrichwort wie „gut bekannt“ zählt als ein Wort, und an ein Wort angehängte Satzzeichen erzeugen kein weiteres. Durch Leerzeichen getrennte Zahlen und Symbole zählen als eigene Wörter, was der üblichen Whitespace-Regel entspricht, die von den meisten Klartext-Zählern verwendet wird.\nWird mein Text hochgeladen?::Nein. Die gesamte Zählung erfolgt in Ihrem Browser, sodass Ihr Text nie einen Server erreicht. Nach dem Schließen des Tabs wird nichts gespeichert, und es gibt kein Konto, das erstellt werden muss. Das Tool funktioniert bei jedem Besuch gleich, ob Sie einen einzelnen Satz oder einen langen Entwurf einfügen.\nWarum ist meine Wortanzahl in einem anderen Editor unterschiedlich?::Editoren unterscheiden sich bei Bindestrichen, Zahlen und Symbolen. Dieses Tool verwendet eine Whitespace-basierte Regel, was der übliche Ansatz für Klartext ist. Ein Editor, der Satzzeichen als separate Token zählt, kann eine höhere Zahl melden. Prüfen Sie die vom Website- oder Formularbetreiber verwendete Regel, bevor Sie einer der beiden Zählungen vertrauen.\nFunktioniert es für chinesischen oder japanischen Text?::Die Zählung von Zeichen, Zeilen und Absätzen funktioniert gut für diese Schriftsysteme. Die Wortanzahl basiert auf Leerzeichen, daher kann ein dichter Textabschnitt sehr wenige Wörter anzeigen, selbst wenn er lang ist. Verwenden Sie die Zeichenanzahl als Hauptmaß, wenn Sie mit Sprachen arbeiten, die Wörter nicht durch Leerzeichen trennen.\nIst die Lesezeit genau?::Es handelt sich um eine Schätzung auf Basis einer durchschnittlichen Lesegeschwindigkeit von 200 Wörtern pro Minute für Erwachsene, nicht um eine Messung Ihres eigenen Tempos. Technischer Text, Referenzen und sorgfältiges Lektorat dauern länger. Verwenden Sie die Angabe, um Entwürfe zu vergleichen oder einen Termin zu planen, und passen Sie sie an, um sie an Ihre tatsächliche Lesegeschwindigkeit anzupassen.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Entwickelt vom Toolpika-Team. Jedes Tool in der Sammlung läuft in Ihrem Browser und wird vor der Veröffentlichung geprüft. Zuletzt aktualisiert am 23. November 2026."
+        "trustBody": "Entwickelt vom Toolpika-Team. Jedes Tool in der Sammlung läuft in Ihrem Browser und wird vor der Veröffentlichung geprüft. Zuletzt aktualisiert am 24. November 2026.",
+        "aboutTitle": "Über den Wortzähler",
+        "contextualLink": "Möchten Sie die Groß-/Kleinschreibung desselben Textes ändern? Probieren Sie {tool}."
       }
     },
     "case-converter": {
@@ -225,7 +227,8 @@
       "installA": "Nichts zu installieren. {name} ist eine Webseite, sodass jeder moderne Browser auf einem Computer oder Telefon dieses {category}-Tool ausführen kann. Öffnen Sie einfach die Seite und legen Sie los.",
       "phoneQ": "Kann ich {name} auf meinem Handy verwenden?",
       "phoneA": "Ja. {name} ist sowohl für kleine als auch für große Bildschirme konzipiert, sodass Sie eine schnelle {category}-Aufgabe mit einer Hand erledigen können. Das Ergebnis kann direkt auf der Seite kopiert oder heruntergeladen werden."
-    }
+    },
+    "aboutLink": "Mehr über Toolpika erfahren →"
   },
   "search": {
     "placeholder": "Suchen",

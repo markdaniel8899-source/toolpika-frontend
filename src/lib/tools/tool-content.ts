@@ -8,6 +8,8 @@ import type { Translate } from "@/lib/tools/translate";
 export interface ToolPageContent {
   byline: string;
   directAnswer: string;
+  aboutTitle: string;
+  contextualLink: string;
   whatIsTitle: string;
   whatIsParagraphs: string[];
   howToTitle: string;
@@ -61,6 +63,8 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
   return {
     byline: t(k("byline")),
     directAnswer: t(k("directAnswer")),
+    aboutTitle: t(k("aboutTitle")),
+    contextualLink: t(k("contextualLink")),
     whatIsTitle: t(k("whatIsTitle")),
     whatIsParagraphs: t(k("whatIs")).split(/\n\s*\n/u).map((p) => p.trim()).filter(Boolean),
     howToTitle: t(k("howToTitle")),

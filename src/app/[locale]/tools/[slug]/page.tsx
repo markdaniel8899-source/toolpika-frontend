@@ -24,6 +24,24 @@ const LOCALES = [
   "en", "de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi",
 ] as const;
 
+const OG_LOCALES: Record<string, string> = {
+  en: "en_US",
+  de: "de_DE",
+  fr: "fr_FR",
+  es: "es_ES",
+  "pt-BR": "pt_BR",
+  ru: "ru_RU",
+  tr: "tr_TR",
+  it: "it_IT",
+  ar: "ar_AE",
+  hi: "hi_IN",
+};
+
+/** Tools a reader would realistically use next to the current task. */
+const CURATED_RELATED: Record<string, string[]> = {
+  "word-counter": ["case-converter", "base64-encoder", "url-encoder"],
+};
+
 type LocalePageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
@@ -63,6 +81,16 @@ export async function generateMetadata({
       description: pageDescription,
       type: "website",
       url: `${siteUrl}/${locale}/tools/${tool.slug}`,
+      locale: OG_LOCALES[locale] ?? "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: pageDescription,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -92,6 +120,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
   const toolTitle = t(toolTitleKey(tool));
   const toolDescription = t(toolDescriptionKey(tool));
+  const pageDescription = t(toolSeoDescriptionKey(tool));
   const categoryLabel = getCategoryLabel(tool.category, t);
   const fullContent = getToolPageContent(t, slug);
   const seo = getToolSeoContent(t, {
@@ -101,20 +130,38 @@ export default async function ToolPage({ params }: LocalePageProps) {
   });
   const faqs = fullContent ? fullContent.faqs : seo.faqs;
 
-  // 4.7 - same-category tools first; top popular as fallback when < 3.
-  const related = getToolsByCategory(tool.category)
-    .filter((item) => item.slug !== tool.slug)
-    .slice(0, 4);
-  if (related.length < 3) {
-    const seen = new Set([tool.slug, ...related.map((item) => item.slug)]);
-    for (const fallback of getLiveTools()) {
-      if (related.length >= 4) break;
-      if (!seen.has(fallback.slug)) {
-        related.push(fallback);
-        seen.add(fallback.slug);
+  // 4.7 - hand-picked related tools where they exist; same-category tools
+  // first otherwise, with top popular as a fallback when fewer than three.
+  const related = (() => {
+    const curated = (CURATED_RELATED[slug] ?? [])
+      .map((relatedSlug) => getTool(relatedSlug))
+      .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    if (curated.length > 0) return curated;
+
+    const list = getToolsByCategory(tool.category)
+      .filter((item) => item.slug !== tool.slug)
+      .slice(0, 4);
+    if (list.length < 3) {
+      const seen = new Set([tool.slug, ...list.map((item) => item.slug)]);
+      for (const fallback of getLiveTools()) {
+        if (list.length >= 4) break;
+        if (!seen.has(fallback.slug)) {
+          list.push(fallback);
+          seen.add(fallback.slug);
+        }
       }
     }
-  }
+    return list;
+  })();
+
+  const contextualToolBase =
+    related.find((item) => item.slug === "case-converter") ?? related[0];
+  const contextualTool = contextualToolBase
+    ? {
+        ...contextualToolBase,
+        title: t(toolTitleKey(contextualToolBase)),
+      }
+    : undefined;
 
   const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}/${locale}/tools/${tool.slug}`;
@@ -124,25 +171,29 @@ export default async function ToolPage({ params }: LocalePageProps) {
     "@graph": [
       {
         "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
         name: "Toolpika",
         url: siteUrl,
+        logo: `${siteUrl}/favicon.svg`,
       },
       {
         "@type": "WebSite",
         name: "Toolpika",
         url: siteUrl,
         inLanguage: locale,
+        publisher: { "@id": `${siteUrl}/#organization` },
       },
       {
         "@type": "WebApplication",
         name: toolTitle,
-        description: toolDescription,
+        description: pageDescription,
         url: pageUrl,
         applicationCategory: "UtilitiesApplication",
-        operatingSystem: "Any",
-        browserRequirements: "Requires JavaScript",
+        operatingSystem: "Any (web browser)",
+        browserRequirements: "Requires a modern web browser",
         isAccessibleForFree: true,
         inLanguage: locale,
+        publisher: { "@id": `${siteUrl}/#organization` },
         offers: {
           "@type": "Offer",
           price: "0",
@@ -186,6 +237,11 @@ export default async function ToolPage({ params }: LocalePageProps) {
           homeLabel={t("home")}
           categoryLabel={categoryLabel}
           relatedTitle={tHow("relatedTitle")}
+          aboutLinkLabel={t("aboutLink")}
+          inputLabel={t("input")}
+          outputLabel={t("result")}
+          workspaceLabel={t("workspaceLabel", { title: toolTitle })}
+          contextualTool={contextualTool}
         />
       </>
     );
