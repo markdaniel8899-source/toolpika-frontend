@@ -11,6 +11,8 @@ import {
   getTool,
   getLiveTools,
   getToolsByCategory,
+  toolTitleKey,
+  toolDescriptionKey,
 } from "@/lib/tools/registry";
 import { getToolSeoContent } from "@/lib/tools/seo-content";
 
@@ -33,14 +35,16 @@ export async function generateMetadata({
 }: LocalePageProps): Promise<Metadata> {
   const { slug, locale } = await params;
   const tool = getTool(slug);
-  if (!tool) return { title: "Tool not found" };
-
   const t = await getTranslations({ locale, namespace: "tools" });
+  if (!tool) return { title: t("notFound") };
+
   const siteUrl = getSiteUrl();
+  const toolTitle = t(toolTitleKey(tool));
+  const toolDescription = t(toolDescriptionKey(tool));
 
   return {
-    title: `${tool.title} | ${t("online")}`,
-    description: tool.description,
+    title: `${toolTitle} | ${t("online")}`,
+    description: toolDescription,
     alternates: {
       canonical: `${siteUrl}/${locale}/tools/${tool.slug}`,
       languages: {
@@ -51,8 +55,8 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: `${tool.title} | Toolpika`,
-      description: tool.description,
+      title: `${toolTitle} | Toolpika`,
+      description: toolDescription,
       type: "website",
       url: `${siteUrl}/${locale}/tools/${tool.slug}`,
     },
@@ -82,8 +86,14 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const t = await getTranslations({ locale, namespace: "tools" });
   const tHow = await getTranslations({ locale, namespace: "toolPage" });
 
+  const toolTitle = t(toolTitleKey(tool));
+  const toolDescription = t(toolDescriptionKey(tool));
   const categoryLabel = getCategoryLabel(tool.category, t);
-  const seo = getToolSeoContent(tool, categoryLabel);
+  const seo = getToolSeoContent(t, {
+    name: toolTitle,
+    category: categoryLabel,
+    description: toolDescription,
+  });
 
   // 4.7 - same-category tools first; top popular as fallback when < 3.
   const related = getToolsByCategory(tool.category)
@@ -108,8 +118,8 @@ export default async function ToolPage({ params }: LocalePageProps) {
     "@graph": [
       {
         "@type": "WebApplication",
-        name: tool.title,
-        description: tool.description,
+        name: toolTitle,
+        description: toolDescription,
         url: pageUrl,
         applicationCategory: "UtilitiesApplication",
         operatingSystem: "Any",
@@ -127,7 +137,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: t("home"), item: `${siteUrl}/${locale}` },
           { "@type": "ListItem", position: 2, name: categoryLabel, item: `${siteUrl}/${locale}/category/${tool.category}` },
-          { "@type": "ListItem", position: 3, name: tool.title, item: pageUrl },
+          { "@type": "ListItem", position: 3, name: toolTitle, item: pageUrl },
         ],
       },
       // 4.6 - FAQPage schema for the fully visible FAQs rendered below.
@@ -155,7 +165,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
       <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
         {/* 4.1 - Tool name first, H1. */}
         <header className="tp-tool-page-head">
-          <h1 className="tp-tool-page-title">{tool.title}</h1>
+          <h1 className="tp-tool-page-title">{toolTitle}</h1>
           <p className="tp-tool-page-sub">
             <ShieldCheck className="tp-icon" aria-hidden="true" />
             {t("runsInBrowser")}
@@ -176,7 +186,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
         </ol>
 
         {/* 4.4 - The actual tool workspace, below the steps. */}
-        <section className="tp-tool-page-workspace" aria-label={`${tool.title} tool`}>
+        <section className="tp-tool-page-workspace" aria-label={t("workspaceLabel", { title: toolTitle })}>
           <ToolWorkspace slug={tool.slug} />
         </section>
 
@@ -185,7 +195,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
         <Reveal>
           <section className="tp-content-canvas">
             <div className="tp-content-inner tp-article">
-              <h2 className="tp-content-h2">{`About ${tool.title}`}</h2>
+              <h2 className="tp-content-h2">{t("about", { title: toolTitle })}</h2>
               <p className="tp-content-lead">{seo.intro}</p>
 
               {seo.sections.map((section) => (
@@ -199,11 +209,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
                 </div>
               ))}
 
-              <p className="tp-article-copy tp-article-close">
-                Everything on this page runs in your browser. Open {tool.title},
-                add what you need, and take the result with you. There is no
-                setup, no sign-in and nothing to install.
-              </p>
+              <p className="tp-article-copy tp-article-close">{seo.closing}</p>
             </div>
           </section>
         </Reveal>
@@ -242,7 +248,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
               ))}
             </div>
             <Link href="/request" className="tp-text-link tp-tool-related-link">
-              Missing a tool? Request it
+              {tHow("missingRequest")}
             </Link>
           </section>
         )}

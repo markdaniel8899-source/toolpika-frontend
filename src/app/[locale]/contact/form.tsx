@@ -11,6 +11,9 @@ export type ContactCopy = {
   message: string;
   submit: string;
   note: string;
+  sending: string;
+  sent: string;
+  genericError: string;
 };
 
 export function ContactForm({ copy }: { copy: ContactCopy }) {
@@ -34,11 +37,11 @@ export function ContactForm({ copy }: { copy: ContactCopy }) {
 
     if (result.ok) {
       setStatus("sent");
-      setStatusMessage("Message sent. We will read it shortly.");
+      setStatusMessage(copy.sent);
       form.reset();
     } else {
       setStatus("error");
-      setStatusMessage(result.error ?? "Could not send your message.");
+      setStatusMessage(result.error ?? copy.genericError);
     }
   };
 
@@ -60,7 +63,7 @@ export function ContactForm({ copy }: { copy: ContactCopy }) {
       <InboxStatus state={status} message={statusMessage} />
 
       <button type="submit" className="tp-btn tp-btn-primary" style={{ width: "100%", marginTop: 18, height: 48 }} disabled={status === "sending"}>
-        {status === "sending" ? "Sending..." : copy.submit}
+        {status === "sending" ? copy.sending : copy.submit}
         <ArrowRight className="tp-icon" aria-hidden="true" />
       </button>
       <p style={{ margin: "10px 0 0", color: "var(--muted-2)", fontSize: 12.5, textAlign: "center" }}>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CSSProperties } from "react";
 import { Flame, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { SlidingTabs } from "@/components/tools/sliding-tabs";
 import { ToolCard } from "@/components/tools/tool-card";
 import type { Tool } from "@/lib/tools/registry";
@@ -17,6 +18,7 @@ export function AllToolsBrowser({
   tools: Tool[];
   categories: CategoryTab[];
 }) {
+  const t = useTranslations("nav");
   const [active, setActive] = useState<Filter>("all");
 
   // Grid content swaps instantly on tab change; only the shared indicator
@@ -28,16 +30,16 @@ export function AllToolsBrowser({
     return tools.filter((tool) => tool.category === active);
   })();
 
-  const primaryItems = [{ slug: "all", label: "All tools" }, ...categories];
+  const primaryItems = [{ slug: "all", label: t("tools") }, ...categories];
   const secondaryItems = [
     {
       slug: "popular",
-      label: "Popular",
+      label: t("popular"),
       icon: <Flame className="tp-icon tp-tab-icon" aria-hidden="true" />,
     },
     {
       slug: "new",
-      label: "New",
+      label: t("new"),
       icon: <Sparkles className="tp-icon tp-tab-icon" aria-hidden="true" />,
     },
   ];
@@ -48,14 +50,14 @@ export function AllToolsBrowser({
         items={primaryItems}
         active={active}
         onChange={setActive}
-        ariaLabel="Filter tools"
+        ariaLabel={t("filterTools")}
       />
       <SlidingTabs
         items={secondaryItems}
         active={active}
         onChange={setActive}
         className="tp-tabs-secondary"
-        ariaLabel="Quick filters"
+        ariaLabel={t("quickFilters")}
       />
 
       {/* key={active} remounts the grid so the staggered card entrance

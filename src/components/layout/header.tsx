@@ -11,7 +11,15 @@ import { Dropdown } from "@/components/ui/dropdown";
 import { PillCta } from "@/components/ui/pill-cta";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { useWishlist } from "@/hooks/use-wishlist";
-import { categories, getLiveTools, getPopularTools, getTool } from "@/lib/tools/registry";
+import {
+  categories,
+  getLiveTools,
+  getPopularTools,
+  getTool,
+  categoryKey,
+  toolTitleKey,
+  toolDescriptionKey,
+} from "@/lib/tools/registry";
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "en", label: "English" },
@@ -111,7 +119,6 @@ export function Header() {
   const popularTools = getPopularTools(5);
   const toolGroups = categories.map((category) => ({
     slug: category.slug,
-    label: category.label,
     Icon: category.Icon,
     tools: allTools.filter((tool) => tool.category === category.slug),
   }));
@@ -124,7 +131,7 @@ export function Header() {
           Toolpika
         </Link>
 
-        <nav className="tp-nav" aria-label="Main">
+        <nav className="tp-nav" aria-label={t("mainNavigation")}>
           {navItems.map((item) => {
             const active = pathname === item.href;
             if (item.href === "/all-tools") {
@@ -165,7 +172,7 @@ export function Header() {
                               <span className="tp-nav-mega-cat-icon">
                                 <Icon className="tp-icon" aria-hidden="true" />
                               </span>
-                              <span className="tp-nav-mega-cat-label">{group.label}</span>
+                              <span className="tp-nav-mega-cat-label">{tTools(categoryKey(group.slug))}</span>
                               <span className="tp-nav-mega-cat-count" aria-hidden="true">
                                 {group.tools.length}
                               </span>
@@ -199,8 +206,8 @@ export function Header() {
                               <ToolIcon name={tool.icon} className="tp-icon" aria-hidden="true" />
                             </span>
                             <span className="tp-nav-mega-tool-copy">
-                              <span className="tp-nav-mega-tool-title">{tool.title}</span>
-                              <span className="tp-nav-mega-tool-desc">{tool.description}</span>
+                              <span className="tp-nav-mega-tool-title">{tTools(toolTitleKey(tool))}</span>
+                              <span className="tp-nav-mega-tool-desc">{tTools(toolDescriptionKey(tool))}</span>
                             </span>
                             <ArrowUpRight className="tp-nav-mega-tool-arrow tp-icon" aria-hidden="true" />
                           </Link>
@@ -262,14 +269,14 @@ export function Header() {
                   savedTools.map((tool) => (
                     <div className="tp-wish-row" key={tool.slug}>
                       <Link href={`/tools/${tool.slug}`} onClick={() => setWishOpen(false)}>
-                        {tool.title}
+                        {tTools(toolTitleKey(tool))}
                       </Link>
                       <button
                         type="button"
                         className="tp-wish-remove"
                         onClick={() => toggleWishlist(tool.slug)}
-                        aria-label={tWish("remove", { title: tool.title })}
-                        title={tWish("remove", { title: tool.title })}
+                        aria-label={tWish("remove", { title: tTools(toolTitleKey(tool)) })}
+                        title={tWish("remove", { title: tTools(toolTitleKey(tool)) })}
                       >
                         <Trash2 className="tp-icon" aria-hidden="true" />
                       </button>
@@ -298,7 +305,7 @@ export function Header() {
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
             className="tp-icon-btn tp-icon-only tp-mobile-toggle"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
             aria-expanded={menuOpen}
           >
             {menuOpen ? <X className="tp-icon" aria-hidden="true" /> : <Menu className="tp-icon" aria-hidden="true" />}
@@ -306,8 +313,8 @@ export function Header() {
         </div>
       </div>
 
-      <div className="tp-mobile-panel" aria-label="Mobile menu">
-        <nav aria-label="Mobile main">
+      <div className="tp-mobile-panel" aria-label={t("mobileMenu")}>
+        <nav aria-label={t("mobileMain")}>
           {navItems.map((item) => {
             const active = pathname === item.href;
             return (

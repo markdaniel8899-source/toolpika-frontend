@@ -22,7 +22,7 @@ export default async function ContactPage({ params }: LocalePageProps) {
     <SecondaryPage wide>
       <Reveal>
         <p className="tp-atlas-eyebrow">{t("eyebrow")}</p>
-        <h1 className="tp-atlas-title">Get in <span className="soft">touch</span></h1>
+        <h1 className="tp-atlas-title">{t("titlePrefix")} <span className="soft">{t("titleAccent")}</span></h1>
         <p className="tp-atlas-lead">{t("description")}</p>
       </Reveal>
 
@@ -32,7 +32,7 @@ export default async function ContactPage({ params }: LocalePageProps) {
             <span style={{ display: "grid", placeItems: "center", width: 20, height: 20, borderRadius: "50%", background: "var(--accent-soft)", color: "var(--accent)" }}>
               <Mail className="tp-icon" style={{ width: 12, height: 12 }} aria-hidden="true" />
             </span>
-            Direct line
+            {t("directLine")}
           </div>
 
           <div className="tp-atlas-contact-rows">
@@ -47,7 +47,7 @@ export default async function ContactPage({ params }: LocalePageProps) {
             <a href="tel:+923074477250" className="tp-atlas-contact-row">
               <span className="tp-icon-tile"><Phone className="tp-icon" aria-hidden="true" /></span>
               <span style={{ flex: 1 }}>
-                <strong>Phone</strong>
+                <strong>{t("phoneLabel")}</strong>
                 <span>+923074477250</span>
               </span>
               <ArrowRight className="tp-icon" style={{ color: "var(--accent)" }} aria-hidden="true" />
@@ -55,15 +55,15 @@ export default async function ContactPage({ params }: LocalePageProps) {
             <div className="tp-atlas-contact-row">
               <span className="tp-icon-tile"><Clock3 className="tp-icon" aria-hidden="true" /></span>
               <span style={{ flex: 1 }}>
-                <strong>Response time</strong>
+                <strong>{t("responseLabel")}</strong>
                 <span>{t("responseTime")}</span>
               </span>
             </div>
             <Link href="/request" className="tp-atlas-contact-row">
               <span className="tp-icon-tile"><MessageSquare className="tp-icon" aria-hidden="true" /></span>
               <span style={{ flex: 1 }}>
-                <strong>Tool requests</strong>
-                <span>Ask for a utility you need.</span>
+                <strong>{t("toolRequestsLabel")}</strong>
+                <span>{t("toolRequestsBody")}</span>
               </span>
               <ArrowRight className="tp-icon" style={{ color: "var(--accent)" }} aria-hidden="true" />
             </Link>
@@ -73,11 +73,14 @@ export default async function ContactPage({ params }: LocalePageProps) {
         <Reveal delay={80}>
           <ContactForm
             copy={{
-              name: "Name",
+              name: t("nameLabel"),
               email: t("emailLabel"),
-              message: "Message",
-              submit: "Send message",
-              note: "Your message goes straight to the admin inbox.",
+              message: t("messageLabel"),
+              submit: t("submitLabel"),
+              note: t("formNote"),
+              sending: t("sending"),
+              sent: t("sentMessage"),
+              genericError: t("sendGenericError"),
             }}
           />
         </Reveal>

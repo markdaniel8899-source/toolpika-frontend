@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { CSSProperties } from "react";
+import { useTranslations } from "next-intl";
 import { SlidingTabs } from "@/components/tools/sliding-tabs";
 import { ToolCard } from "@/components/tools/tool-card";
 import type { Tool } from "@/lib/tools/registry";
@@ -22,6 +23,8 @@ export function CategoryBrowser({
   views: CategoryView[];
   activeSlug: string;
 }) {
+  const tTools = useTranslations("tools");
+  const tNav = useTranslations("nav");
   const [active, setActive] = useState(activeSlug);
 
   const view = views.find((item) => item.slug === active);
@@ -48,7 +51,7 @@ export function CategoryBrowser({
             <p>{view.description}</p>
           </div>
           <span className="tp-page-count">
-            {view.tools.length} {view.tools.length === 1 ? "TOOL" : "TOOLS"}
+            {tTools("toolCount", { count: view.tools.length })}
           </span>
         </div>
       </section>
@@ -58,7 +61,7 @@ export function CategoryBrowser({
         active={active}
         onChange={handleChange}
         className="tp-tabs-page"
-        ariaLabel="Categories"
+        ariaLabel={tNav("categoriesNav")}
       />
 
       {view.tools.length > 0 ? (

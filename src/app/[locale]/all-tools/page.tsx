@@ -4,7 +4,7 @@ import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
 import { AllToolsBrowser } from "@/components/tools/all-tools-browser";
 import { PillCta } from "@/components/ui/pill-cta";
-import { categories, getLiveTools } from "@/lib/tools/registry";
+import { categories, getLiveTools, categoryKey } from "@/lib/tools/registry";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -19,6 +19,8 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const nav = await getTranslations({ locale, namespace: "nav" });
   const home = await getTranslations({ locale, namespace: "home" });
+  const allTools = await getTranslations({ locale, namespace: "allTools" });
+  const tTools = await getTranslations({ locale, namespace: "tools" });
   const tools = getLiveTools();
 
   const featured = ["word-counter", "json-formatter", "password-generator"]
@@ -30,7 +32,7 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
       <section className="tp-page-hero">
         <div className="tp-page-hero-grid">
           <div className="tp-page-title">
-            <p className="tp-eyebrow">The collection</p>
+            <p className="tp-eyebrow">{allTools("eyebrow")}</p>
             <h1>{nav("tools")}</h1>
             <p>{home("subtitle")}</p>
           </div>
@@ -46,7 +48,7 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
         tools={tools}
         categories={categories.map((category) => ({
           slug: category.slug,
-          label: category.label,
+          label: tTools(categoryKey(category.slug)),
         }))}
       />
 
@@ -54,8 +56,8 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
         <section style={{ marginTop: 56 }}>
           <div className="tp-section-head">
             <div>
-              <p className="tp-eyebrow">Tool spotlight</p>
-              <h2 className="tp-section-title">Good places to start</h2>
+              <p className="tp-eyebrow">{allTools("spotlightEyebrow")}</p>
+              <h2 className="tp-section-title">{allTools("spotlightTitle")}</h2>
             </div>
           </div>
           <div className="tp-tool-grid" style={{ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}>
@@ -67,7 +69,7 @@ export default async function AllToolsPage({ params }: LocalePageProps) {
       )}
 
       <div style={{ marginTop: 40 }}>
-        <PillCta href="/request">Missing a tool? Request it</PillCta>
+        <PillCta href="/request">{allTools("requestLink")}</PillCta>
       </div>
     </main>
   );

@@ -5,10 +5,16 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { PillCta } from "@/components/ui/pill-cta";
-import { getTool } from "@/lib/tools/registry";
+import {
+  getTool,
+  categoryKey,
+  toolTitleKey,
+  toolDescriptionKey,
+} from "@/lib/tools/registry";
 
 export default function WishlistPage() {
   const t = useTranslations("wishlist");
+  const tTools = useTranslations("tools");
   const { wishlist, isLoaded, toggleWishlist } = useWishlist();
 
   const savedTools = wishlist
@@ -35,28 +41,31 @@ export default function WishlistPage() {
           </div>
         ) : (
           <div className="tp-wishlist-grid">
-            {savedTools.map((tool) => (
+            {savedTools.map((tool) => {
+              const title = tTools(toolTitleKey(tool));
+              return (
               <article className="tp-card tp-wishlist-item" key={tool.slug}>
                 <div className="tp-tool-top">
-                  <span className="tp-tool-cat">{tool.category}</span>
+                  <span className="tp-tool-cat">{tTools(categoryKey(tool.category))}</span>
                   <button
                     type="button"
                     className="tp-wish-remove"
                     onClick={() => toggleWishlist(tool.slug)}
-                    aria-label={t("remove", { title: tool.title })}
-                    title={t("remove", { title: tool.title })}
+                    aria-label={t("remove", { title })}
+                    title={t("remove", { title })}
                   >
                     <Heart className="tp-icon" fill="currentColor" aria-hidden="true" />
                   </button>
                 </div>
-                <h3 className="tp-tool-title">{tool.title}</h3>
-                <p className="tp-tool-desc">{tool.description}</p>
+                <h3 className="tp-tool-title">{title}</h3>
+                <p className="tp-tool-desc">{tTools(toolDescriptionKey(tool))}</p>
                 <Link href={`/tools/${tool.slug}`} className="tp-text-link" style={{ marginTop: 18 }}>
-                  {t("open", { title: tool.title })}
+                  {t("open", { title })}
                   <ArrowRight className="tp-icon" aria-hidden="true" />
                 </Link>
               </article>
-            ))}
+              );
+            })}
           </div>
         ))}
     </main>

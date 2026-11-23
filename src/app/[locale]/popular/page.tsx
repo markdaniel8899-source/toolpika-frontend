@@ -20,6 +20,7 @@ export async function generateMetadata({
 export default async function PopularPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "popular" });
+  const nav = await getTranslations({ locale, namespace: "nav" });
   const tools = getPopularTools(8);
 
   return (
@@ -35,11 +36,11 @@ export default async function PopularPage({ params }: LocalePageProps) {
         </div>
       </section>
 
-      <div className="tp-tabs" aria-label="Tool navigation">
-        <Link href="/all-tools" className="tp-tab">All tools</Link>
-        <Link href="/popular" className="tp-tab" data-active="true">Popular</Link>
-        <Link href="/new" className="tp-tab">New</Link>
-        <Link href="/request" className="tp-tab">Request a tool</Link>
+      <div className="tp-tabs" aria-label={nav("toolNavigation")}>
+        <Link href="/all-tools" className="tp-tab">{nav("tools")}</Link>
+        <Link href="/popular" className="tp-tab" data-active="true">{nav("popular")}</Link>
+        <Link href="/new" className="tp-tab">{nav("new")}</Link>
+        <Link href="/request" className="tp-tab">{nav("request")}</Link>
       </div>
 
       <div className="tp-tool-grid">
@@ -50,7 +51,7 @@ export default async function PopularPage({ params }: LocalePageProps) {
 
       <div style={{ marginTop: 40 }}>
         <Link href="/request" className="tp-text-link">
-          Missing something? Request it
+          {t("requestLink")}
           <ArrowRight className="tp-icon" aria-hidden="true" />
         </Link>
       </div>

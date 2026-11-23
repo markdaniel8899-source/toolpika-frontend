@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import { ArrowRight, Check } from "lucide-react";
 import { Dropdown } from "@/components/ui/dropdown";
 import { InboxStatus } from "@/components/ui/inbox-status";
@@ -26,6 +27,7 @@ interface RequestFormProps {
 const emptyForm = { toolName: "", description: "", email: "" };
 
 export default function RequestForm({ labels }: RequestFormProps) {
+  const t = useTranslations("request");
   const [form, setForm] = useState(emptyForm);
   const [category, setCategory] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -35,15 +37,15 @@ export default function RequestForm({ labels }: RequestFormProps) {
 
   const validate = useCallback(() => {
     const next: Record<string, string> = {};
-    if (!form.toolName.trim()) next.toolName = "Tool name is required.";
-    if (!form.description.trim()) next.description = "Description is required.";
-    if (!category) next.category = "Choose a category.";
+    if (!form.toolName.trim()) next.toolName = t("errorNameRequired");
+    if (!form.description.trim()) next.description = t("errorDescriptionRequired");
+    if (!category) next.category = t("errorCategoryRequired");
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      next.email = "Enter a valid email address.";
+      next.email = t("errorEmailInvalid");
     }
     setErrors(next);
     return Object.keys(next).length === 0;
-  }, [form, category]);
+  }, [form, category, t]);
 
   const handleChange =
     (key: keyof typeof form) =>
@@ -79,7 +81,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
       setCategory("");
     } else {
       setStatus("error");
-      setStatusMessage(result.error ?? "Could not send your request.");
+      setStatusMessage(result.error ?? t("errorGeneric"));
     }
   };
 
@@ -89,17 +91,14 @@ export default function RequestForm({ labels }: RequestFormProps) {
         <span className="tp-request-success-icon">
           <Check className="tp-icon" aria-hidden="true" />
         </span>
-        <h2>Request received</h2>
-        <p>
-          Thank you. We read every request that comes in, and we will reply if yours
-          is something we can build well.
-        </p>
+        <h2>{t("successTitle")}</h2>
+        <p>{t("successBody")}</p>
         <button
           type="button"
           className="tp-btn tp-btn-ghost"
           onClick={() => setSuccess(false)}
         >
-          Send another request
+          {t("sendAnother")}
         </button>
       </div>
     );
@@ -108,8 +107,8 @@ export default function RequestForm({ labels }: RequestFormProps) {
   return (
     <form className="tp-request-card tp-request-form" onSubmit={handleSubmit} noValidate>
       <div className="tp-request-card-head">
-        <h2 className="tp-request-form-title">Tell us what you need</h2>
-        <p className="tp-request-card-sub">A short note is enough to get started.</p>
+        <h2 className="tp-request-form-title">{t("formTitle")}</h2>
+        <p className="tp-request-card-sub">{t("formSubtitle")}</p>
       </div>
 
       <div className="tp-request-fields">
@@ -145,15 +144,15 @@ export default function RequestForm({ labels }: RequestFormProps) {
               id="tool-category"
               value={category}
               options={[
-                { value: "Text", label: "Text" },
-                { value: "Images", label: "Images" },
-                { value: "Code", label: "Code" },
-                { value: "Converters", label: "Converters" },
-                { value: "Security", label: "Security" },
-                { value: "Something else", label: "Something else" },
+                { value: t("categoryOptions.text"), label: t("categoryOptions.text") },
+                { value: t("categoryOptions.image"), label: t("categoryOptions.image") },
+                { value: t("categoryOptions.code"), label: t("categoryOptions.code") },
+                { value: t("categoryOptions.converter"), label: t("categoryOptions.converter") },
+                { value: t("categoryOptions.security"), label: t("categoryOptions.security") },
+                { value: t("categoryOptions.other"), label: t("categoryOptions.other") },
               ]}
-              placeholder="Choose a category"
-              ariaLabel="Category"
+              placeholder={t("categoryPlaceholder")}
+              ariaLabel={t("categoryAriaLabel")}
               triggerClassName="tp-category-trigger"
               onChange={(value) => {
                 setCategory(value);
@@ -187,7 +186,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
       <InboxStatus state={status} message={statusMessage} />
 
       <button type="submit" className="tp-btn tp-btn-primary tp-request-submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : labels.submit}
+        {status === "sending" ? t("sending") : labels.submit}
         <ArrowRight className="tp-icon" aria-hidden="true" />
       </button>
     </form>

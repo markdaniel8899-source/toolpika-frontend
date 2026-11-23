@@ -24,7 +24,7 @@ export default async function GuidesPage({ params }: LocalePageProps) {
             <h1>{t("title")}</h1>
             <p>{t("description")}</p>
           </div>
-          <span className="tp-page-count">LEARN · PRACTICAL · SHORT</span>
+          <span className="tp-page-count">{t("countBadge")}</span>
         </div>
       </section>
 

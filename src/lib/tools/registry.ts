@@ -146,6 +146,31 @@ export function getTool(slug: string) {
   return tools.find((tool) => tool.slug === slug);
 }
 
+/**
+ * Translation keys for the `tools` message namespace.
+ * Tool names, descriptions and SEO copy live in messages/<locale>.json under
+ * `tools.<slug>.*` so every locale can translate them with Groq.
+ */
+export function toolTitleKey(tool: Tool) {
+  return `${tool.slug}.title`;
+}
+
+export function toolDescriptionKey(tool: Tool) {
+  return `${tool.slug}.shortDesc`;
+}
+
+export function toolSeoTitleKey(tool: Tool) {
+  return `${tool.slug}.seo.title`;
+}
+
+export function toolSeoDescriptionKey(tool: Tool) {
+  return `${tool.slug}.seo.description`;
+}
+
+export function categoryKey(slug: string) {
+  return `categories.${slug}`;
+}
+
 export function getLiveTools() {
   return tools.filter((tool) => tool.status === "live");
 }

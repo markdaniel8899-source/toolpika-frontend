@@ -8,7 +8,17 @@
     "popular": "Popolari",
     "new": "Nuovi",
     "guides": "Blog",
-    "request": "Richiedi uno strumento"
+    "request": "Richiedi uno strumento",
+    "mainNavigation": "Principale",
+    "mobileMenu": "Menu mobile",
+    "mobileMain": "Principale mobile",
+    "openMenu": "Apri menu",
+    "closeMenu": "Chiudi menu",
+    "toolNavigation": "Navigazione strumenti",
+    "filterTools": "Filtra strumenti",
+    "quickFilters": "Filtri rapidi",
+    "categoriesNav": "Categorie",
+    "breadcrumb": "Percorso di navigazione"
   },
   "home": {
     "title": "Trova lo strumento giusto in <display>secondi</display>",
@@ -20,7 +30,43 @@
     "categories": "Categorie",
     "requestTitle": "Non trovi quello che ti serve?",
     "requestSubtitle": "Dicci quale strumento manca e lo costruiamo.",
-    "requestCTA": "Richiedi uno strumento"
+    "requestCTA": "Richiedi uno strumento",
+    "eyebrow": "Strumenti gratuiti, nel tuo browser",
+    "promisesLabel": "Le promesse di Toolpika",
+    "promiseNoUploads": "Nessun caricamento",
+    "promiseNoSignup": "Nessuna registrazione",
+    "promiseFree": "Uso gratuito",
+    "popularEyebrow": "Popolari",
+    "viewAllTools": "Vedi tutti gli strumenti",
+    "browseEyebrow": "Sfoglia",
+    "findByCategory": "Trova per categoria",
+    "categoryIntro": "Piccole collezioni, ognuna con un unico scopo. Inizia dal tipo di lavoro che stai facendo, non dal nome dello strumento.",
+    "viewAllCategories": "Visualizza tutte le categorie",
+    "categoryCount": "{count, plural, one {# strumento} other {# strumenti}}",
+    "categoryDescriptions": {
+      "text": "Conta, converti e pulisci il testo.",
+      "image": "Comprimi e prepara le immagini localmente.",
+      "code": "Formatta, valida e ispeziona il codice.",
+      "converter": "Converti tra unità, URL e Base64.",
+      "security": "Genera password robuste."
+    },
+    "philosophyEyebrow": "Perché Toolpika",
+    "philosophyTitle1": "Tutti gli strumenti di cui hai bisogno.",
+    "philosophyTitle2": "Niente di superfluo.",
+    "philosophySub": "Strumenti gratuiti illimitati, senza registrazione e senza che i dati lascino il tuo dispositivo.",
+    "principle1Title": "Nessuna perdita di dati",
+    "principle1Body": "I tuoi file e testi non lasciano mai il tuo browser.",
+    "principle2Title": "Nessuna registrazione",
+    "principle2Body": "Apri uno strumento e inizia subito a lavorare.",
+    "principle3Title": "Strumenti gratuiti illimitati",
+    "principle3Body": "Usa ogni strumento quante volte vuoi, senza costi.",
+    "requestEyebrow": "Richiesta"
+  },
+  "allTools": {
+    "eyebrow": "La raccolta",
+    "spotlightEyebrow": "Strumento in evidenza",
+    "spotlightTitle": "Buoni punti di partenza",
+    "requestLink": "Manca uno strumento? Richiedilo"
   },
   "theme": {
     "toggle": "Cambia tema"
@@ -42,7 +88,103 @@
     "catImage": "Immagini",
     "catCode": "Codice",
     "catConverter": "Convertitori",
-    "catSecurity": "Sicurezza"
+    "catSecurity": "Sicurezza",
+    "notFound": "Strumento non trovato",
+    "workspaceLabel": "Strumento {title}",
+    "toolCount": "{count, plural, one {# STRUMENTO} other {# STRUMENTI}}",
+    "categories": {
+      "text": "Testo",
+      "image": "Immagini",
+      "file": "File",
+      "code": "Codice",
+      "converter": "Convertitori",
+      "security": "Sicurezza",
+      "calculator": "Calcolatrici"
+    },
+    "word-counter": {
+      "title": "Contatore di parole",
+      "shortDesc": "Conta parole, caratteri, frasi e paragrafi nel tuo testo.",
+      "seo": {
+        "title": "Contatore di parole online gratuito | Conta parole e caratteri",
+        "description": "Conta parole, caratteri, frasi e paragrafi istantaneamente nel tuo browser. Gratuito, privato e senza registrazione."
+      }
+    },
+    "case-converter": {
+      "title": "Convertitore di maiuscole e minuscole",
+      "shortDesc": "Converti il testo in MAIUSCOLO, minuscolo, Primo Carattere Maiuscolo o camelCase.",
+      "seo": {
+        "title": "Convertitore di maiuscole e minuscole online gratuito | MAIUSCOLO, minuscolo e altro",
+        "description": "Converti il testo tra MAIUSCOLO, minuscolo, Primo Carattere Maiuscolo, camelCase, kebab-case e snake_case direttamente nel tuo browser."
+      }
+    },
+    "image-compressor": {
+      "title": "Compressore di immagini",
+      "shortDesc": "Comprimi le immagini JPEG e PNG localmente nel tuo browser.",
+      "seo": {
+        "title": "Compressore di immagini gratuito | Comprimi JPEG e PNG online",
+        "description": "Riduci le dimensioni delle immagini JPEG e PNG localmente nel tuo browser. Nessun caricamento, nessuna registrazione e nulla da installare."
+      }
+    },
+    "json-formatter": {
+      "title": "Formattatore JSON",
+      "shortDesc": "Formatta, valida e minimizza JSON nel tuo browser.",
+      "seo": {
+        "title": "Formattatore JSON gratuito | Formatta, valida e minimizza JSON",
+        "description": "Formatta, valida e minimizza JSON istantaneamente. Tutto avviene localmente nel tuo browser."
+      }
+    },
+    "unit-converter": {
+      "title": "Convertitore di unità",
+      "shortDesc": "Converti lunghezza, peso, temperatura e altro.",
+      "seo": {
+        "title": "Convertitore di unità gratuito | Lunghezza, peso e temperatura",
+        "description": "Converti rapidamente unità di lunghezza, peso e temperatura nel tuo browser. Non è necessario un account."
+      }
+    },
+    "password-generator": {
+      "title": "Generatore di password",
+      "shortDesc": "Genera password forti e casuali in locale.",
+      "seo": {
+        "title": "Generatore di password gratuito | Password casuali forti",
+        "description": "Genera password casuali forti in locale con lunghezza e opzioni di caratteri regolabili."
+      }
+    },
+    "url-encoder": {
+      "title": "Codificatore / Decodificatore URL",
+      "shortDesc": "Codifica o decodifica URL e stringhe di query.",
+      "seo": {
+        "title": "Codificatore e decodificatore URL gratuito | Codifica URL online",
+        "description": "Codifica o decodifica URL e stringhe di query nel tuo browser. Veloce, gratuito e privato."
+      }
+    },
+    "base64-encoder": {
+      "title": "Codificatore / Decodificatore Base64",
+      "shortDesc": "Codifica o decodifica stringhe Base64.",
+      "seo": {
+        "title": "Codificatore e Decodificatore Base64 Gratuito | Codifica Base64 Online",
+        "description": "Codifica o decodifica stringhe Base64 direttamente nel tuo browser. Nessun caricamento o registrazione."
+      }
+    },
+    "seo": {
+      "intro": "{name} è uno strumento gratuito di {category} che {what}. Funziona interamente nel tuo browser, quindi non c'è nulla da installare, nessun account da creare e nulla da caricare. Apri la pagina, esegui il lavoro e passa oltre. {name} mantiene i tuoi contenuti sul tuo dispositivo. Che tu abbia bisogno di una rapida correzione di {category} o di un passo ripetibile nel tuo flusso di lavoro, questo strumento è progettato per non ostacolare.",
+      "closing": "Tutto su questa pagina funziona nel tuo browser. Apri {name}, aggiungi ciò di cui hai bisogno e porta con te il risultato. Non c'è configurazione, nessun accesso e nulla da installare.",
+      "canDoHeading": "Cosa puoi fare con {name}",
+      "canDoP1": "{name} gestisce i comuni lavori di {category} a cui le persone si scontrano ogni giorno. Incolla o aggiungi i tuoi contenuti, regola le opzioni di cui hai bisogno e leggi il risultato immediatamente. I controlli sono ridotti all'essenziale in modo che lo strumento rimanga rapido anche su uno smartphone.",
+      "canDoP2": "Poiché si tratta di un'utilità di {category}, il lavoro avviene localmente. Nulla viene inviato a un server e nulla viene archiviato, il che rende {name} una scelta pratica quando i tuoi contenuti sono privati o semplicemente apprezzi una pagina veloce e silenziosa.",
+      "workflowHeading": "Come questo strumento si integra nel tuo flusso di lavoro",
+      "workflowP1": "La maggior parte delle persone usa {name} in una scheda del browser insieme al resto del proprio lavoro. Non ci sono passaggi di configurazione né una curva di apprendimento: l'azione {category} per cui sei arrivato è quella che vedi sullo schermo. Copia o scarica il risultato e continua.",
+      "workflowP2": "Se lavori su più dispositivi, {name} si comporta allo stesso modo ovunque perché l'intero strumento funziona nel browser. Questo rende facile riprendere lo stesso compito {category} su un laptop, un tablet o uno smartphone senza cambiare il modo in cui lavori.",
+      "browserHeading": "Perché usare uno strumento basato su browser",
+      "browserP1": "Uno strumento {category} basato su browser mantiene la parte utile, ovvero completare il lavoro, ed elimina il resto. {name} non richiede accesso, cookie di tracciamento o caricamenti, quindi la pagina rimane veloce e i tuoi dati restano tuoi.",
+      "freeQ": "{name} è gratuito?",
+      "freeA": "Sì. {name} è gratuito, senza account e senza limiti per l'uso quotidiano di {category}. Puoi aprirlo, usarlo e andartene senza pagare o registrarti a nulla.",
+      "uploadQ": "{name} carica o memorizza i miei contenuti?",
+      "uploadA": "No. {name} funziona nel tuo browser, quindi i tuoi contenuti non raggiungono mai un server. Non c'è alcun passaggio di caricamento e nulla viene salvato dopo aver chiuso la scheda.",
+      "installQ": "Devo installare qualcosa per usare {name}?",
+      "installA": "Non c'è nulla da installare. {name} è una pagina web, quindi qualsiasi browser moderno su computer o smartphone può eseguire questo strumento {category}. Basta aprire la pagina e iniziare.",
+      "phoneQ": "Posso usare {name} sul mio telefono?",
+      "phoneA": "Sì. {name} è progettato per schermi piccoli e grandi, quindi puoi eseguire un rapido compito di {category} con una sola mano. Il risultato può essere copiato o scaricato direttamente dalla pagina."
+    }
   },
   "search": {
     "placeholder": "Cerca",
@@ -54,7 +196,8 @@
   "popular": {
     "eyebrow": "Più usati",
     "title": "Strumenti popolari",
-    "description": "Gli strumenti a cui si torna più spesso. Tutto funziona nel tuo browser."
+    "description": "Gli strumenti a cui si torna più spesso. Tutto funziona nel tuo browser.",
+    "requestLink": "Manca qualcosa? Richiedilo"
   },
   "new": {
     "eyebrow": "Appena aggiunti",
@@ -63,6 +206,7 @@
   },
   "guides": {
     "eyebrow": "Impara",
+    "countBadge": "IMPARA · PRATICO · BREVE",
     "title": "Guide",
     "description": "Guide brevi e pratiche per sfruttare al meglio questi strumenti.",
     "empty": "Nessuna guida pubblicata ancora. Torna presto o chiedi quella che ti serve.",
@@ -80,7 +224,34 @@
     "emailPlaceholder": "tu@esempio.it",
     "emailHint": "Usata solo per avvisarti quando lo strumento è pronto.",
     "submit": "Invia richiesta",
-    "backHome": "Torna alla home"
+    "backHome": "Torna alla home",
+    "point1Title": "Descrivi il lavoro",
+    "point1Body": "Cosa inserisci e come dovrebbe essere un buon risultato. Non servono design o nomi.",
+    "point2Title": "Lo valutiamo",
+    "point2Body": "Leggiamo ogni richiesta e verifichiamo se si adatta alla raccolta.",
+    "point3Title": "Privato di default",
+    "point3Body": "La tua nota resta con noi. Non pubblichiamo mai né condividiamo la tua email.",
+    "formTitle": "Dìci cosa ti serve",
+    "formSubtitle": "Basta una breve nota per iniziare.",
+    "successTitle": "Richiesta ricevuta",
+    "successBody": "Grazie. Leggiamo ogni richiesta che ci arriva e risponderemo se la tua è qualcosa che possiamo costruire bene.",
+    "sendAnother": "Invia un'altra richiesta",
+    "categoryPlaceholder": "Scegli una categoria",
+    "categoryAriaLabel": "Categoria",
+    "sending": "Invio…",
+    "errorNameRequired": "Il nome dello strumento è obbligatorio.",
+    "errorDescriptionRequired": "La descrizione è obbligatoria.",
+    "errorCategoryRequired": "Seleziona una categoria.",
+    "errorEmailInvalid": "Inserisci un indirizzo email valido.",
+    "errorGeneric": "Impossibile inviare la richiesta.",
+    "categoryOptions": {
+      "text": "Testo",
+      "image": "Immagini",
+      "code": "Codice",
+      "converter": "Convertitori",
+      "security": "Sicurezza",
+      "other": "Altro"
+    }
   },
   "about": {
     "eyebrow": "Chi siamo",
@@ -90,7 +261,23 @@
     "privacyTitle": "I tuoi file restano sul dispositivo",
     "privacyBody": "Ogni strumento che gestisce file o testo lavora dentro il tuo browser. Nulla viene caricato, quindi non vediamo mai i tuoi contenuti.",
     "contactTitle": "Contattaci",
-    "contactBody": "Scrivici e risponderà una persona."
+    "contactBody": "Scrivici e risponderà una persona.",
+    "headingPrefix": "Informazioni su",
+    "perkInstantTitle": "Immediato di default",
+    "perkInstantBody": "Ogni strumento si apre in una scheda e funziona nel momento in cui lo carichi.",
+    "perkSmallTitle": "Semplice per design",
+    "perkSmallBody": "Un compito per strumento, così non c'è nulla da imparare prima di iniziare.",
+    "believeEyebrow": "Cosa crediamo",
+    "believeTitle": "Gli strumenti utili non devono disturbare.",
+    "believeBody": "Nessun account, nessun caricamento e nessuna confusione. Solo una raccolta silenziosa di utilità che svolgono bene un unico compito e spariscono quando hai finito.",
+    "browseCollection": "Sfoglia la raccolta",
+    "storyEyebrow": "La nostra storia",
+    "storyTitle": "Creato per i piccoli lavori, ogni giorno.",
+    "storyBody1": "Toolpika è nata come una serie di utilità private per il lavoro quotidiano. Ognuna risolveva un singolo inconveniente senza richiedere la registrazione o l'invio di file a un server.",
+    "storyBody2": "Quell'idea guida ancora il sito. Gli strumenti restano locali, le pagine restano leggere e la raccolta cresce solo quando qualcosa è davvero utile.",
+    "specificTitle": "Hai bisogno di qualcosa di specifico?",
+    "specificBody": "Dì cosa ti serve e lo valuteremo. Leggiamo ogni richiesta.",
+    "requestCta": "Richiedi uno strumento"
   },
   "privacy": {
     "eyebrow": "Note legali",
@@ -102,7 +289,10 @@
     "dataTitle": "Cosa raccogliamo",
     "dataBody": "Non serve un account. Le preferenze di tema e lingua sono salvate nella memoria locale del browser e non lasciano mai il tuo dispositivo.",
     "cookiesTitle": "Cookie",
-    "cookiesBody": "Toolpika non imposta cookie di tracciamento. Un singolo cookie tecnico può ricordare la lingua preferita."
+    "cookiesBody": "Toolpika non imposta cookie di tracciamento. Un singolo cookie tecnico può ricordare la lingua preferita.",
+    "dataList1": "Le preferenze di tema e lingua restano nel tuo browser.",
+    "dataList2": "Non è richiesto un account per utilizzare qualsiasi strumento pubblico.",
+    "dataList3": "Le richieste inviate vengono salvate solo se scegli di inviarle."
   },
   "terms": {
     "eyebrow": "Note legali",
@@ -121,17 +311,33 @@
     "title": "Contattaci",
     "description": "Segnalazioni di bug, richieste di strumenti o altro. Basta un'email.",
     "emailLabel": "E-mail",
-    "responseTime": "Di solito rispondiamo entro un paio di giorni lavorativi."
+    "responseTime": "Di solito rispondiamo entro un paio di giorni lavorativi.",
+    "titlePrefix": "Mettiti in",
+    "titleAccent": "contatto",
+    "directLine": "Linea diretta",
+    "phoneLabel": "Telefono",
+    "responseLabel": "Tempo di risposta",
+    "toolRequestsLabel": "Richieste di strumenti",
+    "toolRequestsBody": "Richiedi uno strumento di cui hai bisogno.",
+    "nameLabel": "Nome",
+    "messageLabel": "Messaggio",
+    "submitLabel": "Invia messaggio",
+    "formNote": "Il tuo messaggio viene inviato direttamente alla casella di posta dell'amministratore.",
+    "sentMessage": "Messaggio inviato. Lo leggeremo a breve.",
+    "sendGenericError": "Impossibile inviare il messaggio.",
+    "sending": "Invio in corso..."
   },
   "category": {
     "eyebrow": "Categoria",
     "title": "Strumenti {name}",
     "description": "Tutti gli strumenti {name} su Toolpika. Funzionano nel browser e non richiedono un account.",
     "empty": "Non ci sono ancora strumenti in questa categoria.",
-    "allEyebrow": "Browse",
-    "allTitle": "All categories",
-    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
-    "viewCategory": "View category"
+    "allEyebrow": "Sfoglia",
+    "allTitle": "Tutte le categorie",
+    "allDescription": "Tutti gli strumenti, raggruppati per funzione. Seleziona una categoria per visualizzarli.",
+    "viewCategory": "Visualizza categoria",
+    "notFound": "Categoria non trovata",
+    "browseByCategory": "ESPLORA · PER CATEGORIA"
   },
   "notFound": {
     "title": "Pagina non trovata",
@@ -151,7 +357,9 @@
     "contact": "Contatti",
     "privacy": "Privacy",
     "terms": "Termini",
-    "copyright": "© {year} Toolpika. Tutti i diritti riservati."
+    "copyright": "© {year} Toolpika. Tutti i diritti riservati.",
+    "emailLabel": "Email",
+    "gitHubLabel": "GitHub"
   },
   "toolPage": {
     "howToTitle": "Come usarlo",
@@ -165,7 +373,8 @@
     "faqAnswer2": "Sì, una volta caricata la pagina. Puoi disconnetterti e continuare a lavorare.",
     "faqQuestion3": "C'è un limite alla dimensione del file?",
     "faqAnswer3": "I file grandi possono essere lenti sui telefoni più vecchi. Quelli piccoli finiscono subito.",
-    "relatedTitle": "Strumenti correlati"
+    "relatedTitle": "Strumenti correlati",
+    "missingRequest": "Non trovi uno strumento? Richiedilo"
   },
   "toolUi": {
     "copy": "Copia",

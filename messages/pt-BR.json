@@ -8,7 +8,17 @@
     "popular": "Populares",
     "new": "Novas",
     "guides": "Guias",
-    "request": "Solicitar uma ferramenta"
+    "request": "Solicitar uma ferramenta",
+    "mainNavigation": "Principal",
+    "mobileMenu": "Menu móvel",
+    "mobileMain": "Principal móvel",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "toolNavigation": "Navegação de ferramentas",
+    "filterTools": "Filtrar ferramentas",
+    "quickFilters": "Filtros rápidos",
+    "categoriesNav": "Categorias",
+    "breadcrumb": "Trilha de navegação"
   },
   "home": {
     "title": "Encontre a ferramenta certa em <display>segundos</display>",
@@ -20,7 +30,43 @@
     "categories": "Categorias",
     "requestTitle": "Não encontrou o que procura?",
     "requestSubtitle": "Diga qual ferramenta está faltando e vamos construí-la.",
-    "requestCTA": "Solicitar uma ferramenta"
+    "requestCTA": "Solicitar uma ferramenta",
+    "eyebrow": "Ferramentas gratuitas, no seu navegador",
+    "promisesLabel": "Compromissos da Toolpika",
+    "promiseNoUploads": "Sem uploads",
+    "promiseNoSignup": "Sem cadastro",
+    "promiseFree": "Gratuito para usar",
+    "popularEyebrow": "Populares",
+    "viewAllTools": "Ver todas as ferramentas",
+    "browseEyebrow": "Navegar",
+    "findByCategory": "Encontrar por categoria",
+    "categoryIntro": "Coleções pequenas, cada uma com uma função. Comece pelo tipo de trabalho que você está fazendo, não pelo nome da ferramenta.",
+    "viewAllCategories": "Ver todas as categorias",
+    "categoryCount": "{count, plural, one {# ferramenta} other {# ferramentas}}",
+    "categoryDescriptions": {
+      "text": "Conte, converta e limpe textos.",
+      "image": "Comprima e prepare imagens localmente.",
+      "code": "Formate, valide e inspecione código.",
+      "converter": "Converta entre unidades, URLs e Base64.",
+      "security": "Gere senhas robustas."
+    },
+    "philosophyEyebrow": "Por que Toolpika",
+    "philosophyTitle1": "Todas as ferramentas que você precisa.",
+    "philosophyTitle2": "Nada além disso.",
+    "philosophySub": "Ferramentas gratuitas ilimitadas, sem cadastro e sem envio de dados do seu dispositivo.",
+    "principle1Title": "Sem vazamento de dados",
+    "principle1Body": "Seus arquivos e textos nunca saem do seu navegador.",
+    "principle2Title": "Sem cadastro",
+    "principle2Body": "Abra uma ferramenta e comece a trabalhar imediatamente.",
+    "principle3Title": "Ferramentas gratuitas ilimitadas",
+    "principle3Body": "Use todas as ferramentas quantas vezes quiser, sem custo.",
+    "requestEyebrow": "Solicitação"
+  },
+  "allTools": {
+    "eyebrow": "A coleção",
+    "spotlightEyebrow": "Destaque da ferramenta",
+    "spotlightTitle": "Boas opções para começar",
+    "requestLink": "Falta alguma ferramenta? Solicite"
   },
   "theme": {
     "toggle": "Alternar tema"
@@ -42,7 +88,103 @@
     "catImage": "Imagens",
     "catCode": "Código",
     "catConverter": "Conversores",
-    "catSecurity": "Segurança"
+    "catSecurity": "Segurança",
+    "notFound": "Ferramenta não encontrada",
+    "workspaceLabel": "ferramenta {title}",
+    "toolCount": "{count, plural, one {# FERRAMENTA} other {# FERRAMENTAS}}",
+    "categories": {
+      "text": "Texto",
+      "image": "Imagens",
+      "file": "Arquivos",
+      "code": "Código",
+      "converter": "Conversores",
+      "security": "Segurança",
+      "calculator": "Calculadoras"
+    },
+    "word-counter": {
+      "title": "Contador de Palavras",
+      "shortDesc": "Conte palavras, caracteres, frases e parágrafos no seu texto.",
+      "seo": {
+        "title": "Contador de Palavras Online Gratuito | Conte Palavras e Caracteres",
+        "description": "Conte palavras, caracteres, frases e parágrafos instantaneamente no seu navegador. Gratuito, privado e sem cadastro."
+      }
+    },
+    "case-converter": {
+      "title": "Conversor de Maiúsculas e Minúsculas",
+      "shortDesc": "Converta texto para MAIÚSCULAS, minúsculas, Título ou camelCase.",
+      "seo": {
+        "title": "Conversor de Maiúsculas e Minúsculas Online Gratuito | MAIÚSCULAS, minúsculas e mais",
+        "description": "Converta texto entre MAIÚSCULAS, minúsculas, Título, camelCase, kebab-case e snake_case direto no seu navegador."
+      }
+    },
+    "image-compressor": {
+      "title": "Compressor de Imagens",
+      "shortDesc": "Comprima imagens JPEG e PNG localmente no seu navegador.",
+      "seo": {
+        "title": "Compressor de Imagens Gratuito | Comprimir JPEG e PNG Online",
+        "description": "Reduza o tamanho de imagens JPEG e PNG localmente no seu navegador. Sem uploads, sem cadastro e nada para instalar."
+      }
+    },
+    "json-formatter": {
+      "title": "Formatador de JSON",
+      "shortDesc": "Formate, valide e minifique JSON no seu navegador.",
+      "seo": {
+        "title": "Formatador de JSON Gratuito | Formatar, Validar e Minificar JSON",
+        "description": "Formate, valide e minifique JSON instantaneamente. Tudo roda localmente no seu navegador."
+      }
+    },
+    "unit-converter": {
+      "title": "Conversor de Unidades",
+      "shortDesc": "Converta comprimento, peso, temperatura e mais.",
+      "seo": {
+        "title": "Conversor de Unidades Gratuito | Comprimento, Peso e Temperatura",
+        "description": "Converta unidades de comprimento, peso e temperatura rapidamente no seu navegador. Não é necessário criar uma conta."
+      }
+    },
+    "password-generator": {
+      "title": "Gerador de Senhas",
+      "shortDesc": "Gere senhas fortes e aleatórias localmente.",
+      "seo": {
+        "title": "Gerador de Senhas Gratuito | Senhas Aleatórias Fortes",
+        "description": "Gere senhas aleatórias fortes localmente com comprimento e opções de caracteres ajustáveis."
+      }
+    },
+    "url-encoder": {
+      "title": "Codificador / Decodificador de URL",
+      "shortDesc": "Codifique ou decodifique URLs e strings de consulta.",
+      "seo": {
+        "title": "Codificador e Decodificador de URL Gratuito | Codifique URLs Online",
+        "description": "Codifique ou decodifique URLs e strings de consulta no seu navegador. Rápido, gratuito e privado."
+      }
+    },
+    "base64-encoder": {
+      "title": "Codificador / Decodificador Base64",
+      "shortDesc": "Codifique ou decodifique strings Base64.",
+      "seo": {
+        "title": "Codificador e Decodificador Base64 Gratuito | Codifique Base64 Online",
+        "description": "Codifique ou decodifique strings Base64 diretamente no seu navegador. Sem uploads ou cadastro."
+      }
+    },
+    "seo": {
+      "intro": "O {name} é uma ferramenta gratuita de {category} que {what}. Ele roda inteiramente no seu navegador, então não há nada para instalar, nenhuma conta para criar e nada para enviar. Abra a página, faça o trabalho e siga em frente. O {name} mantém seu conteúdo no seu próprio dispositivo. Se você precisa de uma correção rápida de {category} ou de uma etapa repetível no seu fluxo de trabalho, esta ferramenta foi criada para não atrapalhar.",
+      "closing": "Tudo nesta página roda no seu navegador. Abra o {name}, adicione o que você precisa e leve o resultado com você. Não há configuração, não há login e nada para instalar.",
+      "canDoHeading": "O que você pode fazer com o {name}",
+      "canDoP1": "O {name} lida com as tarefas comuns de {category} que as pessoas enfrentam todos os dias. Cole ou adicione seu conteúdo, ajuste as opções de que você precisa e leia o resultado imediatamente. Os controles são mantidos ao essencial para que a ferramenta permaneça rápida mesmo em um celular.",
+      "canDoP2": "Como esta é uma utilidade de {category}, o trabalho acontece localmente. Nada é enviado para um servidor e nada é armazenado, o que torna o {name} uma escolha prática quando seu conteúdo é privado ou quando você simplesmente valoriza uma página rápida e discreta.",
+      "workflowHeading": "Como esta ferramenta se encaixa no seu fluxo de trabalho",
+      "workflowP1": "A maioria das pessoas usa {name} em uma aba do navegador junto com o restante do trabalho. Não há etapa de configuração nem curva de aprendizado: a ação de {category} que você procurou é a que está na tela. Copie ou baixe o resultado e continue.",
+      "workflowP2": "Se você trabalha em vários dispositivos, {name} se comporta da mesma forma em todos, pois a ferramenta inteira roda no navegador. Isso facilita retomar a mesma tarefa de {category} em um notebook, tablet ou celular sem mudar sua forma de trabalhar.",
+      "browserHeading": "Por que usar uma ferramenta baseada em navegador",
+      "browserP1": "Uma ferramenta de {category} baseada em navegador mantém a parte útil, que é resolver o problema, e elimina o resto. {name} não pede login, cookies de rastreamento ou upload, então a página permanece rápida e seu material continua sendo seu.",
+      "freeQ": "O {name} é gratuito para usar?",
+      "freeA": "Sim. {name} é gratuito, sem conta e sem limites para o uso diário de {category}. Você pode abrir, usar e sair sem pagar ou se cadastrar em nada.",
+      "uploadQ": "O {name} faz upload ou armazena meu conteúdo?",
+      "uploadA": "Não. {name} roda no seu navegador, então seu conteúdo nunca chega a um servidor. Não há etapa de upload e nada é salvo depois que você fecha a aba.",
+      "installQ": "Preciso instalar algo para usar {name}?",
+      "installA": "Nada para instalar. {name} é uma página da web, então qualquer navegador moderno em um computador ou celular pode executar esta ferramenta de {category}. Basta abrir a página e começar.",
+      "phoneQ": "Posso usar {name} no meu celular?",
+      "phoneA": "Sim. {name} foi feito para telas pequenas e grandes, permitindo que você execute uma tarefa rápida de {category} com uma mão. O resultado pode ser copiado ou baixado diretamente da página."
+    }
   },
   "search": {
     "placeholder": "Buscar",
@@ -54,7 +196,8 @@
   "popular": {
     "eyebrow": "Mais usadas",
     "title": "Ferramentas populares",
-    "description": "As ferramentas que as pessoas mais revisitam. Tudo funciona no seu navegador."
+    "description": "As ferramentas que as pessoas mais revisitam. Tudo funciona no seu navegador.",
+    "requestLink": "Faltando algo? Solicite"
   },
   "new": {
     "eyebrow": "Recém-adicionadas",
@@ -63,6 +206,7 @@
   },
   "guides": {
     "eyebrow": "Aprender",
+    "countBadge": "APRENDER · PRÁTICO · CURTO",
     "title": "Guias",
     "description": "Guias curtos e práticos para aproveitar melhor estas ferramentas.",
     "empty": "Nenhum guia publicado ainda. Volte em breve ou peça o que você precisa.",
@@ -80,7 +224,34 @@
     "emailPlaceholder": "voce@exemplo.com",
     "emailHint": "Usado apenas para avisar quando a ferramenta estiver pronta.",
     "submit": "Enviar solicitação",
-    "backHome": "Voltar ao início"
+    "backHome": "Voltar ao início",
+    "point1Title": "Descreva a tarefa",
+    "point1Body": "O que você insere e como deve ser um bom resultado. Não é necessário design ou nome.",
+    "point2Title": "Nós avaliamos",
+    "point2Body": "Lemos cada solicitação e verificamos se ela se encaixa na coleção.",
+    "point3Title": "Privado por padrão",
+    "point3Body": "Sua nota fica conosco. Nunca publicamos ou compartilhamos seu e-mail.",
+    "formTitle": "Conte-nos o que você precisa",
+    "formSubtitle": "Uma breve descrição é suficiente para começar.",
+    "successTitle": "Solicitação recebida",
+    "successBody": "Obrigado. Leemos todas as solicitações recebidas e responderemos se a sua for algo que possamos construir bem.",
+    "sendAnother": "Enviar outra solicitação",
+    "categoryPlaceholder": "Escolha uma categoria",
+    "categoryAriaLabel": "Categoria",
+    "sending": "Enviando…",
+    "errorNameRequired": "O nome da ferramenta é obrigatório.",
+    "errorDescriptionRequired": "A descrição é obrigatória.",
+    "errorCategoryRequired": "Escolha uma categoria.",
+    "errorEmailInvalid": "Insira um endereço de e-mail válido.",
+    "errorGeneric": "Não foi possível enviar sua solicitação.",
+    "categoryOptions": {
+      "text": "Texto",
+      "image": "Imagens",
+      "code": "Código",
+      "converter": "Conversores",
+      "security": "Segurança",
+      "other": "Outro"
+    }
   },
   "about": {
     "eyebrow": "Sobre",
@@ -90,10 +261,26 @@
     "privacyTitle": "Seus arquivos ficam no seu dispositivo",
     "privacyBody": "Cada ferramenta que lida com arquivo ou texto processa tudo dentro do seu navegador. Nada é enviado, então nunca vemos seu conteúdo.",
     "contactTitle": "Fale conosco",
-    "contactBody": "Escreva para nós e uma pessoa responde."
+    "contactBody": "Escreva para nós e uma pessoa responde.",
+    "headingPrefix": "Sobre",
+    "perkInstantTitle": "Instantâneo por padrão",
+    "perkInstantBody": "Cada ferramenta abre em uma aba e funciona assim que você a carrega.",
+    "perkSmallTitle": "Compacta por design",
+    "perkSmallBody": "Uma tarefa por ferramenta, para que não haja nada a aprender antes de começar.",
+    "believeEyebrow": "No que acreditamos",
+    "believeTitle": "Ferramentas úteis devem ficar fora do caminho.",
+    "believeBody": "Sem contas, sem uploads e sem bagunça. Apenas uma coleção discreta de utilitários que fazem um trabalho bem e saem quando você termina.",
+    "browseCollection": "Explorar a coleção",
+    "storyEyebrow": "Nossa história",
+    "storyTitle": "Feito para as pequenas tarefas, todos os dias.",
+    "storyBody1": "O Toolpika começou como um conjunto de utilitários privados para o trabalho diário. Cada um resolvia um pequeno incômodo, sem exigir cadastro nem enviar arquivos para um servidor.",
+    "storyBody2": "Essa ideia ainda guia o site. As ferramentas permanecem locais, as páginas são leves e a coleção cresce apenas quando algo é genuinamente útil.",
+    "specificTitle": "Precisa de algo específico?",
+    "specificBody": "Diga-nos o que você precisa e analisaremos. Leemos cada solicitação.",
+    "requestCta": "Solicitar uma ferramenta"
   },
   "privacy": {
-    "eyebrow": "Legal",
+    "eyebrow": "Jurídico",
     "title": "Política de privacidade",
     "description": "O que o Toolpika faz com seus dados. Muito pouco.",
     "updated": "Última atualização: 16 de novembro de 2026",
@@ -102,10 +289,13 @@
     "dataTitle": "O que coletamos",
     "dataBody": "Não é preciso criar conta. Sua preferência de tema e idioma fica no armazenamento local do navegador, que nunca sai do seu dispositivo.",
     "cookiesTitle": "Cookies",
-    "cookiesBody": "O Toolpika não define cookies de rastreamento. Um único cookie essencial pode guardar sua preferência de idioma."
+    "cookiesBody": "O Toolpika não define cookies de rastreamento. Um único cookie essencial pode guardar sua preferência de idioma.",
+    "dataList1": "As preferências de tema e idioma ficam no seu navegador.",
+    "dataList2": "Nenhuma conta é necessária para usar qualquer ferramenta pública.",
+    "dataList3": "As solicitações são armazenadas apenas quando você escolhe enviá-las."
   },
   "terms": {
-    "eyebrow": "Legal",
+    "eyebrow": "Jurídico",
     "title": "Termos de uso",
     "description": "O básico para usar o Toolpika.",
     "updated": "Última atualização: 16 de novembro de 2026",
@@ -121,17 +311,33 @@
     "title": "Fale conosco",
     "description": "Relatos de erro, pedidos de ferramentas ou qualquer outra coisa. E-mail resolve.",
     "emailLabel": "E-mail",
-    "responseTime": "Normalmente respondemos em até dois dias úteis."
+    "responseTime": "Normalmente respondemos em até dois dias úteis.",
+    "titlePrefix": "Entre em",
+    "titleAccent": "contato",
+    "directLine": "Linha direta",
+    "phoneLabel": "Telefone",
+    "responseLabel": "Tempo de resposta",
+    "toolRequestsLabel": "Solicitações de ferramentas",
+    "toolRequestsBody": "Peça uma utilidade de que você precisa.",
+    "nameLabel": "Nome",
+    "messageLabel": "Mensagem",
+    "submitLabel": "Enviar mensagem",
+    "formNote": "Sua mensagem vai direto para a caixa de entrada do administrador.",
+    "sentMessage": "Mensagem enviada. Leremos em breve.",
+    "sendGenericError": "Não foi possível enviar sua mensagem.",
+    "sending": "Enviando..."
   },
   "category": {
     "eyebrow": "Categoria",
     "title": "Ferramentas de {name}",
     "description": "Todas as ferramentas de {name} no Toolpika. Rodam no navegador e não exigem conta.",
     "empty": "Ainda não há ferramentas nesta categoria.",
-    "allEyebrow": "Browse",
-    "allTitle": "All categories",
-    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
-    "viewCategory": "View category"
+    "allEyebrow": "Navegar",
+    "allTitle": "Todas as categorias",
+    "allDescription": "Todos os ferramentas, agrupadas por função. Selecione uma categoria para ver as ferramentas nela.",
+    "viewCategory": "Ver categoria",
+    "notFound": "Categoria não encontrada",
+    "browseByCategory": "EXPLORAR · POR CATEGORIA"
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -142,7 +348,7 @@
     "tagline": "Todas as ferramentas que você precisa, em um só lugar.",
     "tools": "Ferramentas",
     "company": "Empresa",
-    "legal": "Legal",
+    "legal": "Jurídico",
     "popular": "Populares",
     "new": "Novas",
     "guides": "Guias",
@@ -151,7 +357,9 @@
     "contact": "Contato",
     "privacy": "Privacidade",
     "terms": "Termos",
-    "copyright": "© {year} Toolpika. Todos os direitos reservados."
+    "copyright": "© {year} Toolpika. Todos os direitos reservados.",
+    "emailLabel": "E-mail",
+    "gitHubLabel": "GitHub"
   },
   "toolPage": {
     "howToTitle": "Como usar",
@@ -165,7 +373,8 @@
     "faqAnswer2": "Sim, depois que a página carrega. Você pode desconectar e continuar trabalhando.",
     "faqQuestion3": "Há limite de tamanho de arquivo?",
     "faqAnswer3": "Arquivos grandes podem ficar lentos em celulares antigos. Arquivos pequenos terminam na hora.",
-    "relatedTitle": "Ferramentas relacionadas"
+    "relatedTitle": "Ferramentas relacionadas",
+    "missingRequest": "Faltando uma ferramenta? Solicite-a"
   },
   "toolUi": {
     "copy": "Copiar",

@@ -4,12 +4,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { getLiveTools } from "@/lib/tools/registry";
+import {
+  getLiveTools,
+  categoryKey,
+  toolTitleKey,
+  toolDescriptionKey,
+} from "@/lib/tools/registry";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { cn } from "@/lib/utils";
 
 export function SearchBar() {
   const t = useTranslations("search");
+  const tTools = useTranslations("tools");
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ReturnType<typeof getLiveTools>>([]);
@@ -32,13 +38,13 @@ export function SearchBar() {
       setResults(
         tools.filter(
           (tool) =>
-            tool.title.toLowerCase().includes(lower) ||
+            tTools(toolTitleKey(tool)).toLowerCase().includes(lower) ||
             tool.slug.includes(lower) ||
-            tool.description.toLowerCase().includes(lower),
+            tTools(toolDescriptionKey(tool)).toLowerCase().includes(lower),
         ),
       );
     },
-    [tools],
+    [tools, tTools],
   );
 
   useEffect(() => {
@@ -154,9 +160,11 @@ export function SearchBar() {
             >
               <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
                 <ToolIcon name={tool.icon} className="tp-icon" style={{ width: 16, height: 16 }} aria-hidden="true" />
-                <span style={{ fontWeight: 500 }}>{tool.title}</span>
+                <span style={{ fontWeight: 500 }}>{tTools(toolTitleKey(tool))}</span>
               </span>
-              <span style={{ color: "var(--muted)", fontSize: 13 }}>{tool.category}</span>
+              <span style={{ color: "var(--muted)", fontSize: 13 }}>
+                {tTools(categoryKey(tool.category))}
+              </span>
             </button>
           </li>
         ))}

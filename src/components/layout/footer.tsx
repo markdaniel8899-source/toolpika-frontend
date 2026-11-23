@@ -64,7 +64,7 @@ export function Footer() {
               <a
                 href="mailto:hafizmzain786@gmail.com"
                 className="tp-icon-btn tp-icon-only"
-                aria-label="Email"
+                aria-label={t("emailLabel")}
               >
                 <Mail className="tp-icon" aria-hidden="true" />
               </a>
@@ -73,7 +73,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="tp-icon-btn tp-icon-only"
-                aria-label="GitHub"
+                aria-label={t("gitHubLabel")}
               >
                 <ExternalLink className="tp-icon" aria-hidden="true" />
               </a>
@@ -88,7 +88,7 @@ export function Footer() {
         <div className="tp-footer-bottom">
           <span className="tp-footer-rights">{t("copyright", { year })}</span>
           <Link href="/request" className="tp-text-link footer-link">
-            Request a tool
+            {t("request")}
             <ArrowRight className="tp-icon" aria-hidden="true" />
           </Link>
         </div>

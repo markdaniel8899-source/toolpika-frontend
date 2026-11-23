@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { CategoryBrowser } from "@/components/tools/category-browser";
-import { categories, getToolsByCategory } from "@/lib/tools/registry";
+import { categories, getToolsByCategory, categoryKey } from "@/lib/tools/registry";
 
 type LocalePageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -17,11 +17,13 @@ export async function generateMetadata({
 }: LocalePageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const category = categories.find((item) => item.slug === slug);
-  if (!category) return { title: "Category not found" };
   const t = await getTranslations({ locale, namespace: "category" });
+  const tTools = await getTranslations({ locale, namespace: "tools" });
+  if (!category) return { title: t("notFound") };
+  const label = tTools(categoryKey(slug));
   return {
-    title: t("title", { name: category.label }),
-    description: t("description", { name: category.label }),
+    title: t("title", { name: label }),
+    description: t("description", { name: label }),
   };
 }
 
@@ -31,14 +33,15 @@ export default async function CategoryPage({ params }: LocalePageProps) {
   if (!category) notFound();
 
   const t = await getTranslations({ locale, namespace: "category" });
+  const tTools = await getTranslations({ locale, namespace: "tools" });
 
   // All category data is sent once; tab clicks swap it client-side so only
   // the pill highlight moves instead of reloading the whole route.
   const views = categories.map((item) => ({
     slug: item.slug,
-    label: item.label,
+    label: tTools(categoryKey(item.slug)),
     eyebrow: t("eyebrow"),
-    description: t("description", { name: item.label }),
+    description: t("description", { name: tTools(categoryKey(item.slug)) }),
     empty: t("empty"),
     tools: getToolsByCategory(item.slug),
   }));

@@ -19,6 +19,7 @@ export async function generateMetadata({
 export default async function NewToolsPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "new" });
+  const nav = await getTranslations({ locale, namespace: "nav" });
   const tools = getLiveTools().slice(-4).reverse();
 
   return (
@@ -34,11 +35,11 @@ export default async function NewToolsPage({ params }: LocalePageProps) {
         </div>
       </section>
 
-      <div className="tp-tabs" aria-label="Tool navigation">
-        <Link href="/all-tools" className="tp-tab">All tools</Link>
-        <Link href="/popular" className="tp-tab">Popular</Link>
-        <Link href="/new" className="tp-tab" data-active="true">New</Link>
-        <Link href="/request" className="tp-tab">Request a tool</Link>
+      <div className="tp-tabs" aria-label={nav("toolNavigation")}>
+        <Link href="/all-tools" className="tp-tab">{nav("tools")}</Link>
+        <Link href="/popular" className="tp-tab">{nav("popular")}</Link>
+        <Link href="/new" className="tp-tab" data-active="true">{nav("new")}</Link>
+        <Link href="/request" className="tp-tab">{nav("request")}</Link>
       </div>
 
       <div className="tp-tool-grid">

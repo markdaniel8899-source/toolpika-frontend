@@ -20,29 +20,26 @@ export default async function AboutPage({ params }: LocalePageProps) {
 
   const perks = [
     { icon: ShieldCheck, title: t("privacyTitle"), body: t("privacyBody") },
-    { icon: Zap, title: "Instant by default", body: "Every tool opens in a tab and works the moment you load it." },
-    { icon: Sparkles, title: "Small by design", body: "One job per tool, so there is nothing to learn before you begin." },
+    { icon: Zap, title: t("perkInstantTitle"), body: t("perkInstantBody") },
+    { icon: Sparkles, title: t("perkSmallTitle"), body: t("perkSmallBody") },
   ];
 
   return (
     <SecondaryPage wide>
       <Reveal>
         <p className="tp-atlas-eyebrow">{t("eyebrow")}</p>
-        <h1 className="tp-atlas-title">About <span className="soft">Toolpika</span></h1>
+        <h1 className="tp-atlas-title">{t("headingPrefix")} <span className="soft">Toolpika</span></h1>
         <p className="tp-atlas-lead">{t("intro")}</p>
       </Reveal>
 
       <section className="tp-atlas-section">
         <div className="tp-split">
           <Reveal className="tp-split-copy">
-            <p className="tp-atlas-eyebrow">What we believe</p>
-            <h2 className="tp-atlas-h2" style={{ marginTop: 16 }}>Useful tools should stay out of the way.</h2>
-            <p className="tp-atlas-p">
-              No accounts, no uploads and no clutter. Just a quiet collection of utilities
-              that do one job well and leave when you are done.
-            </p>
+            <p className="tp-atlas-eyebrow">{t("believeEyebrow")}</p>
+            <h2 className="tp-atlas-h2" style={{ marginTop: 16 }}>{t("believeTitle")}</h2>
+            <p className="tp-atlas-p">{t("believeBody")}</p>
             <Link href="/all-tools" className="tp-text-link" style={{ marginTop: 24 }}>
-              Browse the collection
+              {t("browseCollection")}
               <ArrowRight className="tp-icon" aria-hidden="true" />
             </Link>
           </Reveal>
@@ -61,28 +58,22 @@ export default async function AboutPage({ params }: LocalePageProps) {
 
       <section className="tp-atlas-section">
         <Reveal>
-          <p className="tp-atlas-eyebrow">Our story</p>
-          <h2 className="tp-atlas-h2" style={{ marginTop: 16 }}>Built for the small jobs, every day.</h2>
-          <p className="tp-atlas-p">
-            Toolpika started as a set of private utilities for everyday work. Each one solved
-            a single annoyance without asking for a sign-up or sending a file to a server.
-          </p>
-          <p className="tp-atlas-p">
-            That idea still drives the site. Tools stay local, pages stay light and the
-            collection grows only when something is genuinely useful.
-          </p>
+          <p className="tp-atlas-eyebrow">{t("storyEyebrow")}</p>
+          <h2 className="tp-atlas-h2" style={{ marginTop: 16 }}>{t("storyTitle")}</h2>
+          <p className="tp-atlas-p">{t("storyBody1")}</p>
+          <p className="tp-atlas-p">{t("storyBody2")}</p>
         </Reveal>
       </section>
 
       <section className="tp-atlas-section">
         <Reveal className="tp-atlas-card" style={{ textAlign: "center" }}>
           <p className="tp-atlas-eyebrow" style={{ justifyContent: "center" }}>{t("contactTitle")}</p>
-          <h2 className="tp-atlas-h2" style={{ marginTop: 14 }}>Need something specific?</h2>
+          <h2 className="tp-atlas-h2" style={{ marginTop: 14 }}>{t("specificTitle")}</h2>
           <p className="tp-atlas-p" style={{ maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-            Tell us what you need and we will look at it. We read every request.
+            {t("specificBody")}
           </p>
           <PillCta href="/request" style={{ marginTop: 24 }}>
-            Request a tool
+            {t("requestCta")}
           </PillCta>
         </Reveal>
       </section>

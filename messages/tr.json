@@ -8,7 +8,17 @@
     "popular": "Popüler",
     "new": "Yeni",
     "guides": "Rehberler",
-    "request": "Araç talep et"
+    "request": "Araç talep et",
+    "mainNavigation": "Ana",
+    "mobileMenu": "Mobil menü",
+    "mobileMain": "Mobil ana",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "toolNavigation": "Araç gezinmesi",
+    "filterTools": "Araçları filtrele",
+    "quickFilters": "Hızlı filtreler",
+    "categoriesNav": "Kategoriler",
+    "breadcrumb": "Ekmek kırıntısı"
   },
   "home": {
     "title": "Doğru aracı <display>saniyeler</display> içinde bulun",
@@ -20,7 +30,43 @@
     "categories": "Kategoriler",
     "requestTitle": "İhtiyacınızı bulamadınız mı?",
     "requestSubtitle": "Eksik olan aracı bize söyleyin, biz yapalım.",
-    "requestCTA": "Araç talep et"
+    "requestCTA": "Araç talep et",
+    "eyebrow": "Tarayıcınızda ücretsiz araçlar",
+    "promisesLabel": "Toolpika sözleri",
+    "promiseNoUploads": "Yükleme yok",
+    "promiseNoSignup": "Kayıt gerekmez",
+    "promiseFree": "Ücretsiz kullanım",
+    "popularEyebrow": "Popüler",
+    "viewAllTools": "Tüm araçları görüntüle",
+    "browseEyebrow": "Göz at",
+    "findByCategory": "Kategoriye göre bul",
+    "categoryIntro": "Her biri tek bir iş için tasarlanmış küçük koleksiyonlar. Araç adıyla değil, yaptığınız iş türüyle başlayın.",
+    "viewAllCategories": "Tüm kategorileri görüntüle",
+    "categoryCount": "{count, plural, one {# araç} other {# araç}}",
+    "categoryDescriptions": {
+      "text": "Metni say, dönüştür ve temizle.",
+      "image": "Görselleri yerel olarak sıkıştır ve hazırla.",
+      "code": "Kodu biçimlendir, doğrula ve incele.",
+      "converter": "Birimler, URL'ler ve Base64 arasında geçiş yap.",
+      "security": "Güçlü parolalar oluştur."
+    },
+    "philosophyEyebrow": "Neden Toolpika",
+    "philosophyTitle1": "İhtiyacın olan her araç.",
+    "philosophyTitle2": "Fazlası yok.",
+    "philosophySub": "Sınırsız ücretsiz araçlar, kayıt gerekmez ve verileriniz cihazınızdan dışarı çıkmaz.",
+    "principle1Title": "Veri sızıntısı yok",
+    "principle1Body": "Dosyalarınız ve metinleriniz asla tarayıcınızdan ayrılmaz.",
+    "principle2Title": "Kayıt gerekmez",
+    "principle2Body": "Bir aracı açın ve hemen çalışmaya başlayın.",
+    "principle3Title": "Sınırsız ücretsiz araçlar",
+    "principle3Body": "Tüm araçları istediğiniz kadar ve ücretsiz kullanın.",
+    "requestEyebrow": "Talep"
+  },
+  "allTools": {
+    "eyebrow": "Koleksiyon",
+    "spotlightEyebrow": "Öne çıkan araç",
+    "spotlightTitle": "Başlamak için iyi yerler",
+    "requestLink": "Eksik bir araç mı var? İste"
   },
   "theme": {
     "toggle": "Temayı değiştir"
@@ -42,7 +88,103 @@
     "catImage": "Görseller",
     "catCode": "Kod",
     "catConverter": "Dönüştürücüler",
-    "catSecurity": "Güvenlik"
+    "catSecurity": "Güvenlik",
+    "notFound": "Araç bulunamadı",
+    "workspaceLabel": "{title} aracı",
+    "toolCount": "{count, plural, one {# ARAÇ} other {# ARAÇ}}",
+    "categories": {
+      "text": "Metin",
+      "image": "Görseller",
+      "file": "Dosyalar",
+      "code": "Kod",
+      "converter": "Dönüştürücüler",
+      "security": "Güvenlik",
+      "calculator": "Hesaplayıcılar"
+    },
+    "word-counter": {
+      "title": "Kelime Sayacı",
+      "shortDesc": "Metninizdeki kelimeleri, karakterleri, cümleleri ve paragrafları sayın.",
+      "seo": {
+        "title": "Ücretsiz Çevrimiçi Kelime Sayacı | Kelime ve Karakter Sayma",
+        "description": "Kelime, karakter, cümle ve paragrafları tarayıcınızda anında sayın. Ücretsiz, gizli ve kayıt gerektirmez."
+      }
+    },
+    "case-converter": {
+      "title": "Harf Boyutu Dönüştürücü",
+      "shortDesc": "Metni BÜYÜK HARF, küçük harf, Başlık Harfi veya camelCase'e dönüştürün.",
+      "seo": {
+        "title": "Ücretsiz Çevrimiçi Harf Boyutu Dönüştürücü | BÜYÜK HARF, küçük harf ve daha fazlası",
+        "description": "Metni BÜYÜK HARF, küçük harf, Başlık Harfi, camelCase, kebab-case ve snake_case arasında tarayıcınızda doğrudan dönüştürün."
+      }
+    },
+    "image-compressor": {
+      "title": "Görsel Sıkıştırıcı",
+      "shortDesc": "JPEG ve PNG görsellerini tarayıcınızda yerel olarak sıkıştırın.",
+      "seo": {
+        "title": "Ücretsiz Görsel Sıkıştırıcı | JPEG ve PNG'yi Çevrimiçi Sıkıştırın",
+        "description": "JPEG ve PNG görsellerini tarayıcınızda yerel olarak küçültün. Yükleme, kayıt veya kurulum gerekmez."
+      }
+    },
+    "json-formatter": {
+      "title": "JSON Biçimlendirici",
+      "shortDesc": "JSON'u tarayıcınızda biçimlendirin, doğrulayın ve küçültün.",
+      "seo": {
+        "title": "Ücretsiz JSON Biçimlendirici | JSON'u Biçimlendirin, Doğrulayın ve Küçültün",
+        "description": "JSON'u anında biçimlendirin, doğrulayın ve küçültün. Her şey tarayıcınızda yerel olarak çalışır."
+      }
+    },
+    "unit-converter": {
+      "title": "Birim Dönüştürücü",
+      "shortDesc": "Uzunluk, ağırlık, sıcaklık ve daha fazlasını dönüştürün.",
+      "seo": {
+        "title": "Ücretsiz Birim Dönüştürücü | Uzunluk, Ağırlık ve Sıcaklık",
+        "description": "Uzunluk, ağırlık ve sıcaklık birimlerini tarayıcınızda hızlıca dönüştürün. Hesap gerekmez."
+      }
+    },
+    "password-generator": {
+      "title": "Şifre Oluşturucu",
+      "shortDesc": "Güçlü, rastgele şifreleri yerel olarak oluşturun.",
+      "seo": {
+        "title": "Ücretsiz Şifre Oluşturucu | Güçlü Rastgele Şifreler",
+        "description": "Uzunluğu ve karakter seçenekleri ayarlanabilir güçlü rastgele şifreleri yerel olarak oluşturun."
+      }
+    },
+    "url-encoder": {
+      "title": "URL Kodlayıcı / Çözücü",
+      "shortDesc": "URL'leri ve sorgu dizelerini kodlayın veya çözümlen.",
+      "seo": {
+        "title": "Ücretsiz URL Kodlayıcı ve Çözücü | URL'leri Çevrimiçi Kodlayın",
+        "description": "URL'leri ve sorgu dizelerini tarayıcınızda kodlayın veya çözümlen. Hızlı, ücretsiz ve gizli."
+      }
+    },
+    "base64-encoder": {
+      "title": "Base64 Kodlayıcı / Çözücü",
+      "shortDesc": "Base64 dizgilerini kodlayın veya çözümlen.",
+      "seo": {
+        "title": "Ücretsiz Base64 Kodlayıcı ve Çözücü | Çevrimiçi Base64 Kodlama",
+        "description": "Base64 dizgelerini doğrudan tarayıcınızda kodlayın veya çözümlen. Yükleme veya kayıt gerekmez."
+      }
+    },
+    "seo": {
+      "intro": "{name}, {what} işlevini gören ücretsiz bir {category} aracıdır. Tamamen tarayıcınızda çalıştığı için yüklemeniz gereken bir şey yoktur, hesap oluşturmanıza gerek yoktur ve hiçbir şey yüklemeniz gerekmez. Sayfayı açın, işinizi yapın ve devam edin. {name}, içeriğinizi kendi cihazınızda tutar. Hızlı bir {category} düzeltmesine mi ihtiyacınız var yoksa iş akışınızda tekrarlanabilir bir adım mı? Bu araç, işinizi engellemeden halletmek için tasarlanmıştır.",
+      "closing": "Bu sayfadaki her şey tarayıcınızda çalışır. {name} aracını açın, ihtiyacınız olanı ekleyin ve sonucu yanınızda götürün. Kurulum, oturum açma veya yüklenmesi gereken hiçbir şey yoktur.",
+      "canDoHeading": "{name} ile neler yapabilirsiniz",
+      "canDoP1": "{name}, insanların her gün karşılaştığı yaygın {category} işlerini halleder. İçeriğinizi yapıştırın veya ekleyin, ihtiyacınız olan ayarları yapılandırın ve sonucu hemen okuyun. Kontroller, aracın telefonda bile hızlı kalması için temel düzeyde tutulur.",
+      "canDoP2": "Bu bir {category} aracı olduğu için işlemler yerel olarak gerçekleşir. Hiçbir şey sunucuya gönderilmez ve hiçbir şey saklanmaz; bu da içeriğiniz özel olduğunda veya hızlı, sessiz bir sayfayı tercih ettiğinizde {name} aracını pratik bir seçim haline getirir.",
+      "workflowHeading": "Bu aracın iş akışınıza nasıl uyduğu",
+      "workflowP1": "Çoğu kişi {name} aracını, diğer işlerinin yanında bir tarayıcı sekmesinde kullanır. Kurulum adımı veya öğrenme süreci yoktur: Aradığınız {category} işlemi ekranda zaten hazırdır. Çıktıyı kopyalayın veya indirin ve kaldığınız yerden devam edin.",
+      "workflowP2": "Farklı cihazlarda çalışıyorsanız, {name} tümü tarayıcıda çalıştığı için her yerde aynı şekilde davranır. Bu sayede çalışma şeklinizi değiştirmeden, dizüstü bilgisayarda, tablette veya telefonda aynı {category} görevine kolayca dönebilirsiniz.",
+      "browserHeading": "Neden tarayıcı tabanlı bir araç kullanılmalı",
+      "browserP1": "Tarayıcı tabanlı bir {category} aracı, işi bitirme gibi faydalı kısmı korur, gerisini atar. {name} giriş yapmanızı, izleme çerezlerini veya dosya yüklemenizi istemez; bu sayede sayfa hızlı kalır ve içerikleriniz size ait olmaya devam eder.",
+      "freeQ": "{name} ücretsiz mi?",
+      "freeA": "Evet. {name} ücretsizdir; hesap gerektirmez ve günlük {category} kullanımında sınırlama yoktur. Açabilir, kullanabilir ve hiçbir şey için ödeme yapmadan veya kayıt olmadan ayrılabilirsiniz.",
+      "uploadQ": "{name} içeriğimi yüklüyor veya saklıyor mu?",
+      "uploadA": "Hayır. {name} tarayıcınızda çalıştığı için içeriğiniz asla bir sunucuya ulaşmaz. Yükleme adımı yoktur ve sekme kapandıktan sonra hiçbir şey kaydedilmez.",
+      "installQ": "{name} kullanmak için bir şey kurmam gerekiyor mu?",
+      "installA": "Kuracak bir şey yok. {name} bir web sayfasıdır, bu nedenle bilgisayar veya telefonunuzdaki herhangi bir modern tarayıcı bu {category} aracını çalıştırabilir. Sadece sayfayı açın ve başlayın.",
+      "phoneQ": "{name} uygulamasını telefonumda kullanabilir miyim?",
+      "phoneA": "Evet. {name}, hem küçük hem de büyük ekranlar için tasarlanmıştır, bu sayede tek elle hızlı bir {category} işi yapabilirsiniz. Sonuç, doğrudan sayfadan kopyalanabilir veya indirilebilir."
+    }
   },
   "search": {
     "placeholder": "Ara",
@@ -54,7 +196,8 @@
   "popular": {
     "eyebrow": "En çok kullanılan",
     "title": "Popüler araçlar",
-    "description": "İnsanların en çok geri döndüğü araçlar. Hepsi tarayıcınızda çalışır."
+    "description": "İnsanların en çok geri döndüğü araçlar. Hepsi tarayıcınızda çalışır.",
+    "requestLink": "Eksik bir şey mi var? Talep edin"
   },
   "new": {
     "eyebrow": "Yeni eklenenler",
@@ -63,6 +206,7 @@
   },
   "guides": {
     "eyebrow": "Öğren",
+    "countBadge": "ÖĞREN · PRATİK · KISA",
     "title": "Rehberler",
     "description": "Bu araçlarla iş yapmanıza yardımcı kısa ve pratik anlatımlar.",
     "empty": "Henüz rehber yayımlanmadı. Bir süre sonra tekrar bakın ya da ihtiyacınızı talep edin.",
@@ -80,7 +224,34 @@
     "emailPlaceholder": "siz@ornek.com",
     "emailHint": "Yalnızca araç hazır olduğunda haber vermek için kullanılır.",
     "submit": "Talebi gönder",
-    "backHome": "Ana sayfaya dön"
+    "backHome": "Ana sayfaya dön",
+    "point1Title": "İşi tanımlayın",
+    "point1Body": "Ne girdi yapacağınızı ve iyi bir sonucun nasıl görünmesi gerektiğini belirtin. Tasarım veya isimlendirme gerekmez.",
+    "point2Title": "İnceleme yapıyoruz",
+    "point2Body": "Her talebi okuyor ve koleksiyona uygun olup olmadığını kontrol ediyoruz.",
+    "point3Title": "Varsayılan olarak gizli",
+    "point3Body": "Notunuz bizimle kalır. E-posta adresinizi asla yayınlamayız veya paylaşmayız.",
+    "formTitle": "İhtiyacınız olanı bize söyleyin",
+    "formSubtitle": "Başlamak için kısa bir not yeterlidir.",
+    "successTitle": "Talep alındı",
+    "successBody": "Teşekkürler. Gelen her talebi okuyoruz ve talebiniz iyi bir şekilde geliştirebileceğimiz bir şeyse size yanıt vereceğiz.",
+    "sendAnother": "Başka bir talep gönder",
+    "categoryPlaceholder": "Bir kategori seçin",
+    "categoryAriaLabel": "Kategori",
+    "sending": "Gönderiliyor…",
+    "errorNameRequired": "Araç adı zorunludur.",
+    "errorDescriptionRequired": "Açıklama zorunludur.",
+    "errorCategoryRequired": "Bir kategori seçin.",
+    "errorEmailInvalid": "Geçerli bir e-posta adresi girin.",
+    "errorGeneric": "Talebiniz gönderilemedi.",
+    "categoryOptions": {
+      "text": "Metin",
+      "image": "Görseller",
+      "code": "Kod",
+      "converter": "Dönüştürücüler",
+      "security": "Güvenlik",
+      "other": "Başka bir şey"
+    }
   },
   "about": {
     "eyebrow": "Hakkımızda",
@@ -90,7 +261,23 @@
     "privacyTitle": "Dosyalarınız cihazınızda kalır",
     "privacyBody": "Dosya veya metinle çalışan her araç tarayıcınızın içinde işler. Hiçbir şey yüklenmez, bu yüzden içeriğinizi asla görmeyiz.",
     "contactTitle": "Bize ulaşın",
-    "contactBody": "Bize yazın, bir insan yanıt verir."
+    "contactBody": "Bize yazın, bir insan yanıt verir.",
+    "headingPrefix": "Hakkında",
+    "perkInstantTitle": "Varsayılan olarak anında",
+    "perkInstantBody": "Her araç bir sekmede açılır ve yüklediğiniz anda çalışır.",
+    "perkSmallTitle": "Tasarım gereği küçük",
+    "perkSmallBody": "Araç başına tek bir işlev, böylece başlamadan önce öğrenmeniz gereken hiçbir şey yok.",
+    "believeEyebrow": "İnançlarımız",
+    "believeTitle": "İşe yarayan araçlar önünüzü kapatmamalı.",
+    "believeBody": "Hesap yok, yükleme yok, dağınıklık yok. Sadece tek bir işi iyi yapan ve işiniz bittiğinde ortadan kalkan sessiz bir araç koleksiyonu.",
+    "browseCollection": "Koleksiyonu görüntüle",
+    "storyEyebrow": "Hikayemiz",
+    "storyTitle": "Her günkü küçük işler için yapıldı.",
+    "storyBody1": "Toolpika, günlük işler için özel olarak geliştirilen bir dizi yardımcı araç olarak başladı. Her biri, kayıt olma zorunluluğu olmadan veya dosyayı bir sunucuya göndermeden tek bir sorunu çözüyordu.",
+    "storyBody2": "Bu fikir hâlâ sitenin temelini oluşturuyor. Araçlar yerel kalıyor, sayfalar hafif kalıyor ve koleksiyon yalnızca gerçekten faydalı bir şey eklendiğinde büyüyor.",
+    "specificTitle": "Belirli bir şeye mi ihtiyacınız var?",
+    "specificBody": "İhtiyacınız olanı bize söyleyin, biz de inceleyelim. Her isteği okuyoruz.",
+    "requestCta": "Araç iste"
   },
   "privacy": {
     "eyebrow": "Hukuki",
@@ -102,7 +289,10 @@
     "dataTitle": "Neleri topluyoruz",
     "dataBody": "Hesap oluşturmanız gerekmez. Tema ve dil tercihiniz tarayıcınızın yerel deposunda tutulur ve cihazınızdan asla çıkmaz.",
     "cookiesTitle": "Çerezler",
-    "cookiesBody": "Toolpika izleme çerezi kullanmaz. Dil tercihinizi hatırlamak için tek bir zorunlu çerez kullanılabilir."
+    "cookiesBody": "Toolpika izleme çerezi kullanmaz. Dil tercihinizi hatırlamak için tek bir zorunlu çerez kullanılabilir.",
+    "dataList1": "Tema ve dil tercihleri tarayıcınızda kalır.",
+    "dataList2": "Herhangi bir halka açık aracı kullanmak için hesap gerekmez.",
+    "dataList3": "İstek gönderimleri, yalnızca göndermeyi seçtiğinizde saklanır."
   },
   "terms": {
     "eyebrow": "Hukuki",
@@ -121,17 +311,33 @@
     "title": "Bize ulaşın",
     "description": "Hata bildirimi, araç talebi ya da başka bir şey. E-posta yeterli.",
     "emailLabel": "E-posta",
-    "responseTime": "Genellikle birkaç iş günü içinde yanıt veriyoruz."
+    "responseTime": "Genellikle birkaç iş günü içinde yanıt veriyoruz.",
+    "titlePrefix": "Bize",
+    "titleAccent": "ulaşın",
+    "directLine": "Doğrudan hat",
+    "phoneLabel": "Telefon",
+    "responseLabel": "Yanıt süresi",
+    "toolRequestsLabel": "Araç talepleri",
+    "toolRequestsBody": "İhtiyacınız olan bir aracı isteyin.",
+    "nameLabel": "Ad",
+    "messageLabel": "Mesaj",
+    "submitLabel": "Mesajı gönder",
+    "formNote": "Mesajınız doğrudan yönetici gelen kutusuna gider.",
+    "sentMessage": "Mesaj gönderildi. Kısa süre içinde okuyacağız.",
+    "sendGenericError": "Mesajınız gönderilemedi.",
+    "sending": "Gönderiliyor..."
   },
   "category": {
     "eyebrow": "Kategori",
     "title": "{name} araçları",
     "description": "Toolpika'daki tüm {name} araçları. Tarayıcıda çalışır, hesap gerektirmez.",
     "empty": "Bu kategoride henüz araç yok.",
-    "allEyebrow": "Browse",
-    "allTitle": "All categories",
-    "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
-    "viewCategory": "View category"
+    "allEyebrow": "Gözat",
+    "allTitle": "Tüm kategoriler",
+    "allDescription": "Her araç, işlevine göre gruplandırıldı. İçindeki araçları görmek için bir kategori seçin.",
+    "viewCategory": "Kategoriyi görüntüle",
+    "notFound": "Kategori bulunamadı",
+    "browseByCategory": "KATEGORİYE GÖRE GÖR"
   },
   "notFound": {
     "title": "Sayfa bulunamadı",
@@ -151,7 +357,9 @@
     "contact": "İletişim",
     "privacy": "Gizlilik",
     "terms": "Koşullar",
-    "copyright": "© {year} Toolpika. Tüm hakları saklıdır."
+    "copyright": "© {year} Toolpika. Tüm hakları saklıdır.",
+    "emailLabel": "E-posta",
+    "gitHubLabel": "GitHub"
   },
   "toolPage": {
     "howToTitle": "Nasıl kullanılır",
@@ -165,7 +373,8 @@
     "faqAnswer2": "Evet, sayfa yüklendikten sonra. Bağlantıyı kesip çalışmaya devam edebilirsiniz.",
     "faqQuestion3": "Dosya boyutu sınırı var mı?",
     "faqAnswer3": "Büyük dosyalar eski telefonlarda yavaş olabilir. Küçük dosyalar anında biter.",
-    "relatedTitle": "İlgili araçlar"
+    "relatedTitle": "İlgili araçlar",
+    "missingRequest": "Aradığınız araç eksik mi? Talep edin"
   },
   "toolUi": {
     "copy": "Kopyala",

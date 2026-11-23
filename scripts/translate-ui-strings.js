@@ -26,8 +26,22 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const MESSAGES_DIR = resolve(__dirname, "..", "messages");
 
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+const GROQ_MODEL = "qwen/qwen3.8-27b";
 const LOCALES = ["de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi"];
+
+// Values that are deliberately identical across locales: code identifiers,
+// abbreviations and cognates. Re-sending them on every run wastes Groq tokens.
+const SKIP_VALUES = new Set([
+  "camelCase", "kebab-case", "snake_case", "{count} min",
+  "Original", "Cookies", "Code", "Text", "Live", "Images",
+  "Contact", "Blog", "Legal", "Home", "Input", "Privacy",
+]);
+
+// Small batches + a pause between requests keep us under Groq's per-minute
+// output-token (OTPM) limit. Each batch is saved immediately so an
+// interrupted run can resume without re-translating finished strings.
+const BATCH_SIZE = 10;
+const REQUEST_DELAY_MS = 15000;
 
 const SYSTEM_PROMPT = `You are a professional software localization engine for a web tools site.
 
@@ -36,7 +50,7 @@ Translate the given JSON values into the target language.
 Rules:
 1. Return ONLY valid JSON. No markdown fences, no commentary.
 2. Keep every JSON key exactly as given. Only values are translated.
-3. Preserve these tokens byte-for-byte: {placeholders} like {name}, {count}, {year}, and markup like <display>text</display>.
+3. Preserve these tokens byte-for-byte: {placeholders} like {name}, {count}, {year}, ICU plural syntax like "{count, plural, one {# tool} other {# tools}}", and markup like <display>text</display>. Translate the words inside plural branches, but keep the syntax and # placeholder exact.
 4. Use natural, plain UI language. No marketing hype, no "seamless", "elevate", "unleash".
 5. Keep the tone consistent across all strings.
 6. For the target locale "ar", produce Modern Standard Arabic suitable for a UI.
@@ -89,27 +103,46 @@ function unflatten(flat) {
   return result;
 }
 
-async function translateBatch(payload, targetLocale, apiKey) {
-  const response = await fetch(GROQ_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      temperature: 0.2,
-      max_tokens: 4096,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        {
-          role: "user",
-          content: `Target language: ${targetLocale}\n\nJSON to translate:\n${JSON.stringify(payload, null, 2)}`,
-        },
-      ],
-    }),
-  });
+async function translateBatch(payload, targetLocale, apiKey, attempt = 0, maxAttempts = 15) {
+  let response;
+  try {
+    response = await fetch(GROQ_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        temperature: 0.2,
+        max_tokens: 4096,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          {
+            role: "user",
+            content: `Target language: ${targetLocale}\n\nJSON to translate:\n${JSON.stringify(payload, null, 2)}`,
+          },
+        ],
+      }),
+    });
+  } catch (error) {
+    if (attempt < maxAttempts) {
+      const waitMs = Math.min(10000 * (attempt + 1), 60000);
+      console.log(`  [${targetLocale}] network error — retrying in ${Math.round(waitMs / 1000)}s (attempt ${attempt + 1}/${maxAttempts})…`);
+      await new Promise((resolve) => setTimeout(resolve, waitMs));
+      return translateBatch(payload, targetLocale, apiKey, attempt + 1, maxAttempts);
+    }
+    throw error;
+  }
+
+  if (response.status === 429 && attempt < maxAttempts) {
+    const retryAfter = Number(response.headers.get("retry-after") || 0);
+    const waitMs = Math.min(retryAfter > 0 ? retryAfter * 1000 : 10000 * (attempt + 1), 60000);
+    console.log(`  [${targetLocale}] rate limited — retrying in ${Math.round(waitMs / 1000)}s (attempt ${attempt + 1}/${maxAttempts})…`);
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+    return translateBatch(payload, targetLocale, apiKey, attempt + 1, maxAttempts);
+  }
 
   if (!response.ok) {
     const detail = await response.text();
@@ -177,6 +210,8 @@ async function main() {
 
     for (const [path, value] of Object.entries(sourceFlat)) {
       if (typeof value !== "string") continue;
+      // Keep intentional English values as-is when the key already exists.
+      if (!options.force && SKIP_VALUES.has(value) && targetFlat[path] !== undefined) continue;
       if (!options.force && targetFlat[path] === value) {
         // Value still identical to English — needs translating.
         pending[path] = value;
@@ -196,12 +231,22 @@ async function main() {
       continue;
     }
 
-    console.log(`[${locale}] translating ${Object.keys(pending).length} strings…`);
+    const entries = Object.entries(pending);
+    console.log(`[${locale}] translating ${entries.length} strings…`);
 
-    const translated = await translateBatch(pending, locale, apiKey);
-    const merged = { ...sourceFlat, ...targetFlat, ...translated };
+    let current = { ...sourceFlat, ...targetFlat };
+    for (let i = 0; i < entries.length; i += BATCH_SIZE) {
+      const batch = Object.fromEntries(entries.slice(i, i + BATCH_SIZE));
+      const result = await translateBatch(batch, locale, apiKey);
+      current = { ...current, ...result };
+      // Save after every batch so an interrupted run resumes from here.
+      await writeJsonAtomic(targetPath, unflatten(current));
+      console.log(`  [${locale}] ${Math.min(i + BATCH_SIZE, entries.length)}/${entries.length} saved`);
+      if (i + BATCH_SIZE < entries.length) {
+        await new Promise((resolve) => setTimeout(resolve, REQUEST_DELAY_MS));
+      }
+    }
 
-    await writeJsonAtomic(targetPath, unflatten(merged));
     console.log(`[${locale}] done → ${targetPath}`);
   }
 }

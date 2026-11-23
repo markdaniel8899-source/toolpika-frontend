@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ToolCard } from "@/components/tools/tool-card";
-import { categories, getToolsByCategory } from "@/lib/tools/registry";
+import { categories, getToolsByCategory, categoryKey } from "@/lib/tools/registry";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -19,6 +19,7 @@ export async function generateMetadata({
 export default async function CategoriesPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const category = await getTranslations({ locale, namespace: "category" });
+  const tTools = await getTranslations({ locale, namespace: "tools" });
 
   return (
     <main className="tp-container" style={{ paddingBottom: 64 }}>
@@ -29,7 +30,7 @@ export default async function CategoriesPage({ params }: LocalePageProps) {
             <h1>{category("allTitle")}</h1>
             <p>{category("allDescription")}</p>
           </div>
-          <span className="tp-page-count">BROWSE · BY CATEGORY</span>
+          <span className="tp-page-count">{category("browseByCategory")}</span>
         </div>
       </section>
 
@@ -39,7 +40,7 @@ export default async function CategoriesPage({ params }: LocalePageProps) {
           return (
             <section key={item.slug} className="tp-category-section">
               <div className="tp-category-section-head">
-                <h2>{item.label}</h2>
+                <h2>{tTools(categoryKey(item.slug))}</h2>
               </div>
               <div className="tp-tool-grid">
                 {tools.map((tool) => (

@@ -1,17 +1,19 @@
 import * as React from "react";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 /** Home > Category > Current page, themed and localized. */
-export function Breadcrumbs({
+export async function Breadcrumbs({
   items,
   className,
 }: {
   items: { label: string; href?: string }[];
   className?: string;
 }) {
+  const t = await getTranslations("nav");
   return (
-    <nav aria-label="Breadcrumb" className={cn("tp-breadcrumbs", className)}>
+    <nav aria-label={t("breadcrumb")} className={cn("tp-breadcrumbs", className)}>
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (

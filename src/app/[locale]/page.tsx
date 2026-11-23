@@ -7,17 +7,9 @@ import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
 import { HeroDemo } from "@/components/hero/HeroDemo";
 import { PillCta } from "@/components/ui/pill-cta";
-import { categories, getLiveTools, getPopularTools } from "@/lib/tools/registry";
+import { categories, getLiveTools, getPopularTools, categoryKey } from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
-
-const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  text: "Count, convert and clean up copy.",
-  image: "Compress and prepare images locally.",
-  code: "Format, validate and inspect code.",
-  converter: "Move between units, URLs and Base64.",
-  security: "Generate passwords that hold up.",
-};
 
 type LocalePageProps = {
   params: Promise<{ locale: string }>;
@@ -26,6 +18,7 @@ type LocalePageProps = {
 export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
+  const tTools = await getTranslations({ locale, namespace: "tools" });
   const tools = getLiveTools();
   const featuredTools = getPopularTools(4);
 
@@ -35,7 +28,7 @@ export default async function HomePage({ params }: LocalePageProps) {
       <section className="tp-container tp-hero">
         <div className="tp-hero-copy">
           <Reveal delay={120}>
-            <p className="tp-eyebrow">Free tools, in your browser</p>
+            <p className="tp-eyebrow">{t("eyebrow")}</p>
           </Reveal>
           <Reveal delay={230}>
             <h1 className="tp-hero-title">
@@ -51,10 +44,10 @@ export default async function HomePage({ params }: LocalePageProps) {
             <SearchBar />
           </Reveal>
           <Reveal delay={560}>
-            <div className="tp-trust" aria-label="Toolpika promises">
-              <span><Check className="tp-icon" aria-hidden="true" /> No uploads</span>
-              <span><Check className="tp-icon" aria-hidden="true" /> No sign-up</span>
-              <span><Check className="tp-icon" aria-hidden="true" /> Free to use</span>
+            <div className="tp-trust" aria-label={t("promisesLabel")}>
+              <span><Check className="tp-icon" aria-hidden="true" /> {t("promiseNoUploads")}</span>
+              <span><Check className="tp-icon" aria-hidden="true" /> {t("promiseNoSignup")}</span>
+              <span><Check className="tp-icon" aria-hidden="true" /> {t("promiseFree")}</span>
             </div>
           </Reveal>
         </div>
@@ -68,11 +61,11 @@ export default async function HomePage({ params }: LocalePageProps) {
       <section className="tp-container tp-section" id="tools">
         <div className="tp-section-head" data-reveal-wrap>
           <div>
-            <p className="tp-eyebrow">Popular</p>
-            <h2 className="tp-section-title tp-section-title-lg">Popular tools</h2>
+            <p className="tp-eyebrow">{t("popularEyebrow")}</p>
+            <h2 className="tp-section-title tp-section-title-lg">{t("popular")}</h2>
           </div>
           <Link href="/all-tools" className="tp-text-link">
-            View all tools
+            {t("viewAllTools")}
             <ArrowRight className="tp-icon" aria-hidden="true" />
           </Link>
         </div>
@@ -90,19 +83,16 @@ export default async function HomePage({ params }: LocalePageProps) {
       <section className="tp-container tp-section" id="categories">
         <div className="tp-split">
           <div className="tp-split-copy tp-split-copy-lg">
-            <p className="tp-eyebrow">Browse</p>
-            <h2 className="tp-section-title tp-section-title-lg">Find by category</h2>
-            <p>
-              Small collections, each with one job. Start with the kind of work
-              you are doing, not the name of a tool.
-            </p>
+            <p className="tp-eyebrow">{t("browseEyebrow")}</p>
+            <h2 className="tp-section-title tp-section-title-lg">{t("findByCategory")}</h2>
+            <p>{t("categoryIntro")}</p>
             <PillCta
               href="/categories"
               size="lg"
               className="tp-category-cta"
               style={{ marginTop: 16 }}
             >
-              View all categories
+              {t("viewAllCategories")}
             </PillCta>
           </div>
 
@@ -122,12 +112,12 @@ export default async function HomePage({ params }: LocalePageProps) {
                         <Icon className="tp-icon" aria-hidden="true" />
                       </span>
                       <span style={{ display: "flex", minWidth: 0, flexDirection: "column" }}>
-                        <span className="tp-category-name">{category.label}</span>
-                        <span className="tp-category-desc">{CATEGORY_DESCRIPTIONS[category.slug]}</span>
+                        <span className="tp-category-name">{tTools(categoryKey(category.slug))}</span>
+                        <span className="tp-category-desc">{t(`categoryDescriptions.${category.slug}`)}</span>
                       </span>
                       <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
                         <span className="tp-category-count">
-                          {categoryTools.length} {categoryTools.length === 1 ? "tool" : "tools"}
+                          {t("categoryCount", { count: categoryTools.length })}
                         </span>
                         <span className="tp-tool-arrow" aria-hidden="true">
                           <ArrowRight className="tp-icon" />
@@ -144,10 +134,10 @@ export default async function HomePage({ params }: LocalePageProps) {
                           <ArrowRight className="tp-icon" />
                         </span>
                       </span>
-                      <span className="tp-category-name">{category.label}</span>
-                      <span className="tp-category-desc">{CATEGORY_DESCRIPTIONS[category.slug]}</span>
+                      <span className="tp-category-name">{tTools(categoryKey(category.slug))}</span>
+                      <span className="tp-category-desc">{t(`categoryDescriptions.${category.slug}`)}</span>
                       <span className="tp-category-count">
-                        {categoryTools.length} {categoryTools.length === 1 ? "tool" : "tools"}
+                        {t("categoryCount", { count: categoryTools.length })}
                       </span>
                     </>
                   )}
@@ -162,11 +152,9 @@ export default async function HomePage({ params }: LocalePageProps) {
       <section className="tp-philosophy" id="about">
         <div className="tp-container tp-philosophy-grid">
           <Reveal>
-            <p className="tp-eyebrow">Why Toolpika</p>
-            <h2 className="tp-philosophy-title">Every tool you need.<br /><em>Nothing extra.</em></h2>
-            <p className="tp-philosophy-sub">
-              Unlimited free tools, no sign-up, and no data leaving your device.
-            </p>
+            <p className="tp-eyebrow">{t("philosophyEyebrow")}</p>
+            <h2 className="tp-philosophy-title">{t("philosophyTitle1")}<br /><em>{t("philosophyTitle2")}</em></h2>
+            <p className="tp-philosophy-sub">{t("philosophySub")}</p>
           </Reveal>
 
           <div className="tp-principle-list">
@@ -174,8 +162,8 @@ export default async function HomePage({ params }: LocalePageProps) {
               <div className="tp-principle">
                 <span className="tp-principle-num">01</span>
                 <div>
-                  <h3>No data leakage</h3>
-                  <p>Your files and text never leave your browser.</p>
+                  <h3>{t("principle1Title")}</h3>
+                  <p>{t("principle1Body")}</p>
                 </div>
               </div>
             </Reveal>
@@ -183,8 +171,8 @@ export default async function HomePage({ params }: LocalePageProps) {
               <div className="tp-principle">
                 <span className="tp-principle-num">02</span>
                 <div>
-                  <h3>No sign-up</h3>
-                  <p>Open a tool and start working right away.</p>
+                  <h3>{t("principle2Title")}</h3>
+                  <p>{t("principle2Body")}</p>
                 </div>
               </div>
             </Reveal>
@@ -192,8 +180,8 @@ export default async function HomePage({ params }: LocalePageProps) {
               <div className="tp-principle">
                 <span className="tp-principle-num">03</span>
                 <div>
-                  <h3>Unlimited free tools</h3>
-                  <p>Use every tool as often as you like, at no cost.</p>
+                  <h3>{t("principle3Title")}</h3>
+                  <p>{t("principle3Body")}</p>
                 </div>
               </div>
             </Reveal>
@@ -206,7 +194,7 @@ export default async function HomePage({ params }: LocalePageProps) {
         <div className="tp-container tp-cta">
           <div className="tp-cta-inner">
           <div>
-            <p className="tp-eyebrow">Request</p>
+            <p className="tp-eyebrow">{t("requestEyebrow")}</p>
             <h2>{t("requestTitle")}</h2>
           </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 36 }}>

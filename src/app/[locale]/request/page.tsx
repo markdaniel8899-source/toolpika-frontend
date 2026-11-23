@@ -58,8 +58,8 @@ export default async function RequestPage({ params }: LocalePageProps) {
                 <Sparkles className="tp-icon" aria-hidden="true" />
               </span>
               <span>
-                <strong>Describe the job</strong>
-                <span>What you put in and what a good result looks like. No design or naming needed.</span>
+                <strong>{t("point1Title")}</strong>
+                <span>{t("point1Body")}</span>
               </span>
             </li>
             <li>
@@ -67,8 +67,8 @@ export default async function RequestPage({ params }: LocalePageProps) {
                 <MessageSquare className="tp-icon" aria-hidden="true" />
               </span>
               <span>
-                <strong>We review it</strong>
-                <span>We read every request and check whether it fits the collection.</span>
+                <strong>{t("point2Title")}</strong>
+                <span>{t("point2Body")}</span>
               </span>
             </li>
             <li>
@@ -76,8 +76,8 @@ export default async function RequestPage({ params }: LocalePageProps) {
                 <ShieldCheck className="tp-icon" aria-hidden="true" />
               </span>
               <span>
-                <strong>Private by default</strong>
-                <span>Your note stays with us. We never publish or share your email.</span>
+                <strong>{t("point3Title")}</strong>
+                <span>{t("point3Body")}</span>
               </span>
             </li>
           </ul>

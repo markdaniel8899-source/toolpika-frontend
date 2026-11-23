@@ -8,7 +8,17 @@
     "popular": "Popular",
     "new": "New",
     "guides": "Blog",
-    "request": "Request a tool"
+    "request": "Request a tool",
+    "mainNavigation": "Main",
+    "mobileMenu": "Mobile menu",
+    "mobileMain": "Mobile main",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toolNavigation": "Tool navigation",
+    "filterTools": "Filter tools",
+    "quickFilters": "Quick filters",
+    "categoriesNav": "Categories",
+    "breadcrumb": "Breadcrumb"
   },
   "home": {
     "title": "Find the right tool in <display>seconds</display>",
@@ -20,7 +30,43 @@
     "categories": "Categories",
     "requestTitle": "Missing a tool?",
     "requestSubtitle": "Tell us and we will build it.",
-    "requestCTA": "Request a tool"
+    "requestCTA": "Request a tool",
+    "eyebrow": "Free tools, in your browser",
+    "promisesLabel": "Toolpika promises",
+    "promiseNoUploads": "No uploads",
+    "promiseNoSignup": "No sign-up",
+    "promiseFree": "Free to use",
+    "popularEyebrow": "Popular",
+    "viewAllTools": "View all tools",
+    "browseEyebrow": "Browse",
+    "findByCategory": "Find by category",
+    "categoryIntro": "Small collections, each with one job. Start with the kind of work you are doing, not the name of a tool.",
+    "viewAllCategories": "View all categories",
+    "categoryCount": "{count, plural, one {# tool} other {# tools}}",
+    "categoryDescriptions": {
+      "text": "Count, convert and clean up copy.",
+      "image": "Compress and prepare images locally.",
+      "code": "Format, validate and inspect code.",
+      "converter": "Move between units, URLs and Base64.",
+      "security": "Generate passwords that hold up."
+    },
+    "philosophyEyebrow": "Why Toolpika",
+    "philosophyTitle1": "Every tool you need.",
+    "philosophyTitle2": "Nothing extra.",
+    "philosophySub": "Unlimited free tools, no sign-up, and no data leaving your device.",
+    "principle1Title": "No data leakage",
+    "principle1Body": "Your files and text never leave your browser.",
+    "principle2Title": "No sign-up",
+    "principle2Body": "Open a tool and start working right away.",
+    "principle3Title": "Unlimited free tools",
+    "principle3Body": "Use every tool as often as you like, at no cost.",
+    "requestEyebrow": "Request"
+  },
+  "allTools": {
+    "eyebrow": "The collection",
+    "spotlightEyebrow": "Tool spotlight",
+    "spotlightTitle": "Good places to start",
+    "requestLink": "Missing a tool? Request it"
   },
   "theme": {
     "toggle": "Toggle theme"
@@ -42,7 +88,103 @@
     "catImage": "Images",
     "catCode": "Code",
     "catConverter": "Converters",
-    "catSecurity": "Security"
+    "catSecurity": "Security",
+    "notFound": "Tool not found",
+    "workspaceLabel": "{title} tool",
+    "toolCount": "{count, plural, one {# TOOL} other {# TOOLS}}",
+    "categories": {
+      "text": "Text",
+      "image": "Images",
+      "file": "Files",
+      "code": "Code",
+      "converter": "Converters",
+      "security": "Security",
+      "calculator": "Calculators"
+    },
+    "word-counter": {
+      "title": "Word Counter",
+      "shortDesc": "Count words, characters, sentences and paragraphs in your text.",
+      "seo": {
+        "title": "Free Word Counter Online | Count Words & Characters",
+        "description": "Count words, characters, sentences and paragraphs instantly in your browser. Free, private and no sign-up."
+      }
+    },
+    "case-converter": {
+      "title": "Case Converter",
+      "shortDesc": "Convert text to UPPERCASE, lowercase, Title Case or camelCase.",
+      "seo": {
+        "title": "Free Case Converter Online | UPPERCASE, lowercase & More",
+        "description": "Convert text between UPPERCASE, lowercase, Title Case, camelCase, kebab-case and snake_case right in your browser."
+      }
+    },
+    "image-compressor": {
+      "title": "Image Compressor",
+      "shortDesc": "Compress JPEG and PNG images locally in your browser.",
+      "seo": {
+        "title": "Free Image Compressor | Compress JPEG & PNG Online",
+        "description": "Shrink JPEG and PNG images locally in your browser. No uploads, no sign-up and nothing to install."
+      }
+    },
+    "json-formatter": {
+      "title": "JSON Formatter",
+      "shortDesc": "Format, validate and minify JSON in your browser.",
+      "seo": {
+        "title": "Free JSON Formatter | Format, Validate & Minify JSON",
+        "description": "Format, validate and minify JSON instantly. Everything runs locally in your browser."
+      }
+    },
+    "unit-converter": {
+      "title": "Unit Converter",
+      "shortDesc": "Convert length, weight, temperature and more.",
+      "seo": {
+        "title": "Free Unit Converter | Length, Weight & Temperature",
+        "description": "Convert length, weight and temperature units quickly in your browser. No account needed."
+      }
+    },
+    "password-generator": {
+      "title": "Password Generator",
+      "shortDesc": "Generate strong, random passwords locally.",
+      "seo": {
+        "title": "Free Password Generator | Strong Random Passwords",
+        "description": "Generate strong random passwords locally with adjustable length and character options."
+      }
+    },
+    "url-encoder": {
+      "title": "URL Encoder / Decoder",
+      "shortDesc": "Encode or decode URLs and query strings.",
+      "seo": {
+        "title": "Free URL Encoder & Decoder | Encode URLs Online",
+        "description": "Encode or decode URLs and query strings in your browser. Fast, free and private."
+      }
+    },
+    "base64-encoder": {
+      "title": "Base64 Encoder / Decoder",
+      "shortDesc": "Encode or decode Base64 strings.",
+      "seo": {
+        "title": "Free Base64 Encoder & Decoder | Encode Base64 Online",
+        "description": "Encode or decode Base64 strings directly in your browser. No uploads or sign-up."
+      }
+    },
+    "seo": {
+      "intro": "{name} is a free {category} tool that {what}. It runs entirely in your browser, so there is nothing to install, no account to create, and nothing to upload. Open the page, do the work, and move on. {name} keeps your content on your own device. Whether you need a quick {category} fix or a repeatable step in your workflow, this tool is built to get out of the way.",
+      "closing": "Everything on this page runs in your browser. Open {name}, add what you need, and take the result with you. There is no setup, no sign-in and nothing to install.",
+      "canDoHeading": "What you can do with {name}",
+      "canDoP1": "{name} handles the common {category} jobs people run into every day. Paste or add your content, adjust the options you need, and read the result straight away. The controls are kept to the essentials so the tool stays quick even on a phone.",
+      "canDoP2": "Because this is a {category} utility, the work happens locally. Nothing is sent to a server and nothing is stored, which makes {name} a practical choice when your content is private or you simply value a fast, quiet page.",
+      "workflowHeading": "How this tool fits your workflow",
+      "workflowP1": "Most people use {name} in a browser tab alongside the rest of their work. There is no setup step and no learning curve: the {category} action you came for is the one on screen. Copy or download the output and carry on.",
+      "workflowP2": "If you work across devices, {name} behaves the same everywhere because the whole tool runs in the browser. That makes it easy to return to the same {category} task on a laptop, tablet or phone without changing how you work.",
+      "browserHeading": "Why use a browser-based tool",
+      "browserP1": "A browser {category} tool keeps the useful part, getting the job done, and drops the rest. {name} does not ask for a sign-in, tracking cookies or an upload, so the page stays fast and your material stays yours.",
+      "freeQ": "Is {name} free to use?",
+      "freeA": "Yes. {name} is free, with no account and no limits on everyday {category} use. You can open it, use it and leave without paying or signing up for anything.",
+      "uploadQ": "Does {name} upload or store my content?",
+      "uploadA": "No. {name} runs in your browser, so your content never reaches a server. There is no upload step and nothing is saved after you close the tab.",
+      "installQ": "Do I need to install anything to use {name}?",
+      "installA": "Nothing to install. {name} is a web page, so any modern browser on a computer or phone can run this {category} tool. Just open the page and start.",
+      "phoneQ": "Can I use {name} on my phone?",
+      "phoneA": "Yes. {name} is built for small screens as well as large ones, so you can do a quick {category} task one-handed. The result can be copied or downloaded right from the page."
+    }
   },
   "search": {
     "placeholder": "Search",
@@ -54,7 +196,8 @@
   "popular": {
     "eyebrow": "Most used",
     "title": "Popular tools",
-    "description": "The tools people come back to most. Everything here runs in your browser."
+    "description": "The tools people come back to most. Everything here runs in your browser.",
+    "requestLink": "Missing something? Request it"
   },
   "new": {
     "eyebrow": "Freshly added",
@@ -63,6 +206,7 @@
   },
   "guides": {
     "eyebrow": "Learn",
+    "countBadge": "LEARN · PRACTICAL · SHORT",
     "title": "Blog",
     "description": "Short, practical walkthroughs for getting work done with these tools.",
     "empty": "No posts are published yet. Check back soon, or ask for the one you need.",
@@ -80,7 +224,34 @@
     "emailPlaceholder": "Email",
     "emailHint": "Only used to tell you when the tool is ready.",
     "submit": "Send request",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "point1Title": "Describe the job",
+    "point1Body": "What you put in and what a good result looks like. No design or naming needed.",
+    "point2Title": "We review it",
+    "point2Body": "We read every request and check whether it fits the collection.",
+    "point3Title": "Private by default",
+    "point3Body": "Your note stays with us. We never publish or share your email.",
+    "formTitle": "Tell us what you need",
+    "formSubtitle": "A short note is enough to get started.",
+    "successTitle": "Request received",
+    "successBody": "Thank you. We read every request that comes in, and we will reply if yours is something we can build well.",
+    "sendAnother": "Send another request",
+    "categoryPlaceholder": "Choose a category",
+    "categoryAriaLabel": "Category",
+    "sending": "Sending…",
+    "errorNameRequired": "Tool name is required.",
+    "errorDescriptionRequired": "Description is required.",
+    "errorCategoryRequired": "Choose a category.",
+    "errorEmailInvalid": "Enter a valid email address.",
+    "errorGeneric": "Could not send your request.",
+    "categoryOptions": {
+      "text": "Text",
+      "image": "Images",
+      "code": "Code",
+      "converter": "Converters",
+      "security": "Security",
+      "other": "Something else"
+    }
   },
   "about": {
     "eyebrow": "About",
@@ -90,7 +261,23 @@
     "privacyTitle": "Files stay on your device",
     "privacyBody": "Every tool that touches a file or text processes it inside your browser. Nothing is uploaded, so we never see your content.",
     "contactTitle": "Get in touch",
-    "contactBody": "Mail us and a human replies."
+    "contactBody": "Mail us and a human replies.",
+    "headingPrefix": "About",
+    "perkInstantTitle": "Instant by default",
+    "perkInstantBody": "Every tool opens in a tab and works the moment you load it.",
+    "perkSmallTitle": "Small by design",
+    "perkSmallBody": "One job per tool, so there is nothing to learn before you begin.",
+    "believeEyebrow": "What we believe",
+    "believeTitle": "Useful tools should stay out of the way.",
+    "believeBody": "No accounts, no uploads and no clutter. Just a quiet collection of utilities that do one job well and leave when you are done.",
+    "browseCollection": "Browse the collection",
+    "storyEyebrow": "Our story",
+    "storyTitle": "Built for the small jobs, every day.",
+    "storyBody1": "Toolpika started as a set of private utilities for everyday work. Each one solved a single annoyance without asking for a sign-up or sending a file to a server.",
+    "storyBody2": "That idea still drives the site. Tools stay local, pages stay light and the collection grows only when something is genuinely useful.",
+    "specificTitle": "Need something specific?",
+    "specificBody": "Tell us what you need and we will look at it. We read every request.",
+    "requestCta": "Request a tool"
   },
   "privacy": {
     "eyebrow": "Legal",
@@ -102,7 +289,10 @@
     "dataTitle": "What we collect",
     "dataBody": "We do not require an account. We store your theme and language preference in your browser's local storage, which never leaves your device.",
     "cookiesTitle": "Cookies",
-    "cookiesBody": "Toolpika does not set tracking cookies. A single essential cookie may be used to remember your language preference."
+    "cookiesBody": "Toolpika does not set tracking cookies. A single essential cookie may be used to remember your language preference.",
+    "dataList1": "Theme and language preferences stay in your browser.",
+    "dataList2": "No account is required to use any public tool.",
+    "dataList3": "Request submissions are only stored when you choose to send one."
   },
   "terms": {
     "eyebrow": "Legal",
@@ -121,7 +311,21 @@
     "title": "Contact us",
     "description": "Bug reports, tool requests, or anything else. Email is fine.",
     "emailLabel": "Email",
-    "responseTime": "We usually reply within a couple of working days."
+    "responseTime": "We usually reply within a couple of working days.",
+    "titlePrefix": "Get in",
+    "titleAccent": "touch",
+    "directLine": "Direct line",
+    "phoneLabel": "Phone",
+    "responseLabel": "Response time",
+    "toolRequestsLabel": "Tool requests",
+    "toolRequestsBody": "Ask for a utility you need.",
+    "nameLabel": "Name",
+    "messageLabel": "Message",
+    "submitLabel": "Send message",
+    "formNote": "Your message goes straight to the admin inbox.",
+    "sentMessage": "Message sent. We will read it shortly.",
+    "sendGenericError": "Could not send your message.",
+    "sending": "Sending..."
   },
   "category": {
     "eyebrow": "Category",
@@ -131,7 +335,9 @@
     "allEyebrow": "Browse",
     "allTitle": "All categories",
     "allDescription": "Every tool, grouped by what it does. Pick a category to see the tools in it.",
-    "viewCategory": "View category"
+    "viewCategory": "View category",
+    "notFound": "Category not found",
+    "browseByCategory": "BROWSE · BY CATEGORY"
   },
   "notFound": {
     "title": "Page not found",
@@ -151,7 +357,9 @@
     "contact": "Contact",
     "privacy": "Privacy",
     "terms": "Terms",
-    "copyright": "© {year} Toolpika. All rights reserved."
+    "copyright": "© {year} Toolpika. All rights reserved.",
+    "emailLabel": "Email",
+    "gitHubLabel": "GitHub"
   },
   "toolPage": {
     "howToTitle": "How to use",
@@ -165,7 +373,8 @@
     "faqAnswer2": "Yes, once the page has loaded. You can disconnect and keep working.",
     "faqQuestion3": "Is there a file size limit?",
     "faqAnswer3": "Large files may be slow on older phones. Smaller files finish in an instant.",
-    "relatedTitle": "Related tools"
+    "relatedTitle": "Related tools",
+    "missingRequest": "Missing a tool? Request it"
   },
   "toolUi": {
     "copy": "Copy",

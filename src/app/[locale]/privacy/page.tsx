@@ -33,9 +33,9 @@ export default async function PrivacyPage({ params }: LocalePageProps) {
         <h2 className="tp-atlas-h2">{t("dataTitle")}</h2>
         <p className="tp-atlas-p">{t("dataBody")}</p>
         <ul className="tp-atlas-list">
-          <li>Theme and language preferences stay in your browser.</li>
-          <li>No account is required to use any public tool.</li>
-          <li>Request submissions are only stored when you choose to send one.</li>
+          <li>{t("dataList1")}</li>
+          <li>{t("dataList2")}</li>
+          <li>{t("dataList3")}</li>
         </ul>
       </Reveal>
 
