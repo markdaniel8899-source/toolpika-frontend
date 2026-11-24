@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Sì. «Caratteri» include spazi e punteggiatura. Usa «Caratteri (senza spazi)» se il modulo ignora gli spazi.\nHow does the tool count a word?::Ogni sequenza di caratteri senza spazi conta come una parola. I trattini restano uniti e la punteggiatura non aggiunge parole.\nWill my text be uploaded?::No. Il conteggio avviene nel browser: nulla viene caricato o salvato dopo la chiusura della scheda.\nWhy is my word count different in another editor?::Gli editor differiscono su trattini, numeri e simboli. Qui si conta per spazi; controlla la regola del modulo.\nDoes it work for Chinese or Japanese text?::Caratteri, righe e paragrafi funzionano. Le parole richiedono spazi: per cinese, giapponese e coreano usa i caratteri.\nIs reading time accurate?::È una stima a 200 parole al minuto, non una misura del tuo ritmo.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "Contatore di parole senza spazi\nContatore di parole privato nel browser senza caricamento\nContatore di caratteri e tempo di lettura\nContatore di parole per saggi e moduli"
       }
     },
     "case-converter": {
@@ -421,7 +422,7 @@
       "phoneQ": "Posso usare {name} sul mio telefono?",
       "phoneA": "Sì. {name} è progettato per schermi piccoli e grandi, quindi puoi eseguire un rapido compito di {category} con una sola mano. Il risultato può essere copiato o scaricato direttamente dalla pagina."
     },
-    "aboutLink": "Scopri di più su Toolpika →",
+    "aboutLink": "Scopri di più su Toolpika",
     "trySample": "Try sample",
     "reset": "Reset",
     "paste": "Paste",
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "Risposta rapida"
   },
   "search": {
     "placeholder": "Cerca",

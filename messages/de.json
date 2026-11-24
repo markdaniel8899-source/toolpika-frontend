@@ -163,7 +163,8 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Zählt der Wortzähler Leerzeichen als Zeichen?::Ja. „Zeichen“ zählt Leerzeichen und Satzzeichen. Nutze „Zeichen ohne Leerzeichen“, wenn das Formular Leerzeichen ignoriert.\nWie zählt das Tool ein Wort?::Jede Folge von Zeichen ohne Leerzeichen zählt als ein Wort. Bindestriche bleiben verbunden, Satzzeichen fügen kein Wort hinzu.\nWird mein Text hochgeladen?::Nein. Die Zählung läuft im Browser. Nichts wird hochgeladen oder nach dem Schließen des Tabs gespeichert.\nWarum ist meine Wortanzahl in einem anderen Editor anders?::Editoren zählen Bindestriche, Zahlen und Symbole unterschiedlich. Hier gilt die Leerraumregel; prüfe die Regel des Formulars.\nFunktioniert es für chinesischen oder japanischen Text?::Zeichen, Zeilen und Absätze funktionieren. Für Wörter braucht es Leerzeichen – nutze bei Chinesisch, Japanisch oder Koreanisch die Zeichenzahl.\nIst die Lesezeit genau?::Es ist eine Schätzung mit 200 Wörtern pro Minute, kein Messwert für dein Lesetempo.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Entwickelt vom Toolpika-Team. Diese Seite beschreibt die Zählregeln, die vom obigen Tool verwendet werden. Zuletzt aktualisiert am 24. November 2026."
+        "trustBody": "Entwickelt vom Toolpika-Team. Diese Seite beschreibt die Zählregeln, die vom obigen Tool verwendet werden. Zuletzt aktualisiert am 24. November 2026.",
+        "searchIntents": "Wortzähler ohne Leerzeichen\nPrivater Wortzähler im Browser ohne Upload\nZeichen- und Lesezeitzähler\nWortzähler für Aufsätze und Formulare"
       }
     },
     "case-converter": {
@@ -431,7 +432,8 @@
       "phoneQ": "Kann ich {name} auf meinem Handy verwenden?",
       "phoneA": "Ja. {name} ist sowohl für kleine als auch für große Bildschirme konzipiert, sodass Sie eine schnelle {category}-Aufgabe mit einer Hand erledigen können. Das Ergebnis kann direkt auf der Seite kopiert oder heruntergeladen werden."
     },
-    "aboutLink": "Mehr über Toolpika erfahren →"
+    "aboutLink": "Mehr über Toolpika erfahren",
+    "quickAnswer": "Kurze Antwort"
   },
   "search": {
     "placeholder": "Suchen",

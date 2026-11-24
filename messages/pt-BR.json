@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Sim. \"Caracteres\" inclui espaços e pontuação. Use \"Caracteres (sem espaços)\" se o formulário ignorar espaços.\nHow does the tool count a word?::Cada sequência de caracteres sem espaço conta como uma palavra. Hífens permanecem juntos e a pontuação não cria palavras.\nWill my text be uploaded?::Não. A contagem acontece no navegador; nada é enviado ou armazenado após fechar a aba.\nWhy is my word count different in another editor?::Editores diferem em hífens, números e símbolos. Aqui a contagem usa espaços; verifique a regra do formulário.\nDoes it work for Chinese or Japanese text?::Caracteres, linhas e parágrafos funcionam. Palavras exigem espaços: use caracteres para chinês, japonês ou coreano.\nIs reading time accurate?::É uma estimativa de 200 palavras por minuto, não uma medida do seu ritmo.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "Contador de palavras sem espaços\nContador de palavras privado no navegador sem upload\nContador de caracteres e tempo de leitura\nContador de palavras para redações e formulários"
       }
     },
     "case-converter": {
@@ -421,7 +422,7 @@
       "phoneQ": "Posso usar {name} no meu celular?",
       "phoneA": "Sim. {name} foi feito para telas pequenas e grandes, permitindo que você execute uma tarefa rápida de {category} com uma mão. O resultado pode ser copiado ou baixado diretamente da página."
     },
-    "aboutLink": "Saiba mais sobre a Toolpika →",
+    "aboutLink": "Saiba mais sobre a Toolpika",
     "trySample": "Try sample",
     "reset": "Reset",
     "paste": "Paste",
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "Resposta rápida"
   },
   "search": {
     "placeholder": "Buscar",

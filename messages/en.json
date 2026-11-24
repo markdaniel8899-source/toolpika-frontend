@@ -150,7 +150,7 @@
         "exampleTitle": "Example",
         "exampleLabel": "A short sentence",
         "exampleInput": "Hello world. This is a test.",
-        "exampleOutput": "Words: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min",
+        "exampleOutput": "Word count: 6\nCharacters: 28\nCharacters (no spaces): 23\nSentences: 2\nParagraphs: 1\nLines: 1\nReading time: 1 min\nSpeaking time: 1 min",
         "exampleNote": "The numbers match the counting rules used by the tool above.",
         "featuresTitle": "Features",
         "features": "Live counts::Every number updates as soon as you type or paste.\nSeven measures::Words, characters, characters without spaces, sentences, paragraphs, lines and reading time.\nCopy stats::Copy all counts as plain text in one click.\nTry sample::Fill the box with sample text to see the tool working.\nPrivate by design::All counting happens in your browser; nothing is uploaded.",
@@ -163,7 +163,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Yes. Characters includes spaces and punctuation; use Characters (no spaces) if the form ignores whitespace.\nHow does the tool count a word?::Each run of non-whitespace characters is one word. Hyphens stay joined and attached punctuation adds no word.\nWill my text be uploaded?::No. Counting happens in your browser; nothing is uploaded or stored after you close the tab.\nWhy is my word count different in another editor?::Editors differ on hyphens, numbers and symbols. This tool counts by whitespace, so check the form's own rule.\nDoes it work for Chinese or Japanese text?::Characters, lines and paragraphs work well. Word counts need spaces, so use the character count for Chinese, Japanese or Korean.\nIs reading time accurate?::It's an estimate at 200 words per minute, not a measure of your pace. Use it to compare drafts.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "Word counter without spaces\nPrivate client-side word counter with no upload\nCharacter and reading time counter\nWord counter for essays and form limits"
       }
     },
     "case-converter": {
@@ -431,7 +432,8 @@
       "phoneQ": "Can I use {name} on my phone?",
       "phoneA": "Yes. {name} is built for small screens as well as large ones, so you can do a quick {category} task one-handed. The result can be copied or downloaded right from the page."
     },
-    "aboutLink": "Learn more about Toolpika →"
+    "aboutLink": "Learn more about Toolpika",
+    "quickAnswer": "Quick answer"
   },
   "search": {
     "placeholder": "Search",

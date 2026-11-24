@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::نعم. «الأحرف» تشمل المسافات وعلامات الترقيم. استخدم «الأحرف بدون مسافات» إذا كان النموذج يتجاهل المسافات.\nHow does the tool count a word?::كل سلسلة أحرف بدون مسافات تُحسب كلمة واحدة. الواصلة لا تفصل الكلمة، وعلامات الترقيم لا تضيف كلمة.\nWill my text be uploaded?::لا. العد يتم داخل المتصفح؛ لا يتم رفع أي شيء أو تخزينه بعد إغلاق التبويب.\nWhy is my word count different in another editor?::تختلف المحررات في الواصلات والأرقام والرموز. هنا يُعتمد على المسافات؛ تحقق من قاعدة النموذج.\nDoes it work for Chinese or Japanese text?::الأحرف والأسطر والفقرات تعمل. عدد الكلمات يحتاج مسافات، لذا استخدم عدد الأحرف للصينية واليابانية والكورية.\nIs reading time accurate?::هذا تقدير بمعدل 200 كلمة في الدقيقة، وليس قياسًا لسرعتك.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "عداد كلمات بدون مسافات\nعداد كلمات خاص داخل المتصفح بدون رفع\nعداد أحرف ووقت قراءة\nعداد كلمات للمقالات والنماذج"
       }
     },
     "case-converter": {
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "إجابة سريعة"
   },
   "search": {
     "placeholder": "بحث",

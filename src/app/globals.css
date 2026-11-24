@@ -7384,3 +7384,91 @@ html:lang(hi) .tp-tool-hero-accent {
     radial-gradient(80% 160% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
     var(--surface);
 }
+
+/* ---------- SXO / AEO refinements ---------- */
+
+.tp-tool-page {
+  padding-block-start: 10px;
+}
+
+.tp-tool-hero {
+  margin-block-start: 12px;
+}
+
+.tp-tool-hero-title {
+  margin-block-start: 10px;
+}
+
+.tp-tool-hero-lede {
+  margin-block-start: 10px;
+}
+
+.tp-tool-hero-chips {
+  margin-block-start: 12px;
+}
+
+.tp-doc-layout {
+  margin-block-start: 48px;
+}
+
+.tp-wc-stat--primary {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.tp-wc-stat--primary dd {
+  font-size: 28px;
+}
+
+.tp-doc-quick {
+  margin-block-start: 18px;
+  padding: 14px 16px;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.tp-doc-quick-label {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.tp-doc-quick-answer {
+  margin: 0;
+  color: var(--text);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.tp-doc-answer {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tp-doc-trust-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+[dir="rtl"] .tp-doc-quick {
+  border-inline-start-color: var(--accent);
+  border-radius: 10px 0 0 10px;
+}
+
+@media (max-width: 640px) {
+  .tp-doc-layout {
+    margin-block-start: 40px;
+  }
+
+  .tp-doc-quick-answer {
+    font-size: 14.5px;
+  }
+}

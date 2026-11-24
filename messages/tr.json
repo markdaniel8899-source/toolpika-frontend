@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Evet. \"Karakterler\" boşlukları ve noktalama işaretlerini içerir. Form boşlukları yok sayıyorsa \"Boşluksuz karakterler\"i kullanın.\nHow does the tool count a word?::Boşluksuz her karakter dizisi bir kelime sayılır. Tire bağlı kalır, noktalama yeni kelime eklemez.\nWill my text be uploaded?::Hayır. Sayım tarayıcıda yapılır; sekme kapatıldığında hiçbir şey yüklenmez veya saklanmaz.\nWhy is my word count different in another editor?::Editörler tire, sayı ve sembolleri farklı sayar. Burada boşluk esas alınır; formun kuralını kontrol edin.\nDoes it work for Chinese or Japanese text?::Karakter, satır ve paragraf sayıları çalışır. Kelime sayımı boşluğa bağlıdır; Çince, Japonca ve Korece için karakter sayısını kullanın.\nIs reading time accurate?::Bu, 200 kelime/dakika tahminidir, okuma hızınızın ölçümü değildir.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "Boşluksuz kelime sayacı\nYüklemesiz, tarayıcıda özel kelime sayacı\nKarakter ve okuma süresi sayacı\nKompozisyon ve formlar için kelime sayacı"
       }
     },
     "case-converter": {
@@ -421,7 +422,7 @@
       "phoneQ": "{name} uygulamasını telefonumda kullanabilir miyim?",
       "phoneA": "Evet. {name}, hem küçük hem de büyük ekranlar için tasarlanmıştır, bu sayede tek elle hızlı bir {category} işi yapabilirsiniz. Sonuç, doğrudan sayfadan kopyalanabilir veya indirilebilir."
     },
-    "aboutLink": "Toolpika hakkında daha fazla bilgi →",
+    "aboutLink": "Toolpika hakkında daha fazla bilgi",
     "trySample": "Try sample",
     "reset": "Reset",
     "paste": "Paste",
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "Kısa cevap"
   },
   "search": {
     "placeholder": "Ara",

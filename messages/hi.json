@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::हाँ। \"अक्षर\" में रिक्त स्थान और विराम चिह्न शामिल हैं। यदि फ़ॉर्म रिक्त स्थानों को नज़रअंदाज़ करता है तो \"बिना रिक्त स्थान के अक्षर\" चुनें।\nHow does the tool count a word?::बिना रिक्त स्थान वाला हर अक्षर-समूह एक शब्द है। हाइफ़न नहीं तोड़ता और विराम चिह्न नया शब्द नहीं बनाता।\nWill my text be uploaded?::नहीं। गणना ब्राउज़र में होती है; टैब बंद करने के बाद कुछ भी अपलोड या सहेजा नहीं जाता।\nWhy is my word count different in another editor?::संपादक हाइफ़न, अंक और प्रतीकों को अलग-अलग गिनते हैं। यहाँ रिक्त स्थान आधार है; फ़ॉर्म का नियम देखें।\nDoes it work for Chinese or Japanese text?::अक्षर, पंक्तियाँ और अनुच्छेद ठीक काम करते हैं। शब्द गणना के लिए रिक्त स्थान चाहिए; चीनी, जापानी या कोरियाई के लिए अक्षर गिनती करें।\nIs reading time accurate?::यह 200 शब्द प्रति मिनट का अनुमान है, आपकी गति का माप नहीं।",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "बिना रिक्त स्थान के शब्द गणक\nअपलोड के बिना निजी ब्राउज़र-आधारित शब्द गणक\nअक्षर और पठन समय गणक\nनिबंध और फ़ॉर्म के लिए शब्द गणक"
       }
     },
     "case-converter": {
@@ -421,7 +422,7 @@
       "phoneQ": "क्या मैं {name} को अपने फ़ोन पर उपयोग कर सकता हूँ?",
       "phoneA": "हाँ। {name} छोटी स्क्रीन के साथ-साथ बड़ी स्क्रीन के लिए भी बनाया गया है, इसलिए आप एक हाथ से त्वरित {category} कार्य कर सकते हैं। परिणाम को सीधे पेज से कॉपी या डाउनलोड किया जा सकता है।"
     },
-    "aboutLink": "Toolpika के बारे में और जानें →",
+    "aboutLink": "Toolpika के बारे में और जानें",
     "trySample": "Try sample",
     "reset": "Reset",
     "paste": "Paste",
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "संक्षिप्त उत्तर"
   },
   "search": {
     "placeholder": "खोजें",

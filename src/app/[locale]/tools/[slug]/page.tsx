@@ -76,10 +76,12 @@ export async function generateMetadata({
   const siteUrl = getSiteUrl();
   const pageTitle = t(toolSeoTitleKey(tool));
   const pageDescription = t(toolSeoDescriptionKey(tool));
+  const pageContent = getToolPageContent(t, slug);
 
   return {
     title: pageTitle,
     description: pageDescription,
+    keywords: pageContent?.searchIntents ?? [],
     alternates: {
       canonical: `${siteUrl}/${locale}/tools/${tool.slug}`,
       languages: {
@@ -131,6 +133,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const t = await getTranslations({ locale, namespace: "tools" });
   const tHow = await getTranslations({ locale, namespace: "toolPage" });
   const tUi = await getTranslations({ locale, namespace: "toolUi" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
 
   const toolTitle = t(toolTitleKey(tool));
   const toolDescription = t(toolDescriptionKey(tool));
@@ -237,11 +240,6 @@ export default async function ToolPage({ params }: LocalePageProps) {
     ],
   };
 
-  const siteWideSchema = {
-    "@context": "https://schema.org",
-    "@graph": structuredData["@graph"].slice(0, 2),
-  };
-
   const toolSchemas = fullContent
     ? buildToolSchemas({
         locale,
@@ -259,7 +257,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
   if (fullContent) {
     return (
       <>
-        {[siteWideSchema, ...toolSchemas].map((schema, index) => (
+        {toolSchemas.map((schema, index) => (
           <script
             key={index}
             type="application/ld+json"
@@ -277,11 +275,13 @@ export default async function ToolPage({ params }: LocalePageProps) {
           categoryLabel={categoryLabel}
           relatedTitle={tHow("relatedTitle")}
           aboutLinkLabel={t("aboutLink")}
+          guidesLinkLabel={tNav("guides")}
           inputLabel={t("input")}
           outputLabel={t("result")}
           workspaceLabel={t("workspaceLabel", { title: toolTitle })}
           contextualTool={contextualTool}
           onThisPageLabel={t("onThisPage")}
+          quickAnswerLabel={t("quickAnswer")}
           quickFactsLabel={t("quickFacts")}
           freeLabel={t("freeToUse")}
           noSignupLabel={t("noSignup")}

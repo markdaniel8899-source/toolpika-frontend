@@ -1,13 +1,13 @@
 import {
   AlertTriangle,
   ArrowRight,
+  ArrowUpRight,
   ClipboardCheck,
   Copy as CopyIcon,
   Gauge,
   Languages,
   LayoutGrid,
   PenLine,
-  Ruler,
   ShieldCheck,
   Sparkles,
   Target,
@@ -22,15 +22,15 @@ import { ToolIcon } from "@/components/tools/tool-icon";
 import { ToolWorkspace } from "@/components/tools/tool-workspace";
 import { CopyButton } from "@/components/tools/workspace-ui";
 import type { Tool } from "@/lib/tools/registry";
-import type { ToolPageContent } from "@/lib/tools/tool-content";
+import type { ContentSection, ToolPageContent } from "@/lib/tools/tool-content";
 
-const FEATURE_ICONS = [Zap, Ruler, CopyIcon, Sparkles, ShieldCheck, Gauge] as const;
-const USE_CASE_ICONS = [Target, PenLine, ClipboardCheck, Languages] as const;
+const FEATURE_ICONS = [Zap, Gauge, CopyIcon, Sparkles, ShieldCheck, Target] as const;
+const POINT_ICONS = [Target, PenLine, ClipboardCheck, Languages] as const;
 
 /**
- * Full template-compliant page for tools with hand-written content.
- * The page is split into three clear zones: a tool hero, the live workspace,
- * and a readable documentation area with a sticky table of contents.
+ * Modular tool page template. Sections come from each tool's content model,
+ * so a tool can include, omit or reorder modules instead of inheriting an
+ * identical seven-block article on every page.
  */
 export function FullToolPage({
   tool,
@@ -41,11 +41,13 @@ export function FullToolPage({
   categoryLabel,
   relatedTitle,
   aboutLinkLabel,
+  guidesLinkLabel,
   inputLabel,
   outputLabel,
   workspaceLabel,
   contextualTool,
   onThisPageLabel,
+  quickAnswerLabel,
   quickFactsLabel,
   freeLabel,
   noSignupLabel,
@@ -61,11 +63,13 @@ export function FullToolPage({
   categoryLabel: string;
   relatedTitle: string;
   aboutLinkLabel: string;
+  guidesLinkLabel: string;
   inputLabel: string;
   outputLabel: string;
   workspaceLabel: string;
   contextualTool?: Tool;
   onThisPageLabel: string;
+  quickAnswerLabel: string;
   quickFactsLabel: string;
   freeLabel: string;
   noSignupLabel: string;
@@ -78,15 +82,128 @@ export function FullToolPage({
   const titleAccent = titleWords.length > 1 ? titleWords.pop() ?? title : title;
   const titleMain = titleWords.join(" ");
 
-  const tocItems = [
-    { id: "what-is", label: content.whatIsTitle },
-    { id: "how-to", label: content.howToTitle },
-    { id: "example", label: content.exampleTitle },
-    { id: "features", label: content.featuresTitle },
-    { id: "use-cases", label: content.useCasesTitle },
-    { id: "mistakes", label: content.mistakesTitle },
-    { id: "faq", label: content.faqTitle },
-  ];
+  const articleSections = content.sections.filter((section) => section.kind !== "faq");
+  const faqSection = content.sections.find((section) => section.kind === "faq");
+  const tocItems = content.sections.map((section) => ({
+    id: section.id,
+    label: section.title,
+  }));
+
+  function renderSection(section: ContentSection) {
+    if (section.kind === "definition") {
+      return (
+        <div className="tp-doc-copy">
+          <p className="tp-doc-answer">{section.answer}</p>
+          {section.paragraphs.map((paragraph) => (
+            <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+          ))}
+          {contextualTool ? (
+            <p>
+              {contextualParts[0]}
+              <Link href={`/tools/${contextualTool.slug}`} className="tp-text-link">
+                {contextualTool.title}
+              </Link>
+              {contextualParts[1] ?? ""}
+            </p>
+          ) : null}
+        </div>
+      );
+    }
+
+    if (section.kind === "steps") {
+      return (
+        <ol className="tp-doc-steps">
+          {section.items.map((step, index) => (
+            <li key={step} className="tp-doc-step">
+              <span className="tp-doc-step-num" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <p>{step}</p>
+            </li>
+          ))}
+        </ol>
+      );
+    }
+
+    if (section.kind === "example") {
+      return (
+        <>
+          <p className="tp-doc-example-label">{section.label}</p>
+          <div className="tp-doc-example">
+            <div className="tp-doc-example-pane">
+              <div className="tp-doc-example-head">
+                <span>{inputLabel}</span>
+                <CopyButton
+                  text={section.input}
+                  label={copyLabel}
+                  copiedLabel={copiedLabel}
+                  className="tp-doc-copy-btn"
+                />
+              </div>
+              <pre><code>{section.input}</code></pre>
+            </div>
+            <div className="tp-doc-example-pane tp-doc-example-pane--out">
+              <div className="tp-doc-example-head">
+                <span>{outputLabel}</span>
+                <CopyButton
+                  text={section.output}
+                  label={copyLabel}
+                  copiedLabel={copiedLabel}
+                  className="tp-doc-copy-btn"
+                />
+              </div>
+              <pre><code>{section.output}</code></pre>
+            </div>
+          </div>
+          <p className="tp-doc-note">{section.note}</p>
+        </>
+      );
+    }
+
+    if (section.kind === "facts") {
+      return (
+        <div className="tp-doc-grid">
+          {section.items.map((fact, index) => {
+            const Icon = FEATURE_ICONS[index % FEATURE_ICONS.length];
+            return (
+              <article key={fact.title} className="tp-doc-card">
+                <span className="tp-doc-card-icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                <h4>{fact.title}</h4>
+                <p>{fact.body}</p>
+              </article>
+            );
+          })}
+        </div>
+      );
+    }
+
+    if (section.kind === "points") {
+      const warning = section.tone === "warning";
+      const Icon = warning ? AlertTriangle : POINT_ICONS[0];
+      return (
+        <div className={warning ? "tp-doc-mistakes" : "tp-doc-usecases"}>
+          {section.items.map((item, index) => {
+            const ItemIcon = warning ? Icon : POINT_ICONS[index % POINT_ICONS.length];
+            return (
+              <article key={item.title} className={warning ? "tp-doc-mistake" : "tp-doc-usecase"}>
+                <span className={warning ? "tp-doc-mistake-icon" : "tp-doc-usecase-icon"} aria-hidden="true">
+                  <ItemIcon />
+                </span>
+                <div>
+                  <h4>{item.title}</h4>
+                  <p>{item.body}</p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      );
+    }
+
+    return null;
+  }
 
   return (
     <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
@@ -143,138 +260,20 @@ export function FullToolPage({
         <article className="tp-doc-article">
           <header className="tp-doc-head">
             <h2 className="tp-doc-title">{content.aboutTitle}</h2>
+            <div className="tp-doc-quick">
+              <p className="tp-doc-quick-label">{quickAnswerLabel}</p>
+              <p className="tp-doc-quick-answer">{content.directAnswer}</p>
+            </div>
           </header>
 
-          <section id="what-is" className="tp-doc-section" aria-labelledby="tp-doc-what-is">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-what-is" className="tp-doc-h3">{content.whatIsTitle}</h3>
-            </div>
-            <div className="tp-doc-copy">
-              {content.whatIsParagraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-              ))}
-              {contextualTool ? (
-                <p>
-                  {contextualParts[0]}
-                  <Link href={`/tools/${contextualTool.slug}`} className="tp-text-link">
-                    {contextualTool.title}
-                  </Link>
-                  {contextualParts[1] ?? ""}
-                </p>
-              ) : null}
-            </div>
-          </section>
-
-          <section id="how-to" className="tp-doc-section" aria-labelledby="tp-doc-how-to">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-how-to" className="tp-doc-h3">{content.howToTitle}</h3>
-            </div>
-            <ol className="tp-doc-steps">
-              {content.howToSteps.map((step, index) => (
-                <li key={step} className="tp-doc-step">
-                  <span className="tp-doc-step-num" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p>{step}</p>
-                </li>
-              ))}
-            </ol>
-          </section>
-
-          <section id="example" className="tp-doc-section" aria-labelledby="tp-doc-example">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-example" className="tp-doc-h3">{content.exampleTitle}</h3>
-            </div>
-            <p className="tp-doc-example-label">{content.exampleLabel}</p>
-            <div className="tp-doc-example">
-              <div className="tp-doc-example-pane">
-                <div className="tp-doc-example-head">
-                  <span>{inputLabel}</span>
-                  <CopyButton
-                    text={content.exampleInput}
-                    label={copyLabel}
-                    copiedLabel={copiedLabel}
-                    className="tp-doc-copy-btn"
-                  />
-                </div>
-                <pre><code>{content.exampleInput}</code></pre>
+          {articleSections.map((section) => (
+            <section key={section.id} id={section.id} className="tp-doc-section" aria-labelledby={`tp-doc-${section.id}`}>
+              <div className="tp-doc-section-head">
+                <h3 id={`tp-doc-${section.id}`} className="tp-doc-h3">{section.title}</h3>
               </div>
-              <div className="tp-doc-example-pane tp-doc-example-pane--out">
-                <div className="tp-doc-example-head">
-                  <span>{outputLabel}</span>
-                  <CopyButton
-                    text={content.exampleOutput}
-                    label={copyLabel}
-                    copiedLabel={copiedLabel}
-                    className="tp-doc-copy-btn"
-                  />
-                </div>
-                <pre><code>{content.exampleOutput}</code></pre>
-              </div>
-            </div>
-            <p className="tp-doc-note">{content.exampleNote}</p>
-          </section>
-
-          <section id="features" className="tp-doc-section" aria-labelledby="tp-doc-features">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-features" className="tp-doc-h3">{content.featuresTitle}</h3>
-            </div>
-            <div className="tp-doc-grid">
-              {content.features.map((feature, index) => {
-                const Icon = FEATURE_ICONS[index % FEATURE_ICONS.length];
-                return (
-                  <article key={feature.title} className="tp-doc-card">
-                    <span className="tp-doc-card-icon" aria-hidden="true">
-                      <Icon />
-                    </span>
-                    <h4>{feature.title}</h4>
-                    <p>{feature.body}</p>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section id="use-cases" className="tp-doc-section" aria-labelledby="tp-doc-use-cases">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-use-cases" className="tp-doc-h3">{content.useCasesTitle}</h3>
-            </div>
-            <div className="tp-doc-usecases">
-              {content.useCases.map((useCase, index) => {
-                const Icon = USE_CASE_ICONS[index % USE_CASE_ICONS.length];
-                return (
-                  <article key={useCase.title} className="tp-doc-usecase">
-                    <span className="tp-doc-usecase-icon" aria-hidden="true">
-                      <Icon />
-                    </span>
-                    <div>
-                      <h4>{useCase.title}</h4>
-                      <p>{useCase.body}</p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section id="mistakes" className="tp-doc-section" aria-labelledby="tp-doc-mistakes">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-mistakes" className="tp-doc-h3">{content.mistakesTitle}</h3>
-            </div>
-            <div className="tp-doc-mistakes">
-              {content.mistakes.map((mistake) => (
-                <article key={mistake.title} className="tp-doc-mistake">
-                  <span className="tp-doc-mistake-icon" aria-hidden="true">
-                    <AlertTriangle />
-                  </span>
-                  <div>
-                    <h4>{mistake.title}</h4>
-                    <p>{mistake.body}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
+              {renderSection(section)}
+            </section>
+          ))}
         </article>
 
         <aside className="tp-doc-rail">
@@ -316,21 +315,23 @@ export function FullToolPage({
         </aside>
       </div>
 
-      <Reveal>
-        <section id="faq" className="tp-doc-faq-section" aria-labelledby="tp-doc-faq-title">
-          <div className="tp-doc-section-head">
-            <h2 id="tp-doc-faq-title" className="tp-doc-h2">{content.faqTitle}</h2>
-          </div>
-          <div className="tp-doc-faq-grid">
-            {content.faqs.map((faq) => (
-              <article key={faq.question} className="tp-doc-faq">
-                <h3>{faq.question}</h3>
-                <p>{faq.answer}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-      </Reveal>
+      {faqSection && faqSection.kind === "faq" ? (
+        <Reveal>
+          <section id={faqSection.id} className="tp-doc-faq-section" aria-labelledby="tp-doc-faq-title">
+            <div className="tp-doc-section-head">
+              <h2 id="tp-doc-faq-title" className="tp-doc-h2">{faqSection.title}</h2>
+            </div>
+            <div className="tp-doc-faq-grid">
+              {faqSection.items.map((faq) => (
+                <article key={faq.question} className="tp-doc-faq">
+                  <h3>{faq.question}</h3>
+                  <p>{faq.answer}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+      ) : null}
 
       {related.length > 0 ? (
         <section className="tp-doc-related" aria-labelledby="tp-doc-related-title">
@@ -353,10 +354,16 @@ export function FullToolPage({
           <div>
             <h2>{content.trustTitle}</h2>
             <p>{content.trustBody}</p>
-            <Link href="/about" className="tp-text-link tp-doc-trust-link">
-              {aboutLinkLabel}
-              <ArrowRight aria-hidden="true" />
-            </Link>
+            <div className="tp-doc-trust-links">
+              <Link href="/about" className="tp-text-link tp-doc-trust-link">
+                {aboutLinkLabel}
+                <ArrowRight aria-hidden="true" />
+              </Link>
+              <Link href="/guides" className="tp-text-link tp-doc-trust-link">
+                {guidesLinkLabel}
+                <ArrowUpRight aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </section>
       </Reveal>

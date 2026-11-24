@@ -3,16 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  AlignLeft,
   Check,
   ClipboardPaste,
   Clock,
   Copy,
   FileText,
-  Hash,
-  ListOrdered,
   Mic,
-  Pilcrow,
   RotateCcw,
   ShieldCheck,
   Target,
@@ -106,22 +102,25 @@ function AnimatedNumber({ value }: { value: number }) {
 }
 
 function InsightStat({
-  icon: Icon,
   label,
   value,
   wide,
+  primary,
 }: {
-  icon: typeof Hash;
   label: string;
   value: number;
   wide?: boolean;
+  primary?: boolean;
 }) {
   return (
-    <div className={cn("tp-wc-stat", wide && "tp-wc-stat--wide")}>
-      <dt>
-        <Icon aria-hidden="true" />
-        {label}
-      </dt>
+    <div
+      className={cn(
+        "tp-wc-stat",
+        wide && "tp-wc-stat--wide",
+        primary && "tp-wc-stat--primary",
+      )}
+    >
+      <dt>{label}</dt>
       <dd>
         <AnimatedNumber value={value} />
       </dd>
@@ -332,26 +331,22 @@ export default function WordCounter() {
             <div className="tp-wc-hero-foot">
               <span>
                 <Clock aria-hidden="true" />
-                {t("readingTime")} · {t("minuteShort", { count: stats.minutes })}
+                {t("readingTime")}: {t("minuteShort", { count: stats.minutes })}
               </span>
               <span>
                 <Mic aria-hidden="true" />
-                {t("speakingTime")} · {t("minuteShort", { count: stats.speakingMinutes })}
+                {t("speakingTime")}: {t("minuteShort", { count: stats.speakingMinutes })}
               </span>
             </div>
             <span className="tp-wc-hero-glow" aria-hidden="true" />
           </div>
 
           <dl className="tp-wc-stats">
-            <InsightStat icon={Hash} label={t("characters")} value={stats.characters} />
-            <InsightStat
-              icon={Type}
-              label={t("charactersNoSpaces")}
-              value={stats.charactersNoSpaces}
-            />
-            <InsightStat icon={AlignLeft} label={t("sentences")} value={stats.sentences} />
-            <InsightStat icon={Pilcrow} label={t("paragraphs")} value={stats.paragraphs} />
-            <InsightStat icon={ListOrdered} label={t("lines")} value={stats.lines} wide />
+            <InsightStat label={t("characters")} value={stats.characters} primary />
+            <InsightStat label={t("charactersNoSpaces")} value={stats.charactersNoSpaces} />
+            <InsightStat label={t("sentences")} value={stats.sentences} />
+            <InsightStat label={t("paragraphs")} value={stats.paragraphs} />
+            <InsightStat label={t("lines")} value={stats.lines} wide />
           </dl>
 
           <div className="tp-wc-goal" data-reached={goalReached || undefined}>

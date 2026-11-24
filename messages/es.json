@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Sí. «Caracteres» incluye espacios y signos. Usa «Caracteres (sin espacios)» si el formulario ignora los espacios.\nHow does the tool count a word?::Cada bloque de caracteres sin espacios cuenta como una palabra. Los guiones no separan y la puntuación no añade palabras.\nWill my text be uploaded?::No. El recuento ocurre en tu navegador; nada se sube ni se guarda al cerrar la pestaña.\nWhy is my word count different in another editor?::Los editores difieren en guiones, números y símbolos. Aquí se cuenta por espacios; revisa la regla del formulario.\nDoes it work for Chinese or Japanese text?::Caracteres, líneas y párrafos funcionan bien. Las palabras necesitan espacios: usa caracteres para chino, japonés o coreano.\nIs reading time accurate?::Es una estimación a 200 palabras por minuto, no una medida de tu ritmo.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "Contador de palabras sin espacios\nContador de palabras privado en el navegador sin subida\nContador de caracteres y tiempo de lectura\nContador de palabras para ensayos y formularios"
       }
     },
     "case-converter": {
@@ -421,7 +422,7 @@
       "phoneQ": "¿Puedo usar {name} en mi teléfono?",
       "phoneA": "Sí. {name} está diseñado para pantallas pequeñas y grandes, por lo que puedes realizar una tarea rápida de {category} con una sola mano. El resultado se puede copiar o descargar directamente desde la página."
     },
-    "aboutLink": "Más información sobre Toolpika →",
+    "aboutLink": "Más información sobre Toolpika",
     "trySample": "Try sample",
     "reset": "Reset",
     "paste": "Paste",
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "Respuesta rápida"
   },
   "search": {
     "placeholder": "Buscar",

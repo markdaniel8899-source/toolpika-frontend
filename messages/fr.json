@@ -163,7 +163,8 @@
         "faqTitle": "Questions fréquentes",
         "faqs": "Le compteur de mots compte-t-il les espaces en tant que caractères ?::Oui. « Caractères » compte les espaces et la ponctuation. Utilisez « Caractères (espaces exclus) » si le formulaire ignore les espaces.\nComment l'outil compte-t-il un mot ?::Chaque suite de caractères sans espace compte pour un mot. Les traits d'union restent attachés et la ponctuation n'ajoute pas de mot.\nMon texte sera-t-il téléversé ?::Non. Le comptage se fait dans le navigateur : rien n'est envoyé ni conservé après la fermeture de l'onglet.\nPourquoi mon nombre de mots est-il différent dans un autre éditeur ?::Les éditeurs diffèrent sur les tirets, chiffres et symboles. Cet outil compte par espaces ; vérifiez la règle du formulaire.\nFonctionne-t-il pour le chinois ou le japonais ?::Caractères, lignes et paragraphes conviennent. Les mots ont besoin d'espaces : privilégiez les caractères pour le chinois, le japonais ou le coréen.\nLe temps de lecture est-il précis ?::C'est une estimation à 200 mots par minute, pas une mesure de votre rythme.",
         "trustTitle": "À propos de cet outil",
-        "trustBody": "Développé par l'équipe Toolpika. Cette page décrit les règles de comptage utilisées par l'outil ci-dessus. Dernière mise à jour le 24 novembre 2026."
+        "trustBody": "Développé par l'équipe Toolpika. Cette page décrit les règles de comptage utilisées par l'outil ci-dessus. Dernière mise à jour le 24 novembre 2026.",
+        "searchIntents": "Compteur de mots sans espaces\nCompteur de mots privé côté navigateur sans envoi\nCompteur de caractères et de temps de lecture\nCompteur de mots pour dissertations et formulaires"
       }
     },
     "case-converter": {
@@ -431,7 +432,8 @@
       "phoneQ": "Puis-je utiliser {name} sur mon téléphone ?",
       "phoneA": "Oui. {name} est conçu pour les petits comme pour les grands écrans, ce qui vous permet d'effectuer une tâche de {category} rapide d'une seule main. Le résultat peut être copié ou téléchargé directement depuis la page."
     },
-    "aboutLink": "En savoir plus sur Toolpika →"
+    "aboutLink": "En savoir plus sur Toolpika",
+    "quickAnswer": "Réponse courte"
   },
   "search": {
     "placeholder": "Rechercher",

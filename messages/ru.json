@@ -153,7 +153,8 @@
         "faqTitle": "Frequently asked questions",
         "faqs": "Does Word Counter count spaces as characters?::Да. «Символы» учитывает пробелы и знаки. Используйте «Символы без пробелов», если форма игнорирует пробелы.\nHow does the tool count a word?::Каждая последовательность без пробелов считается одним словом. Дефис не разделяет слово, знаки не добавляют слов.\nWill my text be uploaded?::Нет. Подсчёт идёт в браузере: данные не отправляются и не сохраняются после закрытия вкладки.\nWhy is my word count different in another editor?::Редакторы по-разному считают дефисы, цифры и символы. Здесь используется пробельное правило; проверьте правило формы.\nDoes it work for Chinese or Japanese text?::Символы, строки и абзацы работают. Для слов нужны пробелы, поэтому для китайского, японского и корейского используйте символы.\nIs reading time accurate?::Это оценка при 200 словах в минуту, а не измерение вашего темпа.",
         "trustTitle": "About this tool",
-        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026."
+        "trustBody": "Built by the Toolpika team. This page describes the counting rules used by the tool above. Last updated 24 November 2026.",
+        "searchIntents": "Счётчик слов без пробелов\nПриватный счётчик слов в браузере без загрузки\nСчётчик символов и времени чтения\nСчётчик слов для сочинений и форм"
       }
     },
     "case-converter": {
@@ -421,7 +422,7 @@
       "phoneQ": "Можно ли использовать {name} на телефоне?",
       "phoneA": "Да. {name} адаптирован как для маленьких, так и для больших экранов, поэтому вы можете выполнить быструю задачу {category} одной рукой. Результат можно скопировать или скачать прямо со страницы."
     },
-    "aboutLink": "Подробнее о Toolpika →",
+    "aboutLink": "Подробнее о Toolpika",
     "trySample": "Try sample",
     "reset": "Reset",
     "paste": "Paste",
@@ -431,7 +432,8 @@
     "statusIdle": "Waiting for input",
     "statusReady": "Ready",
     "statusError": "Check your input",
-    "privacyRibbon": "Runs in your browser. Your input is not uploaded."
+    "privacyRibbon": "Runs in your browser. Your input is not uploaded.",
+    "quickAnswer": "Короткий ответ"
   },
   "search": {
     "placeholder": "Поиск",
