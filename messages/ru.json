@@ -632,6 +632,7 @@
     "characters": "Символы",
     "charactersNoSpaces": "Символы (без пробелов)",
     "words": "Слова",
+    "wordCount": "Количество слов",
     "sentences": "Предложения",
     "paragraphs": "Абзацы",
     "lines": "Строки",

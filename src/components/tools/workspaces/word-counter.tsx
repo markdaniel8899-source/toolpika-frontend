@@ -15,7 +15,6 @@ import {
   Pilcrow,
   RotateCcw,
   ShieldCheck,
-  Sparkles,
   Target,
   Type,
   X,
@@ -147,9 +146,6 @@ export default function WordCounter() {
   const goalValue = Math.min(100000, Math.max(0, Math.floor(Number(goal) || 0)));
   const progress = goalValue > 0 ? Math.min(100, (stats.words / goalValue) * 100) : 0;
   const goalReached = goalValue > 0 && stats.words >= goalValue;
-  const statusLabel = hasText
-    ? tw("word-counter.statusLive")
-    : tw("word-counter.statusEmpty");
 
   const statsText = useMemo(
     () =>
@@ -254,18 +250,13 @@ export default function WordCounter() {
           </span>
           <div className="tp-wc-identity-copy">
             <span className="tp-wc-name">{tw("word-counter.title")}</span>
-            <span className="tp-wc-status" data-live={hasText || undefined}>
-              <span className="tp-wc-status-dot" aria-hidden="true" />
-              {statusLabel}
-            </span>
           </div>
         </div>
         <div className="tp-wc-bar-actions">
-          <Button type="button" variant="secondary" size="sm" onClick={handleSample}>
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+          <Button type="button" onClick={handleSample}>
             {tw("word-counter.trySample")}
           </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
+          <Button type="button" size="sm" onClick={handleReset}>
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             {tw("word-counter.reset")}
           </Button>
@@ -276,7 +267,6 @@ export default function WordCounter() {
         <section className="tp-wc-editor" aria-labelledby="tp-wc-input-label">
           <div className="tp-wc-pane-head">
             <div className="tp-wc-pane-title">
-              <span className="tp-wc-pane-index" aria-hidden="true">01</span>
               <h2 id="tp-wc-input-label">{tw("input")}</h2>
             </div>
             <div className="tp-wc-mini-actions">
@@ -309,7 +299,6 @@ export default function WordCounter() {
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               aria-label={t("pasteText")}
-              aria-describedby="tp-wc-editor-privacy"
               spellCheck
               className="tp-wc-textarea"
             />
@@ -335,16 +324,6 @@ export default function WordCounter() {
             ) : null}
           </div>
 
-          <div className="tp-wc-editor-foot">
-            <span className="tp-wc-editor-stat">
-              <Hash aria-hidden="true" />
-              {stats.characters} {t("characters").toLowerCase()}
-            </span>
-            <span className="tp-wc-editor-privacy" id="tp-wc-editor-privacy">
-              <ShieldCheck aria-hidden="true" />
-              {tw("word-counter.inputHint")}
-            </span>
-          </div>
           {notice ? (
             <p className="tp-wc-notice" role="status">
               {notice}
@@ -355,22 +334,15 @@ export default function WordCounter() {
         <aside className="tp-wc-insights" aria-labelledby="tp-wc-result-label">
           <div className="tp-wc-pane-head">
             <div className="tp-wc-pane-title">
-              <span className="tp-wc-pane-index" aria-hidden="true">02</span>
               <h2 id="tp-wc-result-label">{t("result")}</h2>
             </div>
-            {hasText ? (
-              <span className="tp-wc-live" data-live>
-                <span aria-hidden="true" />
-                {tw("live")}
-              </span>
-            ) : null}
           </div>
 
           <div className="tp-wc-hero">
             <div className="tp-wc-hero-head">
               <span className="tp-wc-hero-label">
                 <Type aria-hidden="true" />
-                {t("words")}
+                {t("wordCount")}
               </span>
               {goalValue > 0 ? (
                 <span className="tp-wc-hero-badge">{Math.round(progress)}%</span>
@@ -453,24 +425,6 @@ export default function WordCounter() {
               </>
             ) : null}
           </div>
-
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => void copyStats()}
-            disabled={!hasText}
-            className="tp-wc-copy"
-          >
-            {copied ? (
-              <Check className="h-4 w-4" aria-hidden="true" />
-            ) : (
-              <Copy className="h-4 w-4" aria-hidden="true" />
-            )}
-            {copied ? tw("word-counter.copied") : tw("word-counter.copyStats")}
-            <kbd className="tp-wc-kbd" aria-hidden="true">
-              ⌘/Ctrl + Shift + C
-            </kbd>
-          </Button>
         </aside>
       </div>
 
@@ -479,7 +433,20 @@ export default function WordCounter() {
           <ShieldCheck aria-hidden="true" />
           {tw("privacyRibbon")}
         </span>
-        <span className="tp-wc-ribbon-hint">{tw("word-counter.shortcutHint")}</span>
+        <Button
+          type="button"
+          size="sm"
+          onClick={() => void copyStats()}
+          disabled={!hasText}
+          className="tp-wc-ribbon-copy"
+        >
+          {copied ? (
+            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+          ) : (
+            <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+          )}
+          {copied ? tw("word-counter.copied") : tw("word-counter.copyStats")}
+        </Button>
       </div>
     </div>
   );

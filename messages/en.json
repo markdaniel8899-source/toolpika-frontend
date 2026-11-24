@@ -632,6 +632,7 @@
     "characters": "Characters",
     "charactersNoSpaces": "Characters (no spaces)",
     "words": "Words",
+    "wordCount": "Word count",
     "sentences": "Sentences",
     "paragraphs": "Paragraphs",
     "lines": "Lines",

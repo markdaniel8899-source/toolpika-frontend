@@ -632,6 +632,7 @@
     "characters": "Zeichen",
     "charactersNoSpaces": "Zeichen (ohne Leerzeichen)",
     "words": "Wörter",
+    "wordCount": "Wortanzahl",
     "sentences": "Sätze",
     "paragraphs": "Absätze",
     "lines": "Zeilen",
