@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { RotateCcw, ShieldCheck, Sparkles } from "lucide-react";
+import { RotateCcw, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -33,7 +33,6 @@ export function WorkspaceLayout({
         <div className="tp-workspace-bar-actions">
           {onSample ? (
             <Button type="button" variant="secondary" size="sm" onClick={onSample}>
-              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               {t("trySample")}
             </Button>
           ) : null}
