@@ -149,7 +149,6 @@ export function FullToolPage({
 
           <section id="what-is" className="tp-doc-section" aria-labelledby="tp-doc-what-is">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">01</span>
               <h3 id="tp-doc-what-is" className="tp-doc-h3">{content.whatIsTitle}</h3>
             </div>
             <div className="tp-doc-copy">
@@ -170,7 +169,6 @@ export function FullToolPage({
 
           <section id="how-to" className="tp-doc-section" aria-labelledby="tp-doc-how-to">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">02</span>
               <h3 id="tp-doc-how-to" className="tp-doc-h3">{content.howToTitle}</h3>
             </div>
             <ol className="tp-doc-steps">
@@ -187,7 +185,6 @@ export function FullToolPage({
 
           <section id="example" className="tp-doc-section" aria-labelledby="tp-doc-example">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">03</span>
               <h3 id="tp-doc-example" className="tp-doc-h3">{content.exampleTitle}</h3>
             </div>
             <p className="tp-doc-example-label">{content.exampleLabel}</p>
@@ -222,7 +219,6 @@ export function FullToolPage({
 
           <section id="features" className="tp-doc-section" aria-labelledby="tp-doc-features">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">04</span>
               <h3 id="tp-doc-features" className="tp-doc-h3">{content.featuresTitle}</h3>
             </div>
             <div className="tp-doc-grid">
@@ -243,7 +239,6 @@ export function FullToolPage({
 
           <section id="use-cases" className="tp-doc-section" aria-labelledby="tp-doc-use-cases">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">05</span>
               <h3 id="tp-doc-use-cases" className="tp-doc-h3">{content.useCasesTitle}</h3>
             </div>
             <div className="tp-doc-grid">
@@ -264,7 +259,6 @@ export function FullToolPage({
 
           <section id="mistakes" className="tp-doc-section" aria-labelledby="tp-doc-mistakes">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">06</span>
               <h3 id="tp-doc-mistakes" className="tp-doc-h3">{content.mistakesTitle}</h3>
             </div>
             <div className="tp-doc-grid">
@@ -282,7 +276,6 @@ export function FullToolPage({
 
           <section id="limits" className="tp-doc-section" aria-labelledby="tp-doc-limits">
             <div className="tp-doc-section-head">
-              <span className="tp-doc-num" aria-hidden="true">07</span>
               <h3 id="tp-doc-limits" className="tp-doc-h3">{content.limitsTitle}</h3>
             </div>
             <ul className="tp-doc-limits">
@@ -300,10 +293,9 @@ export function FullToolPage({
           <nav className="tp-doc-toc" aria-label={onThisPageLabel}>
             <p className="tp-doc-rail-label">{onThisPageLabel}</p>
             <ol>
-              {tocItems.map((item, index) => (
+              {tocItems.map((item) => (
                 <li key={item.id}>
                   <a href={`#${item.id}`}>
-                    <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                     {item.label}
                   </a>
                 </li>
@@ -338,15 +330,11 @@ export function FullToolPage({
       <Reveal>
         <section id="faq" className="tp-doc-faq-section" aria-labelledby="tp-doc-faq-title">
           <div className="tp-doc-section-head">
-            <span className="tp-doc-num" aria-hidden="true">08</span>
             <h2 id="tp-doc-faq-title" className="tp-doc-h2">{content.faqTitle}</h2>
           </div>
           <div className="tp-doc-faq-grid">
-            {content.faqs.map((faq, index) => (
+            {content.faqs.map((faq) => (
               <article key={faq.question} className="tp-doc-faq">
-                <span className="tp-doc-faq-num" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
                 <h3>{faq.question}</h3>
                 <p>{faq.answer}</p>
               </article>
@@ -358,7 +346,6 @@ export function FullToolPage({
       {related.length > 0 ? (
         <section className="tp-doc-related" aria-labelledby="tp-doc-related-title">
           <div className="tp-doc-section-head">
-            <span className="tp-doc-num" aria-hidden="true">09</span>
             <h2 id="tp-doc-related-title" className="tp-doc-h2">{relatedTitle}</h2>
           </div>
           <div className="tp-tool-grid tp-tool-related-grid">

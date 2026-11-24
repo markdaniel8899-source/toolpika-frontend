@@ -253,7 +253,7 @@ export default function WordCounter() {
           </div>
         </div>
         <div className="tp-wc-bar-actions">
-          <Button type="button" onClick={handleSample}>
+          <Button type="button" size="sm" onClick={handleSample}>
             {tw("word-counter.trySample")}
           </Button>
           <Button type="button" size="sm" onClick={handleReset}>
@@ -267,7 +267,7 @@ export default function WordCounter() {
         <section className="tp-wc-editor" aria-labelledby="tp-wc-input-label">
           <div className="tp-wc-pane-head">
             <div className="tp-wc-pane-title">
-              <h2 id="tp-wc-input-label">{tw("input")}</h2>
+              <h2 id="tp-wc-input-label">{t("yourText")}</h2>
             </div>
             <div className="tp-wc-mini-actions">
               <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
@@ -334,7 +334,7 @@ export default function WordCounter() {
         <aside className="tp-wc-insights" aria-labelledby="tp-wc-result-label">
           <div className="tp-wc-pane-head">
             <div className="tp-wc-pane-title">
-              <h2 id="tp-wc-result-label">{t("result")}</h2>
+              <h2 id="tp-wc-result-label">{t("results")}</h2>
             </div>
           </div>
 

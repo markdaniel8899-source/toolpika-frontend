@@ -5894,8 +5894,8 @@ body::before {
 }
 
 .tp-wc-editor-wrap:focus-within {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: color-mix(in srgb, var(--accent) 70%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .tp-wc-textarea {
