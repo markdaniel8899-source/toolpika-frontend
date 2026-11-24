@@ -1,15 +1,33 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Check, Copy, RotateCcw } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  AlignLeft,
+  Check,
+  ClipboardPaste,
+  Clock,
+  Copy,
+  FileText,
+  Hash,
+  ListOrdered,
+  Mic,
+  Pilcrow,
+  RotateCcw,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  Type,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { WorkspaceLayout } from "../workspace-layout";
-import { Stat } from "../workspace-ui";
+import { cn } from "@/lib/utils";
 
 const SAMPLE =
   "The quiet utility of doing one thing well. Paste your own text here and see every count update as you type.";
+
+const READING_WPM = 200;
+const SPEAKING_WPM = 130;
 
 /** Pure counting logic — no UI, no DOM access. */
 export function countText(text: string) {
@@ -24,22 +42,114 @@ export function countText(text: string) {
     ? trimmed.split(/\n\s*\n/u).filter((part) => part.trim().length > 0).length
     : 0;
   const lines = text ? text.split(/\r\n|\r|\n/u).length : 0;
-  // 200 words per minute is the standard adult reading-speed estimate.
-  const minutes = words === 0 ? 0 : Math.max(1, Math.ceil(words / 200));
+  const minutes = words === 0 ? 0 : Math.max(1, Math.ceil(words / READING_WPM));
+  const speakingMinutes =
+    words === 0 ? 0 : Math.max(1, Math.ceil(words / SPEAKING_WPM));
 
-  return { words, characters, charactersNoSpaces, sentences, paragraphs, lines, minutes };
+  return {
+    words,
+    characters,
+    charactersNoSpaces,
+    sentences,
+    paragraphs,
+    lines,
+    minutes,
+    speakingMinutes,
+  };
+}
+
+/**
+ * Numbers count up instead of snapping, which makes a live tool feel alive.
+ * Falls back to the final value when the reader prefers reduced motion.
+ */
+function AnimatedNumber({ value }: { value: number }) {
+  const locale = useLocale();
+  const [display, setDisplay] = useState(value);
+  const displayRef = useRef(value);
+  const formatter = useMemo(() => new Intl.NumberFormat(locale), [locale]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const frame = requestAnimationFrame(() => {
+        displayRef.current = value;
+        setDisplay(value);
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+
+    const from = displayRef.current;
+    if (from === value) return;
+
+    const start = performance.now();
+    const duration = 260;
+    let frame = 0;
+
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const next = Math.round(from + (value - from) * eased);
+      displayRef.current = next;
+      setDisplay(next);
+      if (progress < 1) {
+        frame = requestAnimationFrame(tick);
+      } else {
+        displayRef.current = value;
+        setDisplay(value);
+      }
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [value]);
+
+  return <>{formatter.format(display)}</>;
+}
+
+function InsightStat({
+  icon: Icon,
+  label,
+  value,
+  wide,
+}: {
+  icon: typeof Hash;
+  label: string;
+  value: number;
+  wide?: boolean;
+}) {
+  return (
+    <div className={cn("tp-wc-stat", wide && "tp-wc-stat--wide")}>
+      <dt>
+        <Icon aria-hidden="true" />
+        {label}
+      </dt>
+      <dd>
+        <AnimatedNumber value={value} />
+      </dd>
+    </div>
+  );
 }
 
 export default function WordCounter() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
   const [text, setText] = useState("");
+  const [goal, setGoal] = useState("");
   const [copied, setCopied] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [notice, setNotice] = useState("");
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const stats = useMemo(() => countText(text), [text]);
   const hasText = text.trim().length > 0;
+  const goalValue = Math.min(100000, Math.max(0, Math.floor(Number(goal) || 0)));
+  const progress = goalValue > 0 ? Math.min(100, (stats.words / goalValue) * 100) : 0;
+  const goalReached = goalValue > 0 && stats.words >= goalValue;
+  const statusLabel = hasText
+    ? tw("word-counter.statusLive")
+    : tw("word-counter.statusEmpty");
 
   const statsText = useMemo(
     () =>
@@ -51,14 +161,23 @@ export default function WordCounter() {
         `${t("paragraphs")}: ${stats.paragraphs}`,
         `${t("lines")}: ${stats.lines}`,
         `${t("readingTime")}: ${t("minuteShort", { count: stats.minutes })}`,
+        `${t("speakingTime")}: ${t("minuteShort", { count: stats.speakingMinutes })}`,
+        ...(goalValue > 0 ? [`${t("goal")}: ${stats.words} / ${goalValue}`] : []),
       ].join("\n"),
-    [stats, t],
+    [goalValue, stats, t],
   );
 
   useEffect(() => {
     return () => {
       if (copyTimer.current) clearTimeout(copyTimer.current);
+      if (noticeTimer.current) clearTimeout(noticeTimer.current);
     };
+  }, []);
+
+  const showNotice = useCallback((message: string) => {
+    setNotice(message);
+    if (noticeTimer.current) clearTimeout(noticeTimer.current);
+    noticeTimer.current = setTimeout(() => setNotice(""), 3200);
   }, []);
 
   const copyStats = useCallback(async () => {
@@ -69,89 +188,299 @@ export default function WordCounter() {
       if (copyTimer.current) clearTimeout(copyTimer.current);
       copyTimer.current = setTimeout(() => setCopied(false), 1800);
     } catch {
-      // Clipboard access can be blocked; the numbers stay on screen.
+      showNotice(tw("word-counter.pasteUnavailable"));
     }
-  }, [hasText, statsText]);
+  }, [hasText, statsText, showNotice, tw]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.shiftKey &&
+        event.key.toLowerCase() === "c"
+      ) {
+        event.preventDefault();
+        void copyStats();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [copyStats]);
 
   const handleSample = useCallback(() => {
     setText(SAMPLE);
     setCopied(false);
+    setNotice("");
     inputRef.current?.focus();
   }, []);
 
   const handleReset = useCallback(() => {
     setText("");
+    setGoal("");
     setCopied(false);
+    setNotice("");
+    inputRef.current?.focus();
+  }, []);
+
+  const handlePaste = useCallback(async () => {
+    try {
+      const clip = await navigator.clipboard.readText();
+      if (!clip) {
+        inputRef.current?.focus();
+        return;
+      }
+      setText((previous) => (previous ? `${previous}\n${clip}` : clip));
+      setCopied(false);
+      inputRef.current?.focus();
+    } catch {
+      showNotice(tw("word-counter.pasteUnavailable"));
+      inputRef.current?.focus();
+    }
+  }, [showNotice, tw]);
+
+  const handleClear = useCallback(() => {
+    setText("");
+    setCopied(false);
+    setNotice("");
     inputRef.current?.focus();
   }, []);
 
   return (
-    <WorkspaceLayout
-      title={tw("word-counter.title")}
-      onSample={handleSample}
-      onReset={handleReset}
-      statusRight={`${t("words")} ${stats.words} · ${t("characters")} ${stats.characters}`}
-      input={
-        <>
-          <Textarea
-            ref={inputRef}
-            value={text}
-            onChange={(event) => {
-              setText(event.target.value);
-              setCopied(false);
-            }}
-            placeholder={t("pasteText")}
-            aria-label={t("pasteText")}
-            className="min-h-[320px]"
-          />
-          <div className="tp-workspace-inline-actions">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setText("");
-                inputRef.current?.focus();
-              }}
-              disabled={!text}
-            >
-              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("clear")}
-            </Button>
+    <div className="tp-wc">
+      <div className="tp-wc-bar">
+        <div className="tp-wc-identity">
+          <span className="tp-wc-mark" aria-hidden="true">
+            <FileText />
+          </span>
+          <div className="tp-wc-identity-copy">
+            <span className="tp-wc-name">{tw("word-counter.title")}</span>
+            <span className="tp-wc-status" data-live={hasText || undefined}>
+              <span className="tp-wc-status-dot" aria-hidden="true" />
+              {statusLabel}
+            </span>
           </div>
-        </>
-      }
-      output={
-        <>
-          <dl className="grid grid-cols-2 gap-3">
-            <Stat label={t("words")} value={stats.words} />
-            <Stat label={t("characters")} value={stats.characters} />
-            <Stat label={t("charactersNoSpaces")} value={stats.charactersNoSpaces} />
-            <Stat label={t("sentences")} value={stats.sentences} />
-            <Stat label={t("paragraphs")} value={stats.paragraphs} />
-            <Stat label={t("lines")} value={stats.lines} />
-            <div className="col-span-2">
-              <Stat label={t("readingTime")} value={t("minuteShort", { count: stats.minutes })} />
+        </div>
+        <div className="tp-wc-bar-actions">
+          <Button type="button" variant="secondary" size="sm" onClick={handleSample}>
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            {tw("word-counter.trySample")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+            {tw("word-counter.reset")}
+          </Button>
+        </div>
+      </div>
+
+      <div className="tp-wc-body">
+        <section className="tp-wc-editor" aria-labelledby="tp-wc-input-label">
+          <div className="tp-wc-pane-head">
+            <div className="tp-wc-pane-title">
+              <span className="tp-wc-pane-index" aria-hidden="true">01</span>
+              <h2 id="tp-wc-input-label">{tw("input")}</h2>
             </div>
-          </dl>
-          <div className="tp-workspace-inline-actions">
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              onClick={() => void copyStats()}
-              disabled={!hasText}
-            >
-              {copied ? (
-                <Check className="h-3.5 w-3.5" aria-hidden="true" />
-              ) : (
-                <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-              )}
-              {copied ? tw("word-counter.copied") : tw("word-counter.copyStats")}
-            </Button>
+            <div className="tp-wc-mini-actions">
+              <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
+                <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
+                {tw("word-counter.paste")}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleClear}
+                disabled={!text}
+              >
+                <X className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("clear")}
+              </Button>
+            </div>
           </div>
-        </>
-      }
-    />
+
+          <div className="tp-wc-editor-wrap">
+            <textarea
+              ref={inputRef}
+              value={text}
+              onChange={(event) => {
+                setText(event.target.value);
+                setCopied(false);
+                setNotice("");
+              }}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              aria-label={t("pasteText")}
+              aria-describedby="tp-wc-editor-privacy"
+              spellCheck
+              className="tp-wc-textarea"
+            />
+            {!hasText && !focused ? (
+              <button
+                type="button"
+                className="tp-wc-empty"
+                onClick={() => inputRef.current?.focus()}
+              >
+                <span className="tp-wc-empty-icon" aria-hidden="true">
+                  <FileText />
+                </span>
+                <span className="tp-wc-empty-title">{tw("pasteContent")}</span>
+                <span className="tp-wc-empty-hint">{tw("word-counter.emptyHint")}</span>
+                <span className="tp-wc-empty-kbd" aria-hidden="true">
+                  <kbd>Ctrl</kbd>
+                  <span>/</span>
+                  <kbd>⌘</kbd>
+                  <span>+</span>
+                  <kbd>V</kbd>
+                </span>
+              </button>
+            ) : null}
+          </div>
+
+          <div className="tp-wc-editor-foot">
+            <span className="tp-wc-editor-stat">
+              <Hash aria-hidden="true" />
+              {stats.characters} {t("characters").toLowerCase()}
+            </span>
+            <span className="tp-wc-editor-privacy" id="tp-wc-editor-privacy">
+              <ShieldCheck aria-hidden="true" />
+              {tw("word-counter.inputHint")}
+            </span>
+          </div>
+          {notice ? (
+            <p className="tp-wc-notice" role="status">
+              {notice}
+            </p>
+          ) : null}
+        </section>
+
+        <aside className="tp-wc-insights" aria-labelledby="tp-wc-result-label">
+          <div className="tp-wc-pane-head">
+            <div className="tp-wc-pane-title">
+              <span className="tp-wc-pane-index" aria-hidden="true">02</span>
+              <h2 id="tp-wc-result-label">{t("result")}</h2>
+            </div>
+            {hasText ? (
+              <span className="tp-wc-live" data-live>
+                <span aria-hidden="true" />
+                {tw("live")}
+              </span>
+            ) : null}
+          </div>
+
+          <div className="tp-wc-hero">
+            <div className="tp-wc-hero-head">
+              <span className="tp-wc-hero-label">
+                <Type aria-hidden="true" />
+                {t("words")}
+              </span>
+              {goalValue > 0 ? (
+                <span className="tp-wc-hero-badge">{Math.round(progress)}%</span>
+              ) : null}
+            </div>
+            <span className="tp-wc-hero-value" aria-live="polite">
+              <AnimatedNumber value={stats.words} />
+            </span>
+            <div className="tp-wc-hero-foot">
+              <span>
+                <Clock aria-hidden="true" />
+                {t("readingTime")} · {t("minuteShort", { count: stats.minutes })}
+              </span>
+              <span>
+                <Mic aria-hidden="true" />
+                {t("speakingTime")} · {t("minuteShort", { count: stats.speakingMinutes })}
+              </span>
+            </div>
+            <span className="tp-wc-hero-glow" aria-hidden="true" />
+          </div>
+
+          <dl className="tp-wc-stats">
+            <InsightStat icon={Hash} label={t("characters")} value={stats.characters} />
+            <InsightStat
+              icon={Type}
+              label={t("charactersNoSpaces")}
+              value={stats.charactersNoSpaces}
+            />
+            <InsightStat icon={AlignLeft} label={t("sentences")} value={stats.sentences} />
+            <InsightStat icon={Pilcrow} label={t("paragraphs")} value={stats.paragraphs} />
+            <InsightStat icon={ListOrdered} label={t("lines")} value={stats.lines} wide />
+          </dl>
+
+          <div className="tp-wc-goal" data-reached={goalReached || undefined}>
+            <div className="tp-wc-goal-head">
+              <label htmlFor="tp-wc-goal" className="tp-wc-goal-label">
+                <Target aria-hidden="true" />
+                {t("goal")}
+              </label>
+              <div className="tp-wc-goal-input">
+                <input
+                  id="tp-wc-goal"
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  max={100000}
+                  step={50}
+                  placeholder="500"
+                  value={goal}
+                  onChange={(event) => setGoal(event.target.value)}
+                />
+                <span>{t("words").toLowerCase()}</span>
+              </div>
+            </div>
+            {goalValue > 0 ? (
+              <>
+                <div
+                  className="tp-wc-goal-track"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={goalValue}
+                  aria-valuenow={Math.min(stats.words, goalValue)}
+                  aria-label={t("goal")}
+                >
+                  <span style={{ width: `${progress}%` }} />
+                </div>
+                <div className="tp-wc-goal-meta">
+                  <span>
+                    {stats.words} / {goalValue}
+                  </span>
+                  {goalReached ? (
+                    <span className="tp-wc-goal-done">
+                      <Check aria-hidden="true" />
+                      {Math.round(progress)}%
+                    </span>
+                  ) : (
+                    <span>{Math.round(progress)}%</span>
+                  )}
+                </div>
+              </>
+            ) : null}
+          </div>
+
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => void copyStats()}
+            disabled={!hasText}
+            className="tp-wc-copy"
+          >
+            {copied ? (
+              <Check className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <Copy className="h-4 w-4" aria-hidden="true" />
+            )}
+            {copied ? tw("word-counter.copied") : tw("word-counter.copyStats")}
+            <kbd className="tp-wc-kbd" aria-hidden="true">
+              ⌘/Ctrl + Shift + C
+            </kbd>
+          </Button>
+        </aside>
+      </div>
+
+      <div className="tp-wc-ribbon">
+        <span className="tp-wc-ribbon-note">
+          <ShieldCheck aria-hidden="true" />
+          {tw("privacyRibbon")}
+        </span>
+        <span className="tp-wc-ribbon-hint">{tw("word-counter.shortcutHint")}</span>
+      </div>
+    </div>
   );
 }

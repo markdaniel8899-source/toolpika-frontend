@@ -130,6 +130,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
 
   const t = await getTranslations({ locale, namespace: "tools" });
   const tHow = await getTranslations({ locale, namespace: "toolPage" });
+  const tUi = await getTranslations({ locale, namespace: "toolUi" });
 
   const toolTitle = t(toolTitleKey(tool));
   const toolDescription = t(toolDescriptionKey(tool));
@@ -280,6 +281,13 @@ export default async function ToolPage({ params }: LocalePageProps) {
           outputLabel={t("result")}
           workspaceLabel={t("workspaceLabel", { title: toolTitle })}
           contextualTool={contextualTool}
+          onThisPageLabel={t("onThisPage")}
+          quickFactsLabel={t("quickFacts")}
+          freeLabel={t("freeToUse")}
+          noSignupLabel={t("noSignup")}
+          privacyLabel={t("runsInBrowser")}
+          copyLabel={tUi("copy")}
+          copiedLabel={tUi("copied")}
         />
       </>
     );

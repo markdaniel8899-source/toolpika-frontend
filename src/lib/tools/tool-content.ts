@@ -73,7 +73,9 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
     byline: t(k("byline")),
     directAnswer: t(k("directAnswer")),
     aboutTitle: t(k("aboutTitle")),
-    contextualLink: t(k("contextualLink")),
+    // Keep a stable token instead of ICU braces: the string is split around
+    // the link later, and formatting `{tool}` without a value throws.
+    contextualLink: t(k("contextualLink"), { tool: "%%TOOL%%" }),
     whatIsTitle: t(k("whatIsTitle")),
     whatIsParagraphs: t(k("whatIs")).split(/\n\s*\n/u).map((p) => p.trim()).filter(Boolean),
     howToTitle: t(k("howToTitle")),
