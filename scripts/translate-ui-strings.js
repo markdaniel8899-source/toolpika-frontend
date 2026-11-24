@@ -2,39 +2,62 @@
 /**
  * Toolpika — translate-ui-strings.js
  *
- * Translates messages/en.json into every other locale using Groq
- * (Llama 3 70B), per i18n.md §3A.
+ * Translates messages/en.json into the nine target locales using Groq.
  *
  * Usage (run from the frontend repo root):
- *   GROQ_API_KEY=... node scripts/translate-ui-strings.js
- *   GROQ_API_KEY=... node scripts/translate-ui-strings.js --locale de
- *   GROQ_API_KEY=... node scripts/translate-ui-strings.js --dry-run
+ *   npm run translate -- --locale de
+ *   npm run translate -- --prefix tools.word-counter
+ *   npm run translate -- --dry-run
+ *   npm run translate -- --force
  *
  * Rules:
  *   * JSON keys are never translated — only values.
- *   * ICU placeholders ({name}, {count}, <display>…</display>) are preserved
- *     verbatim; the prompt forbids altering them.
- *   * Only missing or changed keys are sent, so re-runs stay cheap.
- *   * Writes are atomic (temp file + rename).
+ *   * Protected tokens (%%TOOL%%, {placeholders}, ICU plural syntax, <markup>)
+ *     are verified after every batch, not just requested in the prompt.
+ *   * Source-value hashes are cached in scripts/.translation-cache.json so a
+ *     changed English value is re-translated even when the old translation is
+ *     still present.
+ *   * Batches are written atomically; a failed batch aborts instead of writing
+ *     malformed data. English is never written into a target locale file.
  */
 
 import { readFile, writeFile, rename, mkdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  sameTokens,
+  hasStraySymbols,
+  englishSummary,
+  formatSummary,
+} from "./localization-utils.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const MESSAGES_DIR = resolve(__dirname, "..", "messages");
+const CACHE_PATH = resolve(__dirname, ".translation-cache.json");
 
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "qwen/qwen3.8-27b";
 const LOCALES = ["de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi"];
+const LOCALE_NAMES = {
+  de: "German",
+  fr: "French",
+  es: "Spanish",
+  "pt-BR": "Brazilian Portuguese",
+  ru: "Russian",
+  tr: "Turkish",
+  it: "Italian",
+  ar: "Modern Standard Arabic",
+  hi: "Hindi",
+};
 
-// Values that are deliberately identical across locales: code identifiers,
-// abbreviations and cognates. Re-sending them on every run wastes Groq tokens.
+/**
+ * Only code-like values that must never be translated. Ordinary UI words such
+ * as "Text", "Home" or "Contact" are deliberately NOT in this set: they are
+ * real translatable strings and the checker reports them if they stay English.
+ */
 const SKIP_VALUES = new Set([
   "camelCase", "kebab-case", "snake_case", "{count} min",
-  "Original", "Cookies", "Code", "Text", "Live", "Images",
-  "Contact", "Blog", "Legal", "Home", "Input", "Privacy",
 ]);
 
 // Code-like values that must stay byte-identical in every locale.
@@ -57,43 +80,67 @@ const SKIP_KEYS = new Set([
   "tools.base64-encoder.page.exampleOutput",
 ]);
 
-// Small batches + a pause between requests keep us under Groq's per-minute
-// output-token (OTPM) limit. Each batch is saved immediately so an
-// interrupted run can resume without re-translating finished strings.
+// Small batches + a pause keep us under Groq's per-minute output-token limit.
 const BATCH_SIZE = 10;
 const REQUEST_DELAY_MS = 15000;
 
-const SYSTEM_PROMPT = `You are a professional software localization engine for a web tools site.
+const SYSTEM_PROMPT = `You are a senior software localization engineer translating UI copy, SEO text and help content for a privacy-first web tools site.
 
-Translate the given JSON values into the target language.
+Translate the MEANING and SEARCH/READING INTENT of each value naturally into the target language. Do not translate word for word and do not preserve English sentence order when the target language reads better another way. Write the way a native speaker would write the same label, question or explanation on this site.
 
-Rules:
-1. Return ONLY valid JSON. No markdown fences, no commentary.
-2. Keep every JSON key exactly as given. Only values are translated.
-3. Preserve these tokens byte-for-byte: {placeholders} like {name}, {count}, {year}, ICU plural syntax like "{count, plural, one {# tool} other {# tools}}", and markup like <display>text</display>. Translate the words inside plural branches, but keep the syntax and # placeholder exact.
-4. Use natural, plain UI language. No marketing hype, no "seamless", "elevate", "unleash".
-5. Keep the tone consistent across all strings.
-6. For the target locale "ar", produce Modern Standard Arabic suitable for a UI.
-7. For "hi", use natural Hindi (Devanagari), not transliterated English.
-8. For "pt-BR", use Brazilian Portuguese, not European Portuguese.`;
+Return ONLY a JSON object with the same keys you received. Translate values only.
+
+Protected tokens — copy these byte-for-byte into the translated value:
+- %%TOOL%% (a literal link token; never translate, rewrite or remove it)
+- {name}, {count}, {year} and any other {placeholder}
+- ICU plural syntax such as "{count, plural, one {# tool} other {# tools}}" — keep the braces, # and branch syntax exact; translate only the words inside branches
+- markup fragments such as <display>seconds</display> — keep the tags exact, translate the words inside
+
+Never invent stray ">>", ">", unmatched quotation marks, markdown fences, commentary, or extra keys. If a value has no protected token, do not add one.
+
+Style:
+- Plain, concise, specific language. No marketing hype: no "seamless", "elevate", "unleash", no filler.
+- Keep a consistent, calm tone across all strings.
+- Use correct orthography for the target locale: German umlauts and ß; Spanish and Portuguese accents; French and Italian accents; Turkish dotted/dotless letters; natural Cyrillic for Russian; Modern Standard Arabic for ar; natural Devanagari Hindi for hi (not transliterated English).
+- Preserve punctuation conventions of the target language; do not copy English punctuation habits blindly.
+- Brand name "Toolpika" is never translated.`;
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const options = { dryRun: false, locale: null, force: false };
+  const options = { dryRun: false, locale: null, force: false, prefixes: [] };
 
-  for (let i = 0; i < args.length; i += 1) {
-    if (args[i] === "--dry-run") options.dryRun = true;
-    else if (args[i] === "--force") options.force = true;
-    else if (args[i] === "--locale") options.locale = args[++i];
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index];
+    if (argument === "--dry-run") options.dryRun = true;
+    else if (argument === "--force") options.force = true;
+    else if (argument === "--locale") options.locale = args[++index];
+    else if (argument === "--prefix") {
+      const value = args[++index];
+      if (value) {
+        for (const part of value.split(",")) {
+          const prefix = part.trim().replace(/\.+$/u, "");
+          if (prefix) options.prefixes.push(prefix);
+        }
+      }
+    }
   }
 
   return options;
 }
 
+function matchesPrefix(key, prefixes) {
+  if (prefixes.length === 0) return true;
+  return prefixes.some(
+    (prefix) => key === prefix || key.startsWith(`${prefix}.`),
+  );
+}
+
+const hashValue = (value) =>
+  createHash("sha256").update(String(value)).digest("hex");
+
 /** Flatten { a: { b: "x" } } -> { "a.b": "x" } */
 function flatten(object, prefix = "") {
   const result = {};
-
   for (const [key, value] of Object.entries(object)) {
     const path = prefix ? `${prefix}.${key}` : key;
     if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -102,25 +149,90 @@ function flatten(object, prefix = "") {
       result[path] = value;
     }
   }
-
   return result;
 }
 
 /** Inverse of flatten: { "a.b": "x" } -> { a: { b: "x" } } */
 function unflatten(flat) {
   const result = {};
-
   for (const [path, value] of Object.entries(flat)) {
     const keys = path.split(".");
     let cursor = result;
-    for (let i = 0; i < keys.length - 1; i += 1) {
-      cursor[keys[i]] ??= {};
-      cursor = cursor[keys[i]];
+    for (let index = 0; index < keys.length - 1; index += 1) {
+      cursor[keys[index]] ??= {};
+      cursor = cursor[keys[index]];
     }
     cursor[keys[keys.length - 1]] = value;
   }
-
   return result;
+}
+
+async function readJsonFile(filePath, fallback) {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8"));
+  } catch {
+    return fallback;
+  }
+}
+
+async function writeJsonAtomic(filePath, data) {
+  const temp = `${filePath}.tmp`;
+  await writeFile(temp, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+  await rename(temp, filePath);
+}
+
+/**
+ * Verify a model response before it is allowed near a message file.
+ * Returns only the requested keys; a dropped key or altered protected token
+ * aborts the batch so no partially corrupted JSON is written.
+ */
+function validateBatch(requested, result, sourceValues, locale, warnings) {
+  if (!result || typeof result !== "object" || Array.isArray(result)) {
+    throw new Error(`expected a JSON object, received ${typeof result}`);
+  }
+
+  let translated = result;
+  const resultKeys = Object.keys(translated);
+  if (
+    resultKeys.length === 1 &&
+    !(resultKeys[0] in requested) &&
+    translated[resultKeys[0]] &&
+    typeof translated[resultKeys[0]] === "object"
+  ) {
+    const wrapper = resultKeys[0];
+    warnings.push(`[${locale}] batch was wrapped in "${wrapper}"; unwrapped automatically`);
+    translated = translated[wrapper];
+  }
+
+  const requestedKeys = Object.keys(requested);
+  const missing = requestedKeys.filter((key) => !(key in translated));
+  const extra = Object.keys(translated).filter((key) => !requestedKeys.includes(key));
+
+  if (missing.length > 0) {
+    throw new Error(`batch dropped ${missing.length} key(s): ${missing.join(", ")}`);
+  }
+  if (extra.length > 0) {
+    warnings.push(`[${locale}] batch returned ${extra.length} unexpected key(s); ignored: ${extra.join(", ")}`);
+  }
+
+  const clean = {};
+  for (const key of requestedKeys) {
+    const value = translated[key];
+    if (typeof value !== "string") {
+      throw new Error(`${key}: expected a string, received ${typeof value}`);
+    }
+    if (!sameTokens(sourceValues[key], value)) {
+      throw new Error(
+        `${key}: protected token changed (expected ${JSON.stringify(sourceValues[key]).slice(0, 80)})`,
+      );
+    }
+    if (hasStraySymbols(value)) {
+      throw new Error(`${key}: stray ">>", ">" or unmatched quote in translated value`);
+    }
+    clean[key] = value;
+  }
+
+  return clean;
 }
 
 async function translateBatch(payload, targetLocale, apiKey, attempt = 0, maxAttempts = 15) {
@@ -141,7 +253,10 @@ async function translateBatch(payload, targetLocale, apiKey, attempt = 0, maxAtt
           { role: "system", content: SYSTEM_PROMPT },
           {
             role: "user",
-            content: `Target language: ${targetLocale}\n\nJSON to translate:\n${JSON.stringify(payload, null, 2)}`,
+            content:
+              `Target locale: ${targetLocale} (${LOCALE_NAMES[targetLocale] ?? targetLocale}).\n` +
+              `Translate naturally for a real reader of this page in that language.\n\n` +
+              `JSON to translate (keep keys, translate values only):\n${JSON.stringify(payload, null, 2)}`,
           },
         ],
       }),
@@ -171,43 +286,32 @@ async function translateBatch(payload, targetLocale, apiKey, attempt = 0, maxAtt
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content;
+  if (!content) throw new Error("Groq returned an empty message");
 
-  if (!content) {
-    throw new Error("Groq returned an empty message");
+  try {
+    return JSON.parse(content);
+  } catch (error) {
+    throw new Error(`Groq returned invalid JSON: ${String(error.message).slice(0, 160)}`);
   }
-
-  const parsed = JSON.parse(content);
-
-  // Some models wrap the result in a single key; unwrap it if so.
-  const keys = Object.keys(parsed);
-  if (keys.length === 1 && keys[0] !== "translations" && typeof parsed[keys[0]] === "object") {
-    return parsed[keys[0]];
-  }
-
-  return parsed;
-}
-
-async function writeJsonAtomic(filePath, data) {
-  const temp = `${filePath}.tmp`;
-  await writeFile(temp, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-  await rename(temp, filePath);
 }
 
 async function main() {
   const options = parseArgs();
   const apiKey = process.env.GROQ_API_KEY;
 
-  if (!apiKey) {
+  // A dry run only reads message files; no credentials or network calls needed.
+  if (!apiKey && !options.dryRun) {
     console.error("Missing GROQ_API_KEY. Set it before running this script.");
     process.exit(1);
   }
 
   const sourcePath = join(MESSAGES_DIR, "en.json");
-  const source = JSON.parse(await readFile(sourcePath, "utf8"));
-  const sourceFlat = flatten(source);
+  const sourceFlat = flatten(JSON.parse(await readFile(sourcePath, "utf8")));
+  const cache = await readJsonFile(CACHE_PATH, {});
+  const warnings = [];
+  const report = [];
 
   const targets = options.locale ? [options.locale] : LOCALES;
-
   await mkdir(MESSAGES_DIR, { recursive: true });
 
   for (const locale of targets) {
@@ -217,58 +321,107 @@ async function main() {
     }
 
     const targetPath = join(MESSAGES_DIR, `${locale}.json`);
-    let target = {};
-
-    try {
-      target = JSON.parse(await readFile(targetPath, "utf8"));
-    } catch {
-      console.log(`[${locale}] no existing file — translating everything`);
-    }
-
+    const target = await readJsonFile(targetPath, {});
     const targetFlat = flatten(target);
+    const cached = cache[locale] ?? {};
     const pending = {};
 
     for (const [path, value] of Object.entries(sourceFlat)) {
       if (typeof value !== "string") continue;
+      if (!matchesPrefix(path, options.prefixes)) continue;
       if (!options.force && SKIP_KEYS.has(path)) continue;
-      // Keep intentional English values as-is when the key already exists.
       if (!options.force && SKIP_VALUES.has(value) && targetFlat[path] !== undefined) continue;
-      if (!options.force && targetFlat[path] === value) {
-        // Value still identical to English — needs translating.
-        pending[path] = value;
-      } else if (!options.force && targetFlat[path] === undefined) {
+
+      const sourceHash = hashValue(value);
+      const missing = targetFlat[path] === undefined;
+      const stillEnglish = targetFlat[path] === value;
+      const sourceChanged =
+        !options.force &&
+        cached[path] !== undefined &&
+        cached[path] !== sourceHash;
+
+      if (options.force || missing || stillEnglish || sourceChanged) {
         pending[path] = value;
       }
     }
 
-    if (Object.keys(pending).length === 0) {
+    const pendingKeys = Object.keys(pending);
+    if (pendingKeys.length === 0) {
       console.log(`[${locale}] up to date — nothing to translate`);
+      report.push({
+        locale,
+        translated: 0,
+        summary: englishSummary(sourceFlat, targetFlat),
+      });
       continue;
     }
 
     if (options.dryRun) {
-      console.log(`[${locale}] would translate ${Object.keys(pending).length} strings`);
-      console.log(Object.keys(pending).join(", "));
+      console.log(`[${locale}] would translate ${pendingKeys.length} string(s)`);
+      console.log(`  ${pendingKeys.join(", ")}`);
+      report.push({
+        locale,
+        translated: 0,
+        summary: englishSummary(sourceFlat, targetFlat),
+      });
       continue;
     }
 
-    const entries = Object.entries(pending);
-    console.log(`[${locale}] translating ${entries.length} strings…`);
+    console.log(
+      `[${locale}] translating ${pendingKeys.length} string(s)${options.prefixes.length ? ` (prefix: ${options.prefixes.join(", ")})` : ""}…`,
+    );
 
-    let current = { ...sourceFlat, ...targetFlat };
-    for (let i = 0; i < entries.length; i += BATCH_SIZE) {
-      const batch = Object.fromEntries(entries.slice(i, i + BATCH_SIZE));
-      const result = await translateBatch(batch, locale, apiKey);
+    const entries = Object.entries(pending);
+    // Never seed the target file with English. Unfinished keys stay missing so
+    // the next run picks them up and no English leaks into a locale file.
+    let current = { ...targetFlat };
+
+    for (let index = 0; index < entries.length; index += BATCH_SIZE) {
+      const batch = Object.fromEntries(entries.slice(index, index + BATCH_SIZE));
+      let result;
+      try {
+        const raw = await translateBatch(batch, locale, apiKey);
+        result = validateBatch(batch, raw, batch, locale, warnings);
+      } catch (error) {
+        console.error(`  [${locale}] batch failed: ${error.message}`);
+        throw error;
+      }
+
       current = { ...current, ...result };
-      // Save after every batch so an interrupted run resumes from here.
+      for (const key of Object.keys(batch)) {
+        cache[locale] ??= {};
+        cache[locale][key] = hashValue(batch[key]);
+      }
+
       await writeJsonAtomic(targetPath, unflatten(current));
-      console.log(`  [${locale}] ${Math.min(i + BATCH_SIZE, entries.length)}/${entries.length} saved`);
-      if (i + BATCH_SIZE < entries.length) {
+      await writeJsonAtomic(CACHE_PATH, cache);
+      console.log(
+        `  [${locale}] ${Math.min(index + BATCH_SIZE, entries.length)}/${entries.length} saved`,
+      );
+
+      if (index + BATCH_SIZE < entries.length) {
         await new Promise((resolve) => setTimeout(resolve, REQUEST_DELAY_MS));
       }
     }
 
     console.log(`[${locale}] done → ${targetPath}`);
+    report.push({
+      locale,
+      translated: entries.length,
+      summary: englishSummary(sourceFlat, current),
+    });
+  }
+
+  console.log("\n=== Translation summary ===");
+  for (const item of report) {
+    console.log(
+      `[${item.locale}] translated this run: ${item.translated}; ` +
+        `English-identical remaining — ${formatSummary(item.summary)}`,
+    );
+  }
+  if (warnings.length > 0) {
+    console.log(`\n=== Warnings (${warnings.length}) ===`);
+    for (const warning of warnings) console.log(`  ${warning}`);
   }
 }
 
