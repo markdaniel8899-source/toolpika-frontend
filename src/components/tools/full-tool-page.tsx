@@ -4,7 +4,6 @@ import {
   ClipboardCheck,
   Copy as CopyIcon,
   Gauge,
-  Info,
   Languages,
   LayoutGrid,
   PenLine,
@@ -86,7 +85,6 @@ export function FullToolPage({
     { id: "features", label: content.featuresTitle },
     { id: "use-cases", label: content.useCasesTitle },
     { id: "mistakes", label: content.mistakesTitle },
-    { id: "limits", label: content.limitsTitle },
     { id: "faq", label: content.faqTitle },
   ];
 
@@ -261,7 +259,7 @@ export function FullToolPage({
             <div className="tp-doc-section-head">
               <h3 id="tp-doc-mistakes" className="tp-doc-h3">{content.mistakesTitle}</h3>
             </div>
-            <div className="tp-doc-grid">
+            <div className="tp-doc-grid tp-doc-grid--plain">
               {content.mistakes.map((mistake) => (
                 <article key={mistake.title} className="tp-doc-card tp-doc-card--warn">
                   <span className="tp-doc-card-icon" aria-hidden="true">
@@ -273,29 +271,16 @@ export function FullToolPage({
               ))}
             </div>
           </section>
-
-          <section id="limits" className="tp-doc-section" aria-labelledby="tp-doc-limits">
-            <div className="tp-doc-section-head">
-              <h3 id="tp-doc-limits" className="tp-doc-h3">{content.limitsTitle}</h3>
-            </div>
-            <ul className="tp-doc-limits">
-              {content.limits.map((limit) => (
-                <li key={limit}>
-                  <Info aria-hidden="true" />
-                  <span>{limit}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
         </article>
 
         <aside className="tp-doc-rail">
           <nav className="tp-doc-toc" aria-label={onThisPageLabel}>
             <p className="tp-doc-rail-label">{onThisPageLabel}</p>
             <ol>
-              {tocItems.map((item) => (
+              {tocItems.map((item, index) => (
                 <li key={item.id}>
                   <a href={`#${item.id}`}>
+                    <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                     {item.label}
                   </a>
                 </li>

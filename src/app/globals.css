@@ -6648,20 +6648,14 @@ html:lang(hi) .tp-tool-hero-accent {
   display: flex;
   align-items: flex-start;
   gap: 13px;
-  padding: 13px 15px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  transition:
-    border-color var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out),
-    box-shadow var(--dur-base) var(--ease-out);
+  padding: 9px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
 }
 
-.tp-doc-step:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-  box-shadow: var(--card-shadow);
-  transform: translateY(-1px);
+.tp-doc-step:last-child {
+  border-bottom: 0;
 }
 
 .tp-doc-step-num {
@@ -6775,6 +6769,28 @@ html:lang(hi) .tp-tool-hero-accent {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 11px;
+}
+
+.tp-doc-grid--plain {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.tp-doc-grid--plain .tp-doc-card {
+  padding: 11px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.tp-doc-grid--plain .tp-doc-card:last-child {
+  border-bottom: 0;
+}
+
+.tp-doc-grid--plain .tp-doc-card:hover {
+  box-shadow: none;
+  transform: none;
 }
 
 .tp-doc-card {
@@ -6897,40 +6913,25 @@ html:lang(hi) .tp-tool-hero-accent {
 }
 
 .tp-doc-faq-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .tp-doc-faq {
   min-width: 0;
-  padding: 17px;
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  background: var(--surface);
-  transition:
-    border-color var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out),
-    box-shadow var(--dur-base) var(--ease-out);
+  padding: 15px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
 }
 
-.tp-doc-faq:hover {
-  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
-  box-shadow: var(--card-shadow);
-  transform: translateY(-1px);
-}
-
-.tp-doc-faq-num {
-  color: var(--accent);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  line-height: 1.4;
-  font-variant-numeric: tabular-nums;
+.tp-doc-faq:last-child {
+  border-bottom: 0;
 }
 
 .tp-doc-faq h3 {
-  margin: 6px 0 6px;
+  margin: 0 0 6px;
   color: var(--text);
   font-size: 14.5px;
   font-weight: 700;
@@ -7291,7 +7292,7 @@ html:lang(hi) .tp-tool-hero-accent {
   }
 
   .tp-doc-step {
-    padding: 12px 13px;
+    padding: 9px 0;
   }
 }
 
