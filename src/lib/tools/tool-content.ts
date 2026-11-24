@@ -33,8 +33,17 @@ export interface ToolPageContent {
   trustBody: string;
 }
 
-/** Slugs with a dedicated, hand-written page. Others use the shared SEO copy. */
-const WITH_FULL_CONTENT = new Set(["word-counter"]);
+/** Slugs with a dedicated, hand-written template page. */
+const WITH_FULL_CONTENT = new Set([
+  "word-counter",
+  "case-converter",
+  "image-compressor",
+  "json-formatter",
+  "unit-converter",
+  "password-generator",
+  "url-encoder",
+  "base64-encoder",
+]);
 
 function lines(value: string): string[] {
   return value.split("\n").map((line) => line.trim()).filter(Boolean);

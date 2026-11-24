@@ -9,9 +9,16 @@ import { CopyButton, OutputEmpty } from "../workspace-ui";
 
 export default function JsonFormatter() {
   const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  const handleReset = () => {
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const run = (mode: "format" | "minify") => {
     if (!input.trim()) {
@@ -36,6 +43,9 @@ export default function JsonFormatter() {
 
   return (
     <WorkspaceLayout
+      title={tw("json-formatter.title")}
+      onReset={handleReset}
+      statusRight={output ? `${output.length} ${t("characters")}` : undefined}
       input={
         <Textarea
           value={input}

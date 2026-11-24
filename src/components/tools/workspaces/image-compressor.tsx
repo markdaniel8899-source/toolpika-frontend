@@ -37,6 +37,7 @@ function formatBytes(bytes: number) {
 
 export default function ImageCompressor() {
   const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
   const [original, setOriginal] = useState<OriginalFile | null>(null);
   const [compressed, setCompressed] = useState<CompressedFile | null>(null);
   const [quality, setQuality] = useState(70);
@@ -141,8 +142,18 @@ export default function ImageCompressor() {
     ? `${original.name.replace(/\.[^.]+$/, "")}-compressed.jpg`
     : "compressed.jpg";
 
+  const handleReset = () => {
+    setOriginal(null);
+    setCompressed(null);
+    setQuality(70);
+    setErrorCode(null);
+  };
+
   return (
     <WorkspaceLayout
+      title={tw("image-compressor.title")}
+      onReset={handleReset}
+      statusRight={compressed ? `${savedPercent}%` : undefined}
       input={
         <div className="flex flex-col gap-4">
           <label

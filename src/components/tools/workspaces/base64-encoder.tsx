@@ -33,9 +33,16 @@ function decodeBase64(text: string) {
 
 export default function Base64Encoder() {
   const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [failed, setFailed] = useState(false);
+
+  const handleReset = () => {
+    setInput("");
+    setOutput("");
+    setFailed(false);
+  };
 
   const run = (mode: "encode" | "decode") => {
     setFailed(false);
@@ -50,6 +57,9 @@ export default function Base64Encoder() {
 
   return (
     <WorkspaceLayout
+      title={tw("base64-encoder.title")}
+      onReset={handleReset}
+      statusRight={output ? `${output.length} ${t("characters")}` : undefined}
       input={
         <Textarea
           value={input}

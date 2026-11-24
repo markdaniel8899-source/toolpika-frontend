@@ -34,6 +34,8 @@ export function ToolWorkspace({ slug }: { slug: string }) {
   if (!Workspace) {
     return (
       <WorkspaceLayout
+        title={t("notFound")}
+        onReset={() => undefined}
         input={
           <p className="flex min-h-[200px] items-center justify-center rounded-[10px] border border-dashed border-[var(--border)] bg-[var(--bg)] p-6 text-center text-sm text-[var(--muted)]">
             {t("pasteContent")}

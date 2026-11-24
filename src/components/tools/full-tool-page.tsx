@@ -40,6 +40,9 @@ export function FullToolPage({
   contextualTool?: Tool;
 }) {
   const contextualParts = content.contextualLink.split("{tool}");
+  const titleWords = title.trim().split(/\s+/u);
+  const titleAccent = titleWords.length > 1 ? titleWords.pop() ?? title : title;
+  const titleMain = titleWords.join(" ");
 
   return (
     <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
@@ -54,7 +57,10 @@ export function FullToolPage({
       </Reveal>
 
       <header className="tp-tool-page-head" style={{ marginTop: 20 }}>
-        <h1 className="tp-tool-page-title">{title}</h1>
+        <h1 className="tp-tool-page-title" aria-label={title}>
+          {titleMain ? <>{titleMain}{" "}</> : null}
+          <span className="tp-tool-page-title-accent">{titleAccent}</span>
+        </h1>
         <p className="tp-tool-page-byline">{content.byline}</p>
       </header>
 

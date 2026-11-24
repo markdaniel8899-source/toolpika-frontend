@@ -41,6 +41,20 @@ const SKIP_VALUES = new Set([
 const SKIP_KEYS = new Set([
   "tools.word-counter.page.exampleInput",
   "tools.word-counter.page.exampleOutput",
+  "tools.case-converter.page.exampleInput",
+  "tools.case-converter.page.exampleOutput",
+  "tools.image-compressor.page.exampleInput",
+  "tools.image-compressor.page.exampleOutput",
+  "tools.json-formatter.page.exampleInput",
+  "tools.json-formatter.page.exampleOutput",
+  "tools.unit-converter.page.exampleInput",
+  "tools.unit-converter.page.exampleOutput",
+  "tools.password-generator.page.exampleInput",
+  "tools.password-generator.page.exampleOutput",
+  "tools.url-encoder.page.exampleInput",
+  "tools.url-encoder.page.exampleOutput",
+  "tools.base64-encoder.page.exampleInput",
+  "tools.base64-encoder.page.exampleOutput",
 ]);
 
 // Small batches + a pause between requests keep us under Groq's per-minute

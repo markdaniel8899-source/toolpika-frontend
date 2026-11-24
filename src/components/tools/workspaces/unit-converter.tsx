@@ -52,6 +52,7 @@ function fromCelsius(value: number, unit: string) {
 
 export default function UnitConverter() {
   const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
   const locale = useLocale();
   const [category, setCategory] = useState<Category>("length");
   const [value, setValue] = useState("1");
@@ -94,8 +95,18 @@ export default function UnitConverter() {
     setTo(DEFAULTS[next][1]);
   };
 
+  const handleReset = () => {
+    setCategory("length");
+    setValue("1");
+    setFrom(DEFAULTS.length[0]);
+    setTo(DEFAULTS.length[1]);
+  };
+
   return (
     <WorkspaceLayout
+      title={tw("unit-converter.title")}
+      onReset={handleReset}
+      statusRight={formatted ? `${value} ${from} → ${formatted} ${to}` : undefined}
       input={
         <div className="flex flex-col gap-5">
           <div

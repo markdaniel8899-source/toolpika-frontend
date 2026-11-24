@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Check, Copy, RotateCcw, Sparkles } from "lucide-react";
+import { Check, Copy, RotateCcw } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { WorkspaceLayout } from "../workspace-layout";
@@ -73,8 +73,24 @@ export default function WordCounter() {
     }
   }, [hasText, statsText]);
 
+  const handleSample = useCallback(() => {
+    setText(SAMPLE);
+    setCopied(false);
+    inputRef.current?.focus();
+  }, []);
+
+  const handleReset = useCallback(() => {
+    setText("");
+    setCopied(false);
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <WorkspaceLayout
+      title={tw("word-counter.title")}
+      onSample={handleSample}
+      onReset={handleReset}
+      statusRight={`${t("words")} ${stats.words} · ${t("characters")} ${stats.characters}`}
       input={
         <>
           <Textarea
@@ -89,18 +105,6 @@ export default function WordCounter() {
             className="min-h-[320px]"
           />
           <div className="tp-workspace-inline-actions">
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              onClick={() => {
-                setText(SAMPLE);
-                inputRef.current?.focus();
-              }}
-            >
-              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-              {tw("word-counter.trySample")}
-            </Button>
             <Button
               type="button"
               variant="ghost"

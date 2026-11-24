@@ -27,6 +27,14 @@ interface Options {
   symbols: boolean;
 }
 
+const DEFAULT_OPTIONS: Options = {
+  length: 20,
+  lower: true,
+  upper: true,
+  numbers: true,
+  symbols: true,
+};
+
 function randomInt(max: number) {
   const values = new Uint32Array(1);
   crypto.getRandomValues(values);
@@ -71,6 +79,7 @@ function buildPassword(options: Options) {
 
 export default function PasswordGenerator() {
   const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
   const [length, setLength] = useState(20);
   const [useUpper, setUseUpper] = useState(true);
   const [useLower, setUseLower] = useState(true);
@@ -89,17 +98,7 @@ export default function PasswordGenerator() {
   // Generate once after hydration: the server and client would otherwise
   // produce different random strings and break the markup match.
   useEffect(() => {
-    const frame = requestAnimationFrame(() =>
-      setPassword(
-        buildPassword({
-          length: 20,
-          lower: true,
-          upper: true,
-          numbers: true,
-          symbols: true,
-        })
-      )
-    );
+    const frame = requestAnimationFrame(() => setPassword(buildPassword(DEFAULT_OPTIONS)));
 
     return () => cancelAnimationFrame(frame);
   }, []);
@@ -113,8 +112,20 @@ export default function PasswordGenerator() {
         ? "strengthGood"
         : "strengthWeak";
 
+  const handleReset = () => {
+    setLength(DEFAULT_OPTIONS.length);
+    setUseLower(DEFAULT_OPTIONS.lower);
+    setUseUpper(DEFAULT_OPTIONS.upper);
+    setUseNumbers(DEFAULT_OPTIONS.numbers);
+    setUseSymbols(DEFAULT_OPTIONS.symbols);
+    setPassword(buildPassword(DEFAULT_OPTIONS));
+  };
+
   return (
     <WorkspaceLayout
+      title={tw("password-generator.title")}
+      onReset={handleReset}
+      statusRight={password ? `${password.length} ${t("passwordLength")}` : undefined}
       input={
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">

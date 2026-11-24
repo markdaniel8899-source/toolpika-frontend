@@ -29,8 +29,14 @@ function sentenceCase(text: string) {
 
 export default function CaseConverter() {
   const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
+
+  const handleReset = () => {
+    setText("");
+    setResult("");
+  };
 
   const transforms = [
     { id: "upper", label: t("uppercase"), run: () => text.toUpperCase() },
@@ -59,6 +65,9 @@ export default function CaseConverter() {
 
   return (
     <WorkspaceLayout
+      title={tw("case-converter.title")}
+      onReset={handleReset}
+      statusRight={result ? `${result.length} ${t("characters")}` : undefined}
       input={
         <Textarea
           value={text}

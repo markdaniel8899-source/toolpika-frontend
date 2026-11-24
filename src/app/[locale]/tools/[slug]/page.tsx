@@ -18,6 +18,7 @@ import {
 } from "@/lib/tools/registry";
 import { getToolSeoContent } from "@/lib/tools/seo-content";
 import { getToolPageContent } from "@/lib/tools/tool-content";
+import { buildToolSchemas } from "@/lib/tools/tool-schema";
 import { FullToolPage } from "@/components/tools/full-tool-page";
 
 const LOCALES = [
@@ -40,6 +41,18 @@ const OG_LOCALES: Record<string, string> = {
 /** Tools a reader would realistically use next to the current task. */
 const CURATED_RELATED: Record<string, string[]> = {
   "word-counter": ["case-converter", "base64-encoder", "url-encoder"],
+};
+
+/** Matches the contextual link written into each tool's page copy. */
+const CONTEXTUAL_TOOL: Record<string, string> = {
+  "word-counter": "case-converter",
+  "case-converter": "word-counter",
+  "image-compressor": "word-counter",
+  "json-formatter": "word-counter",
+  "unit-converter": "case-converter",
+  "password-generator": "case-converter",
+  "url-encoder": "case-converter",
+  "base64-encoder": "case-converter",
 };
 
 type LocalePageProps = {
@@ -154,8 +167,11 @@ export default async function ToolPage({ params }: LocalePageProps) {
     return list;
   })();
 
+  const contextualSlug = CONTEXTUAL_TOOL[slug];
   const contextualToolBase =
-    related.find((item) => item.slug === "case-converter") ?? related[0];
+    related.find((item) => item.slug === contextualSlug) ??
+    (contextualSlug ? getTool(contextualSlug) : undefined) ??
+    related[0];
   const contextualTool = contextualToolBase
     ? {
         ...contextualToolBase,
@@ -220,15 +236,37 @@ export default async function ToolPage({ params }: LocalePageProps) {
     ],
   };
 
+  const siteWideSchema = {
+    "@context": "https://schema.org",
+    "@graph": structuredData["@graph"].slice(0, 2),
+  };
+
+  const toolSchemas = fullContent
+    ? buildToolSchemas({
+        locale,
+        siteUrl,
+        title: toolTitle,
+        slug: tool.slug,
+        category: tool.category,
+        categoryLabel,
+        homeLabel: t("home"),
+        description: pageDescription,
+        content: fullContent,
+      })
+    : [];
+
   if (fullContent) {
     return (
       <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-          }}
-        />
+        {[siteWideSchema, ...toolSchemas].map((schema, index) => (
+          <script
+            key={index}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+            }}
+          />
+        ))}
         <FullToolPage
           tool={tool}
           title={toolTitle}
