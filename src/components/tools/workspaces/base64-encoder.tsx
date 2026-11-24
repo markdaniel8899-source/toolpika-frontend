@@ -84,9 +84,9 @@ export default function Base64Encoder() {
   return (
     <WorkspaceLayout
       title={tw("base64-encoder.title")}
+      icon="Copy"
       onReset={handleReset}
       onSample={handleSample}
-      status={failed ? tw("statusError") : output ? tw("statusReady") : input ? tw("statusIdle") : undefined}
       statusRight={output ? `${output.length} ${t("characters")}` : undefined}
       input={
         <div className="flex flex-col gap-3">

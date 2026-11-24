@@ -180,17 +180,9 @@ export default function ImageCompressor() {
   return (
     <WorkspaceLayout
       title={tw("image-compressor.title")}
+      icon="Image"
       onReset={handleReset}
       onSample={() => void handleSample()}
-      status={
-        busy
-          ? tw("live")
-          : compressed
-            ? tw("statusReady")
-            : original
-              ? tw("statusIdle")
-              : undefined
-      }
       statusRight={compressed ? `${savedPercent}%` : undefined}
       input={
         <div className="flex flex-col gap-4">
@@ -284,11 +276,13 @@ export default function ImageCompressor() {
           {original ? (
             <Button
               type="button"
-              variant="ghost"
+              variant="secondary"
               size="sm"
+              className="tp-workspace-clear"
               onClick={() => {
                 setOriginal(null);
                 setCompressed(null);
+                setDimensions(null);
                 setErrorCode(null);
               }}
             >

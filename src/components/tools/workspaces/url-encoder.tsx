@@ -63,9 +63,9 @@ export default function UrlEncoder() {
   return (
     <WorkspaceLayout
       title={tw("url-encoder.title")}
+      icon="Link"
       onReset={handleReset}
       onSample={handleSample}
-      status={failed ? tw("statusError") : output ? tw("statusReady") : input ? tw("statusIdle") : undefined}
       statusRight={output ? `${output.length} ${t("characters")}` : undefined}
       input={
         <div className="flex flex-col gap-3">

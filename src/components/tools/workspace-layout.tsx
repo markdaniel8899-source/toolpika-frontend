@@ -3,25 +3,25 @@
 import { useTranslations } from "next-intl";
 import { RotateCcw, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ToolIcon } from "./tool-icon";
 
 /**
- * Two-pane workspace used by every tool (input 60%, result 40%).
- * The panes stack on mobile so the input stays reachable one-handed.
- * Widths come from CSS (.tp-workspace) so every field can fill its pane.
+ * Two-pane workspace used by every tool. Visual language matches the bespoke
+ * Word Counter workspace: quiet header, compact pane labels, clear divider.
  */
 export function WorkspaceLayout({
   title,
+  icon,
   onReset,
   onSample,
-  status,
   statusRight,
   input,
   output,
 }: {
   title: string;
+  icon?: string;
   onReset: () => void;
   onSample?: () => void;
-  status?: string;
   statusRight?: string;
   input: React.ReactNode;
   output: React.ReactNode;
@@ -31,13 +31,15 @@ export function WorkspaceLayout({
   return (
     <div className="tp-workspace">
       <div className="tp-workspace-bar">
-        <span className="tp-workspace-name">{title}</span>
-        <div className="tp-workspace-bar-actions">
-          {status ? (
-            <span className="tp-status-pill" role="status" aria-live="polite">
-              {status}
+        <div className="tp-workspace-identity">
+          {icon ? (
+            <span className="tp-workspace-mark" aria-hidden="true">
+              <ToolIcon name={icon} className="tp-icon" />
             </span>
           ) : null}
+          <span className="tp-workspace-name">{title}</span>
+        </div>
+        <div className="tp-workspace-bar-actions">
           {onSample ? (
             <Button type="button" size="sm" onClick={onSample}>
               {t("trySample")}

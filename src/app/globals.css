@@ -2533,13 +2533,16 @@ html.theme-transition .tp-tool-arrow {
     "head head"
     "input output"
     "foot foot";
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
   gap: 0;
-  overflow: visible;
-  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
-  border-radius: var(--radius-panel);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  border-radius: 18px;
   background: var(--surface);
-  box-shadow: 0 14px 32px color-mix(in srgb, var(--text) 8%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--surface) 80%, transparent) inset,
+    0 22px 52px color-mix(in srgb, var(--text) 8%, transparent);
+  animation: tp-wc-rise 520ms var(--ease-out) both;
 }
 
 .tp-workspace-bar {
@@ -2548,24 +2551,53 @@ html.theme-transition .tp-tool-arrow {
   justify-content: space-between;
   gap: 16px;
   grid-area: head;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--accent);
-  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-  background: var(--accent-soft);
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--accent-wash), var(--surface));
+}
+
+.tp-workspace-identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+}
+
+.tp-workspace-mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--card-shadow);
+}
+
+.tp-workspace-mark .tp-icon {
+  width: 17px;
+  height: 17px;
 }
 
 .tp-workspace-name {
+  overflow: hidden;
   color: var(--text);
   font-size: 13.5px;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tp-workspace-bar-actions {
   display: flex;
+  flex: none;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tp-workspace-input {
@@ -2585,12 +2617,11 @@ html.theme-transition .tp-tool-arrow {
   justify-content: space-between;
   gap: 16px;
   grid-area: foot;
-  padding: 11px 24px;
-  border-top: 1px solid var(--accent);
-  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
-  background: var(--accent-soft);
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-2) 55%, var(--surface));
   color: var(--muted);
-  font-size: 11.5px;
+  font-size: 10.5px;
   line-height: 1.5;
 }
 
@@ -2611,18 +2642,17 @@ html.theme-transition .tp-tool-arrow {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  padding: 28px;
+  padding: 22px;
 }
 
 .tp-workspace-pane + .tp-workspace-pane {
   border-left: 1px solid var(--border);
 }
 
-/* Every field inside a pane fills it - no more shrunk inputs. */
-.tp-workspace-pane > *,
+/* Form controls fill the pane; buttons and hint rows keep their own styling. */
 .tp-workspace-pane .tp-field-input,
 .tp-workspace-pane .tp-textarea,
-.tp-workspace-pane input,
+.tp-workspace-pane input:not([type="range"]):not([type="checkbox"]):not([type="file"]),
 .tp-workspace-pane select,
 .tp-workspace-pane textarea {
   width: 100%;
@@ -2635,19 +2665,17 @@ html.theme-transition .tp-tool-arrow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 13px;
 }
 
 .tp-pane-head h2 {
-  display: flex;
-  align-items: center;
-  gap: 9px;
   margin: 0;
   color: var(--text);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
   text-transform: none;
 }
 
@@ -2711,11 +2739,12 @@ html.theme-transition .tp-tool-arrow {
 .tp-stat-value {
   margin-top: 8px;
   color: var(--text);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   transition: color 200ms var(--ease-out);
 }
 
@@ -5584,6 +5613,96 @@ body::before {
   font-size: 11.5px;
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
+}
+
+.tp-workspace-clear {
+  align-self: flex-start;
+  margin-block-start: 2px;
+}
+
+.tp-password-input,
+.tp-password-output {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tp-password-length {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.tp-password-length-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tp-password-length-head label {
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.tp-password-length-value {
+  min-width: 38px;
+  padding: 3px 8px;
+  border-radius: 7px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-password-range {
+  width: 100%;
+  accent-color: var(--accent-fill);
+}
+
+.tp-password-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tp-password-generate,
+.tp-password-copy {
+  width: 100%;
+}
+
+.tp-password-value {
+  display: block;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg));
+  color: var(--text);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.tp-password-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+@media (max-width: 560px) {
+  .tp-password-groups,
+  .tp-password-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .tp-workspace-error {

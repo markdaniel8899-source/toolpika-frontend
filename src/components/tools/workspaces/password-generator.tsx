@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceLayout } from "../workspace-layout";
-import { CheckboxRow, CopyButton, OutputEmpty } from "../workspace-ui";
+import { CheckboxRow, CopyButton, OutputEmpty, Stat } from "../workspace-ui";
 
 /**
  * Character sets exclude look-alike characters (i, l, 1, L, o, 0, O) so a
@@ -134,21 +134,16 @@ export default function PasswordGenerator() {
   return (
     <WorkspaceLayout
       title={tw("password-generator.title")}
+      icon="Shield"
       onReset={handleReset}
       onSample={handleSample}
-      status={password ? tw("statusReady") : tw("statusIdle")}
-      statusRight={password ? `${password.length} ${t("passwordLength")}` : undefined}
+      statusRight={password ? `${password.length} ${t("characters")}` : undefined}
       input={
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password-length"
-                className="text-sm font-medium text-[var(--text)]"
-              >
-                {t("passwordLength")}
-              </label>
-              <span className="text-sm font-bold tabular-nums">{length}</span>
+        <div className="tp-password-input">
+          <div className="tp-password-length">
+            <div className="tp-password-length-head">
+              <label htmlFor="password-length">{t("passwordLength")}</label>
+              <span className="tp-password-length-value">{length}</span>
             </div>
             <input
               id="password-length"
@@ -158,11 +153,11 @@ export default function PasswordGenerator() {
               step={1}
               value={length}
               onChange={(event) => setLength(Number(event.target.value))}
-              className="w-full accent-[var(--accent-fill)]"
+              className="tp-password-range"
             />
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2">
+          <div className="tp-password-groups">
             <CheckboxRow
               id="password-upper"
               label={t("includeUppercase")}
@@ -191,6 +186,7 @@ export default function PasswordGenerator() {
 
           <Button
             type="button"
+            className="tp-password-generate"
             disabled={noGroups}
             onClick={() => setPassword(buildPassword(options))}
           >
@@ -206,27 +202,20 @@ export default function PasswordGenerator() {
       }
       output={
         password ? (
-          <div className="flex flex-col gap-4" aria-live="polite">
-            <code className="block break-all rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-4 font-mono text-[16px] leading-[1.6] text-[var(--text)]">
-              {password}
-            </code>
+          <div className="tp-password-output" aria-live="polite">
+            <code className="tp-password-value">{password}</code>
 
-            <dl className="grid grid-cols-2 gap-3">
-              <div className="rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-4 py-3">
-                <dt className="text-xs text-[var(--muted)]">{t("passwordLength")}</dt>
-                <dd className="mt-1 font-sans text-[24px] font-bold leading-none tabular-nums">
-                  {password.length}
-                </dd>
-              </div>
-              <div className="rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-4 py-3">
-                <dt className="text-xs text-[var(--muted)]">{t("strength")}</dt>
-                <dd className="mt-1 text-sm font-bold text-[var(--success)]">
-                  {t(strength)}
-                </dd>
-              </div>
+            <dl className="tp-password-stats">
+              <Stat label={t("passwordLength")} value={password.length} />
+              <Stat label={t("strength")} value={t(strength)} />
             </dl>
 
-            <CopyButton text={password} label={t("copy")} copiedLabel={t("copied")} />
+            <CopyButton
+              text={password}
+              label={t("copy")}
+              copiedLabel={t("copied")}
+              className="tp-password-copy"
+            />
           </div>
         ) : (
           <OutputEmpty message={t("generate")} className="min-h-[200px]" />

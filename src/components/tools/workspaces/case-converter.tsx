@@ -104,9 +104,9 @@ export default function CaseConverter() {
   return (
     <WorkspaceLayout
       title={tw("case-converter.title")}
+      icon="Type"
       onReset={handleReset}
       onSample={handleSample}
-      status={result ? tw("statusReady") : text ? tw("statusIdle") : undefined}
       statusRight={result ? `${result.length} ${t("characters")}` : undefined}
       input={
         <div className="flex flex-col gap-3">

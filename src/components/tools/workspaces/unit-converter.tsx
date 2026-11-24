@@ -112,9 +112,9 @@ export default function UnitConverter() {
   return (
     <WorkspaceLayout
       title={tw("unit-converter.title")}
+      icon="LayoutGrid"
       onReset={handleReset}
       onSample={handleSample}
-      status={formatted ? tw("statusReady") : tw("statusIdle")}
       statusRight={formatted ? `${value} ${from} → ${formatted} ${to}` : undefined}
       input={
         <div className="flex flex-col gap-5">

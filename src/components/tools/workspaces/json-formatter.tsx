@@ -73,9 +73,9 @@ export default function JsonFormatter() {
   return (
     <WorkspaceLayout
       title={tw("json-formatter.title")}
+      icon="Code"
       onReset={handleReset}
       onSample={handleSample}
-      status={output ? tw("statusReady") : input ? tw("statusIdle") : undefined}
       statusRight={output ? `${output.length} ${t("characters")}` : undefined}
       input={
         <div className="flex flex-col gap-3">
