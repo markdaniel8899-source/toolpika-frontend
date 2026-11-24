@@ -2528,7 +2528,6 @@ html.theme-transition .tp-tool-arrow {
 /* ---------- Workspace ---------- */
 
 .tp-workspace {
-  position: relative;
   display: grid;
   grid-template-areas:
     "head head"
@@ -2537,36 +2536,10 @@ html.theme-transition .tp-tool-arrow {
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   gap: 0;
   overflow: visible;
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
   border-radius: var(--radius-panel);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--accent) 5%, var(--surface)), var(--surface) 42%);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--text) 6%, transparent),
-    0 2px 8px color-mix(in srgb, var(--accent) 6%, transparent),
-    0 18px 44px color-mix(in srgb, var(--text) 7%, transparent);
-  transition: border-color 150ms var(--ease-out), box-shadow 150ms var(--ease-out);
-}
-
-.tp-workspace::before {
-  position: absolute;
-  top: 0;
-  right: 24px;
-  left: 24px;
-  height: 2px;
-  border-radius: 0 0 2px 2px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  content: "";
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.tp-workspace:focus-within {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--text) 6%, transparent),
-    0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent),
-    0 18px 44px color-mix(in srgb, var(--accent) 10%, transparent);
+  background: var(--surface);
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--text) 8%, transparent);
 }
 
 .tp-workspace-bar {
@@ -2576,33 +2549,16 @@ html.theme-transition .tp-tool-arrow {
   gap: 16px;
   grid-area: head;
   padding: 14px 20px;
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  border-bottom: 1px solid var(--accent);
   border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--accent) 10%, var(--surface)),
-    color-mix(in srgb, var(--surface) 82%, var(--bg))
-  );
+  background: var(--accent-soft);
 }
 
 .tp-workspace-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
   color: var(--text);
   font-size: 13.5px;
   font-weight: 700;
   letter-spacing: -0.01em;
-}
-
-.tp-workspace-name::before {
-  width: 7px;
-  height: 7px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
-  content: "";
 }
 
 .tp-workspace-bar-actions {
@@ -2630,13 +2586,9 @@ html.theme-transition .tp-tool-arrow {
   gap: 16px;
   grid-area: foot;
   padding: 11px 24px;
-  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  border-top: 1px solid var(--accent);
   border-radius: 0 0 var(--radius-panel) var(--radius-panel);
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--accent) 6%, var(--surface)),
-    color-mix(in srgb, var(--surface) 80%, var(--bg))
-  );
+  background: var(--accent-soft);
   color: var(--muted);
   font-size: 11.5px;
   line-height: 1.5;
@@ -2663,7 +2615,7 @@ html.theme-transition .tp-tool-arrow {
 }
 
 .tp-workspace-pane + .tp-workspace-pane {
-  border-left: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+  border-left: 1px solid var(--border);
 }
 
 /* Every field inside a pane fills it - no more shrunk inputs. */
@@ -4140,13 +4092,13 @@ html:has([data-admin="true"]) {
   display: grid;
   flex: none;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 23px;
+  height: 23px;
   border: 1px solid var(--accent);
   border-radius: 50%;
   background: var(--accent-soft);
   color: var(--accent);
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -5696,18 +5648,8 @@ body::before {
 }
 
 [data-theme="dark"] .tp-workspace {
-  border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--text) 10%, transparent),
-    0 2px 10px color-mix(in srgb, var(--accent) 10%, transparent),
-    0 18px 44px rgba(0, 0, 0, 0.45);
-}
-
-[data-theme="dark"] .tp-workspace:focus-within {
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--text) 10%, transparent),
-    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent),
-    0 18px 44px rgba(0, 0, 0, 0.45);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
 }
 
 /* Full-bleed tool-page mesh. Painting it on the 1180px container left two
