@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { ToolCard } from "@/components/tools/tool-card";
 import { categories, getToolsByCategory, categoryKey } from "@/lib/tools/registry";
@@ -13,6 +14,7 @@ export async function generateMetadata({
   return {
     title: category("allTitle"),
     description: category("allDescription"),
+    alternates: localizedAlternates(locale, "/categories"),
   };
 }
 

@@ -5,6 +5,7 @@ import {
   ClipboardCheck,
   Copy as CopyIcon,
   Gauge,
+  Info,
   Languages,
   LayoutGrid,
   PenLine,
@@ -129,7 +130,7 @@ export function FullToolPage({
       return (
         <>
           <p className="tp-doc-example-label">{section.label}</p>
-          <div className="tp-doc-example">
+          <div className="tp-doc-example" aria-label={section.title}>
             <div className="tp-doc-example-pane">
               <div className="tp-doc-example-head">
                 <span>{inputLabel}</span>
@@ -182,23 +183,39 @@ export function FullToolPage({
     if (section.kind === "points") {
       const warning = section.tone === "warning";
       const Icon = warning ? AlertTriangle : POINT_ICONS[0];
+      const limits = warning ? section.limits ?? [] : [];
       return (
-        <div className={warning ? "tp-doc-mistakes" : "tp-doc-usecases"}>
-          {section.items.map((item, index) => {
-            const ItemIcon = warning ? Icon : POINT_ICONS[index % POINT_ICONS.length];
-            return (
-              <article key={item.title} className={warning ? "tp-doc-mistake" : "tp-doc-usecase"}>
-                <span className={warning ? "tp-doc-mistake-icon" : "tp-doc-usecase-icon"} aria-hidden="true">
-                  <ItemIcon />
-                </span>
-                <div>
-                  <h4>{item.title}</h4>
-                  <p>{item.body}</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        <>
+          <div className={warning ? "tp-doc-mistakes" : "tp-doc-usecases"}>
+            {section.items.map((item, index) => {
+              const ItemIcon = warning ? Icon : POINT_ICONS[index % POINT_ICONS.length];
+              return (
+                <article key={item.title} className={warning ? "tp-doc-mistake" : "tp-doc-usecase"}>
+                  <span className={warning ? "tp-doc-mistake-icon" : "tp-doc-usecase-icon"} aria-hidden="true">
+                    <ItemIcon />
+                  </span>
+                  <div>
+                    <h4>{item.title}</h4>
+                    <p>{item.body}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          {limits.length > 0 ? (
+            <div className="tp-doc-limit-group">
+              <h4>{section.limitsTitle}</h4>
+              <ul className="tp-doc-limit-list">
+                {limits.map((limit) => (
+                  <li key={limit}>
+                    <Info aria-hidden="true" />
+                    <span>{limit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </>
       );
     }
 

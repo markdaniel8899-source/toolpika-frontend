@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { ShieldCheck, Sparkles, MessageSquare } from "lucide-react";
 import RequestForm from "./form";
@@ -17,9 +18,7 @@ export async function generateMetadata({
   return {
     title: `${t("title")} | Toolpika`,
     description: t("description"),
-    alternates: {
-      canonical: `https://toolpika.site/${locale}/request`,
-    },
+    alternates: localizedAlternates(locale, "/request"),
   };
 }
 

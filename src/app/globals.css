@@ -6828,6 +6828,45 @@ html:lang(hi) .tp-tool-hero-accent {
   text-wrap: pretty;
 }
 
+.tp-doc-limit-group {
+  margin-block-start: 22px;
+}
+
+.tp-doc-limit-group h4 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.35;
+}
+
+.tp-doc-limit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tp-doc-limit-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.tp-doc-limit-list svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  margin-block-start: 3px;
+  color: var(--accent);
+}
+
 .tp-doc-card {
   min-width: 0;
   padding: 15px;

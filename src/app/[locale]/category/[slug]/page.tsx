@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { localizedAlternates } from "@/lib/seo/alternates";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { CategoryBrowser } from "@/components/tools/category-browser";
@@ -24,6 +25,7 @@ export async function generateMetadata({
   return {
     title: t("title", { name: label }),
     description: t("description", { name: label }),
+    alternates: localizedAlternates(locale, `/category/${slug}`),
   };
 }
 

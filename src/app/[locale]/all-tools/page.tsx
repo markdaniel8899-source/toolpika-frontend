@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
@@ -12,7 +13,11 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
   const { locale } = await params;
   const nav = await getTranslations({ locale, namespace: "nav" });
   const home = await getTranslations({ locale, namespace: "home" });
-  return { title: nav("tools"), description: home("subtitle") };
+  return {
+    title: nav("tools"),
+    description: home("subtitle"),
+    alternates: localizedAlternates(locale, "/all-tools"),
+  };
 }
 
 export default async function AllToolsPage({ params }: LocalePageProps) {

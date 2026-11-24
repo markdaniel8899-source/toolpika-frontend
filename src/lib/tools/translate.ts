@@ -1,6 +1,6 @@
 /**
  * Minimal structural type for a next-intl translator. It lets pure helpers
- * like seo-content.ts stay free of React hooks while still being usable with
+ * like tool-content.ts stay free of React hooks while still being usable with
  * both `useTranslations` (client) and `getTranslations` (server).
  */
 export type Translate = (

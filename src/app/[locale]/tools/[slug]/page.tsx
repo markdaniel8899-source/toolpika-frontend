@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { HelpCircle, ShieldCheck } from "lucide-react";
-import { Link } from "@/i18n/navigation";
-import { Reveal } from "@/components/ui/reveal";
-import { ToolCard } from "@/components/tools/tool-card";
 import { getSiteUrl } from "@/lib/site-url";
-import { ToolWorkspace } from "@/components/tools/tool-workspace";
 import {
   getTool,
   getLiveTools,
   getToolsByCategory,
   toolTitleKey,
-  toolDescriptionKey,
   toolSeoTitleKey,
   toolSeoDescriptionKey,
 } from "@/lib/tools/registry";
-import { getToolSeoContent } from "@/lib/tools/seo-content";
 import { getToolPageContent } from "@/lib/tools/tool-content";
 import { buildToolSchemas } from "@/lib/tools/tool-schema";
 import { FullToolPage } from "@/components/tools/full-tool-page";
@@ -136,19 +129,16 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const tNav = await getTranslations({ locale, namespace: "nav" });
 
   const toolTitle = t(toolTitleKey(tool));
-  const toolDescription = t(toolDescriptionKey(tool));
   const pageDescription = t(toolSeoDescriptionKey(tool));
   const categoryLabel = getCategoryLabel(tool.category, t);
   const fullContent = getToolPageContent(t, slug);
-  const seo = getToolSeoContent(t, {
-    name: toolTitle,
-    category: categoryLabel,
-    description: toolDescription,
-  });
-  const faqs = fullContent ? fullContent.faqs : seo.faqs;
 
-  // 4.7 - hand-picked related tools where they exist; same-category tools
-  // first otherwise, with top popular as a fallback when fewer than three.
+  // Every registered tool is expected to hand-written full content. A missing
+  // content set is a configuration error, not a reason to ship a thin page.
+  if (!fullContent) notFound();
+
+  // Hand-picked related tools where they exist; same-category tools first
+  // otherwise, with top popular as a fallback when fewer than three.
   const related = (() => {
     const curated = (CURATED_RELATED[slug] ?? [])
       .map((relatedSlug) => getTool(relatedSlug))
@@ -183,217 +173,52 @@ export default async function ToolPage({ params }: LocalePageProps) {
       }
     : undefined;
 
-  const siteUrl = getSiteUrl();
-  const pageUrl = `${siteUrl}/${locale}/tools/${tool.slug}`;
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": `${siteUrl}/#organization`,
-        name: "Toolpika",
-        url: siteUrl,
-        logo: `${siteUrl}/favicon.svg`,
-      },
-      {
-        "@type": "WebSite",
-        name: "Toolpika",
-        url: siteUrl,
-        inLanguage: locale,
-        publisher: { "@id": `${siteUrl}/#organization` },
-      },
-      {
-        "@type": "WebApplication",
-        name: toolTitle,
-        description: pageDescription,
-        url: pageUrl,
-        applicationCategory: "UtilitiesApplication",
-        operatingSystem: "Any (web browser)",
-        browserRequirements: "Requires a modern web browser",
-        isAccessibleForFree: true,
-        inLanguage: locale,
-        publisher: { "@id": `${siteUrl}/#organization` },
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "USD",
-        },
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: t("home"), item: `${siteUrl}/${locale}` },
-          { "@type": "ListItem", position: 2, name: categoryLabel, item: `${siteUrl}/${locale}/category/${tool.category}` },
-          { "@type": "ListItem", position: 3, name: toolTitle, item: pageUrl },
-        ],
-      },
-      // 4.6 - FAQPage schema for the fully visible FAQs rendered below.
-      {
-        "@type": "FAQPage",
-        mainEntity: faqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
-        })),
-      },
-    ],
-  };
-
-  const toolSchemas = fullContent
-    ? buildToolSchemas({
-        locale,
-        siteUrl,
-        title: toolTitle,
-        slug: tool.slug,
-        category: tool.category,
-        categoryLabel,
-        homeLabel: t("home"),
-        description: pageDescription,
-        content: fullContent,
-      })
-    : [];
-
-  if (fullContent) {
-    return (
-      <>
-        {toolSchemas.map((schema, index) => (
-          <script
-            key={index}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
-            }}
-          />
-        ))}
-        <FullToolPage
-          tool={tool}
-          title={toolTitle}
-          content={fullContent}
-          related={related}
-          homeLabel={t("home")}
-          categoryLabel={categoryLabel}
-          relatedTitle={tHow("relatedTitle")}
-          aboutLinkLabel={t("aboutLink")}
-          guidesLinkLabel={tNav("guides")}
-          inputLabel={t("input")}
-          outputLabel={t("result")}
-          workspaceLabel={t("workspaceLabel", { title: toolTitle })}
-          contextualTool={contextualTool}
-          onThisPageLabel={t("onThisPage")}
-          quickAnswerLabel={t("quickAnswer")}
-          quickFactsLabel={t("quickFacts")}
-          freeLabel={t("freeToUse")}
-          noSignupLabel={t("noSignup")}
-          privacyLabel={t("runsInBrowser")}
-          copyLabel={tUi("copy")}
-          copiedLabel={tUi("copied")}
-        />
-      </>
-    );
-  }
-
-  const steps = [tHow("step1"), tHow("step2"), tHow("step3")];
+  const toolSchemas = buildToolSchemas({
+    locale,
+    siteUrl: getSiteUrl(),
+    title: toolTitle,
+    slug: tool.slug,
+    category: tool.category,
+    categoryLabel,
+    homeLabel: t("home"),
+    description: pageDescription,
+    content: fullContent,
+  });
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-        }}
+      {toolSchemas.map((schema, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
+      <FullToolPage
+        tool={tool}
+        title={toolTitle}
+        content={fullContent}
+        related={related}
+        homeLabel={t("home")}
+        categoryLabel={categoryLabel}
+        relatedTitle={tHow("relatedTitle")}
+        aboutLinkLabel={t("aboutLink")}
+        guidesLinkLabel={tNav("guides")}
+        inputLabel={t("input")}
+        outputLabel={t("result")}
+        workspaceLabel={t("workspaceLabel", { title: toolTitle })}
+        contextualTool={contextualTool}
+        onThisPageLabel={t("onThisPage")}
+        quickAnswerLabel={t("quickAnswer")}
+        quickFactsLabel={t("quickFacts")}
+        freeLabel={t("freeToUse")}
+        noSignupLabel={t("noSignup")}
+        privacyLabel={t("runsInBrowser")}
+        copyLabel={tUi("copy")}
+        copiedLabel={tUi("copied")}
       />
-      <main className="tp-container tp-tool-page" style={{ paddingBottom: 64 }}>
-        {/* 4.1 - Tool name first, H1. */}
-        <header className="tp-tool-page-head">
-          <h1 className="tp-tool-page-title">{toolTitle}</h1>
-          <p className="tp-tool-page-sub">
-            <ShieldCheck className="tp-icon" aria-hidden="true" />
-            {t("runsInBrowser")}
-          </p>
-        </header>
-
-        {/* 4.2 - How to use heading. */}
-        <h2 className="tp-tool-page-section-title">{tHow("howToTitle")}</h2>
-
-        {/* 4.3 - Numbered steps with accent circles. */}
-        <ol className="tp-how-list">
-          {steps.map((step, index) => (
-            <li key={index} className="tp-how-item">
-              <span className="tp-how-number" aria-hidden="true">{index + 1}</span>
-              <p>{step}</p>
-            </li>
-          ))}
-        </ol>
-
-        {/* 4.4 - The actual tool workspace, below the steps. */}
-        <section className="tp-tool-page-workspace" aria-label={t("workspaceLabel", { title: toolTitle })}>
-          <ToolWorkspace slug={tool.slug} />
-        </section>
-
-        {/* 4.5 - SEO content as a readable article. Every word of seo.intro
-             and seo.sections is rendered verbatim. */}
-        <Reveal>
-          <section className="tp-content-canvas">
-            <div className="tp-content-inner tp-article">
-              <h2 className="tp-content-h2">{t("about", { title: toolTitle })}</h2>
-              <p className="tp-content-lead">{seo.intro}</p>
-
-              {seo.sections.map((section) => (
-                <div key={section.heading} className="tp-article-block">
-                  <h3 className="tp-article-h3">{section.heading}</h3>
-                  {section.paragraphs.map((paragraph) => (
-                    <p key={paragraph} className="tp-article-copy">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              ))}
-
-              <p className="tp-article-copy tp-article-close">{seo.closing}</p>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* 4.6 - FAQs stay fully open for SEO, in a single vertical column. */}
-        <Reveal delay={80}>
-          <section className="tp-faq-canvas">
-            <div className="tp-content-inner tp-article">
-              <h2 className="tp-content-h2">{tHow("faqTitle")}</h2>
-              <div className="tp-faq-list">
-                {seo.faqs.map((faq, index) => (
-                  <Reveal key={faq.question} stagger index={index}>
-                    <article className="tp-faq-row">
-                      <span className="tp-faq-icon">
-                        <HelpCircle className="tp-icon" aria-hidden="true" />
-                      </span>
-                      <div>
-                        <h3 className="tp-faq-q">{faq.question}</h3>
-                        <p className="tp-faq-a">{faq.answer}</p>
-                      </div>
-                    </article>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* 4.7 - Related tools, last on the page. */}
-        {related.length > 0 && (
-          <section className="tp-tool-related">
-            <h2 className="tp-tool-page-section-title">{tHow("relatedTitle")}</h2>
-            <div className="tp-tool-grid tp-tool-related-grid">
-              {related.map((item) => (
-                <ToolCard key={item.slug} tool={item} />
-              ))}
-            </div>
-            <Link href="/request" className="tp-text-link tp-tool-related-link">
-              {tHow("missingRequest")}
-            </Link>
-          </section>
-        )}
-      </main>
     </>
   );
 }

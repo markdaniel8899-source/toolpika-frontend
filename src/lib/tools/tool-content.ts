@@ -52,6 +52,9 @@ export type ContentSection =
       title: string;
       items: TextPair[];
       tone?: "warning";
+      /** Optional limit list rendered inside the same section. */
+      limitsTitle?: string;
+      limits?: string[];
     }
   | { kind: "faq"; id: string; title: string; items: FaqItem[] };
 
@@ -191,6 +194,8 @@ function buildSections(
       title: content.mistakesTitle,
       items: content.mistakes,
       tone: "warning",
+      limitsTitle: content.limitsTitle,
+      limits: content.limits,
     }),
     faq: () => ({
       kind: "faq",
@@ -203,10 +208,6 @@ function buildSections(
   return plan
     .map((kind) => builders[kind]())
     .filter((section): section is ContentSection => section !== null);
-}
-
-export function hasFullToolContent(slug: string): boolean {
-  return WITH_FULL_CONTENT.has(slug);
 }
 
 export function getToolPageContent(t: Translate, slug: string): ToolPageContent | null {
