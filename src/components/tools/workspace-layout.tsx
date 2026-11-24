@@ -13,6 +13,7 @@ export function WorkspaceLayout({
   title,
   onReset,
   onSample,
+  status,
   statusRight,
   input,
   output,
@@ -20,6 +21,7 @@ export function WorkspaceLayout({
   title: string;
   onReset: () => void;
   onSample?: () => void;
+  status?: string;
   statusRight?: string;
   input: React.ReactNode;
   output: React.ReactNode;
@@ -31,8 +33,13 @@ export function WorkspaceLayout({
       <div className="tp-workspace-bar">
         <span className="tp-workspace-name">{title}</span>
         <div className="tp-workspace-bar-actions">
+          {status ? (
+            <span className="tp-status-pill" role="status" aria-live="polite">
+              {status}
+            </span>
+          ) : null}
           {onSample ? (
-            <Button type="button" variant="secondary" size="sm" onClick={onSample}>
+            <Button type="button" size="sm" onClick={onSample}>
               {t("trySample")}
             </Button>
           ) : null}

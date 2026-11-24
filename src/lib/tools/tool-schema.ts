@@ -35,6 +35,7 @@ export function buildToolSchemas({
   const appId = `${canonical}#webapp`;
   const faqId = `${canonical}#faq`;
   const categoryUrl = `${siteUrl}/${locale}/category/${category}`;
+  const hasFaq = content.sections.some((section) => section.kind === "faq");
 
   return [
     {
@@ -95,20 +96,25 @@ export function buildToolSchemas({
             },
           ],
         },
-        {
-          "@type": "FAQPage",
-          "@id": faqId,
-          isPartOf: { "@id": appId },
-          inLanguage: locale,
-          mainEntity: content.faqs.map((faq) => ({
-            "@type": "Question",
-            name: faq.question,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: faq.answer,
-            },
-          })),
-        },
+        // FAQPage is emitted only when the page actually renders its FAQ module.
+        ...(hasFaq
+          ? [
+              {
+                "@type": "FAQPage",
+                "@id": faqId,
+                isPartOf: { "@id": appId },
+                inLanguage: locale,
+                mainEntity: content.faqs.map((faq) => ({
+                  "@type": "Question",
+                  name: faq.question,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faq.answer,
+                  },
+                })),
+              },
+            ]
+          : []),
       ],
     },
   ];

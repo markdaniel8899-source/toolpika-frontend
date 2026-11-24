@@ -127,8 +127,34 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
     "mistakes",
     "faq",
   ],
-  "password-generator": ["definition", "steps", "facts", "faq"],
-  "unit-converter": ["definition", "steps", "example", "useCases", "faq"],
+  "case-converter": [
+    "definition",
+    "steps",
+    "example",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "image-compressor": [
+    "definition",
+    "steps",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "json-formatter": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "mistakes",
+    "faq",
+  ],
+  "unit-converter": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
+  "password-generator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "url-encoder": ["definition", "steps", "example", "mistakes", "faq"],
+  "base64-encoder": ["definition", "steps", "example", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {
@@ -214,11 +240,16 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
   if (!WITH_FULL_CONTENT.has(slug)) return null;
   const k = (key: string) => `${slug}.page.${key}`;
 
+  // Only tools with an explicit searchIntents key should request it. Other
+  // tools derive long-tail topics from their own FAQ questions; asking next-intl
+  // for a missing key logs noisy MISSING_MESSAGE errors during static builds.
   let intentText = "";
-  try {
-    intentText = t(k("searchIntents"));
-  } catch {
-    // Older locale files may not carry this key yet.
+  if (slug === "word-counter") {
+    try {
+      intentText = t(k("searchIntents"));
+    } catch {
+      // Fall back to FAQ questions below.
+    }
   }
 
   const base: Omit<ToolPageContent, "sections"> = {

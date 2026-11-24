@@ -105,12 +105,22 @@ export default function PasswordGenerator() {
 
   const variety =
     Number(useLower) + Number(useUpper) + Number(useNumbers) + Number(useSymbols);
+  const noGroups = variety === 0;
   const strength =
     length >= 16 && variety >= 3
       ? "strengthStrong"
       : length >= 12 && variety >= 2
         ? "strengthGood"
         : "strengthWeak";
+
+  const handleSample = () => {
+    setLength(DEFAULT_OPTIONS.length);
+    setUseLower(DEFAULT_OPTIONS.lower);
+    setUseUpper(DEFAULT_OPTIONS.upper);
+    setUseNumbers(DEFAULT_OPTIONS.numbers);
+    setUseSymbols(DEFAULT_OPTIONS.symbols);
+    setPassword(buildPassword(DEFAULT_OPTIONS));
+  };
 
   const handleReset = () => {
     setLength(DEFAULT_OPTIONS.length);
@@ -125,6 +135,8 @@ export default function PasswordGenerator() {
     <WorkspaceLayout
       title={tw("password-generator.title")}
       onReset={handleReset}
+      onSample={handleSample}
+      status={password ? tw("statusReady") : tw("statusIdle")}
       statusRight={password ? `${password.length} ${t("passwordLength")}` : undefined}
       input={
         <div className="flex flex-col gap-5">
@@ -177,15 +189,24 @@ export default function PasswordGenerator() {
             />
           </div>
 
-          <Button type="button" onClick={() => setPassword(buildPassword(options))}>
+          <Button
+            type="button"
+            disabled={noGroups}
+            onClick={() => setPassword(buildPassword(options))}
+          >
             <RefreshCw aria-hidden="true" />
             {t("generate")}
           </Button>
+          {noGroups ? (
+            <p role="alert" className="tp-workspace-error">
+              {t("error")}
+            </p>
+          ) : null}
         </div>
       }
       output={
         password ? (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" aria-live="polite">
             <code className="block break-all rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-4 font-mono text-[16px] leading-[1.6] text-[var(--text)]">
               {password}
             </code>

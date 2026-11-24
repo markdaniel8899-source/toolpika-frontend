@@ -33,7 +33,14 @@ const OG_LOCALES: Record<string, string> = {
 
 /** Tools a reader would realistically use next to the current task. */
 const CURATED_RELATED: Record<string, string[]> = {
-  "word-counter": ["case-converter", "base64-encoder", "url-encoder"],
+  "word-counter": ["case-converter", "json-formatter", "url-encoder", "unit-converter", "image-compressor"],
+  "case-converter": ["word-counter", "json-formatter", "base64-encoder", "unit-converter", "password-generator"],
+  "image-compressor": ["word-counter", "json-formatter", "base64-encoder"],
+  "json-formatter": ["word-counter", "case-converter", "image-compressor", "base64-encoder", "unit-converter"],
+  "unit-converter": ["word-counter", "case-converter", "json-formatter"],
+  "password-generator": ["base64-encoder", "url-encoder", "case-converter"],
+  "url-encoder": ["word-counter", "base64-encoder", "password-generator"],
+  "base64-encoder": ["case-converter", "image-compressor", "json-formatter", "url-encoder", "password-generator"],
 };
 
 /** Matches the contextual link written into each tool's page copy. */
@@ -44,7 +51,7 @@ const CONTEXTUAL_TOOL: Record<string, string> = {
   "json-formatter": "word-counter",
   "unit-converter": "case-converter",
   "password-generator": "case-converter",
-  "url-encoder": "case-converter",
+  "url-encoder": "base64-encoder",
   "base64-encoder": "case-converter",
 };
 

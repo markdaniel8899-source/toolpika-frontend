@@ -102,10 +102,19 @@ export default function UnitConverter() {
     setTo(DEFAULTS.length[1]);
   };
 
+  const handleSample = () => {
+    setCategory("length");
+    setValue("100");
+    setFrom("cm");
+    setTo("in");
+  };
+
   return (
     <WorkspaceLayout
       title={tw("unit-converter.title")}
       onReset={handleReset}
+      onSample={handleSample}
+      status={formatted ? tw("statusReady") : tw("statusIdle")}
       statusRight={formatted ? `${value} ${from} → ${formatted} ${to}` : undefined}
       input={
         <div className="flex flex-col gap-5">
@@ -175,7 +184,7 @@ export default function UnitConverter() {
       }
       output={
         formatted ? (
-          <div className="tp-result-card flex h-full flex-col justify-center gap-2">
+          <div className="tp-result-card flex h-full flex-col justify-center gap-2" aria-live="polite">
             <p className="text-sm text-[var(--muted)]">
               {value} {from} = {to}
             </p>

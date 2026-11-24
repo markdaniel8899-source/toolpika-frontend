@@ -291,7 +291,7 @@
         "exampleTitle": "Example",
         "exampleLabel": "Celsius to Fahrenheit",
         "exampleInput": "100\nFrom: c\nTo: f",
-        "exampleOutput": "100 c = f\n212 f",
+        "exampleOutput": "100 c = 212 f\nFormatted with up to six decimal places",
         "exampleNote": "Temperature conversion goes through Celsius, and this pair has an exact result.",
         "featuresTitle": "Features",
         "features": "Three categories::Length, weight and temperature each have their own unit lists.\nLive calculation::The result updates as soon as a value or unit changes.\nSwap units::Reverse From and To with one button.\nLocalised numbers::Formatting follows the language of your page.\nSix decimals::Results are rounded to at most six fractional digits.",

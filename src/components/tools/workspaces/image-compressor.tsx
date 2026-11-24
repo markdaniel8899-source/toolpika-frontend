@@ -45,6 +45,29 @@ export default function ImageCompressor() {
   const [errorCode, setErrorCode] = useState<"imageTooLarge" | "imageFailed" | null>(
     null
   );
+  const [dimensions, setDimensions] = useState<string | null>(null);
+
+  const handleSample = async () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 640;
+    canvas.height = 360;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    const gradient = context.createLinearGradient(0, 0, 640, 360);
+    gradient.addColorStop(0, "#5b4bff");
+    gradient.addColorStop(1, "#8a7cff");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 640, 360);
+    context.fillStyle = "#ffffff";
+    context.font = "600 32px sans-serif";
+    context.fillText("Toolpika sample image", 48, 190);
+
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/png")
+    );
+    if (!blob) return;
+    handleFile(new File([blob], "toolpika-sample.png", { type: "image/png" }));
+  };
 
   // Release the original object URL when the file changes or the tool unmounts.
   useEffect(() => {
@@ -67,6 +90,9 @@ export default function ImageCompressor() {
 
       try {
         const image = await loadImage(original.url);
+        if (!cancelled) {
+          setDimensions(`${image.naturalWidth} × ${image.naturalHeight}`);
+        }
         const maxSide = 4096;
         const scale = Math.min(
           1,
@@ -126,6 +152,7 @@ export default function ImageCompressor() {
 
     setErrorCode(null);
     setCompressed(null);
+    setDimensions(null);
     setOriginal({
       url: URL.createObjectURL(file),
       name: file.name,
@@ -147,12 +174,23 @@ export default function ImageCompressor() {
     setCompressed(null);
     setQuality(70);
     setErrorCode(null);
+    setDimensions(null);
   };
 
   return (
     <WorkspaceLayout
       title={tw("image-compressor.title")}
       onReset={handleReset}
+      onSample={() => void handleSample()}
+      status={
+        busy
+          ? tw("live")
+          : compressed
+            ? tw("statusReady")
+            : original
+              ? tw("statusIdle")
+              : undefined
+      }
       statusRight={compressed ? `${savedPercent}%` : undefined}
       input={
         <div className="flex flex-col gap-4">
@@ -207,13 +245,13 @@ export default function ImageCompressor() {
             />
           </div>
 
-          <p className="text-xs leading-[1.6] text-[var(--muted)]">
-            {t("imageNote")}
+          <p className="tp-workspace-hint" aria-live="polite">
+            {dimensions ? `${t("original")}: ${dimensions}` : t("imageNote")}
           </p>
         </div>
       }
       output={
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" aria-live="polite">
           {compressed ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -238,7 +276,7 @@ export default function ImageCompressor() {
             </>
           ) : (
             <OutputEmpty
-              message={busy ? t("quality") : t("chooseImage")}
+              message={busy ? tw("live") : t("chooseImage")}
               className="min-h-[200px]"
             />
           )}
