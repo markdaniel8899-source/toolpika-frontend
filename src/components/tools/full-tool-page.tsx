@@ -239,16 +239,18 @@ export function FullToolPage({
             <div className="tp-doc-section-head">
               <h3 id="tp-doc-use-cases" className="tp-doc-h3">{content.useCasesTitle}</h3>
             </div>
-            <div className="tp-doc-grid">
+            <div className="tp-doc-usecases">
               {content.useCases.map((useCase, index) => {
                 const Icon = USE_CASE_ICONS[index % USE_CASE_ICONS.length];
                 return (
-                  <article key={useCase.title} className="tp-doc-card tp-doc-card--use">
-                    <span className="tp-doc-card-icon" aria-hidden="true">
+                  <article key={useCase.title} className="tp-doc-usecase">
+                    <span className="tp-doc-usecase-icon" aria-hidden="true">
                       <Icon />
                     </span>
-                    <h4>{useCase.title}</h4>
-                    <p>{useCase.body}</p>
+                    <div>
+                      <h4>{useCase.title}</h4>
+                      <p>{useCase.body}</p>
+                    </div>
                   </article>
                 );
               })}
@@ -259,14 +261,16 @@ export function FullToolPage({
             <div className="tp-doc-section-head">
               <h3 id="tp-doc-mistakes" className="tp-doc-h3">{content.mistakesTitle}</h3>
             </div>
-            <div className="tp-doc-grid tp-doc-grid--plain">
+            <div className="tp-doc-mistakes">
               {content.mistakes.map((mistake) => (
-                <article key={mistake.title} className="tp-doc-card tp-doc-card--warn">
-                  <span className="tp-doc-card-icon" aria-hidden="true">
+                <article key={mistake.title} className="tp-doc-mistake">
+                  <span className="tp-doc-mistake-icon" aria-hidden="true">
                     <AlertTriangle />
                   </span>
-                  <h4>{mistake.title}</h4>
-                  <p>{mistake.body}</p>
+                  <div>
+                    <h4>{mistake.title}</h4>
+                    <p>{mistake.body}</p>
+                  </div>
                 </article>
               ))}
             </div>

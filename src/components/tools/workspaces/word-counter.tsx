@@ -135,7 +135,6 @@ export default function WordCounter() {
   const [text, setText] = useState("");
   const [goal, setGoal] = useState("");
   const [copied, setCopied] = useState(false);
-  const [focused, setFocused] = useState(false);
   const [notice, setNotice] = useState("");
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -296,32 +295,11 @@ export default function WordCounter() {
                 setCopied(false);
                 setNotice("");
               }}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
               aria-label={t("pasteText")}
+              placeholder={t("startTyping")}
               spellCheck
               className="tp-wc-textarea"
             />
-            {!hasText && !focused ? (
-              <button
-                type="button"
-                className="tp-wc-empty"
-                onClick={() => inputRef.current?.focus()}
-              >
-                <span className="tp-wc-empty-icon" aria-hidden="true">
-                  <FileText />
-                </span>
-                <span className="tp-wc-empty-title">{tw("pasteContent")}</span>
-                <span className="tp-wc-empty-hint">{tw("word-counter.emptyHint")}</span>
-                <span className="tp-wc-empty-kbd" aria-hidden="true">
-                  <kbd>Ctrl</kbd>
-                  <span>/</span>
-                  <kbd>⌘</kbd>
-                  <span>+</span>
-                  <kbd>V</kbd>
-                </span>
-              </button>
-            ) : null}
           </div>
 
           {notice ? (
