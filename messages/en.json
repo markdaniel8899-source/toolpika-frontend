@@ -707,5 +707,12 @@
     "text": "We use cookies to enhance your experience and analyze site traffic. By continuing, you agree to our use of cookies.",
     "acceptAll": "Accept All",
     "reject": "Reject Non-Essential"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "body": "The page could not be loaded. Your tools and data are safe. Try again, or return to the tool list.",
+    "retry": "Try again",
+    "home": "Back to all tools",
+    "detail": "Error reference: {digest}"
   }
 }

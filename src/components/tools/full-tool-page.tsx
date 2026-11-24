@@ -1,7 +1,5 @@
 import {
   AlertTriangle,
-  ArrowRight,
-  ArrowUpRight,
   ClipboardCheck,
   Copy as CopyIcon,
   Gauge,
@@ -41,8 +39,6 @@ export function FullToolPage({
   homeLabel,
   categoryLabel,
   relatedTitle,
-  aboutLinkLabel,
-  guidesLinkLabel,
   inputLabel,
   outputLabel,
   workspaceLabel,
@@ -63,8 +59,6 @@ export function FullToolPage({
   homeLabel: string;
   categoryLabel: string;
   relatedTitle: string;
-  aboutLinkLabel: string;
-  guidesLinkLabel: string;
   inputLabel: string;
   outputLabel: string;
   workspaceLabel: string;
@@ -362,28 +356,6 @@ export function FullToolPage({
           </div>
         </section>
       ) : null}
-
-      <Reveal>
-        <section className="tp-doc-trust">
-          <span className="tp-doc-trust-icon" aria-hidden="true">
-            <ShieldCheck />
-          </span>
-          <div>
-            <h2>{content.trustTitle}</h2>
-            <p>{content.trustBody}</p>
-            <div className="tp-doc-trust-links">
-              <Link href="/about" className="tp-text-link tp-doc-trust-link">
-                {aboutLinkLabel}
-                <ArrowRight aria-hidden="true" />
-              </Link>
-              <Link href="/guides" className="tp-text-link tp-doc-trust-link">
-                {guidesLinkLabel}
-                <ArrowUpRight aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
-        </section>
-      </Reveal>
     </main>
   );
 }

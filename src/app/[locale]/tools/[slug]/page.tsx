@@ -133,7 +133,6 @@ export default async function ToolPage({ params }: LocalePageProps) {
   const t = await getTranslations({ locale, namespace: "tools" });
   const tHow = await getTranslations({ locale, namespace: "toolPage" });
   const tUi = await getTranslations({ locale, namespace: "toolUi" });
-  const tNav = await getTranslations({ locale, namespace: "nav" });
 
   const toolTitle = t(toolTitleKey(tool));
   const pageDescription = t(toolSeoDescriptionKey(tool));
@@ -211,8 +210,6 @@ export default async function ToolPage({ params }: LocalePageProps) {
         homeLabel={t("home")}
         categoryLabel={categoryLabel}
         relatedTitle={tHow("relatedTitle")}
-        aboutLinkLabel={t("aboutLink")}
-        guidesLinkLabel={tNav("guides")}
         inputLabel={t("input")}
         outputLabel={t("result")}
         workspaceLabel={t("workspaceLabel", { title: toolTitle })}
