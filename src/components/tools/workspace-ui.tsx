@@ -115,10 +115,7 @@ export function CheckboxRow({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label
-      htmlFor={id}
-      className="flex cursor-pointer items-center gap-3 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 text-sm text-[var(--text)] transition-colors hover:border-[var(--accent)]"
-    >
+    <div className="tp-check-row">
       <input
         id={id}
         type="checkbox"
@@ -126,8 +123,8 @@ export function CheckboxRow({
         onChange={(event) => onChange(event.target.checked)}
         className="tp-checkbox"
       />
-      {label}
-    </label>
+      <label htmlFor={id} className="tp-check-label">{label}</label>
+    </div>
   );
 }
 

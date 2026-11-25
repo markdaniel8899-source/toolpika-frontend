@@ -273,6 +273,7 @@ export default function RegexTester() {
                 >
                   <input
                     type="checkbox"
+                    className="tp-checkbox"
                     checked={options.flags.includes(flag.value)}
                     onChange={() => toggleFlag(flag.value)}
                   />

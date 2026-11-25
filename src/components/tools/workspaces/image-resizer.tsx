@@ -498,12 +498,6 @@ export default function ImageResizer() {
                 </div>
               </ToolField>
             </div>
-            <DownloadButton
-              content={output?.blob ?? null}
-              fileName={downloadName}
-              label={t("download")}
-              className="tp-full-button"
-            />
           </div>
 
           <div aria-live="polite">
@@ -530,6 +524,13 @@ export default function ImageResizer() {
               />
             )}
           </div>
+
+          <DownloadButton
+            content={output?.blob ?? null}
+            fileName={downloadName}
+            label={t("download")}
+            className="tp-full-button"
+          />
         </ToolPane>
       }
     />

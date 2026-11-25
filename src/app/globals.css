@@ -8692,7 +8692,7 @@ html:lang(hi) .tp-tool-hero-accent {
   box-shadow: 0 14px 34px color-mix(in srgb, var(--text) 14%, transparent);
 }
 
-/* Focus: solid accent border plus a soft, small blur instead of a hard ring. */
+/* Focus: soft blurred glow only, never a hard solid ring around the field. */
 .tp-field-input:focus,
 .tp-field-input:focus-visible,
 .tp-tool-field:focus,
@@ -8707,10 +8707,8 @@ html:lang(hi) .tp-tool-hero-accent {
 input[type="text"]:focus,
 input[type="number"]:focus {
   outline: none;
-  border-color: var(--accent) !important;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent) 62%, transparent),
-    0 3px 12px color-mix(in srgb, var(--accent) 14%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border)) !important;
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--accent) 20%, transparent) !important;
 }
 
 /* No OS spin arrows. Integer fields use the shared custom stepper instead. */
@@ -8745,10 +8743,8 @@ input[type="number"] {
 
 .tp-stepper input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent) 62%, transparent),
-    0 3px 12px color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .tp-stepper-controls {
@@ -8833,6 +8829,16 @@ input[type="number"] {
 .tp-locale-menu::-webkit-scrollbar-thumb {
   border-radius: 99px;
   background: color-mix(in srgb, var(--text-muted) 50%, transparent);
+}
+
+.tp-locale-menu::-webkit-scrollbar-button,
+.tp-locale-menu::-webkit-scrollbar-button:vertical:start,
+.tp-locale-menu::-webkit-scrollbar-button:vertical:end,
+.tp-locale-menu::-webkit-scrollbar-button:horizontal:start,
+.tp-locale-menu::-webkit-scrollbar-button:horizontal:end {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* A generated UUID row is also a copy target. */
@@ -8950,4 +8956,83 @@ input[type="number"] {
 
 .tp-full-button {
   width: 100%;
+}
+
+/* Checkboxes: interaction lives on the box, not on the whole option row. */
+.tp-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  color: var(--text);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.tp-check-label {
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tp-checkbox,
+.tp-tool-check input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  width: 17px;
+  height: 17px;
+  flex: none;
+  place-content: center;
+  border: 1px solid var(--border-strong, var(--border));
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--text) 6%, transparent);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease,
+    box-shadow var(--dur-fast) ease;
+}
+
+.tp-checkbox::after,
+.tp-tool-check input[type="checkbox"]::after {
+  content: "";
+  width: 8px;
+  height: 4px;
+  border-bottom: 2px solid var(--on-accent);
+  border-left: 2px solid var(--on-accent);
+  opacity: 0;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.tp-checkbox:hover:not(:checked),
+.tp-tool-check input[type="checkbox"]:hover:not(:checked) {
+  border-color: var(--accent);
+}
+
+.tp-checkbox:checked,
+.tp-tool-check input[type="checkbox"]:checked {
+  border-color: var(--accent-fill);
+  background: var(--accent-fill);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.tp-checkbox:checked::after,
+.tp-tool-check input[type="checkbox"]:checked::after {
+  opacity: 1;
+}
+
+.tp-checkbox:focus-visible,
+.tp-tool-check input[type="checkbox"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.tp-tool-check {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tp-tool-check:hover {
+  border-color: transparent;
+  background: transparent;
 }
