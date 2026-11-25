@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import {
+  Calculator,
   FileText,
   Image,
   Code,
@@ -21,6 +22,8 @@ export interface Tool {
   inputs: ToolInput[];
   clientSide: boolean;
   status: "draft" | "live" | "hidden";
+  /** Explicitly tagged so the New filter shows curated recent arrivals. */
+  isNew?: boolean;
 }
 
 const CATEGORY_ICONS: Record<ToolCategory, ComponentType> = {
@@ -30,7 +33,7 @@ const CATEGORY_ICONS: Record<ToolCategory, ComponentType> = {
   code: Code,
   converter: LayoutGrid,
   security: Shield,
-  calculator: LayoutGrid,
+  calculator: Calculator,
 };
 
 /**
@@ -218,6 +221,126 @@ export const tools: Tool[] = [
     clientSide: true,
     status: "live",
   },
+  {
+    id: "lorem-ipsum-generator",
+    slug: "lorem-ipsum-generator",
+    title: "Lorem Ipsum Generator",
+    category: "text",
+    description: "Generate placeholder paragraphs, sentences or words.",
+    icon: "Braces",
+    inputs: [],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "text-diff-checker",
+    slug: "text-diff-checker",
+    title: "Text Diff Checker",
+    category: "text",
+    description: "Compare two texts line by line or word by word.",
+    icon: "Diff",
+    inputs: ["text"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "uuid-generator",
+    slug: "uuid-generator",
+    title: "UUID Generator",
+    category: "code",
+    description: "Generate RFC 4122 version 4 UUIDs in bulk.",
+    icon: "Hash",
+    inputs: [],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "jwt-decoder",
+    slug: "jwt-decoder",
+    title: "JWT Decoder",
+    category: "security",
+    description: "Inspect JWT headers, payloads and claims locally.",
+    icon: "KeyRound",
+    inputs: ["text"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "regex-tester",
+    slug: "regex-tester",
+    title: "Regex Tester",
+    category: "code",
+    description: "Test regular expressions with flags and live matches.",
+    icon: "Regex",
+    inputs: ["text"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "percentage-calculator",
+    slug: "percentage-calculator",
+    title: "Percentage Calculator",
+    category: "calculator",
+    description: "Solve common percentage problems in one click.",
+    icon: "Percent",
+    inputs: ["text"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "aspect-ratio-calculator",
+    slug: "aspect-ratio-calculator",
+    title: "Aspect Ratio Calculator",
+    category: "calculator",
+    description: "Scale dimensions while keeping the same ratio.",
+    icon: "Ruler",
+    inputs: ["text"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "utm-builder",
+    slug: "utm-builder",
+    title: "UTM Builder",
+    category: "converter",
+    description: "Build tracked campaign URLs from a base URL.",
+    icon: "Link2",
+    inputs: ["url"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "hash-generator",
+    slug: "hash-generator",
+    title: "Hash Generator",
+    category: "security",
+    description: "Compute SHA-1, SHA-256 and SHA-512 hashes locally.",
+    icon: "Fingerprint",
+    inputs: ["text"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
+  {
+    id: "image-resizer",
+    slug: "image-resizer",
+    title: "Image Resizer",
+    category: "image",
+    description: "Resize JPEG, PNG and WebP images in your browser.",
+    icon: "Maximize2",
+    inputs: ["file"],
+    clientSide: true,
+    status: "live",
+    isNew: true,
+  },
 ];
 
 export type ToolCategoryKey = ToolCategory;
@@ -228,6 +351,7 @@ export const categories = [
   { slug: "code", label: "Code", Icon: CATEGORY_ICONS.code },
   { slug: "converter", label: "Converters", Icon: CATEGORY_ICONS.converter },
   { slug: "security", label: "Security", Icon: CATEGORY_ICONS.security },
+  { slug: "calculator", label: "Calculators", Icon: CATEGORY_ICONS.calculator },
 ] as const;
 
 export function getTool(slug: string) {
@@ -263,8 +387,23 @@ export function getLiveTools() {
   return tools.filter((tool) => tool.status === "live");
 }
 
+/** The curated set shown by the New page and the all-tools New filter. */
+export function getNewTools() {
+  const flagged = getLiveTools().filter((tool) => tool.isNew);
+  return flagged.length > 0 ? flagged : getLiveTools().slice(-4).reverse();
+}
+
 export function getToolsByCategory(category: ToolCategory) {
   return getLiveTools().filter((tool) => tool.category === category);
+}
+
+/**
+ * A thin category (fewer than three live tools) stays reachable from the
+ * browser but is kept out of the sitemap and marked noindex, following the
+ * site's category rules.
+ */
+export function isCategoryIndexable(category: string) {
+  return getToolsByCategory(category as ToolCategory).length >= 3;
 }
 
 /**

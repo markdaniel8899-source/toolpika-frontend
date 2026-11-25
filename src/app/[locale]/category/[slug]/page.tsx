@@ -9,6 +9,7 @@ import { CategoryBrowser } from "@/components/tools/category-browser";
 import {
   categories,
   getToolsByCategory,
+  isCategoryIndexable,
   categoryKey,
   toolTitleKey,
 } from "@/lib/tools/registry";
@@ -34,6 +35,10 @@ export async function generateMetadata({
     title: t("title", { name: label }),
     description: t("description", { name: label }),
     alternates: localizedAlternates(locale, `/category/${slug}`),
+    robots: {
+      index: isCategoryIndexable(slug),
+      follow: true,
+    },
   };
 }
 

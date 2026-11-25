@@ -1,0 +1,581 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Image as ImageIcon, LoaderCircle, RotateCcw, Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DownloadButton,
+  SegmentedControl,
+  Stat,
+  ToolBadge,
+  ToolEmpty,
+  ToolField,
+  ToolPane,
+  ToolShell,
+  usePersistedOptions,
+} from "../workspace-ui";
+import {
+  ACCEPTED_TYPES,
+  MAX_CANVAS_SIDE,
+  MAX_FILE_BYTES,
+  extensionForFormat,
+  fitWithin,
+  formatBytes,
+  parseFileName,
+  type AspectLock,
+  type ImageFormat,
+} from "./image-resizer.logic";
+
+type ResizeOptions = {
+  width: string;
+  height: string;
+  lock: AspectLock;
+  format: ImageFormat;
+  quality: number;
+};
+
+interface LoadedImage {
+  url: string;
+  name: string;
+  size: number;
+  width: number;
+  height: number;
+}
+
+interface OutputImage {
+  url: string;
+  blob: Blob;
+  size: number;
+  width: number;
+  height: number;
+}
+
+interface DecodedImage {
+  source: CanvasImageSource;
+  width: number;
+  height: number;
+  close: () => void;
+}
+
+type ResizeErrorCode = "unsupported" | "tooLarge" | "decodeFailed" | "canvasLimit" | "resizeFailed";
+
+const DEFAULT_OPTIONS: ResizeOptions = {
+  width: "",
+  height: "",
+  lock: "auto",
+  format: "image/jpeg",
+  quality: 0.82,
+};
+
+/** Decode a file once; the browser adapter stays inside this client component. */
+async function decodeSource(file: File, url: string): Promise<DecodedImage> {
+  if (typeof globalThis.createImageBitmap === "function") {
+    try {
+      const bitmap = await globalThis.createImageBitmap(file);
+      return {
+        source: bitmap,
+        width: bitmap.width,
+        height: bitmap.height,
+        close: () => bitmap.close(),
+      };
+    } catch {
+      // Older browsers may reject some files; fall back to an Image element.
+    }
+  }
+
+  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const element = new globalThis.Image();
+    element.onload = () => resolve(element);
+    element.onerror = () => reject(new Error("decode_failed"));
+    element.src = url;
+  });
+
+  return {
+    source: image,
+    width: image.naturalWidth,
+    height: image.naturalHeight,
+    close: () => undefined,
+  };
+}
+
+function cssToken(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function parseDimension(value: string): number | undefined {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+}
+
+export default function ImageResizer() {
+  const t = useTranslations("toolUi");
+  const tw = useTranslations("tools");
+  const { options, update, reset: resetOptions } = usePersistedOptions(
+    "toolpika:image-resizer:options",
+    DEFAULT_OPTIONS,
+  );
+
+  const [loaded, setLoaded] = useState<LoadedImage | null>(null);
+  const [output, setOutput] = useState<OutputImage | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const [errorCode, setErrorCode] = useState<ResizeErrorCode | null>(null);
+
+  const sourceRef = useRef<DecodedImage | null>(null);
+  const renderIdRef = useRef(0);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const releaseSource = useCallback(() => {
+    if (sourceRef.current) {
+      sourceRef.current.close();
+      sourceRef.current = null;
+    }
+  }, []);
+
+  // Object URLs belong to the file itself, not to a particular output render.
+  useEffect(() => {
+    if (!loaded) return;
+    return () => URL.revokeObjectURL(loaded.url);
+  }, [loaded]);
+
+  useEffect(() => {
+    return () => releaseSource();
+  }, [releaseSource]);
+
+  // Re-encode on every option change. A request id discards stale renders.
+  useEffect(() => {
+    const source = sourceRef.current;
+    if (!loaded || !source) return;
+
+    const requestId = ++renderIdRef.current;
+    let outputUrl: string | null = null;
+    setOutput(null);
+    setErrorCode(null);
+    setBusy(true);
+
+    const target = fitWithin(
+      loaded.width,
+      loaded.height,
+      parseDimension(options.width),
+      parseDimension(options.height),
+      options.lock,
+    );
+
+    const fail = (code: ResizeErrorCode) => {
+      if (requestRefMismatch()) return;
+      setErrorCode(code);
+      setBusy(false);
+    };
+
+    const requestRefMismatch = () => requestId !== renderIdRef.current;
+
+    if (target.width > MAX_CANVAS_SIDE || target.height > MAX_CANVAS_SIDE) {
+      fail("canvasLimit");
+      return () => {
+        renderIdRef.current += 1;
+      };
+    }
+
+    const run = async () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = target.width;
+        canvas.height = target.height;
+        const context = canvas.getContext("2d");
+        if (!context) {
+          fail("resizeFailed");
+          return;
+        }
+
+        // JPEG has no alpha channel; flatten onto the page surface token.
+        if (options.format === "image/jpeg") {
+          const surface = cssToken("--surface") || cssToken("--background");
+          if (surface) {
+            context.fillStyle = surface;
+            context.fillRect(0, 0, target.width, target.height);
+          }
+        }
+
+        context.drawImage(source.source, 0, 0, target.width, target.height);
+
+        const blob = await new Promise<Blob | null>((resolve) => {
+          canvas.toBlob(resolve, options.format, options.quality);
+        });
+
+        if (!blob) {
+          fail("resizeFailed");
+          return;
+        }
+        if (requestRefMismatch()) return;
+
+        outputUrl = URL.createObjectURL(blob);
+        setOutput({
+          url: outputUrl,
+          blob,
+          size: blob.size,
+          width: target.width,
+          height: target.height,
+        });
+        setBusy(false);
+      } catch {
+        fail("resizeFailed");
+      }
+    };
+
+    void run();
+
+    return () => {
+      renderIdRef.current += 1;
+      if (outputUrl) URL.revokeObjectURL(outputUrl);
+    };
+  }, [loaded, options]);
+
+  const loadFile = useCallback(
+    async (candidate: File | undefined) => {
+      if (!candidate) return;
+
+      if (!(ACCEPTED_TYPES as readonly string[]).includes(candidate.type)) {
+        setErrorCode("unsupported");
+        return;
+      }
+      if (candidate.size > MAX_FILE_BYTES) {
+        setErrorCode("tooLarge");
+        return;
+      }
+
+      setErrorCode(null);
+      setBusy(true);
+      const url = URL.createObjectURL(candidate);
+
+      try {
+        const decoded = await decodeSource(candidate, url);
+        releaseSource();
+        sourceRef.current = decoded;
+        setLoaded({
+          url,
+          name: candidate.name,
+          size: candidate.size,
+          width: decoded.width,
+          height: decoded.height,
+        });
+        update({
+          width: String(decoded.width),
+          height: String(decoded.height),
+          lock: "auto",
+        });
+      } catch {
+        URL.revokeObjectURL(url);
+        setErrorCode("decodeFailed");
+        setBusy(false);
+      }
+    },
+    [releaseSource, update],
+  );
+
+  const handleSample = async () => {
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = 640;
+      canvas.height = 360;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        setErrorCode("resizeFailed");
+        return;
+      }
+
+      const accent = cssToken("--accent");
+      const raised = cssToken("--surface-raised") || cssToken("--surface");
+      const textColor = cssToken("--text");
+
+      if (accent && raised) {
+        const gradient = context.createLinearGradient(0, 0, 640, 360);
+        gradient.addColorStop(0, accent);
+        gradient.addColorStop(1, raised);
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, 640, 360);
+      }
+      if (textColor) {
+        context.fillStyle = textColor;
+        context.font = "600 32px sans-serif";
+        context.fillText("Toolpika sample image", 48, 190);
+      }
+
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, "image/png");
+      });
+      if (!blob) {
+        setErrorCode("resizeFailed");
+        return;
+      }
+
+      await loadFile(new File([blob], "toolpika-sample.png", { type: "image/png" }));
+    } catch {
+      setErrorCode("resizeFailed");
+    }
+  };
+
+  const handleReset = () => {
+    setLoaded(null);
+    setOutput(null);
+    setErrorCode(null);
+    setDragging(false);
+    releaseSource();
+    resetOptions();
+  };
+
+  const resetSize = () => {
+    if (!loaded) return;
+    update({
+      width: String(loaded.width),
+      height: String(loaded.height),
+      lock: "auto",
+    });
+  };
+
+  const errorMessage = errorCode
+    ? errorCode === "unsupported"
+      ? tw("image-resizer.errorUnsupported")
+      : errorCode === "tooLarge"
+        ? tw("image-resizer.errorTooLarge")
+        : errorCode === "decodeFailed"
+          ? tw("image-resizer.errorDecode")
+          : errorCode === "canvasLimit"
+            ? tw("image-resizer.errorCanvasLimit")
+            : tw("image-resizer.errorResize")
+    : "";
+
+  const savedPercent =
+    loaded && output && loaded.size > 0
+      ? Math.max(0, Math.round((1 - output.size / loaded.size) * 100))
+      : 0;
+
+  const downloadName = loaded
+    ? `${parseFileName(loaded.name).base || tw("image-resizer.defaultFileName")}-resized.${extensionForFormat(options.format)}`
+    : `${tw("image-resizer.defaultFileName")}-resized.${extensionForFormat(options.format)}`;
+
+  const statusLabel = busy
+    ? tw("image-resizer.processing")
+    : output
+      ? tw("image-resizer.ready")
+      : tw("image-resizer.waiting");
+  const statusTone = busy ? "accent" : output ? "success" : "neutral";
+
+  const lockOptions: { value: AspectLock; label: string }[] = [
+    { value: "width", label: tw("image-resizer.lockWidth") },
+    { value: "height", label: tw("image-resizer.lockHeight") },
+    { value: "auto", label: tw("image-resizer.lockUnlocked") },
+  ];
+
+  const formatOptions: { value: ImageFormat; label: string }[] = [
+    { value: "image/jpeg", label: tw("image-resizer.formatJpeg") },
+    { value: "image/png", label: tw("image-resizer.formatPng") },
+    { value: "image/webp", label: tw("image-resizer.formatWebp") },
+  ];
+
+  return (
+    <ToolShell
+      title={tw("image-resizer.title")}
+      subtitle={tw("image-resizer.subtitle")}
+      icon="Maximize2"
+      sampleLabel={tw("image-resizer.trySample")}
+      resetLabel={tw("image-resizer.reset")}
+      privacyLabel={tw("image-resizer.privacyLabel")}
+      onSample={() => void handleSample()}
+      onReset={handleReset}
+      ribbonRight={<ToolBadge tone="accent">{options.format.split("/")[1]?.toUpperCase()}</ToolBadge>}
+      input={
+        <ToolPane
+          id="resize-input-title"
+          title={tw("image-resizer.inputTitle")}
+          hint={tw("image-resizer.inputHint")}
+          actions={
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="h-3.5 w-3.5" aria-hidden="true" />
+              {t("chooseImage")}
+            </Button>
+          }
+          footer={loaded ? tw("image-resizer.replaceHint") : tw("image-resizer.dropHint")}
+        >
+          <label
+            className="tp-tool-drop"
+            data-dragging={dragging ? "true" : undefined}
+            onDragOver={(event) => {
+              event.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(event) => {
+              event.preventDefault();
+              setDragging(false);
+              void loadFile(event.dataTransfer.files[0]);
+            }}
+          >
+            <Upload className="h-5 w-5" aria-hidden="true" />
+            <strong>{loaded ? loaded.name : t("chooseImage")}</strong>
+            <span>{loaded ? tw("image-resizer.fileHint") : t("dropImage")}</span>
+            <input
+              ref={fileInputRef}
+              id="resize-file"
+              type="file"
+              accept={ACCEPTED_TYPES.join(",")}
+              className="sr-only"
+              onChange={(event) => {
+                void loadFile(event.target.files?.[0]);
+                event.target.value = "";
+              }}
+            />
+          </label>
+
+          {loaded ? (
+            <dl className="tp-tool-stats">
+              <Stat label={tw("image-resizer.originalSize")} value={formatBytes(loaded.size)} />
+              <Stat
+                label={tw("image-resizer.originalDimensions")}
+                value={`${loaded.width} × ${loaded.height}`}
+              />
+            </dl>
+          ) : null}
+
+          {errorMessage ? (
+            <p className="tp-tool-error" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
+        </ToolPane>
+      }
+      result={
+        <ToolPane
+          id="resize-result-title"
+          title={t("result")}
+          hint={tw("image-resizer.resultHint")}
+          result
+          actions={
+            <>
+              <ToolBadge tone={statusTone}>{statusLabel}</ToolBadge>
+              <DownloadButton
+                content={output?.blob ?? null}
+                fileName={downloadName}
+                label={t("download")}
+              />
+            </>
+          }
+          footer={tw("image-resizer.localFooter")}
+        >
+          {output ? (
+            <div className="tp-tool-result">
+              <div className="tp-tool-preview">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={output.url} alt={tw("image-resizer.previewAlt")} />
+              </div>
+              <dl className="tp-tool-stats">
+                <Stat
+                  label={tw("image-resizer.outputDimensions")}
+                  value={`${output.width} × ${output.height}`}
+                />
+                <Stat label={tw("image-resizer.outputSize")} value={formatBytes(output.size)} />
+                <Stat label={tw("image-resizer.savedPercent")} value={`${savedPercent}%`} />
+              </dl>
+            </div>
+          ) : (
+            <ToolEmpty
+              icon={busy ? <LoaderCircle /> : <ImageIcon />}
+              title={busy ? tw("image-resizer.processing") : tw("image-resizer.emptyTitle")}
+              hint={busy ? tw("image-resizer.processingHint") : tw("image-resizer.emptyHint")}
+            />
+          )}
+        </ToolPane>
+      }
+      options={
+        <>
+          <div className="tp-tool-options-head">
+            <h3>{tw("image-resizer.optionsTitle")}</h3>
+            <Button type="button" size="sm" variant="ghost" onClick={resetSize} disabled={!loaded}>
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+              {tw("image-resizer.resetSize")}
+            </Button>
+          </div>
+          <div className="tp-tool-options-grid">
+            <ToolField label={tw("image-resizer.width")} htmlFor="resize-width">
+              <input
+                id="resize-width"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={MAX_CANVAS_SIDE}
+                className="tp-tool-field"
+                value={options.width}
+                onChange={(event) => update({ width: event.target.value })}
+              />
+            </ToolField>
+            <ToolField label={tw("image-resizer.height")} htmlFor="resize-height">
+              <input
+                id="resize-height"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={MAX_CANVAS_SIDE}
+                className="tp-tool-field"
+                value={options.height}
+                onChange={(event) => update({ height: event.target.value })}
+              />
+            </ToolField>
+            <ToolField label={tw("image-resizer.aspectLock")}>
+              <SegmentedControl
+                label={tw("image-resizer.aspectLock")}
+                value={options.lock}
+                options={lockOptions}
+                onChange={(value) => update({ lock: value })}
+              />
+            </ToolField>
+            <ToolField label={tw("image-resizer.format")} htmlFor="resize-format">
+              <select
+                id="resize-format"
+                className="tp-tool-select"
+                value={options.format}
+                onChange={(event) => update({ format: event.target.value as ImageFormat })}
+              >
+                {formatOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </ToolField>
+            <ToolField
+              label={t("quality")}
+              htmlFor="resize-quality"
+              hint={
+                options.format === "image/png"
+                  ? tw("image-resizer.qualityPngHint")
+                  : tw("image-resizer.qualityHint")
+              }
+            >
+              <div className="tp-tool-group">
+                <input
+                  id="resize-quality"
+                  type="range"
+                  min={0.1}
+                  max={1}
+                  step={0.01}
+                  className="tp-tool-range"
+                  value={options.quality}
+                  disabled={options.format === "image/png"}
+                  onChange={(event) => update({ quality: Number(event.target.value) })}
+                />
+                <span className="tp-tool-hint">
+                  {Math.round(options.quality * 100)}%
+                </span>
+              </div>
+            </ToolField>
+          </div>
+        </>
+      }
+    />
+  );
+}

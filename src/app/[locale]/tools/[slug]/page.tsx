@@ -32,44 +32,67 @@ const OG_LOCALES: Record<string, string> = {
   hi: "hi_IN",
 };
 
-/** Tools a reader would realistically use next to the current task. */
+/**
+ * Tools a reader would realistically use next to the current task.
+ * Every edge is mutual: if A lists B, B also lists A.
+ */
 const CURATED_RELATED: Record<string, string[]> = {
-  "word-counter": ["case-converter", "json-formatter", "markdown-to-html", "url-encoder", "unit-converter", "image-compressor"],
-  "case-converter": ["word-counter", "slug-generator", "markdown-to-html", "json-formatter", "base64-encoder", "unit-converter", "password-generator"],
-  "image-compressor": ["word-counter", "color-converter", "json-formatter", "base64-encoder"],
-  "json-formatter": ["word-counter", "case-converter", "json-to-csv", "yaml-to-json", "image-compressor", "base64-encoder", "unit-converter"],
-  "unit-converter": ["word-counter", "case-converter", "number-base-converter", "data-storage-converter", "color-converter", "json-formatter"],
-  "password-generator": ["base64-encoder", "number-base-converter", "url-encoder", "case-converter"],
-  "url-encoder": ["word-counter", "slug-generator", "base64-encoder", "password-generator"],
-  "base64-encoder": ["case-converter", "yaml-to-json", "json-to-csv", "image-compressor", "json-formatter", "url-encoder", "password-generator"],
-  "json-to-csv": ["json-formatter", "yaml-to-json", "markdown-to-html", "case-converter"],
-  "markdown-to-html": ["slug-generator", "json-to-csv", "word-counter", "case-converter"],
-  "color-converter": ["unit-converter", "data-storage-converter", "number-base-converter"],
-  "number-base-converter": ["unit-converter", "base64-encoder", "color-converter"],
-  "timestamp-converter": ["number-base-converter", "data-storage-converter", "json-formatter"],
-  "data-storage-converter": ["unit-converter", "timestamp-converter", "color-converter"],
-  "slug-generator": ["case-converter", "markdown-to-html", "url-encoder"],
-  "yaml-to-json": ["json-formatter", "json-to-csv", "base64-encoder"],
+  "word-counter": ["text-diff-checker", "case-converter", "lorem-ipsum-generator", "markdown-to-html", "url-encoder", "image-compressor"],
+  "case-converter": ["slug-generator", "word-counter", "markdown-to-html", "json-formatter", "base64-encoder", "password-generator"],
+  "image-compressor": ["image-resizer", "base64-encoder", "color-converter", "word-counter", "percentage-calculator", "aspect-ratio-calculator"],
+  "json-formatter": ["json-to-csv", "yaml-to-json", "case-converter", "regex-tester", "base64-encoder", "timestamp-converter"],
+  "unit-converter": ["percentage-calculator", "number-base-converter", "data-storage-converter", "color-converter"],
+  "password-generator": ["hash-generator", "jwt-decoder", "uuid-generator", "base64-encoder", "url-encoder", "case-converter"],
+  "url-encoder": ["utm-builder", "word-counter", "slug-generator", "base64-encoder", "password-generator"],
+  "base64-encoder": ["image-compressor", "json-formatter", "json-to-csv", "url-encoder", "password-generator", "case-converter"],
+  "json-to-csv": ["json-formatter", "yaml-to-json", "markdown-to-html", "base64-encoder"],
+  "markdown-to-html": ["lorem-ipsum-generator", "slug-generator", "word-counter", "case-converter", "json-to-csv", "text-diff-checker"],
+  "color-converter": ["number-base-converter", "unit-converter", "image-compressor", "image-resizer"],
+  "number-base-converter": ["color-converter", "unit-converter", "data-storage-converter", "uuid-generator", "jwt-decoder", "hash-generator"],
+  "timestamp-converter": ["data-storage-converter", "jwt-decoder", "regex-tester", "json-formatter"],
+  "data-storage-converter": ["timestamp-converter", "unit-converter", "number-base-converter", "image-resizer"],
+  "slug-generator": ["case-converter", "url-encoder", "markdown-to-html", "utm-builder"],
+  "yaml-to-json": ["regex-tester", "json-formatter", "json-to-csv"],
+  "lorem-ipsum-generator": ["markdown-to-html", "word-counter", "text-diff-checker"],
+  "text-diff-checker": ["word-counter", "lorem-ipsum-generator", "markdown-to-html", "regex-tester", "utm-builder"],
+  "uuid-generator": ["jwt-decoder", "password-generator", "number-base-converter", "regex-tester"],
+  "jwt-decoder": ["uuid-generator", "timestamp-converter", "password-generator", "hash-generator", "regex-tester", "number-base-converter"],
+  "regex-tester": ["yaml-to-json", "text-diff-checker", "json-formatter", "timestamp-converter", "jwt-decoder", "uuid-generator"],
+  "percentage-calculator": ["unit-converter", "aspect-ratio-calculator", "image-compressor"],
+  "aspect-ratio-calculator": ["image-resizer", "image-compressor", "percentage-calculator"],
+  "utm-builder": ["url-encoder", "slug-generator", "text-diff-checker"],
+  "hash-generator": ["password-generator", "jwt-decoder", "number-base-converter"],
+  "image-resizer": ["aspect-ratio-calculator", "image-compressor", "color-converter", "data-storage-converter"],
 };
 
-/** Matches the contextual link written into each tool's page copy. */
+/** Matches the contextual %%TOOL%% link written into each tool's About copy. */
 const CONTEXTUAL_TOOL: Record<string, string> = {
-  "word-counter": "case-converter",
-  "case-converter": "word-counter",
-  "image-compressor": "word-counter",
-  "json-formatter": "word-counter",
-  "unit-converter": "case-converter",
-  "password-generator": "case-converter",
-  "url-encoder": "base64-encoder",
-  "base64-encoder": "case-converter",
-  "json-to-csv": "json-formatter",
-  "markdown-to-html": "slug-generator",
-  "color-converter": "unit-converter",
-  "number-base-converter": "base64-encoder",
-  "timestamp-converter": "number-base-converter",
-  "data-storage-converter": "unit-converter",
+  "word-counter": "text-diff-checker",
+  "text-diff-checker": "word-counter",
+  "case-converter": "slug-generator",
   "slug-generator": "case-converter",
-  "yaml-to-json": "json-formatter",
+  "lorem-ipsum-generator": "markdown-to-html",
+  "markdown-to-html": "lorem-ipsum-generator",
+  "json-formatter": "json-to-csv",
+  "json-to-csv": "json-formatter",
+  "yaml-to-json": "regex-tester",
+  "regex-tester": "yaml-to-json",
+  "base64-encoder": "image-compressor",
+  "image-compressor": "base64-encoder",
+  "image-resizer": "aspect-ratio-calculator",
+  "aspect-ratio-calculator": "image-resizer",
+  "percentage-calculator": "unit-converter",
+  "unit-converter": "percentage-calculator",
+  "color-converter": "number-base-converter",
+  "number-base-converter": "color-converter",
+  "timestamp-converter": "data-storage-converter",
+  "data-storage-converter": "timestamp-converter",
+  "password-generator": "hash-generator",
+  "hash-generator": "password-generator",
+  "uuid-generator": "jwt-decoder",
+  "jwt-decoder": "uuid-generator",
+  "utm-builder": "url-encoder",
+  "url-encoder": "utm-builder",
 };
 
 type LocalePageProps = {
@@ -138,6 +161,7 @@ function getCategoryLabel(
     code: t("catCode"),
     converter: t("catConverter"),
     security: t("catSecurity"),
+    calculator: t("catCalculator"),
   };
   return map[category] ?? category;
 }

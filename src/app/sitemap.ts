@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { getSiteUrl } from "@/lib/site-url";
-import { categories, getLiveTools } from "@/lib/tools/registry";
+import { categories, getLiveTools, isCategoryIndexable } from "@/lib/tools/registry";
 
 const SITE_URL = getSiteUrl();
 
@@ -28,7 +28,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "/privacy",
       "/terms",
       "/contact",
-      ...categories.map((category) => `/category/${category.slug}`),
+      ...categories
+        .filter((category) => isCategoryIndexable(category.slug))
+        .map((category) => `/category/${category.slug}`),
       ...tools.map((tool) => `/tools/${tool.slug}`),
     ];
 

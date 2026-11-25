@@ -23,6 +23,16 @@ const TimestampConverter = dynamic(() => import("./workspaces/timestamp-converte
 const DataStorageConverter = dynamic(() => import("./workspaces/data-storage-converter"), { loading });
 const SlugGenerator = dynamic(() => import("./workspaces/slug-generator"), { loading });
 const YamlToJson = dynamic(() => import("./workspaces/yaml-to-json"), { loading });
+const LoremIpsumGenerator = dynamic(() => import("./workspaces/lorem-ipsum-generator"), { loading });
+const TextDiffChecker = dynamic(() => import("./workspaces/text-diff-checker"), { loading });
+const UuidGenerator = dynamic(() => import("./workspaces/uuid-generator"), { loading });
+const JwtDecoder = dynamic(() => import("./workspaces/jwt-decoder"), { loading });
+const RegexTester = dynamic(() => import("./workspaces/regex-tester"), { loading });
+const PercentageCalculator = dynamic(() => import("./workspaces/percentage-calculator"), { loading });
+const AspectRatioCalculator = dynamic(() => import("./workspaces/aspect-ratio-calculator"), { loading });
+const UtmBuilder = dynamic(() => import("./workspaces/utm-builder"), { loading });
+const HashGenerator = dynamic(() => import("./workspaces/hash-generator"), { loading });
+const ImageResizer = dynamic(() => import("./workspaces/image-resizer"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -41,6 +51,16 @@ const WORKSPACES = {
   "data-storage-converter": DataStorageConverter,
   "slug-generator": SlugGenerator,
   "yaml-to-json": YamlToJson,
+  "lorem-ipsum-generator": LoremIpsumGenerator,
+  "text-diff-checker": TextDiffChecker,
+  "uuid-generator": UuidGenerator,
+  "jwt-decoder": JwtDecoder,
+  "regex-tester": RegexTester,
+  "percentage-calculator": PercentageCalculator,
+  "aspect-ratio-calculator": AspectRatioCalculator,
+  "utm-builder": UtmBuilder,
+  "hash-generator": HashGenerator,
+  "image-resizer": ImageResizer,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

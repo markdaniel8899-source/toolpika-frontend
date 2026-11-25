@@ -3,7 +3,7 @@ import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ToolCard } from "@/components/tools/tool-card";
-import { getLiveTools } from "@/lib/tools/registry";
+import { getNewTools } from "@/lib/tools/registry";
 
 type LocalePageProps = {
   params: Promise<{ locale: string }>;
@@ -25,7 +25,7 @@ export default async function NewToolsPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "new" });
   const nav = await getTranslations({ locale, namespace: "nav" });
-  const tools = getLiveTools().slice(-4).reverse();
+  const tools = getNewTools();
 
   return (
     <main className="tp-container" style={{ paddingBottom: 64 }}>

@@ -109,6 +109,31 @@ const WITH_FULL_CONTENT = new Set([
   "data-storage-converter",
   "slug-generator",
   "yaml-to-json",
+  "lorem-ipsum-generator",
+  "text-diff-checker",
+  "uuid-generator",
+  "jwt-decoder",
+  "regex-tester",
+  "percentage-calculator",
+  "aspect-ratio-calculator",
+  "utm-builder",
+  "hash-generator",
+  "image-resizer",
+]);
+
+/** Tools with an explicit long-tail intent list in their messages. */
+const WITH_SEARCH_INTENTS = new Set([
+  "word-counter",
+  "lorem-ipsum-generator",
+  "text-diff-checker",
+  "uuid-generator",
+  "jwt-decoder",
+  "regex-tester",
+  "percentage-calculator",
+  "aspect-ratio-calculator",
+  "utm-builder",
+  "hash-generator",
+  "image-resizer",
 ]);
 
 /**
@@ -227,6 +252,97 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
     "mistakes",
     "faq",
   ],
+  // Placeholder text: the shape of the output matters, so a worked example
+  // earns its place above the fold of the article.
+  "lorem-ipsum-generator": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  // A diff is easier to understand from a real side-by-side example than
+  // from a feature grid alone.
+  "text-diff-checker": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  // Generated identifiers have no fixed example output; focus on the rules.
+  "uuid-generator": [
+    "definition",
+    "steps",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "jwt-decoder": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "mistakes",
+    "faq",
+  ],
+  "regex-tester": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "mistakes",
+    "faq",
+  ],
+  "percentage-calculator": [
+    "definition",
+    "steps",
+    "example",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "aspect-ratio-calculator": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "utm-builder": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "hash-generator": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "mistakes",
+    "faq",
+  ],
+  // Image tooling is visual; the page explains the pipeline instead of
+  // pretending a text example can show the result.
+  "image-resizer": [
+    "definition",
+    "steps",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
 };
 
 function lines(value: string): string[] {
@@ -311,12 +427,19 @@ function buildSections(
 export function getToolPageContent(t: Translate, slug: string): ToolPageContent | null {
   if (!WITH_FULL_CONTENT.has(slug)) return null;
   const k = (key: string) => `${slug}.page.${key}`;
+  const plan = SECTION_PLANS[slug] ?? DEFAULT_PLAN;
+  // Request only the modules this tool renders. A tool without an example or
+  // use-case module has no such message keys, and asking next-intl for them
+  // would log MISSING_MESSAGE during every static build.
+  const needs = (kind: ContentSectionKind) => plan.includes(kind);
+  const moduleText = (kind: ContentSectionKind, key: string) =>
+    needs(kind) ? t(k(key)) : "";
 
   // Only tools with an explicit searchIntents key should request it. Other
   // tools derive long-tail topics from their own FAQ questions; asking next-intl
   // for a missing key logs noisy MISSING_MESSAGE errors during static builds.
   let intentText = "";
-  if (slug === "word-counter") {
+  if (WITH_SEARCH_INTENTS.has(slug)) {
     try {
       intentText = t(k("searchIntents"));
     } catch {
@@ -336,15 +459,15 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
     whatIsParagraphs: t(k("whatIs")).split(/\n\s*\n/u).map((p) => p.trim()).filter(Boolean),
     howToTitle: t(k("howToTitle")),
     howToSteps: lines(t(k("howTo"))),
-    exampleTitle: t(k("exampleTitle")),
-    exampleLabel: t(k("exampleLabel")),
-    exampleInput: t(k("exampleInput")),
-    exampleOutput: t(k("exampleOutput")),
-    exampleNote: t(k("exampleNote")),
-    featuresTitle: t(k("featuresTitle")),
-    features: pairs(t(k("features"))),
-    useCasesTitle: t(k("useCasesTitle")),
-    useCases: pairs(t(k("useCases"))),
+    exampleTitle: moduleText("example", "exampleTitle"),
+    exampleLabel: moduleText("example", "exampleLabel"),
+    exampleInput: moduleText("example", "exampleInput"),
+    exampleOutput: moduleText("example", "exampleOutput"),
+    exampleNote: moduleText("example", "exampleNote"),
+    featuresTitle: moduleText("facts", "featuresTitle"),
+    features: pairs(moduleText("facts", "features")),
+    useCasesTitle: moduleText("useCases", "useCasesTitle"),
+    useCases: pairs(moduleText("useCases", "useCases")),
     mistakesTitle: t(k("mistakesTitle")),
     mistakes: pairs(t(k("mistakes"))),
     limitsTitle: t(k("limitsTitle")),
