@@ -441,6 +441,43 @@ export default function ImageResizer() {
             />
           </ToolField>
 
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <ToolField label={tw("image-resizer.format")}>
+              <ThemedSelect
+                value={options.format}
+                ariaLabel={tw("image-resizer.format")}
+                onValueChange={(next) => update({ format: next as ImageFormat })}
+                options={formatOptions}
+              />
+            </ToolField>
+            <ToolField
+              label={t("quality")}
+              hint={
+                options.format === "image/png"
+                  ? tw("image-resizer.qualityPngHint")
+                  : tw("image-resizer.qualityHint")
+              }
+            >
+              <div className="tp-lorem-count-row">
+                <input
+                  id="resize-quality"
+                  type="range"
+                  min={0.1}
+                  max={1}
+                  step={0.01}
+                  className="tp-tool-range"
+                  value={options.quality}
+                  disabled={options.format === "image/png"}
+                  aria-label={t("quality")}
+                  onChange={(event) => update({ quality: Number(event.target.value) })}
+                />
+                <span className="tp-tool-pill">
+                  {Math.round(options.quality * 100)}%
+                </span>
+              </div>
+            </ToolField>
+          </div>
+
           {loaded ? (
             <dl className="tp-tool-stats">
               <Stat label={tw("image-resizer.originalSize")} value={formatBytes(loaded.size)} />
@@ -460,46 +497,6 @@ export default function ImageResizer() {
       }
       result={
         <ToolPane id="resize-result-title" title={t("result")} result>
-          <div className="tp-tool-group">
-            <p className="tp-tool-group-title">{tw("image-resizer.outputSettings")}</p>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <ToolField label={tw("image-resizer.format")}>
-                <ThemedSelect
-                  value={options.format}
-                  ariaLabel={tw("image-resizer.format")}
-                  onValueChange={(next) => update({ format: next as ImageFormat })}
-                  options={formatOptions}
-                />
-              </ToolField>
-              <ToolField
-                label={t("quality")}
-                hint={
-                  options.format === "image/png"
-                    ? tw("image-resizer.qualityPngHint")
-                    : tw("image-resizer.qualityHint")
-                }
-              >
-                <div className="tp-lorem-count-row">
-                  <input
-                    id="resize-quality"
-                    type="range"
-                    min={0.1}
-                    max={1}
-                    step={0.01}
-                    className="tp-tool-range"
-                    value={options.quality}
-                    disabled={options.format === "image/png"}
-                    aria-label={t("quality")}
-                    onChange={(event) => update({ quality: Number(event.target.value) })}
-                  />
-                  <span className="tp-tool-pill">
-                    {Math.round(options.quality * 100)}%
-                  </span>
-                </div>
-              </ToolField>
-            </div>
-          </div>
-
           <div aria-live="polite">
             {output ? (
               <div className="tp-tool-result">

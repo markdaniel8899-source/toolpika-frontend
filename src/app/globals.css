@@ -9036,3 +9036,55 @@ input[type="number"] {
   border-color: transparent;
   background: transparent;
 }
+
+/* Custom thin scrollbar on every input and output surface, old tools included. */
+textarea,
+.tp-field-input,
+.tp-output-pre,
+.tp-tool-editor,
+.tp-tool-code,
+.tp-wc-textarea,
+.tp-workspace-pane textarea {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 48%, transparent) transparent;
+}
+
+textarea::-webkit-scrollbar,
+.tp-field-input::-webkit-scrollbar,
+.tp-output-pre::-webkit-scrollbar,
+.tp-tool-editor::-webkit-scrollbar,
+.tp-tool-code::-webkit-scrollbar,
+.tp-wc-textarea::-webkit-scrollbar,
+.tp-workspace-pane textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb,
+.tp-field-input::-webkit-scrollbar-thumb,
+.tp-output-pre::-webkit-scrollbar-thumb,
+.tp-tool-editor::-webkit-scrollbar-thumb,
+.tp-tool-code::-webkit-scrollbar-thumb,
+.tp-wc-textarea::-webkit-scrollbar-thumb,
+.tp-workspace-pane textarea::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--text-muted) 48%, transparent);
+  background-clip: padding-box;
+}
+
+/* Consistent pane headings and compact helper text across tool cards. */
+.tp-tool-pane-title h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.tp-tool-pane-hint {
+  margin-block-start: 3px;
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: start;
+}

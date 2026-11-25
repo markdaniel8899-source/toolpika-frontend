@@ -2,11 +2,18 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, Download, X } from "lucide-react";
+import { ClipboardPaste, FileJson, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
-import { WorkspaceLayout } from "../workspace-layout";
-import { CopyButton, OutputEmpty, ToolField } from "../workspace-ui";
+import {
+  CopyButton,
+  DownloadButton,
+  OutputEmpty,
+  ToolBadge,
+  ToolField,
+  ToolPane,
+  ToolShell,
+} from "../workspace-ui";
 
 const SAMPLE = `name: Toolpika
 version: 2
@@ -400,128 +407,91 @@ export default function YamlToJson() {
     }
   };
 
-  const handleDownload = () => {
-    if (!output) return;
-    const blob = new Blob([output], { type: "application/json;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "data.json";
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <WorkspaceLayout
+    <ToolShell
       title={t("yaml-to-json.title")}
       icon="Code"
+      sampleLabel={t("trySample")}
+      resetLabel={t("reset")}
+      privacyLabel={t("privacyRibbon")}
       onReset={clearAll}
       onSample={handleSample}
-      statusRight={output ? `${output.length} ${tu("characters")}` : undefined}
       input={
-        <div className="flex min-w-0 flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-end gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => void handlePaste()}
-            >
-              <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("paste")}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={!input}
-              onClick={() => setInput("")}
-            >
-              <X className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("clear")}
-            </Button>
-          </div>
-
+        <ToolPane
+          id="yaml-input-title"
+          title={t("input")}
+          actions={
+            <>
+              <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
+                <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("paste")}
+              </Button>
+              <Button type="button" variant="ghost" size="sm" disabled={!input} onClick={() => setInput("")}>
+                <X className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("clear")}
+              </Button>
+            </>
+          }
+          footer={<span aria-live="polite">{input.length} {tu("characters").toLowerCase()}</span>}
+        >
           <textarea
             value={input}
             onChange={(event) => setInput(event.target.value)}
             placeholder={tu("startTyping")}
             aria-label={t("yaml-to-json.title")}
             spellCheck={false}
-            className="tp-field-input min-h-[300px] min-w-0 max-w-full font-mono text-[13px]"
+            className="tp-tool-editor"
           />
-
-          <div className="grid min-w-0 gap-3 sm:grid-cols-2">
-            <ToolField label={t("yaml-to-json.indent")}>
-              <ThemedSelect
-                value={String(indent)}
-                onValueChange={(value) => setIndent(value === "4" ? 4 : 2)}
-                options={indentOptions}
-                ariaLabel={t("yaml-to-json.indent")}
-              />
-            </ToolField>
-          </div>
-
-          <p className="tp-workspace-hint" aria-live="polite">
-            {input.length} {tu("characters").toLowerCase()}
-          </p>
-        </div>
+          <ToolField label={t("yaml-to-json.indent")}>
+            <ThemedSelect
+              value={String(indent)}
+              onValueChange={(value) => setIndent(value === "4" ? 4 : 2)}
+              options={indentOptions}
+              ariaLabel={t("yaml-to-json.indent")}
+            />
+          </ToolField>
+        </ToolPane>
       }
-      output={
-        <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
-          <div className="grid min-w-0 gap-2 sm:grid-cols-[auto_1fr] sm:items-center" aria-live="polite">
-            <span
-              className="tp-status-pill"
-              data-tone={errorReason ? "danger" : output ? "success" : "neutral"}
-            >
-              {errorReason
-                ? t("statusError")
-                : output
-                  ? t("statusReady")
-                  : t("statusIdle")}
-            </span>
-          </div>
-
+      result={
+        <ToolPane
+          id="yaml-result-title"
+          title={t("result")}
+          result
+          actions={
+            <>
+              <ToolBadge tone={errorReason ? "danger" : output ? "success" : "neutral"}>
+                {errorReason ? t("statusError") : output ? t("statusReady") : t("statusIdle")}
+              </ToolBadge>
+              <DownloadButton
+                content={output || null}
+                fileName="data.json"
+                mimeType="application/json;charset=utf-8"
+                label={t("downloadResult")}
+              />
+            </>
+          }
+        >
           {errorReason ? (
-            <p role="alert" aria-live="polite" className="tp-workspace-error break-words [overflow-wrap:anywhere]">
+            <p role="alert" aria-live="polite" className="tp-tool-error" style={{ overflowWrap: "anywhere" }}>
               {errorReason === "invalidYaml"
                 ? t("yaml-to-json.invalidYaml")
                 : t("yaml-to-json.unsupported")}
             </p>
           ) : null}
-
           {output ? (
-            <div className="flex min-w-0 flex-col gap-3">
-              <pre className="tp-output-pre min-w-0 max-w-full whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
+            <div className="tp-tool-result" aria-live="polite">
+              <pre className="tp-tool-code tp-tool-code--tall" style={{ overflowWrap: "anywhere" }}>
                 {output}
               </pre>
-              <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
-                <CopyButton
-                  text={output}
-                  label={t("copyResult")}
-                  copiedLabel={tu("copied")}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDownload}
-                  aria-label={tu("download")}
-                >
-                  <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                  {t("downloadResult")}
-                </Button>
-              </div>
+              <CopyButton text={output} label={t("copyResult")} copiedLabel={tu("copied")} />
             </div>
           ) : (
             <OutputEmpty
               message={t("resultEmpty")}
-              className="min-h-[200px] min-w-0 overflow-hidden break-words [overflow-wrap:anywhere]"
+              className="min-h-[200px] min-w-0 break-words"
             />
           )}
-        </div>
+        </ToolPane>
       }
     />
   );

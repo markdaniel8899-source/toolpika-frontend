@@ -6,12 +6,14 @@ import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ThemedSelect } from "@/components/ui/themed-select";
-import { WorkspaceLayout } from "../workspace-layout";
 import {
   CheckboxRow,
   CopyButton,
   OutputEmpty,
+  ToolBadge,
   ToolField,
+  ToolPane,
+  ToolShell,
 } from "../workspace-ui";
 
 const SAMPLE = "Hello, World! This is a Sample Slug — with Café résumé.";
@@ -100,30 +102,32 @@ export default function SlugGenerator() {
   };
 
   return (
-    <WorkspaceLayout
+    <ToolShell
       title={t("slug-generator.title")}
       icon="Link"
+      sampleLabel={t("trySample")}
+      resetLabel={t("reset")}
+      privacyLabel={t("privacyRibbon")}
       onReset={handleReset}
       onSample={handleSample}
-      statusRight={status}
       input={
-        <div className="flex min-w-0 flex-col gap-3">
-          <div className="tp-workspace-inline-actions justify-end" style={{ marginTop: 0 }}>
-            <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
-              <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("paste")}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={!text}
-              onClick={handleClear}
-            >
-              <X className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("clear")}
-            </Button>
-          </div>
+        <ToolPane
+          id="slug-input-title"
+          title={t("input")}
+          actions={
+            <>
+              <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
+                <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("paste")}
+              </Button>
+              <Button type="button" variant="ghost" size="sm" disabled={!text} onClick={handleClear}>
+                <X className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("clear")}
+              </Button>
+            </>
+          }
+          footer={<span aria-live="polite">{text.length} {tu("characters").toLowerCase()}</span>}
+        >
           <Textarea
             ref={inputRef}
             value={text}
@@ -133,59 +137,51 @@ export default function SlugGenerator() {
             }}
             placeholder={tu("startTyping")}
             aria-label={tu("pasteText")}
-            className="min-h-[200px] min-w-0"
+            className="tp-tool-editor min-h-[200px]"
           />
-          <div className="grid min-w-0 items-end gap-3 sm:grid-cols-2">
-            <div className="min-w-0">
-              <ToolField label={t("slug-generator.separator")}>
-                <ThemedSelect
-                  value={separator}
-                  onValueChange={(next) => setSeparator(next === "_" ? "_" : "-")}
-                  options={separatorOptions}
-                  ariaLabel={t("slug-generator.separator")}
-                />
-              </ToolField>
-            </div>
-            <div className="flex min-h-[42px] min-w-0 items-center">
-              <CheckboxRow
-                id="slug-diacritics"
-                label={t("slug-generator.stripDiacritics")}
-                checked={stripDiacritics}
-                onChange={setStripDiacritics}
-              />
-            </div>
-          </div>
-          <p className="tp-workspace-hint" aria-live="polite">
-            {text.length} {tu("characters").toLowerCase()}
-          </p>
+          <ToolField label={t("slug-generator.separator")}>
+            <ThemedSelect
+              value={separator}
+              onValueChange={(next) => setSeparator(next === "_" ? "_" : "-")}
+              options={separatorOptions}
+              ariaLabel={t("slug-generator.separator")}
+            />
+          </ToolField>
+          <CheckboxRow
+            id="slug-diacritics"
+            label={t("slug-generator.stripDiacritics")}
+            checked={stripDiacritics}
+            onChange={setStripDiacritics}
+          />
           {error ? (
-            <p className="tp-workspace-error" role="alert">
+            <p className="tp-tool-error" role="alert">
               {tu("error")}
             </p>
           ) : null}
-        </div>
+        </ToolPane>
       }
-      output={
-        <div className="flex min-w-0 flex-col gap-4">
+      result={
+        <ToolPane
+          id="slug-result-title"
+          title={t("result")}
+          result
+          actions={
+            <ToolBadge tone={error ? "danger" : slug ? "success" : "neutral"}>
+              {status}
+            </ToolBadge>
+          }
+        >
           {slug ? (
-            <div
-              className="tp-result-card grid min-w-0 grid-cols-1 items-center gap-3 overflow-hidden sm:grid-cols-[minmax(0,1fr)_auto]"
-              aria-live="polite"
-            >
-              <output className="min-w-0 break-words font-mono text-base leading-relaxed text-[var(--text)] [overflow-wrap:anywhere]">
-                {slug}
-              </output>
-              <CopyButton
-                text={slug}
-                label={tu("copy")}
-                copiedLabel={tu("copied")}
-                className="justify-self-start sm:justify-self-end"
-              />
+            <div className="tp-tool-result" aria-live="polite">
+              <div className="tp-tool-url">
+                <code>{slug}</code>
+              </div>
+              <CopyButton text={slug} label={tu("copy")} copiedLabel={tu("copied")} />
             </div>
           ) : (
             <OutputEmpty message={t("resultEmpty")} className="min-h-[140px]" />
           )}
-        </div>
+        </ToolPane>
       }
     />
   );
