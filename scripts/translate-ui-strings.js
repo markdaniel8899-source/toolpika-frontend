@@ -81,8 +81,8 @@ const SKIP_KEYS = new Set([
 ]);
 
 // Small batches + a pause keep us under Groq's per-minute output-token limit.
-const BATCH_SIZE = 10;
-const REQUEST_DELAY_MS = 15000;
+const BATCH_SIZE = Number(process.env.GROQ_BATCH_SIZE ?? 10);
+const REQUEST_DELAY_MS = Number(process.env.GROQ_BATCH_DELAY_MS ?? 15000);
 
 const SYSTEM_PROMPT = `You are a senior software localization engineer translating UI copy, SEO text and help content for a privacy-first web tools site.
 
