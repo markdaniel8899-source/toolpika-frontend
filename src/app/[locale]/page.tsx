@@ -197,7 +197,7 @@ export default async function HomePage({ params }: LocalePageProps) {
             <p className="tp-eyebrow">{t("requestEyebrow")}</p>
             <h2>{t("requestTitle")}</h2>
           </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 36 }}>
+            <div className="tp-request-cta-row">
               <p style={{ maxWidth: 360, margin: 0, lineHeight: 1.6 }}>
                 {t("requestSubtitle")}
               </p>

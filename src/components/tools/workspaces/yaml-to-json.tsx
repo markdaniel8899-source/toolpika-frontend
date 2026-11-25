@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, FileJson, X } from "lucide-react";
+import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import {

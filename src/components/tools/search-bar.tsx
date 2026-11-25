@@ -132,10 +132,9 @@ export function SearchBar() {
               type="button"
               onClick={clear}
               aria-label={t("clear")}
-              className="tp-icon-btn tp-icon-only"
-              style={{ width: 28, height: 28, border: 0, background: "transparent" }}
+              className="tp-search-clear"
             >
-              <X className="tp-icon" style={{ width: 14, height: 14 }} aria-hidden="true" />
+              <X className="tp-icon" aria-hidden="true" />
             </button>
           )}
         </div>

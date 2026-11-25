@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 
 export type SelectOption = { value: string; label: string };
 
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /**
  * Theme-aware select. Native <select> popups are drawn by the OS and ignore
  * our tokens (they show a blue highlight in light and dark alike), so tool
@@ -34,7 +37,6 @@ export function ThemedSelect({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const listId = useId();
-  const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
   const selectedIndex = options.findIndex((option) => option.value === value);
   const selectedLabel = options.find((option) => option.value === value)?.label ?? value;
