@@ -34,14 +34,22 @@ const OG_LOCALES: Record<string, string> = {
 
 /** Tools a reader would realistically use next to the current task. */
 const CURATED_RELATED: Record<string, string[]> = {
-  "word-counter": ["case-converter", "json-formatter", "url-encoder", "unit-converter", "image-compressor"],
-  "case-converter": ["word-counter", "json-formatter", "base64-encoder", "unit-converter", "password-generator"],
-  "image-compressor": ["word-counter", "json-formatter", "base64-encoder"],
-  "json-formatter": ["word-counter", "case-converter", "image-compressor", "base64-encoder", "unit-converter"],
-  "unit-converter": ["word-counter", "case-converter", "json-formatter"],
-  "password-generator": ["base64-encoder", "url-encoder", "case-converter"],
-  "url-encoder": ["word-counter", "base64-encoder", "password-generator"],
-  "base64-encoder": ["case-converter", "image-compressor", "json-formatter", "url-encoder", "password-generator"],
+  "word-counter": ["case-converter", "json-formatter", "markdown-to-html", "url-encoder", "unit-converter", "image-compressor"],
+  "case-converter": ["word-counter", "slug-generator", "markdown-to-html", "json-formatter", "base64-encoder", "unit-converter", "password-generator"],
+  "image-compressor": ["word-counter", "color-converter", "json-formatter", "base64-encoder"],
+  "json-formatter": ["word-counter", "case-converter", "json-to-csv", "yaml-to-json", "image-compressor", "base64-encoder", "unit-converter"],
+  "unit-converter": ["word-counter", "case-converter", "number-base-converter", "data-storage-converter", "color-converter", "json-formatter"],
+  "password-generator": ["base64-encoder", "number-base-converter", "url-encoder", "case-converter"],
+  "url-encoder": ["word-counter", "slug-generator", "base64-encoder", "password-generator"],
+  "base64-encoder": ["case-converter", "yaml-to-json", "json-to-csv", "image-compressor", "json-formatter", "url-encoder", "password-generator"],
+  "json-to-csv": ["json-formatter", "yaml-to-json", "markdown-to-html", "case-converter"],
+  "markdown-to-html": ["slug-generator", "json-to-csv", "word-counter", "case-converter"],
+  "color-converter": ["unit-converter", "data-storage-converter", "number-base-converter"],
+  "number-base-converter": ["unit-converter", "base64-encoder", "color-converter"],
+  "timestamp-converter": ["number-base-converter", "data-storage-converter", "json-formatter"],
+  "data-storage-converter": ["unit-converter", "timestamp-converter", "color-converter"],
+  "slug-generator": ["case-converter", "markdown-to-html", "url-encoder"],
+  "yaml-to-json": ["json-formatter", "json-to-csv", "base64-encoder"],
 };
 
 /** Matches the contextual link written into each tool's page copy. */
@@ -54,6 +62,14 @@ const CONTEXTUAL_TOOL: Record<string, string> = {
   "password-generator": "case-converter",
   "url-encoder": "base64-encoder",
   "base64-encoder": "case-converter",
+  "json-to-csv": "json-formatter",
+  "markdown-to-html": "slug-generator",
+  "color-converter": "unit-converter",
+  "number-base-converter": "base64-encoder",
+  "timestamp-converter": "number-base-converter",
+  "data-storage-converter": "unit-converter",
+  "slug-generator": "case-converter",
+  "yaml-to-json": "json-formatter",
 };
 
 type LocalePageProps = {

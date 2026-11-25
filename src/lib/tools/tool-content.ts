@@ -101,6 +101,14 @@ const WITH_FULL_CONTENT = new Set([
   "password-generator",
   "url-encoder",
   "base64-encoder",
+  "json-to-csv",
+  "markdown-to-html",
+  "color-converter",
+  "number-base-converter",
+  "timestamp-converter",
+  "data-storage-converter",
+  "slug-generator",
+  "yaml-to-json",
 ]);
 
 /**
@@ -155,6 +163,70 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "password-generator": ["definition", "steps", "facts", "mistakes", "faq"],
   "url-encoder": ["definition", "steps", "example", "mistakes", "faq"],
   "base64-encoder": ["definition", "steps", "example", "mistakes", "faq"],
+  // "features" in the template maps to the "facts" module in this codebase.
+  "json-to-csv": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "markdown-to-html": [
+    "definition",
+    "steps",
+    "example",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "color-converter": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "mistakes",
+    "faq",
+  ],
+  "number-base-converter": [
+    "definition",
+    "steps",
+    "example",
+    "mistakes",
+    "faq",
+  ],
+  "timestamp-converter": [
+    "definition",
+    "steps",
+    "example",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "data-storage-converter": [
+    "definition",
+    "steps",
+    "example",
+    "mistakes",
+    "faq",
+  ],
+  "slug-generator": [
+    "definition",
+    "steps",
+    "example",
+    "useCases",
+    "mistakes",
+    "faq",
+  ],
+  "yaml-to-json": [
+    "definition",
+    "steps",
+    "example",
+    "facts",
+    "mistakes",
+    "faq",
+  ],
 };
 
 function lines(value: string): string[] {

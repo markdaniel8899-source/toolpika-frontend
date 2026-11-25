@@ -93,7 +93,6 @@ export function SlidingTabs({
             type="button"
             role="tab"
             aria-selected={isActive}
-            aria-pressed={isActive}
             className={cn("tp-tab", isActive && "is-active")}
             onClick={() => onChange(item.slug)}
           >
