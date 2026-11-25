@@ -8653,6 +8653,16 @@ html:lang(hi) .tp-tool-hero-accent {
   width: 100%;
 }
 
+.tp-select-portal-menu {
+  z-index: 200;
+  margin: 0;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transform-origin: top left;
+}
+
 .tp-select-trigger {
   width: 100%;
   min-height: 42px;
@@ -8883,4 +8893,61 @@ input[type="number"] {
 .tp-tool-inline-actions button svg {
   width: 14px;
   height: 14px;
+}
+
+/* Stepper text starts at the same inset as every other field. */
+.tp-stepper input {
+  padding-block: 9px;
+  padding-inline-start: 12px;
+  padding-inline-end: 40px;
+}
+
+/* A single column of settings with one action underneath. */
+.tp-tool-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tp-tool-stack > button {
+  width: 100%;
+}
+
+.tp-tool-segment {
+  width: 100%;
+}
+
+.tp-tool-segment button {
+  flex: 1;
+}
+
+/* Lorem: amount slider and exact count share one row; stats share one row. */
+.tp-lorem-count-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tp-lorem-count-row input[type="range"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.tp-lorem-count-row .tp-stepper {
+  width: 110px;
+  flex: none;
+}
+
+.tp-tool-stats--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tp-tool-stats--inline .tp-tool-stat {
+  flex: 1 1 90px;
+}
+
+.tp-full-button {
+  width: 100%;
 }

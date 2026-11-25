@@ -134,7 +134,7 @@ export default function UuidGenerator() {
           id="uuid-setup-title"
           title={tw("uuid-generator.setupTitle")}
         >
-          <div className="tp-tool-options-grid">
+          <div className="tp-tool-stack">
             <ToolField label={tw("uuid-generator.countTitle")} htmlFor="uuid-count">
               <NumberStepper
                 id="uuid-count"

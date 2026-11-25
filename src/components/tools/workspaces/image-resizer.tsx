@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Image as ImageIcon, LoaderCircle, Upload } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   DownloadButton,
@@ -373,17 +372,6 @@ export default function ImageResizer() {
           id="resize-input-title"
           title={tw("image-resizer.inputTitle")}
           hint={tw("image-resizer.inputHint")}
-          actions={
-            <Button
-              type="button"
-              size="sm"
-              variant="ghost"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Upload className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("chooseImage")}
-            </Button>
-          }
         >
           <label
             className="tp-tool-drop"
@@ -472,8 +460,9 @@ export default function ImageResizer() {
       }
       result={
         <ToolPane id="resize-result-title" title={t("result")} result>
-          <div className="flex flex-wrap items-end gap-3">
-            <div className="min-w-[170px] flex-1">
+          <div className="tp-tool-group">
+            <p className="tp-tool-group-title">{tw("image-resizer.outputSettings")}</p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <ToolField label={tw("image-resizer.format")}>
                 <ThemedSelect
                   value={options.format}
@@ -482,18 +471,15 @@ export default function ImageResizer() {
                   options={formatOptions}
                 />
               </ToolField>
-            </div>
-            <div className="min-w-[170px] flex-1">
               <ToolField
                 label={t("quality")}
-                htmlFor="resize-quality"
                 hint={
                   options.format === "image/png"
                     ? tw("image-resizer.qualityPngHint")
                     : tw("image-resizer.qualityHint")
                 }
               >
-                <div className="tp-tool-group">
+                <div className="tp-lorem-count-row">
                   <input
                     id="resize-quality"
                     type="range"
@@ -503,9 +489,10 @@ export default function ImageResizer() {
                     className="tp-tool-range"
                     value={options.quality}
                     disabled={options.format === "image/png"}
+                    aria-label={t("quality")}
                     onChange={(event) => update({ quality: Number(event.target.value) })}
                   />
-                  <span className="tp-tool-hint">
+                  <span className="tp-tool-pill">
                     {Math.round(options.quality * 100)}%
                   </span>
                 </div>
@@ -515,6 +502,7 @@ export default function ImageResizer() {
               content={output?.blob ?? null}
               fileName={downloadName}
               label={t("download")}
+              className="tp-full-button"
             />
           </div>
 

@@ -132,28 +132,27 @@ export default function LoremIpsumGenerator() {
             <label className="tp-tool-label" htmlFor="lorem-count-range">
               {tw("lorem-ipsum-generator.countLabel")}
             </label>
-            <input
-              id="lorem-count-range"
-              type="range"
-              className="tp-tool-range"
-              min={limits.min}
-              max={limits.max}
-              value={count}
-              onChange={(event) => setCount(Number(event.target.value))}
-            />
-            <label className="tp-tool-label" htmlFor="lorem-count-number">
-              {tw("lorem-ipsum-generator.countNumberLabel")}
-            </label>
-            <NumberStepper
-              id="lorem-count-number"
-              value={String(count)}
-              min={limits.min}
-              max={limits.max}
-              ariaLabel={tw("lorem-ipsum-generator.countNumberLabel")}
-              increaseLabel={t("stepUp")}
-              decreaseLabel={t("stepDown")}
-              onValueChange={(next) => setCount(Number(next))}
-            />
+            <div className="tp-lorem-count-row">
+              <input
+                id="lorem-count-range"
+                type="range"
+                className="tp-tool-range"
+                min={limits.min}
+                max={limits.max}
+                value={count}
+                onChange={(event) => setCount(Number(event.target.value))}
+              />
+              <NumberStepper
+                id="lorem-count-number"
+                value={String(count)}
+                min={limits.min}
+                max={limits.max}
+                ariaLabel={tw("lorem-ipsum-generator.countNumberLabel")}
+                increaseLabel={t("stepUp")}
+                decreaseLabel={t("stepDown")}
+                onValueChange={(next) => setCount(Number(next))}
+              />
+            </div>
           </div>
 
           <CheckboxRow
@@ -201,7 +200,7 @@ export default function LoremIpsumGenerator() {
                 flexWrap: "wrap",
               }}
             >
-              <dl className="tp-tool-stats">
+              <dl className="tp-tool-stats tp-tool-stats--inline">
                 <Stat label={t("words")} value={countWords(text)} />
                 <Stat label={t("characters")} value={text.length} />
               </dl>
