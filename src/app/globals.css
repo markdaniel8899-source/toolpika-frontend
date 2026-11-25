@@ -6768,7 +6768,6 @@ html:lang(hi) .tp-tool-hero-accent {
 
 .tp-doc-head {
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
 }
 
 .tp-doc-title {
@@ -7191,14 +7190,12 @@ html:lang(hi) .tp-tool-hero-accent {
 .tp-doc-faq-section {
   margin-top: 72px;
   padding-top: 46px;
-  border-top: 1px solid var(--border);
   scroll-margin-top: 112px;
 }
 
 .tp-doc-related {
   margin-top: 64px;
   padding-top: 44px;
-  border-top: 1px solid var(--border);
 }
 
 .tp-doc-related .tp-tool-related-grid {
