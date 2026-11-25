@@ -2,7 +2,9 @@
 /**
  * Toolpika — translate-ui-strings.js
  *
- * Translates messages/en.json into the nine target locales using Groq.
+ * Translates messages/en.json into the nine target locales using an
+ * OpenAI-compatible chat-completions API (Groq by default, NVIDIA NIM via
+ * TRANSLATION_* environment variables).
  *
  * Usage (run from the frontend repo root):
  *   npm run translate -- --locale de
@@ -36,8 +38,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const MESSAGES_DIR = resolve(__dirname, "..", "messages");
 const CACHE_PATH = resolve(__dirname, ".translation-cache.json");
 
-const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "qwen/qwen3.8-27b";
+// OpenAI-compatible endpoint. Defaults to the original Groq setup; set the
+// TRANSLATION_* variables to use another provider (e.g. NVIDIA NIM).
+const API_ENDPOINT =
+  process.env.TRANSLATION_ENDPOINT ??
+  "https://api.groq.com/openai/v1/chat/completions";
+const API_MODEL = process.env.TRANSLATION_MODEL ?? "qwen/qwen3.8-27b";
+const MAX_TOKENS = Number(process.env.TRANSLATION_MAX_TOKENS ?? 4096);
 const LOCALES = ["de", "fr", "es", "pt-BR", "ru", "tr", "it", "ar", "hi"];
 const LOCALE_NAMES = {
   de: "German",
@@ -80,9 +87,15 @@ const SKIP_KEYS = new Set([
   "tools.base64-encoder.page.exampleOutput",
 ]);
 
-// Small batches + a pause keep us under Groq's per-minute output-token limit.
-const BATCH_SIZE = Number(process.env.GROQ_BATCH_SIZE ?? 10);
-const REQUEST_DELAY_MS = Number(process.env.GROQ_BATCH_DELAY_MS ?? 15000);
+// Small batches + a pause keep us under provider output-token limits.
+const BATCH_SIZE = Number(
+  process.env.TRANSLATION_BATCH_SIZE ?? process.env.GROQ_BATCH_SIZE ?? 10,
+);
+const REQUEST_DELAY_MS = Number(
+  process.env.TRANSLATION_BATCH_DELAY_MS ??
+    process.env.GROQ_BATCH_DELAY_MS ??
+    15000,
+);
 
 const SYSTEM_PROMPT = `You are a senior software localization engineer translating UI copy, SEO text and help content for a privacy-first web tools site.
 
@@ -238,16 +251,16 @@ function validateBatch(requested, result, sourceValues, locale, warnings) {
 async function translateBatch(payload, targetLocale, apiKey, attempt = 0, maxAttempts = 15) {
   let response;
   try {
-    response = await fetch(GROQ_ENDPOINT, {
+    response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: GROQ_MODEL,
+        model: API_MODEL,
         temperature: 0.2,
-        max_tokens: 4096,
+        max_tokens: MAX_TOKENS,
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
@@ -281,27 +294,61 @@ async function translateBatch(payload, targetLocale, apiKey, attempt = 0, maxAtt
 
   if (!response.ok) {
     const detail = await response.text();
-    throw new Error(`Groq ${response.status}: ${detail.slice(0, 400)}`);
+    throw new Error(`Translation API ${response.status}: ${detail.slice(0, 400)}`);
   }
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error("Groq returned an empty message");
+  if (!content) throw new Error("Translation API returned an empty message");
 
   try {
     return JSON.parse(content);
   } catch (error) {
-    throw new Error(`Groq returned invalid JSON: ${String(error.message).slice(0, 160)}`);
+    if (attempt < maxAttempts) {
+      const waitMs = Math.min(2000 * (attempt + 1), 10000);
+      console.log(
+        `  [${targetLocale}] invalid JSON — retrying in ${Math.round(waitMs / 1000)}s (attempt ${attempt + 1}/${maxAttempts})…`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, waitMs));
+      return translateBatch(payload, targetLocale, apiKey, attempt + 1, maxAttempts);
+    }
+    throw new Error(`Translation API returned invalid JSON: ${String(error.message).slice(0, 160)}`);
+  }
+}
+
+/**
+ * Translate a batch, splitting it in half whenever the model drops keys or
+ * damages the JSON. Splitting keeps a single bad response from aborting the
+ * whole locale run.
+ */
+async function translateEntries(entries, locale, apiKey, warnings, depth = 0) {
+  const payload = Object.fromEntries(entries);
+  try {
+    const raw = await translateBatch(payload, locale, apiKey);
+    return validateBatch(payload, raw, payload, locale, warnings);
+  } catch (error) {
+    if (entries.length > 1 && depth < 5) {
+      console.log(
+        `  [${locale}] batch issue (${error.message.slice(0, 90)}) — splitting ${entries.length} keys`,
+      );
+      const middle = Math.ceil(entries.length / 2);
+      const first = await translateEntries(entries.slice(0, middle), locale, apiKey, warnings, depth + 1);
+      const second = await translateEntries(entries.slice(middle), locale, apiKey, warnings, depth + 1);
+      return { ...first, ...second };
+    }
+    throw error;
   }
 }
 
 async function main() {
   const options = parseArgs();
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.TRANSLATION_API_KEY ?? process.env.GROQ_API_KEY;
 
   // A dry run only reads message files; no credentials or network calls needed.
   if (!apiKey && !options.dryRun) {
-    console.error("Missing GROQ_API_KEY. Set it before running this script.");
+    console.error(
+      "Missing TRANSLATION_API_KEY (or GROQ_API_KEY). Set it before running this script.",
+    );
     process.exit(1);
   }
 
@@ -380,15 +427,14 @@ async function main() {
       const batch = Object.fromEntries(entries.slice(index, index + BATCH_SIZE));
       let result;
       try {
-        const raw = await translateBatch(batch, locale, apiKey);
-        result = validateBatch(batch, raw, batch, locale, warnings);
+        result = await translateEntries(Object.entries(batch), locale, apiKey, warnings);
       } catch (error) {
         console.error(`  [${locale}] batch failed: ${error.message}`);
         throw error;
       }
 
       current = { ...current, ...result };
-      for (const key of Object.keys(batch)) {
+      for (const key of Object.keys(result)) {
         cache[locale] ??= {};
         cache[locale][key] = hashValue(batch[key]);
       }

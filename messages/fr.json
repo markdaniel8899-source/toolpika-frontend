@@ -556,7 +556,7 @@
     "changesBody": "Ces conditions peuvent évoluer avec le site. Continuer à utiliser Toolpika vaut acceptation de la version en vigueur."
   },
   "contact": {
-    "eyebrow": "Contact",
+    "eyebrow": "Nous contacter",
     "title": "Nous contacter",
     "description": "Rapports de bugs, demandes d'outils ou tout autre sujet. L'e-mail suffit.",
     "emailLabel": "E-mail",
@@ -569,7 +569,7 @@
     "toolRequestsLabel": "Demandes d'outils",
     "toolRequestsBody": "Demandez l'outil dont vous avez besoin.",
     "nameLabel": "Nom",
-    "messageLabel": "Message",
+    "messageLabel": "Votre message",
     "submitLabel": "Envoyer le message",
     "formNote": "Votre message est envoyé directement à la boîte de réception de l'administrateur.",
     "sentMessage": "Message envoyé. Nous le lirons sous peu.",
@@ -603,7 +603,7 @@
     "guides": "Blog",
     "request": "Demande",
     "about": "À propos",
-    "contact": "Contact",
+    "contact": "Nous contacter",
     "privacy": "Confidentialité",
     "terms": "Conditions",
     "copyright": "© {year} Toolpika. Tous droits réservés.",
