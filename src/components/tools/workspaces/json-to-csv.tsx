@@ -305,14 +305,14 @@ export default function JsonToCsv() {
           <div
             role="group"
             aria-label={t("json-to-csv.title")}
-            className="flex w-full gap-1 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-1 sm:w-auto"
+            className="flex w-full gap-2 sm:w-auto"
           >
             <Button
               type="button"
               size="sm"
-              variant={mode === "toCsv" ? "default" : "ghost"}
+              variant={mode === "toCsv" ? "default" : "outline"}
               aria-pressed={mode === "toCsv"}
-              className="min-w-0 flex-1 px-3 sm:flex-none"
+              className={`min-w-0 flex-1 px-3 sm:flex-none ${mode === "toCsv" ? "" : "bg-[var(--surface)]"}`}
               onClick={() => setMode("toCsv")}
             >
               {t("json-to-csv.jsonToCsv")}
@@ -320,9 +320,9 @@ export default function JsonToCsv() {
             <Button
               type="button"
               size="sm"
-              variant={mode === "toJson" ? "default" : "secondary"}
+              variant={mode === "toJson" ? "default" : "outline"}
               aria-pressed={mode === "toJson"}
-              className="min-w-0 flex-1 px-3 sm:flex-none"
+              className={`min-w-0 flex-1 px-3 sm:flex-none ${mode === "toJson" ? "" : "bg-[var(--surface)]"}`}
               onClick={() => setMode("toJson")}
             >
               {t("json-to-csv.csvToJson")}
@@ -362,6 +362,13 @@ export default function JsonToCsv() {
             />
           </div>
 
+          <p className="tp-workspace-hint" aria-live="polite">
+            {input.length} {tu("characters").toLowerCase()}
+          </p>
+        </div>
+      }
+      output={
+        <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
           <div className="grid min-w-0 items-end gap-3 sm:grid-cols-2">
             <ToolField label={t("json-to-csv.delimiter")}>
               <ThemedSelect
@@ -382,17 +389,9 @@ export default function JsonToCsv() {
               </div>
             ) : null}
           </div>
-
           {mode === "toCsv" ? (
             <p className="tp-workspace-hint">{t("json-to-csv.flattenNote")}</p>
           ) : null}
-          <p className="tp-workspace-hint" aria-live="polite">
-            {input.length} {tu("characters").toLowerCase()}
-          </p>
-        </div>
-      }
-      output={
-        <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
           <div className="grid min-w-0 gap-2" aria-live="polite">
             {conversion && conversion.ok ? (
               <span className="tp-workspace-hint">
