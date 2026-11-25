@@ -129,7 +129,6 @@ export default function UtmBuilder() {
       sampleLabel={tw("utm-builder.trySample")}
       resetLabel={tw("utm-builder.reset")}
       privacyLabel={tw("privacyRibbon")}
-      shortcutHint={tw("utm-builder.shortcutHint")}
       onSample={handleSample}
       onReset={handleClear}
       notice={notice}

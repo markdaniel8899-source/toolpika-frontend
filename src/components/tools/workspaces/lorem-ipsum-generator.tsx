@@ -8,6 +8,7 @@ import {
   CheckboxRow,
   CopyButton,
   DownloadButton,
+  NumberStepper,
   SegmentedControl,
   Stat,
   ToolPane,
@@ -94,7 +95,6 @@ export default function LoremIpsumGenerator() {
       sampleLabel={tw("lorem-ipsum-generator.trySample")}
       resetLabel={tw("lorem-ipsum-generator.reset")}
       privacyLabel={tw("lorem-ipsum-generator.privacyRibbon")}
-      shortcutHint={tw("lorem-ipsum-generator.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -144,15 +144,15 @@ export default function LoremIpsumGenerator() {
             <label className="tp-tool-label" htmlFor="lorem-count-number">
               {tw("lorem-ipsum-generator.countNumberLabel")}
             </label>
-            <input
+            <NumberStepper
               id="lorem-count-number"
-              type="number"
-              className="tp-tool-field"
-              style={{ maxWidth: 120 }}
+              value={String(count)}
               min={limits.min}
               max={limits.max}
-              value={count}
-              onChange={(event) => setCount(Number(event.target.value))}
+              ariaLabel={tw("lorem-ipsum-generator.countNumberLabel")}
+              increaseLabel={t("stepUp")}
+              decreaseLabel={t("stepDown")}
+              onValueChange={(next) => setCount(Number(next))}
             />
           </div>
 

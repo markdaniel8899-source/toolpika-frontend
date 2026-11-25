@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Check, Copy, Hash, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DownloadButton,
+  NumberStepper,
   SegmentedControl,
   ToolEmpty,
   ToolField,
@@ -49,6 +50,12 @@ export default function UuidGenerator() {
   const countValue = countDraft ?? String(options.count);
   const { notice, showNotice, clearNotice } = useToolNotice();
   const { copied, copy, reset: resetCopy } = useCopyFeedback();
+  const [copiedRow, setCopiedRow] = useState<number | null>(null);
+  const rowTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (rowTimer.current) clearTimeout(rowTimer.current);
+  }, []);
 
   const output = useMemo(() => identifiers.join("\n"), [identifiers]);
 
@@ -91,22 +98,23 @@ export default function UuidGenerator() {
 
   useCopyShortcut(handleCopy);
 
+  const handleCopyRow = useCallback(async (index: number, value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopiedRow(index);
+      if (rowTimer.current) clearTimeout(rowTimer.current);
+      rowTimer.current = setTimeout(() => setCopiedRow(null), 1500);
+    } catch {
+      showNotice(tw("uuid-generator.copyFailed"));
+    }
+  }, [showNotice, tw]);
+
   const handleCountChange = (value: string) => {
     setCountDraft(value);
     const parsed = Number(value);
     if (Number.isInteger(parsed) && parsed >= UUID_MIN_COUNT && parsed <= UUID_MAX_COUNT) {
       update({ count: parsed });
     }
-  };
-
-  const handleCountBlur = () => {
-    if (countDraft === null) return;
-    const parsed = Number(countDraft);
-    const next = Number.isFinite(parsed)
-      ? Math.min(UUID_MAX_COUNT, Math.max(UUID_MIN_COUNT, Math.floor(parsed)))
-      : DEFAULT_SETUP.count;
-    setCountDraft(null);
-    update({ count: next });
   };
 
   return (
@@ -117,7 +125,6 @@ export default function UuidGenerator() {
       sampleLabel={tw("uuid-generator.trySample")}
       resetLabel={tw("uuid-generator.reset")}
       privacyLabel={tw("uuid-generator.privacy")}
-      shortcutHint={tw("uuid-generator.shortcut")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -126,26 +133,18 @@ export default function UuidGenerator() {
         <ToolPane
           id="uuid-setup-title"
           title={tw("uuid-generator.setupTitle")}
-          actions={
-            <Button type="button" onClick={handleGenerate}>
-              <RefreshCw className="h-4 w-4" aria-hidden="true" />
-              {tw("uuid-generator.generate")}
-            </Button>
-          }
         >
           <div className="tp-tool-options-grid">
             <ToolField label={tw("uuid-generator.countTitle")} htmlFor="uuid-count">
-              <input
+              <NumberStepper
                 id="uuid-count"
-                type="number"
-                inputMode="numeric"
+                value={countValue}
                 min={UUID_MIN_COUNT}
                 max={UUID_MAX_COUNT}
-                step={1}
-                className="tp-tool-field"
-                value={countValue}
-                onChange={(event) => handleCountChange(event.target.value)}
-                onBlur={handleCountBlur}
+                ariaLabel={tw("uuid-generator.countTitle")}
+                increaseLabel={t("stepUp")}
+                decreaseLabel={t("stepDown")}
+                onValueChange={handleCountChange}
               />
             </ToolField>
             <div className="tp-tool-group tp-tool-group--flush">
@@ -162,6 +161,10 @@ export default function UuidGenerator() {
               />
             </div>
           </div>
+          <Button type="button" onClick={handleGenerate}>
+            <RefreshCw className="h-4 w-4" aria-hidden="true" />
+            {tw("uuid-generator.generate")}
+          </Button>
         </ToolPane>
       }
       result={
@@ -203,7 +206,18 @@ export default function UuidGenerator() {
                   <span className="tp-tool-pill" dir="ltr">
                     {index + 1}
                   </span>
-                  <code dir="ltr">{value}</code>
+                  <button
+                    type="button"
+                    onClick={() => void handleCopyRow(index, value)}
+                    aria-label={`${t("copy")} ${value}`}
+                    className="tp-tool-uuid-copy"
+                    dir="ltr"
+                  >
+                    <code>{value}</code>
+                    {copiedRow === index ? (
+                      <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                    ) : null}
+                  </button>
                 </li>
               ))}
             </ol>

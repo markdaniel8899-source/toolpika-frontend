@@ -8642,3 +8642,245 @@ html:lang(hi) .tp-tool-hero-accent {
     transform: none !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * UI consistency pass: themed dropdown cards, quiet focus glow, custom
+ * number steppers, thin language-menu scrollbar and no resize grips.
+ * -------------------------------------------------------------------------- */
+
+/* Native selects are replaced by ThemedSelect everywhere in tool boxes. */
+.tp-select-wrap {
+  width: 100%;
+}
+
+.tp-select-trigger {
+  width: 100%;
+  min-height: 42px;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--background);
+  color: var(--text);
+  font-size: 13px;
+  text-align: start;
+}
+
+.tp-select-trigger .tp-select-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+}
+
+.tp-tool-pane .tp-dropdown-menu {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  transform-origin: top left;
+  width: 100%;
+  min-width: 180px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--text) 14%, transparent);
+}
+
+/* Focus: solid accent border plus a soft, small blur instead of a hard ring. */
+.tp-field-input:focus,
+.tp-field-input:focus-visible,
+.tp-tool-field:focus,
+.tp-tool-field:focus-visible,
+.tp-tool-editor:focus,
+.tp-tool-editor:focus-visible,
+.tp-tool-code:focus,
+.tp-tool-code:focus-visible,
+.tp-tool-select:focus,
+.tp-tool-select:focus-visible,
+.tp-select-trigger:focus-visible,
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 62%, transparent),
+    0 3px 12px color-mix(in srgb, var(--accent) 14%, transparent) !important;
+}
+
+/* No OS spin arrows. Integer fields use the shared custom stepper instead. */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.tp-stepper {
+  position: relative;
+  width: 100%;
+}
+
+.tp-stepper input {
+  width: 100%;
+  min-height: 42px;
+  padding-inline-end: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--background);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  transition: border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
+}
+
+.tp-stepper input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 62%, transparent),
+    0 3px 12px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.tp-stepper-controls {
+  position: absolute;
+  inset-inline-end: 5px;
+  inset-block-start: 50%;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-50%);
+}
+
+.tp-stepper-controls button {
+  display: grid;
+  width: 24px;
+  height: 17px;
+  place-items: center;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+
+.tp-stepper-controls button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-stepper-controls button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+.tp-stepper-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tp-stepper-controls svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* Thin themed scrollbars for editors, including the old two-pane tools. */
+.tp-tool-editor::-webkit-scrollbar,
+.tp-tool-code::-webkit-scrollbar,
+.tp-wc-textarea::-webkit-scrollbar,
+.tp-workspace-pane textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.tp-tool-editor::-webkit-scrollbar-thumb,
+.tp-tool-code::-webkit-scrollbar-thumb,
+.tp-wc-textarea::-webkit-scrollbar-thumb,
+.tp-workspace-pane textarea::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--text-muted) 45%, transparent);
+  background-clip: padding-box;
+}
+
+.tp-tool-editor,
+.tp-tool-code,
+.tp-wc-textarea,
+.tp-workspace-pane textarea {
+  resize: none;
+}
+
+/* Language menu keeps a deliberately small themed scrollbar. */
+.tp-locale-menu {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 50%, transparent) transparent;
+}
+
+.tp-locale-menu::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+
+.tp-locale-menu::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--text-muted) 50%, transparent);
+}
+
+/* A generated UUID row is also a copy target. */
+.tp-tool-uuid-copy {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.tp-tool-uuid-copy:hover {
+  background: var(--accent-soft);
+}
+
+.tp-tool-uuid-copy:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+.tp-tool-uuid-copy code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-tool-uuid-copy svg {
+  flex: none;
+  color: var(--success);
+}
+
+/* Compact action cluster for paired inputs (Original / Revised). */
+.tp-tool-inline-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+}
+
+.tp-tool-inline-actions button {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border-radius: 7px;
+}
+
+.tp-tool-inline-actions button svg {
+  width: 14px;
+  height: 14px;
+}

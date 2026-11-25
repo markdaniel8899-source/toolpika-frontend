@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeftRight, Check, Copy, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   DownloadButton,
   ToolEmpty,
@@ -116,7 +117,6 @@ export default function PercentageCalculator() {
       sampleLabel={tw("percentage-calculator.trySample")}
       resetLabel={tw("percentage-calculator.reset")}
       privacyLabel={tw("percentage-calculator.privacyRibbon")}
-      shortcutHint={tw("percentage-calculator.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       input={
@@ -131,34 +131,22 @@ export default function PercentageCalculator() {
           }
         >
           <div>
-            <label className="tp-tool-label" htmlFor="tp-percentage-mode">
-              {tw("percentage-calculator.modeLabel")}
-            </label>
-            <select
-              id="tp-percentage-mode"
-              className="tp-tool-select"
+            <p className="tp-tool-label">{tw("percentage-calculator.modeLabel")}</p>
+            <ThemedSelect
               value={mode}
-              onChange={(event) => {
-                setMode(event.target.value as Mode);
+              ariaLabel={tw("percentage-calculator.modeLabel")}
+              onValueChange={(next) => {
+                setMode(next as Mode);
                 reset();
               }}
-            >
-              <option value="percentOf">
-                {tw("percentage-calculator.modePercentOf")}
-              </option>
-              <option value="whatPercent">
-                {tw("percentage-calculator.modeWhatPercent")}
-              </option>
-              <option value="percentChange">
-                {tw("percentage-calculator.modePercentChange")}
-              </option>
-              <option value="increaseBy">
-                {tw("percentage-calculator.modeIncreaseBy")}
-              </option>
-              <option value="decreaseBy">
-                {tw("percentage-calculator.modeDecreaseBy")}
-              </option>
-            </select>
+              options={[
+                { value: "percentOf", label: tw("percentage-calculator.modePercentOf") },
+                { value: "whatPercent", label: tw("percentage-calculator.modeWhatPercent") },
+                { value: "percentChange", label: tw("percentage-calculator.modePercentChange") },
+                { value: "increaseBy", label: tw("percentage-calculator.modeIncreaseBy") },
+                { value: "decreaseBy", label: tw("percentage-calculator.modeDecreaseBy") },
+              ]}
+            />
           </div>
 
           <ToolField

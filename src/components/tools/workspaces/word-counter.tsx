@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NumberStepper } from "@/components/tools/workspace-ui";
 import { cn } from "@/lib/utils";
 
 const SAMPLE =
@@ -356,16 +357,16 @@ export default function WordCounter() {
                 {t("goal")}
               </label>
               <div className="tp-wc-goal-input">
-                <input
+                <NumberStepper
                   id="tp-wc-goal"
-                  type="number"
-                  inputMode="numeric"
+                  value={goal}
                   min={0}
                   max={100000}
                   step={50}
-                  placeholder="500"
-                  value={goal}
-                  onChange={(event) => setGoal(event.target.value)}
+                  ariaLabel={t("goal")}
+                  increaseLabel={t("stepUp")}
+                  decreaseLabel={t("stepDown")}
+                  onValueChange={setGoal}
                 />
                 <span>{t("words").toLowerCase()}</span>
               </div>

@@ -128,7 +128,6 @@ export default function TextDiffChecker() {
       sampleLabel={tw("text-diff-checker.trySample")}
       resetLabel={tw("text-diff-checker.reset")}
       privacyLabel={tw("text-diff-checker.privacyRibbon")}
-      shortcutHint={tw("text-diff-checker.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -156,26 +155,24 @@ export default function TextDiffChecker() {
                 <label className="tp-tool-label" htmlFor="diff-original">
                   {tw("text-diff-checker.originalLabel")}
                 </label>
-                <div style={{ display: "flex", gap: 4 }}>
+                <div className="tp-tool-inline-actions">
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
+                    size="icon"
                     onClick={() => void pasteInto("original")}
                     aria-label={`${tw("text-diff-checker.paste")} ${tw("text-diff-checker.originalLabel")}`}
                   >
-                    <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-                    {tw("text-diff-checker.paste")}
+                    <ClipboardPaste aria-hidden="true" />
                   </Button>
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
+                    size="icon"
                     onClick={() => clearField("original")}
                     aria-label={`${tw("text-diff-checker.clear")} ${tw("text-diff-checker.originalLabel")}`}
                   >
-                    <X className="h-3.5 w-3.5" aria-hidden="true" />
-                    {tw("text-diff-checker.clear")}
+                    <X aria-hidden="true" />
                   </Button>
                 </div>
               </div>
@@ -203,26 +200,24 @@ export default function TextDiffChecker() {
                 <label className="tp-tool-label" htmlFor="diff-revised">
                   {tw("text-diff-checker.revisedLabel")}
                 </label>
-                <div style={{ display: "flex", gap: 4 }}>
+                <div className="tp-tool-inline-actions">
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
+                    size="icon"
                     onClick={() => void pasteInto("revised")}
                     aria-label={`${tw("text-diff-checker.paste")} ${tw("text-diff-checker.revisedLabel")}`}
                   >
-                    <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-                    {tw("text-diff-checker.paste")}
+                    <ClipboardPaste aria-hidden="true" />
                   </Button>
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
+                    size="icon"
                     onClick={() => clearField("revised")}
                     aria-label={`${tw("text-diff-checker.clear")} ${tw("text-diff-checker.revisedLabel")}`}
                   >
-                    <X className="h-3.5 w-3.5" aria-hidden="true" />
-                    {tw("text-diff-checker.clear")}
+                    <X aria-hidden="true" />
                   </Button>
                 </div>
               </div>

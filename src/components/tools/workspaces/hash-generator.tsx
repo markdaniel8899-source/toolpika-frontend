@@ -218,7 +218,6 @@ export default function HashGenerator() {
       sampleLabel={tw("hash-generator.trySample")}
       resetLabel={tw("hash-generator.reset")}
       privacyLabel={tw("hash-generator.privacyLabel")}
-      shortcutHint={tw("hash-generator.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice || undefined}

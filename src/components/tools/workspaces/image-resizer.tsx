@@ -4,8 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Image as ImageIcon, LoaderCircle, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   DownloadButton,
+  NumberStepper,
   SegmentedControl,
   Stat,
   ToolEmpty,
@@ -416,28 +418,28 @@ export default function ImageResizer() {
           </label>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ToolField label={tw("image-resizer.width")} htmlFor="resize-width">
-              <input
+            <ToolField label={tw("image-resizer.width")}>
+              <NumberStepper
                 id="resize-width"
-                type="number"
-                inputMode="numeric"
+                value={options.width}
                 min={1}
                 max={MAX_CANVAS_SIDE}
-                className="tp-tool-field"
-                value={options.width}
-                onChange={(event) => update({ width: event.target.value })}
+                ariaLabel={tw("image-resizer.width")}
+                increaseLabel={t("stepUp")}
+                decreaseLabel={t("stepDown")}
+                onValueChange={(next) => update({ width: next })}
               />
             </ToolField>
-            <ToolField label={tw("image-resizer.height")} htmlFor="resize-height">
-              <input
+            <ToolField label={tw("image-resizer.height")}>
+              <NumberStepper
                 id="resize-height"
-                type="number"
-                inputMode="numeric"
+                value={options.height}
                 min={1}
                 max={MAX_CANVAS_SIDE}
-                className="tp-tool-field"
-                value={options.height}
-                onChange={(event) => update({ height: event.target.value })}
+                ariaLabel={tw("image-resizer.height")}
+                increaseLabel={t("stepUp")}
+                decreaseLabel={t("stepDown")}
+                onValueChange={(next) => update({ height: next })}
               />
             </ToolField>
           </div>
@@ -472,19 +474,13 @@ export default function ImageResizer() {
         <ToolPane id="resize-result-title" title={t("result")} result>
           <div className="flex flex-wrap items-end gap-3">
             <div className="min-w-[170px] flex-1">
-              <ToolField label={tw("image-resizer.format")} htmlFor="resize-format">
-                <select
-                  id="resize-format"
-                  className="tp-tool-select"
+              <ToolField label={tw("image-resizer.format")}>
+                <ThemedSelect
                   value={options.format}
-                  onChange={(event) => update({ format: event.target.value as ImageFormat })}
-                >
-                  {formatOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                  ariaLabel={tw("image-resizer.format")}
+                  onValueChange={(next) => update({ format: next as ImageFormat })}
+                  options={formatOptions}
+                />
               </ToolField>
             </div>
             <div className="min-w-[170px] flex-1">

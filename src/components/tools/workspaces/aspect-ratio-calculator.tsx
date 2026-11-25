@@ -4,9 +4,11 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ClipboardPaste, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CopyButton,
   DownloadButton,
+  NumberStepper,
   SegmentedControl,
   Stat,
   ToolEmpty,
@@ -158,6 +160,16 @@ export default function AspectRatioCalculator() {
 
   const describedBy = calculation.status === "error" ? ERROR_ID : undefined;
 
+  // Fit the ratio into the result pane while keeping the exact proportions.
+  const previewSize = useMemo(() => {
+    if (calculation.status !== "ready") return null;
+    const scale = Math.min(480 / calculation.ratio.w, 240 / calculation.ratio.h);
+    return {
+      width: Math.max(1, Math.round(calculation.ratio.w * scale)),
+      height: Math.max(1, Math.round(calculation.ratio.h * scale)),
+    };
+  }, [calculation]);
+
   return (
     <ToolShell
       title={tw("aspect-ratio-calculator.title")}
@@ -165,7 +177,6 @@ export default function AspectRatioCalculator() {
       sampleLabel={tw("aspect-ratio-calculator.trySample")}
       resetLabel={tw("aspect-ratio-calculator.reset")}
       privacyLabel={tw("privacyRibbon")}
-      shortcutHint={tw("aspect-ratio-calculator.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -200,59 +211,51 @@ export default function AspectRatioCalculator() {
         >
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ToolField label={tw("aspect-ratio-calculator.widthLabel")} htmlFor="tp-arc-width">
-              <input
+              <NumberStepper
                 id="tp-arc-width"
-                ref={widthRef}
-                type="number"
-                min={1}
-                step={1}
-                inputMode="numeric"
-                className="tp-tool-field"
+                inputRef={widthRef}
                 value={width}
-                aria-invalid={calculation.status === "error"}
-                aria-describedby={describedBy}
-                onChange={(event) => {
-                  setWidth(event.target.value);
+                min={1}
+                ariaLabel={tw("aspect-ratio-calculator.widthLabel")}
+                increaseLabel={t("stepUp")}
+                decreaseLabel={t("stepDown")}
+                describedBy={describedBy}
+                onValueChange={(next) => {
+                  setWidth(next);
                   setPreset("");
                 }}
               />
             </ToolField>
             <ToolField label={tw("aspect-ratio-calculator.heightLabel")} htmlFor="tp-arc-height">
-              <input
+              <NumberStepper
                 id="tp-arc-height"
-                type="number"
-                min={1}
-                step={1}
-                inputMode="numeric"
-                className="tp-tool-field"
                 value={height}
-                aria-invalid={calculation.status === "error"}
-                aria-describedby={describedBy}
-                onChange={(event) => {
-                  setHeight(event.target.value);
+                min={1}
+                ariaLabel={tw("aspect-ratio-calculator.heightLabel")}
+                increaseLabel={t("stepUp")}
+                decreaseLabel={t("stepDown")}
+                describedBy={describedBy}
+                onValueChange={(next) => {
+                  setHeight(next);
                   setPreset("");
                 }}
               />
             </ToolField>
           </div>
 
-          <ToolField label={tw("aspect-ratio-calculator.presetLabel")} htmlFor="tp-arc-preset">
-            <select
-              id="tp-arc-preset"
-              className="tp-tool-select"
+          <ToolField label={tw("aspect-ratio-calculator.presetLabel")}>
+            <ThemedSelect
               value={preset}
-              onChange={(event) => handlePreset(event.target.value)}
-            >
-              <option value="">{tw("aspect-ratio-calculator.presetCustom")}</option>
-              {commonRatios.map((ratio) => {
-                const label = `${ratio.w}:${ratio.h}`;
-                return (
-                  <option key={label} value={label}>
-                    {label}
-                  </option>
-                );
-              })}
-            </select>
+              onValueChange={handlePreset}
+              ariaLabel={tw("aspect-ratio-calculator.presetLabel")}
+              options={[
+                { value: "", label: tw("aspect-ratio-calculator.presetCustom") },
+                ...commonRatios.map((ratio) => {
+                  const label = `${ratio.w}:${ratio.h}`;
+                  return { value: label, label };
+                }),
+              ]}
+            />
           </ToolField>
 
           <div className="tp-tool-group tp-tool-group--flush">
@@ -275,17 +278,19 @@ export default function AspectRatioCalculator() {
             }
             htmlFor="tp-arc-target"
           >
-            <input
+            <NumberStepper
               id="tp-arc-target"
-              type="number"
-              min={1}
-              step={1}
-              inputMode="numeric"
-              className="tp-tool-field"
               value={target}
-              aria-invalid={calculation.status === "error"}
-              aria-describedby={describedBy}
-              onChange={(event) => setTarget(event.target.value)}
+              min={1}
+              ariaLabel={
+                lock === "width"
+                  ? tw("aspect-ratio-calculator.targetWidthLabel")
+                  : tw("aspect-ratio-calculator.targetHeightLabel")
+              }
+              increaseLabel={t("stepUp")}
+              decreaseLabel={t("stepDown")}
+              describedBy={describedBy}
+              onValueChange={setTarget}
             />
           </ToolField>
 
@@ -354,14 +359,24 @@ export default function AspectRatioCalculator() {
                 </div>
               </div>
 
-              <div
-                className="tp-tool-preview"
-                style={{ aspectRatio: `${calculation.ratio.w} / ${calculation.ratio.h}` }}
-                role="img"
-                aria-label={tw("aspect-ratio-calculator.previewLabel", {
-                  ratio: `${calculation.ratio.w}:${calculation.ratio.h}`,
-                })}
-              />
+              {previewSize ? (
+                <>
+                  <div
+                    className="tp-tool-preview"
+                    style={{
+                      width: previewSize.width,
+                      height: previewSize.height,
+                      maxWidth: "100%",
+                      aspectRatio: `${calculation.ratio.w} / ${calculation.ratio.h}`,
+                    }}
+                    role="img"
+                    aria-label={tw("aspect-ratio-calculator.previewSize", previewSize)}
+                  />
+                  <p className="tp-tool-hint">
+                    {tw("aspect-ratio-calculator.previewSize", previewSize)}
+                  </p>
+                </>
+              ) : null}
             </div>
           ) : (
             <div aria-live="polite">

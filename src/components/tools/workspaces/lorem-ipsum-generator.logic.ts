@@ -15,7 +15,7 @@ export type LoremOptions = {
 };
 
 export const LOREM_LIMITS = {
-  paragraphs: { min: 1, max: 20 },
+  paragraphs: { min: 1, max: 100 },
   sentencesPerParagraph: { min: 1, max: 12 },
   wordsPerSentence: { min: 3, max: 30 },
 } as const;

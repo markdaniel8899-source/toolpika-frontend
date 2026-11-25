@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AlertCircle, Check, Copy, Download, RotateCcw } from "lucide-react";
+import { useCallback, useEffect, useRef, useState, type Ref } from "react";
+import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, Download, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { cn } from "@/lib/utils";
@@ -386,6 +386,91 @@ export function DownloadButton({
       <Download className="h-3.5 w-3.5" aria-hidden="true" />
       {label}
     </Button>
+  );
+}
+
+/**
+ * Number field with small themed up/down controls. OS spin buttons are hidden
+ * in CSS so the arrows look identical in every theme and on every device.
+ */
+export function NumberStepper({
+  id,
+  value,
+  onValueChange,
+  min,
+  max,
+  step = 1,
+  inputMode = "numeric",
+  ariaLabel,
+  increaseLabel,
+  decreaseLabel,
+  describedBy,
+  className,
+  inputRef,
+}: {
+  id: string;
+  value: string;
+  onValueChange: (value: string) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  inputMode?: "numeric" | "decimal";
+  ariaLabel?: string;
+  increaseLabel: string;
+  decreaseLabel: string;
+  describedBy?: string;
+  className?: string;
+  inputRef?: Ref<HTMLInputElement>;
+}) {
+  const clamp = (next: number) => {
+    let result = next;
+    if (min !== undefined) result = Math.max(min, result);
+    if (max !== undefined) result = Math.min(max, result);
+    return result;
+  };
+
+  const bump = (direction: 1 | -1) => {
+    const parsed = Number(value);
+    const base = Number.isFinite(parsed) ? parsed : (min ?? 0);
+    const next = clamp(Math.round((base + direction * step) * 1000) / 1000);
+    onValueChange(String(next));
+  };
+
+  const atMin = min !== undefined && Number(value) <= min;
+  const atMax = max !== undefined && Number(value) >= max;
+
+  return (
+    <div className={cn("tp-stepper", className)}>
+      <input
+        ref={inputRef}
+        id={id}
+        type="text"
+        inputMode={inputMode}
+        autoComplete="off"
+        value={value}
+        aria-label={ariaLabel}
+        aria-describedby={describedBy}
+        onChange={(event) => onValueChange(event.target.value)}
+      />
+      <span className="tp-stepper-controls" aria-hidden="false">
+        <button
+          type="button"
+          onClick={() => bump(1)}
+          disabled={atMax}
+          aria-label={`${increaseLabel} ${ariaLabel ?? ""}`.trim()}
+        >
+          <ChevronUp aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => bump(-1)}
+          disabled={atMin}
+          aria-label={`${decreaseLabel} ${ariaLabel ?? ""}`.trim()}
+        >
+          <ChevronDown aria-hidden="true" />
+        </button>
+      </span>
+    </div>
   );
 }
 

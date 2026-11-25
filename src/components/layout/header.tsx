@@ -233,6 +233,7 @@ export function Header() {
             triggerLabel={locale.toUpperCase()}
             icon={<Globe className="tp-icon" aria-hidden="true" />}
             triggerClassName="tp-locale-trigger"
+            menuClassName="tp-locale-menu"
             openOnHover
           />
 

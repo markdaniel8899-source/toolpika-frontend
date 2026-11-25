@@ -1159,6 +1159,7 @@
       "heightStat": "New height",
       "cssLabel": "CSS declaration",
       "previewLabel": "Preview box at a ratio of {ratio}",
+      "previewSize": "Screen preview {width} by {height} pixels",
       "emptyTitle": "No ratio yet",
       "emptyHint": "Add a width, a height and a target, or try the sample to see a 16:9 result.",
       "copyText": "Aspect ratio: {ratio}\nDimensions: {width} x {height}\nCSS: aspect-ratio: {w} / {h}",
@@ -1624,6 +1625,8 @@
     "urlInvalid": "That does not look like a valid encoded URL.",
     "base64Invalid": "That does not look like valid Base64.",
     "pasteText": "Text",
+    "stepUp": "Increase",
+    "stepDown": "Decrease",
     "result": "Result",
     "startTyping": "Start typing or paste your text…"
   },

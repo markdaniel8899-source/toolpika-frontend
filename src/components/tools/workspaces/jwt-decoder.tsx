@@ -177,7 +177,6 @@ export default function JwtDecoder() {
       sampleLabel={tw("jwt-decoder.trySample")}
       resetLabel={tw("jwt-decoder.reset")}
       privacyLabel={tw("jwt-decoder.privacy")}
-      shortcutHint={tw("jwt-decoder.shortcut")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}

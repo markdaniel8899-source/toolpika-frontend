@@ -198,7 +198,6 @@ export default function RegexTester() {
       sampleLabel={tw("regex-tester.trySample")}
       resetLabel={tw("regex-tester.reset")}
       privacyLabel={tw("regex-tester.privacyRibbon")}
-      shortcutHint={tw("regex-tester.shortcutHint")}
       notice={notice}
       noticeTone="danger"
       onSample={handleSample}
