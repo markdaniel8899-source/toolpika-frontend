@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Image as ImageIcon, LoaderCircle, RotateCcw, Upload } from "lucide-react";
+import { Image as ImageIcon, LoaderCircle, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DownloadButton,
@@ -324,15 +324,6 @@ export default function ImageResizer() {
     resetOptions();
   };
 
-  const resetSize = () => {
-    if (!loaded) return;
-    update({
-      width: String(loaded.width),
-      height: String(loaded.height),
-      lock: "auto",
-    });
-  };
-
   const errorMessage = errorCode
     ? errorCode === "unsupported"
       ? tw("image-resizer.errorUnsupported")
@@ -383,7 +374,6 @@ export default function ImageResizer() {
       privacyLabel={tw("image-resizer.privacyLabel")}
       onSample={() => void handleSample()}
       onReset={handleReset}
-      ribbonRight={<ToolBadge tone="accent">{options.format.split("/")[1]?.toUpperCase()}</ToolBadge>}
       input={
         <ToolPane
           id="resize-input-title"
@@ -400,7 +390,6 @@ export default function ImageResizer() {
               {t("chooseImage")}
             </Button>
           }
-          footer={loaded ? tw("image-resizer.replaceHint") : tw("image-resizer.dropHint")}
         >
           <label
             className="tp-tool-drop"
@@ -465,7 +454,6 @@ export default function ImageResizer() {
               />
             </>
           }
-          footer={tw("image-resizer.localFooter")}
         >
           {output ? (
             <div className="tp-tool-result">
@@ -495,10 +483,6 @@ export default function ImageResizer() {
         <>
           <div className="tp-tool-options-head">
             <h3>{tw("image-resizer.optionsTitle")}</h3>
-            <Button type="button" size="sm" variant="ghost" onClick={resetSize} disabled={!loaded}>
-              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-              {tw("image-resizer.resetSize")}
-            </Button>
           </div>
           <div className="tp-tool-options-grid">
             <ToolField label={tw("image-resizer.width")} htmlFor="resize-width">

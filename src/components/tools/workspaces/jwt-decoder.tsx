@@ -224,7 +224,6 @@ export default function JwtDecoder() {
             dir="ltr"
             className="tp-tool-editor"
           />
-          <p className="tp-tool-hint">{tw("jwt-decoder.shapeHint")}</p>
         </ToolPane>
       }
       result={
@@ -260,7 +259,6 @@ export default function JwtDecoder() {
               />
             </>
           }
-          footer={<span>{tw("jwt-decoder.warning")}</span>}
         >
           <p className="tp-tool-notice" role="note">
             <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
@@ -337,11 +335,6 @@ export default function JwtDecoder() {
                 ]}
                 onChange={(view) => update({ view })}
               />
-              <p className="tp-tool-hint">{tw("jwt-decoder.viewHint")}</p>
-            </div>
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">{tw("jwt-decoder.safetyTitle")}</p>
-              <p className="tp-tool-hint">{tw("jwt-decoder.safetyNote")}</p>
             </div>
           </div>
         </>

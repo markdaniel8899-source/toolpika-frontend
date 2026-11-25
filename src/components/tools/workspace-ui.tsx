@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AlertCircle, Check, Copy, Download, RotateCcw, Sparkles } from "lucide-react";
+import { AlertCircle, Check, Copy, Download, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { cn } from "@/lib/utils";
@@ -203,7 +203,6 @@ export function ToolShell({
         </div>
         <div className="tp-tool-actions">
           <Button type="button" size="sm" onClick={onSample}>
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
             {sampleLabel}
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={onReset}>

@@ -87,13 +87,6 @@ export default function LoremIpsumGenerator() {
   }, [showNotice, text, tw]);
   useCopyShortcut(copyShortcut);
 
-  const typeLabel =
-    options.type === "words"
-      ? tw("lorem-ipsum-generator.typeOptionWords")
-      : options.type === "sentences"
-        ? tw("lorem-ipsum-generator.typeOptionSentences")
-        : tw("lorem-ipsum-generator.typeOptionParagraphs");
-
   return (
     <ToolShell
       title={tw("lorem-ipsum-generator.title")}
@@ -125,12 +118,6 @@ export default function LoremIpsumGenerator() {
               />
             </>
           }
-          footer={
-            <span aria-live="polite">
-              {countWords(text)} {t("words")} · {text.length} {t("characters")} ·{" "}
-              {paragraphs} {t("paragraphs")}
-            </span>
-          }
         >
           <textarea
             className="tp-tool-code tp-tool-code--tall"
@@ -154,28 +141,13 @@ export default function LoremIpsumGenerator() {
                 : tw("lorem-ipsum-generator.statusIdle")}
             </ToolBadge>
           }
-          footer={<span>{tw("lorem-ipsum-generator.seedNote")}</span>}
         >
-          <div className="tp-tool-result">
+          <div className="tp-tool-result" aria-live="polite">
             <dl className="tp-tool-stats">
               <Stat label={t("words")} value={countWords(text)} />
               <Stat label={t("characters")} value={text.length} />
               <Stat label={t("paragraphs")} value={paragraphs} />
             </dl>
-            <div className="tp-tool-list">
-              <div className="tp-tool-row">
-                <span>{tw("lorem-ipsum-generator.settingsType")}</span>
-                <strong>{typeLabel}</strong>
-              </div>
-              <div className="tp-tool-row">
-                <span>{tw("lorem-ipsum-generator.settingsCount")}</span>
-                <strong>{count}</strong>
-              </div>
-              <div className="tp-tool-row">
-                <span>{tw("lorem-ipsum-generator.settingsSeed")}</span>
-                <strong>{options.seed}</strong>
-              </div>
-            </div>
             <Button type="button" size="sm" onClick={handleNewSeed}>
               <Shuffle className="h-3.5 w-3.5" aria-hidden="true" />
               {tw("lorem-ipsum-generator.newSeed")}
@@ -187,9 +159,6 @@ export default function LoremIpsumGenerator() {
         <>
           <div className="tp-tool-options-head">
             <h3>{tw("lorem-ipsum-generator.optionsTitle")}</h3>
-            <ToolBadge tone="accent">
-              {tw("lorem-ipsum-generator.optionsBadge")}
-            </ToolBadge>
           </div>
           <div className="tp-tool-options-grid">
             <div className="tp-tool-group">
@@ -220,9 +189,6 @@ export default function LoremIpsumGenerator() {
                   onChange={(event) => setCount(Number(event.target.value))}
                 />
               </div>
-              <p className="tp-tool-hint">
-                {tw("lorem-ipsum-generator.countHint")}
-              </p>
             </div>
 
             <div className="tp-tool-group">
@@ -248,9 +214,6 @@ export default function LoremIpsumGenerator() {
                 ]}
                 onChange={(type) => update({ type })}
               />
-              <p className="tp-tool-hint">
-                {tw("lorem-ipsum-generator.typeHint")}
-              </p>
             </div>
 
             <div className="tp-tool-group">
@@ -267,13 +230,6 @@ export default function LoremIpsumGenerator() {
                 />
                 {tw("lorem-ipsum-generator.startWithLorem")}
               </label>
-              <Button type="button" variant="secondary" size="sm" onClick={handleNewSeed}>
-                <Shuffle className="h-3.5 w-3.5" aria-hidden="true" />
-                {tw("lorem-ipsum-generator.newSeed")}
-              </Button>
-              <p className="tp-tool-hint">
-                {tw("lorem-ipsum-generator.seedHint")}
-              </p>
             </div>
           </div>
         </>

@@ -153,7 +153,6 @@ export default function TextDiffChecker() {
               {tw("text-diff-checker.clear")}
             </Button>
           }
-          footer={<span>{tw("text-diff-checker.inputFooter")}</span>}
         >
           <div
             style={{
@@ -253,7 +252,6 @@ export default function TextDiffChecker() {
               />
             </div>
           }
-          footer={<span>{tw("text-diff-checker.limitNote")}</span>}
         >
           {evaluation.error ? (
             <p className="tp-tool-error" role="alert">
@@ -272,19 +270,6 @@ export default function TextDiffChecker() {
                   value={`${evaluation.result.stats.similarity}%`}
                 />
               </dl>
-              <div>
-                <p className="tp-tool-label">{tw("text-diff-checker.similarityLabel")}</p>
-                <div
-                  className="tp-tool-progress"
-                  role="progressbar"
-                  aria-label={tw("text-diff-checker.similarityLabel")}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={evaluation.result.stats.similarity}
-                >
-                  <span style={{ width: `${evaluation.result.stats.similarity}%` }} />
-                </div>
-              </div>
               <div className="tp-tool-list">
                 {evaluation.result.rows.map((row, index) => {
                   const marker = row.kind === "added" ? "+" : row.kind === "removed" ? "-" : " ";

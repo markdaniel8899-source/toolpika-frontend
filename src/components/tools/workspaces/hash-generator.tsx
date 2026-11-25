@@ -236,7 +236,6 @@ export default function HashGenerator() {
             : notice || undefined
       }
       noticeTone="warning"
-      ribbonRight={<ToolBadge tone="accent">{algorithm}</ToolBadge>}
       input={
         <ToolPane
           id="hash-input-title"
@@ -345,7 +344,6 @@ export default function HashGenerator() {
               />
             </>
           }
-          footer={tw("hash-generator.localFooter")}
         >
           {digest ? (
             <div className="tp-tool-result">
@@ -380,10 +378,6 @@ export default function HashGenerator() {
                 onChange={(value) => update({ algorithm: value })}
               />
             </ToolField>
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">{tw("hash-generator.digestTitle")}</p>
-              <p className="tp-tool-hint">{tw("hash-generator.digestHint")}</p>
-            </div>
           </div>
         </>
       }

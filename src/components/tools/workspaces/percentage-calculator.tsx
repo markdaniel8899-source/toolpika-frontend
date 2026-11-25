@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeftRight, Check, Copy, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  CheckboxRow,
   DownloadButton,
   SegmentedControl,
   ToolBadge,
@@ -41,13 +40,10 @@ export default function PercentageCalculator() {
   const [mode, setMode] = useState<Mode>(DEFAULTS.mode);
   const [a, setA] = useState("");
   const [b, setB] = useState("");
-  const { options, update } = usePersistedOptions<{
-    decimals: Decimals;
-    includeFormula: boolean;
-  }>("tp-percentage-calculator-options", {
-    decimals: 2,
-    includeFormula: true,
-  });
+  const { options, update } = usePersistedOptions<{ decimals: Decimals }>(
+    "tp-percentage-calculator-options",
+    { decimals: 2 },
+  );
   const { copied, copy, reset } = useCopyFeedback();
 
   const parsedA = parseValue(a);
@@ -77,14 +73,11 @@ export default function PercentageCalculator() {
   const resultText = useMemo(() => {
     if (!calculation || calculation.error || !formatted) return "";
     const lines = [`${tw("percentage-calculator.resultLabel")}: ${formatted}`];
-    if (options.includeFormula && calculation.formula) {
+    if (calculation.formula) {
       lines.push(`${tw("percentage-calculator.formulaLabel")}: ${calculation.formula}`);
     }
-    lines.push(
-      `${tw("percentage-calculator.stepsLabel")}: ${calculation.steps.join("; ")}`,
-    );
     return lines.join("\n");
-  }, [calculation, formatted, options.includeFormula, tw]);
+  }, [calculation, formatted, tw]);
 
   const handleCopy = useCallback(() => {
     if (resultText) void copy(resultText);
@@ -156,7 +149,6 @@ export default function PercentageCalculator() {
                 <ArrowLeftRight className="h-3.5 w-3.5" aria-hidden="true" />
                 {tw("percentage-calculator.swap")}
               </Button>
-              <span>{tw("percentage-calculator.inputFooterHint")}</span>
             </>
           }
         >
@@ -194,7 +186,6 @@ export default function PercentageCalculator() {
           <ToolField
             label={tw("percentage-calculator.valueX")}
             htmlFor="tp-percentage-a"
-            hint={tw("percentage-calculator.valuesHint")}
           >
             <input
               id="tp-percentage-a"
@@ -221,7 +212,6 @@ export default function PercentageCalculator() {
           <ToolField
             label={tw("percentage-calculator.valueY")}
             htmlFor="tp-percentage-b"
-            hint={tw("percentage-calculator.valuesHint")}
           >
             <input
               id="tp-percentage-b"
@@ -314,27 +304,9 @@ export default function PercentageCalculator() {
                 </div>
               </dl>
 
-              {options.includeFormula && calculation.formula ? (
+              {calculation.formula ? (
                 <pre className="tp-tool-code">{calculation.formula}</pre>
               ) : null}
-
-              <div>
-                <p className="tp-tool-label">
-                  {tw("percentage-calculator.stepsLabel")}
-                </p>
-                <ol className="tp-tool-list">
-                  {calculation.steps.map((step, index) => (
-                    <li className="tp-tool-row" key={index}>
-                      <span className="tp-tool-pill">
-                        {tw("percentage-calculator.stepIndex", {
-                          index: index + 1,
-                        })}
-                      </span>
-                      <span>{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
             </div>
           ) : null}
         </ToolPane>
@@ -360,17 +332,6 @@ export default function PercentageCalculator() {
                 onChange={(value) =>
                   update({ decimals: Number(value) as Decimals })
                 }
-              />
-            </div>
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">
-                {tw("percentage-calculator.displayLabel")}
-              </p>
-              <CheckboxRow
-                id="tp-percentage-formula"
-                label={tw("percentage-calculator.includeFormula")}
-                checked={options.includeFormula}
-                onChange={(checked) => update({ includeFormula: checked })}
               />
             </div>
           </div>

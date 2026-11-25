@@ -8,7 +8,6 @@ import {
   CheckboxRow,
   CopyButton,
   DownloadButton,
-  ToolBadge,
   ToolEmpty,
   ToolField,
   ToolPane,
@@ -31,7 +30,7 @@ export default function UtmBuilder() {
   const [campaign, setCampaign] = useState("");
   const [term, setTerm] = useState("");
   const [content, setContent] = useState("");
-  const { options, update, reset: resetOptions } = usePersistedOptions<UtmOptions>(
+  const { options, update } = usePersistedOptions<UtmOptions>(
     "toolpika:utm-builder:options",
     { lowerCase: false, keepFragment: false },
   );
@@ -137,26 +136,14 @@ export default function UtmBuilder() {
     baseRef.current?.focus();
   }, [showNotice, tw]);
 
-  const errorHint =
+  const inputError =
     calculation.error === "INVALID_URL"
       ? tw("utm-builder.errorInvalidUrl")
       : calculation.error === "MISSING_REQUIRED"
         ? tw("utm-builder.errorRequired")
-        : "";
-
-  const requiredError = (value: string, fieldLabel: string) =>
-    calculation.error === "MISSING_REQUIRED" && !value.trim()
-      ? tw("utm-builder.errorRequiredField", { field: fieldLabel })
-      : "";
-
-  const statusBadge =
-    calculation.error === "INVALID_URL" || calculation.error === "MISSING_REQUIRED" ? (
-      <ToolBadge tone="danger">{tw("utm-builder.statusError")}</ToolBadge>
-    ) : calculation.url ? (
-      <ToolBadge tone="success">{tw("utm-builder.statusReady")}</ToolBadge>
-    ) : (
-      <ToolBadge>{tw("utm-builder.statusIdle")}</ToolBadge>
-    );
+        : calculation.error === "EMPTY"
+          ? tw("utm-builder.emptyHint")
+          : "";
 
   return (
     <ToolShell
@@ -197,12 +184,10 @@ export default function UtmBuilder() {
               </Button>
             </>
           }
-          footer={<span>{tw("utm-builder.fieldNote")}</span>}
         >
           <ToolField
             label={tw("utm-builder.baseUrlLabel")}
             htmlFor="tp-utm-base"
-            hint={tw("utm-builder.baseUrlHint")}
           >
             <input
               id="tp-utm-base"
@@ -214,20 +199,15 @@ export default function UtmBuilder() {
               className="tp-tool-field"
               placeholder={tw("utm-builder.baseUrlPlaceholder")}
               value={baseUrl}
-              aria-invalid={calculation.error === "INVALID_URL" || (calculation.error === "MISSING_REQUIRED" && !baseUrl.trim())}
+              aria-invalid={calculation.error === "INVALID_URL"}
               onChange={(event) => setBaseUrl(event.target.value)}
             />
-            {errorHint ? (
-              <p className="tp-tool-error" role="alert">
-                {errorHint}
-              </p>
-            ) : null}
-            {requiredError(baseUrl, tw("utm-builder.baseUrlLabel")) ? (
-              <p className="tp-tool-error" role="alert">
-                {requiredError(baseUrl, tw("utm-builder.baseUrlLabel"))}
-              </p>
-            ) : null}
           </ToolField>
+          {inputError ? (
+            <p className="tp-tool-error" role="alert">
+              {inputError}
+            </p>
+          ) : null}
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ToolField label={tw("utm-builder.sourceLabel")} htmlFor="tp-utm-source">
@@ -238,9 +218,6 @@ export default function UtmBuilder() {
                 value={source}
                 onChange={(event) => setSource(event.target.value)}
               />
-              {requiredError(source, tw("utm-builder.sourceLabel")) ? (
-                <p className="tp-tool-error">{requiredError(source, tw("utm-builder.sourceLabel"))}</p>
-              ) : null}
             </ToolField>
 
             <ToolField label={tw("utm-builder.mediumLabel")} htmlFor="tp-utm-medium">
@@ -251,9 +228,6 @@ export default function UtmBuilder() {
                 value={medium}
                 onChange={(event) => setMedium(event.target.value)}
               />
-              {requiredError(medium, tw("utm-builder.mediumLabel")) ? (
-                <p className="tp-tool-error">{requiredError(medium, tw("utm-builder.mediumLabel"))}</p>
-              ) : null}
             </ToolField>
 
             <ToolField label={tw("utm-builder.campaignLabel")} htmlFor="tp-utm-campaign">
@@ -264,15 +238,11 @@ export default function UtmBuilder() {
                 value={campaign}
                 onChange={(event) => setCampaign(event.target.value)}
               />
-              {requiredError(campaign, tw("utm-builder.campaignLabel")) ? (
-                <p className="tp-tool-error">{requiredError(campaign, tw("utm-builder.campaignLabel"))}</p>
-              ) : null}
             </ToolField>
 
             <ToolField
               label={tw("utm-builder.termLabel")}
               htmlFor="tp-utm-term"
-              hint={tw("utm-builder.optionalHint")}
             >
               <input
                 id="tp-utm-term"
@@ -286,7 +256,6 @@ export default function UtmBuilder() {
             <ToolField
               label={tw("utm-builder.contentLabel")}
               htmlFor="tp-utm-content"
-              hint={tw("utm-builder.optionalHint")}
             >
               <input
                 id="tp-utm-content"
@@ -307,7 +276,6 @@ export default function UtmBuilder() {
           result
           actions={
             <>
-              {statusBadge}
               <CopyButton
                 text={resultText}
                 label={t("copy")}
@@ -321,31 +289,18 @@ export default function UtmBuilder() {
               />
             </>
           }
-          footer={<span>{tw("utm-builder.resultNote")}</span>}
         >
           {calculation.url ? (
             <div className="tp-tool-result">
               <div className="tp-tool-url">
                 <code aria-live="polite">{calculation.url}</code>
               </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">{tw("utm-builder.paramsTitle")}</span>
-                <ul className="tp-tool-list">
-                  {calculation.params.map((param) => (
-                    <li className="tp-tool-row" key={param.key}>
-                      <span>{param.key}</span>
-                      <strong>{param.value}</strong>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
           ) : (
             <ToolEmpty
               icon={<Link2 />}
               title={calculation.error === "EMPTY" ? tw("utm-builder.emptyTitle") : tw("utm-builder.errorTitle")}
-              hint={calculation.error === "EMPTY" ? tw("utm-builder.emptyHint") : errorHint}
+              hint={calculation.error === "EMPTY" ? tw("utm-builder.emptyHint") : inputError}
             />
           )}
         </ToolPane>
@@ -354,9 +309,6 @@ export default function UtmBuilder() {
         <>
           <div className="tp-tool-options-head">
             <h3>{tw("utm-builder.optionsTitle")}</h3>
-            <Button type="button" variant="ghost" size="sm" onClick={resetOptions}>
-              {tw("utm-builder.resetOptions")}
-            </Button>
           </div>
           <div className="tp-tool-options-grid">
             <CheckboxRow

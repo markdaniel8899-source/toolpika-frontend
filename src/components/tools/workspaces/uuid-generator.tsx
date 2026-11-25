@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   DownloadButton,
   SegmentedControl,
-  Stat,
   ToolBadge,
   ToolEmpty,
   ToolField,
@@ -55,12 +54,6 @@ export default function UuidGenerator() {
     if (version === 7) return tw("uuid-generator.version7");
     if (version === "nil") return tw("uuid-generator.versionNil");
     return tw("uuid-generator.version4");
-  };
-
-  const separatorLabel = (separator: UuidSeparator) => {
-    if (separator === "comma") return tw("uuid-generator.valueComma");
-    if (separator === "space") return tw("uuid-generator.valueSpace");
-    return tw("uuid-generator.valueNewline");
   };
 
   const displayed = useMemo(
@@ -150,18 +143,7 @@ export default function UuidGenerator() {
           id="uuid-setup-title"
           title={tw("uuid-generator.setupTitle")}
           hint={tw("uuid-generator.setupHint")}
-          footer={<span>{tw("uuid-generator.cryptoNote")}</span>}
         >
-          <p className="tp-tool-hint">{tw("uuid-generator.intro")}</p>
-          <dl className="tp-tool-stats">
-            <Stat label={tw("uuid-generator.summaryCount")} value={options.count} />
-            <Stat label={tw("uuid-generator.summaryVersion")} value={versionLabel(options.version)} />
-            <Stat label={tw("uuid-generator.summarySeparator")} value={separatorLabel(options.separator)} />
-            <Stat
-              label={tw("uuid-generator.summaryCase")}
-              value={options.uppercase ? tw("uuid-generator.valueUppercase") : tw("uuid-generator.valueLowercase")}
-            />
-          </dl>
           <Button type="button" onClick={handleGenerate}>
             <RefreshCw className="h-4 w-4" aria-hidden="true" />
             {tw("uuid-generator.generate")}
@@ -193,13 +175,7 @@ export default function UuidGenerator() {
             </>
           }
           footer={
-            <>
-              <span aria-live="polite">{`${displayed.length} ${tw("uuid-generator.countUnit")}`}</span>
-              <Button type="button" onClick={handleGenerate}>
-                <RefreshCw className="h-4 w-4" aria-hidden="true" />
-                {tw("uuid-generator.generateAgain")}
-              </Button>
-            </>
+            <span aria-live="polite">{`${displayed.length} ${tw("uuid-generator.countUnit")}`}</span>
           }
         >
           {displayed.length === 0 ? (
@@ -226,18 +202,11 @@ export default function UuidGenerator() {
         <>
           <div className="tp-tool-options-head">
             <h3>{tw("uuid-generator.optionsTitle")}</h3>
-            <Button type="button" variant="ghost" size="sm" onClick={() => {
-              resetOptions();
-              setCountDraft(null);
-            }}>
-              {tw("uuid-generator.restoreDefaults")}
-            </Button>
           </div>
           <div className="tp-tool-options-grid">
             <ToolField
               label={tw("uuid-generator.countTitle")}
               htmlFor="uuid-count"
-              hint={tw("uuid-generator.countHint")}
             >
               <input
                 id="uuid-count"
@@ -288,7 +257,6 @@ export default function UuidGenerator() {
                 />
                 {tw("uuid-generator.uppercaseLabel")}
               </label>
-              <p className="tp-tool-hint">{tw("uuid-generator.caseHint")}</p>
             </div>
           </div>
         </>

@@ -6,7 +6,6 @@ import { Check, ClipboardPaste, Copy, Regex, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DownloadButton,
-  Stat,
   ToolBadge,
   ToolEmpty,
   ToolPane,
@@ -218,7 +217,6 @@ export default function RegexTester() {
                 /{options.flags}
               </span>
             </div>
-            <p className="tp-tool-hint">{tw("regex-tester.patternHint")}</p>
           </div>
 
           <div className="tp-tool-group">
@@ -264,7 +262,6 @@ export default function RegexTester() {
         <ToolPane
           id="tp-regex-result-title"
           title={t("result")}
-          hint={tw("regex-tester.resultHint")}
           result
           actions={
             <>
@@ -291,12 +288,9 @@ export default function RegexTester() {
             </>
           }
           footer={
-            <>
-              <span>{tw("regex-tester.capHint")}</span>
-              <ToolBadge tone="accent">
-                {tw("regex-tester.matchCount", { count: result.matches.length })}
-              </ToolBadge>
-            </>
+            <ToolBadge tone="accent">
+              {tw("regex-tester.matchCount", { count: result.matches.length })}
+            </ToolBadge>
           }
         >
           {!ready ? (
@@ -342,19 +336,6 @@ export default function RegexTester() {
             />
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("regex-tester.statMatches")}
-                  value={result.matches.length}
-                />
-                <Stat
-                  label={tw("regex-tester.statElapsed")}
-                  value={tw("regex-tester.elapsedValue", {
-                    value: result.elapsedMs ?? 0,
-                  })}
-                />
-              </dl>
-
               <ul className="tp-tool-list">
                 {result.matches.map((item, index) => (
                   <li className="tp-tool-row" key={`${item.index}-${index}`}>

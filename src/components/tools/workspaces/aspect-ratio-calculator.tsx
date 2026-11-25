@@ -45,7 +45,7 @@ export default function AspectRatioCalculator() {
   const [height, setHeight] = useState("");
   const [target, setTarget] = useState("");
   const [preset, setPreset] = useState("");
-  const { options, update, reset: resetOptions } = usePersistedOptions<AspectOptions>(
+  const { options, update } = usePersistedOptions<AspectOptions>(
     "toolpika:aspect-ratio-calculator:options",
     { rounding: "nearest", lock: "width" },
   );
@@ -323,7 +323,6 @@ export default function AspectRatioCalculator() {
               />
             </>
           }
-          footer={<span>{tw("aspect-ratio-calculator.previewHint")}</span>}
         >
           {calculation.status === "ready" ? (
             <div className="tp-tool-result">
@@ -372,9 +371,6 @@ export default function AspectRatioCalculator() {
         <>
           <div className="tp-tool-options-head">
             <h3>{tw("aspect-ratio-calculator.optionsTitle")}</h3>
-            <Button type="button" variant="ghost" size="sm" onClick={resetOptions}>
-              {tw("aspect-ratio-calculator.resetOptions")}
-            </Button>
           </div>
           <div className="tp-tool-options-grid">
             <div className="tp-tool-group">
@@ -394,7 +390,6 @@ export default function AspectRatioCalculator() {
                 <option value="up">{tw("aspect-ratio-calculator.roundUp")}</option>
                 <option value="down">{tw("aspect-ratio-calculator.roundDown")}</option>
               </select>
-              <p className="tp-tool-hint">{tw("aspect-ratio-calculator.roundingHint")}</p>
             </div>
           </div>
         </>
