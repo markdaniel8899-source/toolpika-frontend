@@ -233,7 +233,7 @@ export default function TimestampConverter() {
       input={
         <div className="flex min-w-0 flex-col gap-5">
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <Button type="button" variant="ghost" size="sm" onClick={handleNow}>
+            <Button type="button" variant="secondary" size="sm" onClick={handleNow}>
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
               {t("timestamp-converter.useNow")}
             </Button>

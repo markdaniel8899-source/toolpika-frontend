@@ -320,7 +320,7 @@ export default function JsonToCsv() {
             <Button
               type="button"
               size="sm"
-              variant={mode === "toJson" ? "default" : "ghost"}
+              variant={mode === "toJson" ? "default" : "secondary"}
               aria-pressed={mode === "toJson"}
               className="min-w-0 flex-1 px-3 sm:flex-none"
               onClick={() => setMode("toJson")}
@@ -358,11 +358,11 @@ export default function JsonToCsv() {
               placeholder={tu("startTyping")}
               aria-label={t("json-to-csv.title")}
               spellCheck={false}
-              className="tp-field-input min-h-[280px] min-w-0 max-w-full font-mono text-[13px]"
+              className="tp-field-input min-h-[220px] min-w-0 max-w-full font-mono text-[13px]"
             />
           </div>
 
-          <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+          <div className="grid min-w-0 items-end gap-3 sm:grid-cols-2">
             <ToolField label={t("json-to-csv.delimiter")}>
               <ThemedSelect
                 value={delimiter}
@@ -372,7 +372,7 @@ export default function JsonToCsv() {
               />
             </ToolField>
             {mode === "toCsv" ? (
-              <div className="flex items-center">
+              <div className="flex min-h-[42px] items-center">
                 <CheckboxRow
                   id="j2c-include-headers"
                   label={t("json-to-csv.includeHeaders")}
@@ -393,22 +393,9 @@ export default function JsonToCsv() {
       }
       output={
         <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
-          <div
-            className="grid min-w-0 gap-2 sm:grid-cols-[auto_1fr] sm:items-center"
-            aria-live="polite"
-          >
-            <span
-              className="tp-status-pill"
-              data-tone={errorReason ? "danger" : output ? "success" : "neutral"}
-            >
-              {errorReason
-                ? t("statusError")
-                : output
-                  ? t("statusReady")
-                  : t("statusIdle")}
-            </span>
+          <div className="grid min-w-0 gap-2" aria-live="polite">
             {conversion && conversion.ok ? (
-              <span className="tp-workspace-hint sm:justify-self-end">
+              <span className="tp-workspace-hint">
                 {conversion.rows} {t("json-to-csv.rows")} · {conversion.columns}{" "}
                 {t("json-to-csv.columns")}
               </span>

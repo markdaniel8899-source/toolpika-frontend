@@ -213,9 +213,9 @@ export default function DataStorageConverter() {
             aria-live="polite"
           >
             <p className="break-words text-sm text-[var(--muted)] [overflow-wrap:anywhere]">
-              {t("data-storage-converter.system")}: {t(system)} · {from} → {to}
+              {t("data-storage-converter.system")}: {t(`data-storage-converter.${system}`)} · {from} → {to}
             </p>
-            <output className="block min-w-0 break-words font-sans text-base font-semibold leading-relaxed tabular-nums text-[var(--text)] [overflow-wrap:anywhere]">
+            <output className="block min-w-0 break-words font-sans text-3xl font-semibold leading-relaxed tabular-nums text-[var(--text)] [overflow-wrap:anywhere] sm:text-4xl">
               {formatted}
               <span className="ml-2 inline-block rounded-[99px] bg-[var(--surface)] px-2.5 py-1 text-sm font-semibold text-[var(--accent)]">
                 {to}

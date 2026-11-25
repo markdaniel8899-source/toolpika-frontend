@@ -133,8 +133,28 @@ export default function SlugGenerator() {
             }}
             placeholder={tu("startTyping")}
             aria-label={tu("pasteText")}
-            className="min-h-[240px] min-w-0"
+            className="min-h-[200px] min-w-0"
           />
+          <div className="grid min-w-0 items-end gap-3 sm:grid-cols-2">
+            <div className="min-w-0">
+              <ToolField label={t("slug-generator.separator")}>
+                <ThemedSelect
+                  value={separator}
+                  onValueChange={(next) => setSeparator(next === "_" ? "_" : "-")}
+                  options={separatorOptions}
+                  ariaLabel={t("slug-generator.separator")}
+                />
+              </ToolField>
+            </div>
+            <div className="flex min-h-[42px] min-w-0 items-center">
+              <CheckboxRow
+                id="slug-diacritics"
+                label={t("slug-generator.stripDiacritics")}
+                checked={stripDiacritics}
+                onChange={setStripDiacritics}
+              />
+            </div>
+          </div>
           <p className="tp-workspace-hint" aria-live="polite">
             {text.length} {tu("characters").toLowerCase()}
           </p>
@@ -147,28 +167,6 @@ export default function SlugGenerator() {
       }
       output={
         <div className="flex min-w-0 flex-col gap-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="min-w-0">
-              <ToolField label={t("slug-generator.separator")}>
-                <ThemedSelect
-                  value={separator}
-                  onValueChange={(next) => setSeparator(next === "_" ? "_" : "-")}
-                  options={separatorOptions}
-                  ariaLabel={t("slug-generator.separator")}
-                />
-              </ToolField>
-            </div>
-
-            <div className="min-w-0">
-              <CheckboxRow
-                id="slug-diacritics"
-                label={t("slug-generator.stripDiacritics")}
-                checked={stripDiacritics}
-                onChange={setStripDiacritics}
-              />
-            </div>
-          </div>
-
           {slug ? (
             <div
               className="tp-result-card grid min-w-0 grid-cols-1 items-center gap-3 overflow-hidden sm:grid-cols-[minmax(0,1fr)_auto]"

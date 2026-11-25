@@ -27,6 +27,9 @@ export function WorkspaceLayout({
   output: React.ReactNode;
 }) {
   const t = useTranslations("tools");
+  // Status text is intentionally hidden: the workspace already shows errors
+  // and results inline, so a separate badge only adds noise.
+  void statusRight;
 
   return (
     <div className="tp-workspace">
@@ -52,28 +55,15 @@ export function WorkspaceLayout({
         </div>
       </div>
 
-      <section className="tp-workspace-pane tp-workspace-input">
-        <div className="tp-pane-head">
-          <h2>{t("input")}</h2>
-        </div>
-        {input}
-      </section>
+      <section className="tp-workspace-pane tp-workspace-input">{input}</section>
 
-      <section className="tp-workspace-pane tp-workspace-output">
-        <div className="tp-pane-head">
-          <h2>{t("result")}</h2>
-        </div>
-        {output}
-      </section>
+      <section className="tp-workspace-pane tp-workspace-output">{output}</section>
 
       <div className="tp-workspace-ribbon">
         <span className="tp-workspace-ribbon-note">
           <ShieldCheck className="h-[13px] w-[13px]" aria-hidden="true" />
           {t("privacyRibbon")}
         </span>
-        {statusRight ? (
-          <span className="tp-workspace-ribbon-status">{statusRight}</span>
-        ) : null}
       </div>
     </div>
   );
