@@ -6,7 +6,7 @@ import { ClipboardPaste, Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkspaceLayout } from "../workspace-layout";
-import { CopyButton, OutputEmpty } from "../workspace-ui";
+import { CopyButton, OutputEmpty, Stat } from "../workspace-ui";
 
 const SAMPLE = [
   "# A safe heading",
@@ -283,8 +283,11 @@ export default function MarkdownToHtml() {
       onSample={handleSample}
       statusRight={html ? `${html.length} ${tu("characters")}` : undefined}
       input={
-        <div className="flex flex-col gap-3">
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
+        <div className="flex min-w-0 flex-col gap-3">
+          <div
+            className="tp-workspace-inline-actions justify-end"
+            style={{ marginTop: 0 }}
+          >
             <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
               <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
               {t("paste")}
@@ -311,22 +314,25 @@ export default function MarkdownToHtml() {
             placeholder={tu("startTyping")}
             aria-label={tu("pasteText")}
             spellCheck={false}
-            className="min-h-[300px] font-mono text-[13px]"
+            className="min-h-[300px] min-w-0 font-mono text-[13px]"
           />
-          <p className="tp-workspace-hint" aria-live="polite">
+          <p className="tp-workspace-hint break-words" aria-live="polite">
             {stats.characters} {tu("characters").toLowerCase()} · {stats.words}{" "}
             {tu("words").toLowerCase()} · {stats.lines} {tu("lines").toLowerCase()}
           </p>
           {error ? (
-            <p className="tp-workspace-error" role="alert">
+            <p className="tp-workspace-error break-words" role="alert">
               {tu("error")}
             </p>
           ) : null}
         </div>
       }
       output={
-        <div className="flex flex-col gap-3">
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
+        <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
+          <div
+            className="tp-workspace-inline-actions justify-end"
+            style={{ marginTop: 0 }}
+          >
             <Button
               type="button"
               size="sm"
@@ -348,46 +354,58 @@ export default function MarkdownToHtml() {
               <Download className="h-3.5 w-3.5" aria-hidden="true" />
               {t("downloadResult")}
             </Button>
+            {html ? (
+              <CopyButton
+                text={html}
+                label={t("copyResult")}
+                copiedLabel={tu("copied")}
+              />
+            ) : null}
           </div>
 
           {html ? (
             showPreview ? (
-              <pre className="tp-field-input min-h-[220px] overflow-auto whitespace-pre-wrap break-words font-mono text-[13px]">
-                {html}
-              </pre>
+              <div className="min-w-0 overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-3">
+                <span className="block text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--muted)]">
+                  {t("markdown-to-html.preview")}
+                </span>
+                <pre className="mt-2 max-h-[360px] min-w-0 overflow-auto whitespace-pre-wrap break-words font-mono text-[13px] leading-[1.6] text-[var(--text)] [overflow-wrap:anywhere]">
+                  {html}
+                </pre>
+              </div>
             ) : (
               <Textarea
                 value={html}
                 readOnly
-                aria-label={t("result")}
+                aria-label={t("markdown-to-html.title")}
                 spellCheck={false}
-                className="min-h-[220px] bg-[var(--bg)] font-mono text-[13px]"
+                className="min-h-[220px] min-w-0 break-words bg-[var(--bg)] font-mono text-[13px] [overflow-wrap:anywhere]"
               />
             )
           ) : (
             <OutputEmpty message={t("resultEmpty")} className="min-h-[220px]" />
           )}
 
-          <p className="tp-workspace-hint" role="status" aria-live="polite">
+          {html ? (
+            <dl className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-3">
+              <div className="min-w-0 overflow-hidden">
+                <Stat label={tu("characters")} value={html.length} />
+              </div>
+              <div className="min-w-0 overflow-hidden">
+                <Stat label={tu("words")} value={stats.words} />
+              </div>
+              <div className="min-w-0 overflow-hidden">
+                <Stat label={tu("lines")} value={html.split("\n").length} />
+              </div>
+            </dl>
+          ) : null}
+
+          <p className="tp-workspace-hint break-words" role="status" aria-live="polite">
             {status}
           </p>
-          {html ? (
-            <p className="tp-workspace-hint" aria-live="polite">
-              {html.length} {tu("characters").toLowerCase()} · {html.split("\n").length}{" "}
-              {tu("lines").toLowerCase()}
-            </p>
-          ) : null}
-          <p className="tp-workspace-hint">{t("markdown-to-html.unsafeNote")}</p>
-
-          {html ? (
-            <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
-              <CopyButton
-                text={html}
-                label={t("copyResult")}
-                copiedLabel={tu("copied")}
-              />
-            </div>
-          ) : null}
+          <p className="tp-workspace-hint break-words">
+            {t("markdown-to-html.unsafeNote")}
+          </p>
         </div>
       }
     />

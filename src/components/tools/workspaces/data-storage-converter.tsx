@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeftRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
+import { cn } from "@/lib/utils";
 import { WorkspaceLayout } from "../workspace-layout";
 import { CopyButton, OutputEmpty, ToolField, selectClassName } from "../workspace-ui";
 
@@ -71,6 +73,11 @@ export default function DataStorageConverter() {
     return new Intl.NumberFormat(locale, { maximumFractionDigits: 8 }).format(converted);
   }, [converted, locale]);
 
+  const unitOptions = useMemo(
+    () => STORAGE_UNITS[system].map((unit) => ({ value: unit, label: unit })),
+    [system],
+  );
+
   const handleSystem = (next: StorageSystem) => {
     setSystem(next);
     setFrom("B");
@@ -116,18 +123,26 @@ export default function DataStorageConverter() {
       input={
         <div className="flex flex-col gap-5">
           <ToolField label={t("data-storage-converter.system")}>
-            <div role="group" aria-label={t("data-storage-converter.system")} className="grid grid-cols-2 gap-2">
+            <div
+              role="group"
+              aria-label={t("data-storage-converter.system")}
+              className="grid grid-cols-2 gap-1 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--field-bg)] p-1"
+            >
               {(["si", "iec"] as const).map((option) => (
-                <Button
+                <button
                   key={option}
                   type="button"
-                  size="sm"
-                  variant={system === option ? "default" : "secondary"}
                   aria-pressed={system === option}
                   onClick={() => handleSystem(option)}
+                  className={cn(
+                    "min-w-0 truncate rounded-[var(--radius-control)] px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--focus-ring)]",
+                    system === option
+                      ? "bg-[var(--accent-fill)] text-[var(--on-accent)] shadow-[var(--soft-shadow)]"
+                      : "text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]",
+                  )}
                 >
                   {t(`data-storage-converter.${option}`)}
-                </Button>
+                </button>
               ))}
             </div>
           </ToolField>
@@ -149,21 +164,15 @@ export default function DataStorageConverter() {
 
           <div className="tp-convert-card grid items-end gap-3 sm:grid-cols-[1fr_auto_1fr]">
             <ToolField label={tu("from")}>
-              <select
+              <ThemedSelect
                 value={from}
-                onChange={(event) => {
-                  setFrom(event.target.value as StorageUnit);
+                onValueChange={(next) => {
+                  setFrom(next as StorageUnit);
                   setError("");
                 }}
-                className={selectClassName}
-                aria-label={tu("from")}
-              >
-                {STORAGE_UNITS[system].map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
+                options={unitOptions}
+                ariaLabel={tu("from")}
+              />
             </ToolField>
 
             <Button
@@ -178,21 +187,15 @@ export default function DataStorageConverter() {
             </Button>
 
             <ToolField label={tu("to")}>
-              <select
+              <ThemedSelect
                 value={to}
-                onChange={(event) => {
-                  setTo(event.target.value as StorageUnit);
+                onValueChange={(next) => {
+                  setTo(next as StorageUnit);
                   setError("");
                 }}
-                className={selectClassName}
-                aria-label={tu("to")}
-              >
-                {STORAGE_UNITS[system].map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
+                options={unitOptions}
+                ariaLabel={tu("to")}
+              />
             </ToolField>
           </div>
 
@@ -206,20 +209,23 @@ export default function DataStorageConverter() {
       output={
         formatted !== null ? (
           <div
-            className="tp-result-card flex h-full flex-col justify-center gap-3"
+            className="tp-result-card flex h-full min-w-0 flex-col justify-center gap-3 overflow-hidden"
             aria-live="polite"
           >
-            <p className="text-sm text-[var(--muted)]">
+            <p className="break-words text-sm text-[var(--muted)] [overflow-wrap:anywhere]">
               {t("data-storage-converter.system")}: {t(system)} · {from} → {to}
             </p>
-            <output className="break-words font-sans text-[40px] font-bold leading-none tracking-[-0.02em] tabular-nums">
+            <output className="block min-w-0 break-words font-sans text-base font-semibold leading-relaxed tabular-nums text-[var(--text)] [overflow-wrap:anywhere]">
               {formatted}
-              <span className="tp-unit-chip">{to}</span>
+              <span className="ml-2 inline-block rounded-[99px] bg-[var(--surface)] px-2.5 py-1 text-sm font-semibold text-[var(--accent)]">
+                {to}
+              </span>
             </output>
             <CopyButton
               text={`${formatted} ${to}`}
               label={tu("copy")}
               copiedLabel={tu("copied")}
+              className="self-start"
             />
           </div>
         ) : (

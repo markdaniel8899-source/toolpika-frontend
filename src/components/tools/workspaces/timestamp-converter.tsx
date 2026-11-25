@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Clock, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
 import { CopyButton, OutputEmpty, ToolField, selectClassName } from "../workspace-ui";
 
@@ -230,49 +231,8 @@ export default function TimestampConverter() {
         error ? t("statusError") : milliseconds === null ? t("statusIdle") : t("statusReady")
       }
       input={
-        <div className="flex flex-col gap-5">
-          <ToolField
-            label={tu("value")}
-            htmlFor="timestamp-value"
-            hint={`${t("timestamp-converter.seconds")} · ${t("timestamp-converter.milliseconds")}`}
-          >
-            <div className="grid gap-2 sm:grid-cols-[1fr_150px]">
-              <input
-                id="timestamp-value"
-                type="text"
-                inputMode="decimal"
-                autoComplete="off"
-                spellCheck={false}
-                value={timestampInput}
-                onChange={(event) => handleTimestampChange(event.target.value)}
-                placeholder="1767225600"
-                className={selectClassName}
-                aria-invalid={Boolean(error)}
-              />
-              <select
-                value={unit}
-                onChange={(event) => handleUnitChange(event.target.value as TimestampUnit)}
-                className={selectClassName}
-                aria-label={tu("value")}
-              >
-                <option value="seconds">{t("timestamp-converter.seconds")}</option>
-                <option value="milliseconds">{t("timestamp-converter.milliseconds")}</option>
-              </select>
-            </div>
-          </ToolField>
-
-          <ToolField label={t("timestamp-converter.dateTime")} htmlFor="timestamp-datetime">
-            <input
-              id="timestamp-datetime"
-              type="datetime-local"
-              value={dateTimeInput}
-              onChange={(event) => handleDateTimeChange(event.target.value)}
-              className={selectClassName}
-              aria-invalid={Boolean(error)}
-            />
-          </ToolField>
-
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
+        <div className="flex min-w-0 flex-col gap-5">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             <Button type="button" variant="ghost" size="sm" onClick={handleNow}>
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
               {t("timestamp-converter.useNow")}
@@ -289,6 +249,47 @@ export default function TimestampConverter() {
             </Button>
           </div>
 
+          <ToolField
+            label={tu("value")}
+            htmlFor="timestamp-value"
+            hint={`${t("timestamp-converter.seconds")} · ${t("timestamp-converter.milliseconds")}`}
+          >
+            <div className="grid min-w-0 gap-2 sm:grid-cols-[1fr_150px]">
+              <input
+                id="timestamp-value"
+                type="text"
+                inputMode="decimal"
+                autoComplete="off"
+                spellCheck={false}
+                value={timestampInput}
+                onChange={(event) => handleTimestampChange(event.target.value)}
+                placeholder="1767225600"
+                className={selectClassName}
+                aria-invalid={Boolean(error)}
+              />
+              <ThemedSelect
+                value={unit}
+                onValueChange={(next) => handleUnitChange(next as TimestampUnit)}
+                options={[
+                  { value: "seconds", label: t("timestamp-converter.seconds") },
+                  { value: "milliseconds", label: t("timestamp-converter.milliseconds") },
+                ]}
+                ariaLabel={`${t("timestamp-converter.seconds")} / ${t("timestamp-converter.milliseconds")}`}
+              />
+            </div>
+          </ToolField>
+
+          <ToolField label={t("timestamp-converter.dateTime")} htmlFor="timestamp-datetime">
+            <input
+              id="timestamp-datetime"
+              type="datetime-local"
+              value={dateTimeInput}
+              onChange={(event) => handleDateTimeChange(event.target.value)}
+              className={selectClassName}
+              aria-invalid={Boolean(error)}
+            />
+          </ToolField>
+
           {error ? (
             <p role="alert" aria-live="assertive" className="tp-workspace-error">
               {error}
@@ -298,23 +299,29 @@ export default function TimestampConverter() {
       }
       output={
         outputs.length ? (
-          <div aria-live="polite">
-            <dl className="tp-stats">
-              {outputs.map((output) => (
-                <div key={output.id} className="tp-stat">
-                  <dt className="tp-stat-label">{output.label}</dt>
-                  <dd className="tp-stat-value whitespace-normal break-words font-mono text-[13px] leading-[1.5]">
-                    {output.value}
-                  </dd>
-                  <CopyButton
-                    text={output.value}
-                    label={tu("copy")}
-                    copiedLabel={tu("copied")}
-                    className="mt-3"
-                  />
-                </div>
-              ))}
-            </dl>
+          <div
+            aria-live="polite"
+            className="grid min-w-0 grid-cols-1 gap-3 overflow-hidden sm:grid-cols-2"
+          >
+            {outputs.map((output) => (
+              <div
+                key={output.id}
+                className="flex min-w-0 flex-col overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-4"
+              >
+                <span className="text-xs font-medium tracking-[0.02em] text-[var(--muted)]">
+                  {output.label}
+                </span>
+                <output className="mt-2 block min-w-0 break-words font-mono text-sm leading-relaxed text-[var(--text)] [overflow-wrap:anywhere] sm:text-base">
+                  {output.value}
+                </output>
+                <CopyButton
+                  text={output.value}
+                  label={tu("copy")}
+                  copiedLabel={tu("copied")}
+                  className="mt-3 self-start"
+                />
+              </div>
+            ))}
           </div>
         ) : (
           <OutputEmpty message={t("resultEmpty")} className="min-h-[200px]" />

@@ -5,11 +5,12 @@ import { useTranslations } from "next-intl";
 import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
 import {
+  CheckboxRow,
   CopyButton,
   OutputEmpty,
-  selectClassName,
   ToolField,
 } from "../workspace-ui";
 
@@ -53,6 +54,11 @@ export default function SlugGenerator() {
     () => textToSlug(text, { separator, stripDiacritics }),
     [text, separator, stripDiacritics],
   );
+
+  const separatorOptions = [
+    { value: "-", label: t("slug-generator.hyphen") },
+    { value: "_", label: t("slug-generator.underscore") },
+  ];
 
   const status = error
     ? t("statusError")
@@ -99,10 +105,10 @@ export default function SlugGenerator() {
       icon="Link"
       onReset={handleReset}
       onSample={handleSample}
-      statusRight={slug ? `${slug.length} ${tu("characters")}` : undefined}
+      statusRight={status}
       input={
-        <div className="flex flex-col gap-3">
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
+        <div className="flex min-w-0 flex-col gap-3">
+          <div className="tp-workspace-inline-actions justify-end" style={{ marginTop: 0 }}>
             <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
               <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
               {t("paste")}
@@ -127,7 +133,7 @@ export default function SlugGenerator() {
             }}
             placeholder={tu("startTyping")}
             aria-label={tu("pasteText")}
-            className="min-h-[240px]"
+            className="min-h-[240px] min-w-0"
           />
           <p className="tp-workspace-hint" aria-live="polite">
             {text.length} {tu("characters").toLowerCase()}
@@ -140,63 +146,47 @@ export default function SlugGenerator() {
         </div>
       }
       output={
-        <div className="flex flex-col gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ToolField label={t("slug-generator.separator")} htmlFor="slug-separator">
-              <select
-                id="slug-separator"
-                className={selectClassName}
-                value={separator}
-                onChange={(event) =>
-                  setSeparator(event.target.value === "_" ? "_" : "-")
-                }
-              >
-                <option value="-">{t("slug-generator.hyphen")}</option>
-                <option value="_">{t("slug-generator.underscore")}</option>
-              </select>
-            </ToolField>
-
-            <ToolField
-              label={t("slug-generator.stripDiacritics")}
-              htmlFor="slug-diacritics"
-            >
-              <label
-                htmlFor="slug-diacritics"
-                className="tp-field-input flex cursor-pointer items-center gap-3"
-              >
-                <input
-                  id="slug-diacritics"
-                  type="checkbox"
-                  checked={stripDiacritics}
-                  onChange={(event) => setStripDiacritics(event.target.checked)}
-                  className="h-4 w-4 accent-[var(--accent-fill)]"
+        <div className="flex min-w-0 flex-col gap-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="min-w-0">
+              <ToolField label={t("slug-generator.separator")}>
+                <ThemedSelect
+                  value={separator}
+                  onValueChange={(next) => setSeparator(next === "_" ? "_" : "-")}
+                  options={separatorOptions}
+                  ariaLabel={t("slug-generator.separator")}
                 />
-                {t("slug-generator.stripDiacritics")}
-              </label>
-            </ToolField>
+              </ToolField>
+            </div>
+
+            <div className="min-w-0">
+              <CheckboxRow
+                id="slug-diacritics"
+                label={t("slug-generator.stripDiacritics")}
+                checked={stripDiacritics}
+                onChange={setStripDiacritics}
+              />
+            </div>
           </div>
 
           {slug ? (
-            <div className="tp-result-card flex flex-col gap-3" aria-live="polite">
-              <output className="break-all font-mono text-lg text-[var(--text)]">
+            <div
+              className="tp-result-card grid min-w-0 grid-cols-1 items-center gap-3 overflow-hidden sm:grid-cols-[minmax(0,1fr)_auto]"
+              aria-live="polite"
+            >
+              <output className="min-w-0 break-words font-mono text-base leading-relaxed text-[var(--text)] [overflow-wrap:anywhere]">
                 {slug}
               </output>
               <CopyButton
                 text={slug}
                 label={tu("copy")}
                 copiedLabel={tu("copied")}
+                className="justify-self-start sm:justify-self-end"
               />
             </div>
           ) : (
             <OutputEmpty message={t("resultEmpty")} className="min-h-[140px]" />
           )}
-
-          <p className="tp-workspace-hint" role="status" aria-live="polite">
-            {status}
-          </p>
-          <p className="tp-workspace-hint" aria-live="polite">
-            {slug.length} {tu("characters").toLowerCase()} · {tu("lowercase")}
-          </p>
         </div>
       }
     />

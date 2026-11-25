@@ -4,13 +4,9 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ClipboardPaste, Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
-import {
-  CopyButton,
-  OutputEmpty,
-  selectClassName,
-  ToolField,
-} from "../workspace-ui";
+import { CopyButton, OutputEmpty, ToolField } from "../workspace-ui";
 
 const SAMPLE = `name: Toolpika
 version: 2
@@ -373,6 +369,11 @@ export default function YamlToJson() {
   const [input, setInput] = useState("");
   const [indent, setIndent] = useState<YamlIndent>(2);
 
+  const indentOptions = [
+    { value: "2", label: `2 ${t("yaml-to-json.spaces")}` },
+    { value: "4", label: `4 ${t("yaml-to-json.spaces")}` },
+  ] as const;
+
   const conversion = useMemo(
     () => (input.trim() ? yamlToJson(input, indent) : null),
     [input, indent],
@@ -420,9 +421,14 @@ export default function YamlToJson() {
       onSample={handleSample}
       statusRight={output ? `${output.length} ${tu("characters")}` : undefined}
       input={
-        <div className="flex flex-col gap-3">
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
-            <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
+        <div className="flex min-w-0 flex-col gap-4">
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => void handlePaste()}
+            >
               <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
               {t("paste")}
             </Button>
@@ -442,24 +448,21 @@ export default function YamlToJson() {
             value={input}
             onChange={(event) => setInput(event.target.value)}
             placeholder={tu("startTyping")}
-            aria-label={t("input")}
+            aria-label={t("yaml-to-json.title")}
             spellCheck={false}
-            className="tp-field-input min-h-[300px] font-mono text-[13px]"
+            className="tp-field-input min-h-[300px] min-w-0 max-w-full font-mono text-[13px]"
           />
 
-          <ToolField label={t("yaml-to-json.indent")} htmlFor="y2j-indent">
-            <select
-              id="y2j-indent"
-              className={selectClassName}
-              value={indent}
-              onChange={(event) =>
-                setIndent(Number(event.target.value) === 4 ? 4 : 2)
-              }
-            >
-              <option value={2}>2 {t("yaml-to-json.spaces")}</option>
-              <option value={4}>4 {t("yaml-to-json.spaces")}</option>
-            </select>
-          </ToolField>
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+            <ToolField label={t("yaml-to-json.indent")}>
+              <ThemedSelect
+                value={String(indent)}
+                onValueChange={(value) => setIndent(value === "4" ? 4 : 2)}
+                options={indentOptions}
+                ariaLabel={t("yaml-to-json.indent")}
+              />
+            </ToolField>
+          </div>
 
           <p className="tp-workspace-hint" aria-live="polite">
             {input.length} {tu("characters").toLowerCase()}
@@ -467,8 +470,8 @@ export default function YamlToJson() {
         </div>
       }
       output={
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-3" aria-live="polite">
+        <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
+          <div className="grid min-w-0 gap-2 sm:grid-cols-[auto_1fr] sm:items-center" aria-live="polite">
             <span
               className="tp-status-pill"
               data-tone={errorReason ? "danger" : output ? "success" : "neutral"}
@@ -482,7 +485,7 @@ export default function YamlToJson() {
           </div>
 
           {errorReason ? (
-            <p role="alert" aria-live="polite" className="tp-workspace-error">
+            <p role="alert" aria-live="polite" className="tp-workspace-error break-words [overflow-wrap:anywhere]">
               {errorReason === "invalidYaml"
                 ? t("yaml-to-json.invalidYaml")
                 : t("yaml-to-json.unsupported")}
@@ -490,8 +493,10 @@ export default function YamlToJson() {
           ) : null}
 
           {output ? (
-            <>
-              <pre className="tp-output-pre">{output}</pre>
+            <div className="flex min-w-0 flex-col gap-3">
+              <pre className="tp-output-pre min-w-0 max-w-full whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
+                {output}
+              </pre>
               <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
                 <CopyButton
                   text={output}
@@ -509,9 +514,12 @@ export default function YamlToJson() {
                   {t("downloadResult")}
                 </Button>
               </div>
-            </>
+            </div>
           ) : (
-            <OutputEmpty message={t("resultEmpty")} className="min-h-[200px]" />
+            <OutputEmpty
+              message={t("resultEmpty")}
+              className="min-h-[200px] min-w-0 overflow-hidden break-words [overflow-wrap:anywhere]"
+            />
           )}
         </div>
       }

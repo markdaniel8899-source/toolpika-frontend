@@ -28,6 +28,48 @@ export interface HslChannels {
   l: number;
 }
 
+/**
+ * Pure, deterministic lookup of common English color names to RGB bytes.
+ * Keys are lowercase; callers normalise the input before looking it up.
+ */
+export const COLOR_NAMES: Readonly<Record<string, RgbChannels>> = Object.freeze({
+  aqua: { r: 0, g: 255, b: 255 },
+  beige: { r: 245, g: 245, b: 220 },
+  black: { r: 0, g: 0, b: 0 },
+  blue: { r: 0, g: 0, b: 255 },
+  brown: { r: 165, g: 42, b: 42 },
+  coral: { r: 255, g: 127, b: 80 },
+  crimson: { r: 220, g: 20, b: 60 },
+  cyan: { r: 0, g: 255, b: 255 },
+  fuchsia: { r: 255, g: 0, b: 255 },
+  gold: { r: 255, g: 215, b: 0 },
+  gray: { r: 128, g: 128, b: 128 },
+  green: { r: 0, g: 128, b: 0 },
+  grey: { r: 128, g: 128, b: 128 },
+  indigo: { r: 75, g: 0, b: 130 },
+  khaki: { r: 240, g: 230, b: 140 },
+  lavender: { r: 230, g: 230, b: 250 },
+  lime: { r: 0, g: 255, b: 0 },
+  magenta: { r: 255, g: 0, b: 255 },
+  maroon: { r: 128, g: 0, b: 0 },
+  navy: { r: 0, g: 0, b: 128 },
+  olive: { r: 128, g: 128, b: 0 },
+  orange: { r: 255, g: 165, b: 0 },
+  pink: { r: 255, g: 192, b: 203 },
+  plum: { r: 221, g: 160, b: 221 },
+  purple: { r: 128, g: 0, b: 128 },
+  red: { r: 255, g: 0, b: 0 },
+  salmon: { r: 250, g: 128, b: 114 },
+  silver: { r: 192, g: 192, b: 192 },
+  skyblue: { r: 135, g: 206, b: 235 },
+  tan: { r: 210, g: 180, b: 140 },
+  teal: { r: 0, g: 128, b: 128 },
+  turquoise: { r: 64, g: 224, b: 208 },
+  violet: { r: 238, g: 130, b: 238 },
+  white: { r: 255, g: 255, b: 255 },
+  yellow: { r: 255, g: 255, b: 0 },
+});
+
 export interface NormalizedColor {
   hex: string;
   rgb: RgbChannels;
@@ -208,10 +250,15 @@ function parseColor(input: string): ParsedColor {
     return { color: fromRgb(hslToRgb({ h, s, l })), error: null };
   }
 
+  const name = value.toLowerCase();
+  if (Object.prototype.hasOwnProperty.call(COLOR_NAMES, name)) {
+    return { color: fromRgb(COLOR_NAMES[name]), error: null };
+  }
+
   return { color: null, error: "malformed" };
 }
 
-/** Pure: accepts HEX / RGB / HSL text, or returns null when it is not valid. */
+/** Pure: accepts HEX / RGB / HSL text or a common color name; null if invalid. */
 export function normalizeColor(input: string): NormalizedColor | null {
   return parseColor(input).color;
 }
@@ -233,16 +280,21 @@ function ColorRow({
   copiedLabel: string;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5">
-      <div className="min-w-0">
+    <div className="flex min-w-0 items-center justify-between gap-3 overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5">
+      <div className="min-w-0 flex-1">
         <span className="block text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--muted)]">
           {label}
         </span>
-        <output className="mt-1 block break-all font-mono text-[13px] text-[var(--text)]">
+        <output className="mt-1 block break-words font-mono text-[13px] leading-[1.5] text-[var(--text)] [overflow-wrap:anywhere]">
           {value}
         </output>
       </div>
-      <CopyButton text={value} label={copyLabel} copiedLabel={copiedLabel} />
+      <CopyButton
+        text={value}
+        label={copyLabel}
+        copiedLabel={copiedLabel}
+        className="shrink-0"
+      />
     </div>
   );
 }
@@ -277,34 +329,8 @@ export default function ColorConverter() {
         hasError ? t("statusError") : color ? t("statusReady") : t("statusIdle")
       }
       input={
-        <div className="flex flex-col gap-4">
-          <ToolField label={tu("value")} htmlFor="color-input">
-            <input
-              id="color-input"
-              ref={inputRef}
-              type="text"
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-              placeholder="#4A90E2, rgb(74, 144, 226) or hsl(212, 70%, 59%)"
-              aria-invalid={hasError || undefined}
-              aria-describedby={hasError ? "color-error" : undefined}
-              spellCheck={false}
-              className="tp-field-input font-mono text-[13px]"
-            />
-          </ToolField>
-
-          {hasError ? (
-            <p
-              id="color-error"
-              role="alert"
-              className="tp-workspace-error"
-              data-reason={reason ?? undefined}
-            >
-              {t("color-converter.invalidColor")}
-            </p>
-          ) : null}
-
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
+        <div className="flex min-w-0 flex-col gap-3">
+          <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
             <Button
               type="button"
               variant="ghost"
@@ -319,45 +345,73 @@ export default function ColorConverter() {
               {t("clear")}
             </Button>
           </div>
+
+          <ToolField label={tu("value")} htmlFor="color-input">
+            <input
+              id="color-input"
+              ref={inputRef}
+              type="text"
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+              placeholder="#4A90E2, rgb(74, 144, 226), hsl(212, 70%, 59%) or red"
+              aria-invalid={hasError || undefined}
+              aria-describedby={hasError ? "color-error" : undefined}
+              spellCheck={false}
+              className="tp-field-input min-w-0 font-mono text-[13px]"
+            />
+          </ToolField>
+
+          {hasError ? (
+            <p
+              id="color-error"
+              role="alert"
+              className="tp-workspace-error break-words"
+              data-reason={reason ?? undefined}
+            >
+              {t("color-converter.invalidColor")}
+            </p>
+          ) : null}
         </div>
       }
       output={
         color ? (
-          <div className="flex flex-col gap-4" aria-live="polite">
-            <div className="flex items-center gap-4 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-4">
+          <div className="flex min-w-0 flex-col gap-4 overflow-hidden" aria-live="polite">
+            <div className="flex min-w-0 flex-wrap items-center gap-3 overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-4 sm:gap-4">
               <span
-                className="h-16 w-16 shrink-0 rounded-[10px] border border-[var(--border)]"
+                className="h-14 w-14 shrink-0 rounded-[10px] border border-[var(--border)] sm:h-16 sm:w-16"
                 style={{ backgroundColor: color.hex }}
                 aria-hidden="true"
               />
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <span className="block text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--muted)]">
                   {t("color-converter.preview")}
                 </span>
-                <code className="mt-1 block break-all font-mono text-lg font-semibold text-[var(--text)]">
+                <code className="mt-1 block break-words font-mono text-base font-semibold leading-[1.4] text-[var(--text)] [overflow-wrap:anywhere] sm:text-lg">
                   {color.hex}
                 </code>
               </div>
             </div>
 
-            <ColorRow
-              label="HEX"
-              value={color.hex}
-              copyLabel={t("color-converter.copyHex")}
-              copiedLabel={tu("copied")}
-            />
-            <ColorRow
-              label="RGB"
-              value={color.rgbText}
-              copyLabel={t("color-converter.copyRgb")}
-              copiedLabel={tu("copied")}
-            />
-            <ColorRow
-              label="HSL"
-              value={color.hslText}
-              copyLabel={t("color-converter.copyHsl")}
-              copiedLabel={tu("copied")}
-            />
+            <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
+              <ColorRow
+                label="HEX"
+                value={color.hex}
+                copyLabel={t("color-converter.copyHex")}
+                copiedLabel={tu("copied")}
+              />
+              <ColorRow
+                label="RGB"
+                value={color.rgbText}
+                copyLabel={t("color-converter.copyRgb")}
+                copiedLabel={tu("copied")}
+              />
+              <ColorRow
+                label="HSL"
+                value={color.hslText}
+                copyLabel={t("color-converter.copyHsl")}
+                copiedLabel={tu("copied")}
+              />
+            </div>
           </div>
         ) : (
           <OutputEmpty message={t("resultEmpty")} className="min-h-[200px]" />

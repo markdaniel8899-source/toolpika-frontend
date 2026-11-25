@@ -4,8 +4,9 @@ import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
-import { CopyButton, OutputEmpty, selectClassName, ToolField } from "../workspace-ui";
+import { CopyButton, OutputEmpty, ToolField } from "../workspace-ui";
 
 const SAMPLE = "255";
 
@@ -111,16 +112,21 @@ function BaseRow({
   copiedLabel: string;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5">
-      <div className="min-w-0">
+    <div className="grid min-w-0 grid-cols-1 items-center gap-3 overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 sm:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="min-w-0 overflow-hidden">
         <span className="block text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--muted)]">
           {label}
         </span>
-        <output className="mt-1 block break-all font-mono text-[13px] text-[var(--text)]">
+        <output className="mt-1 block break-words font-mono text-[13px] leading-relaxed text-[var(--text)] [overflow-wrap:anywhere]">
           {value}
         </output>
       </div>
-      <CopyButton text={value} label={copyLabel} copiedLabel={copiedLabel} />
+      <CopyButton
+        text={value}
+        label={copyLabel}
+        copiedLabel={copiedLabel}
+        className="justify-self-start sm:justify-self-end"
+      />
     </div>
   );
 }
@@ -138,6 +144,11 @@ export default function NumberBaseConverter() {
     10: t("number-base-converter.decimal"),
     16: t("number-base-converter.hexadecimal"),
   };
+
+  const baseOptions = BASES.map((base) => ({
+    value: String(base),
+    label: baseLabels[base],
+  }));
 
   const parsed = useMemo(() => convertBase(value, fromBase), [value, fromBase]);
   const hasInput = value.trim().length > 0;
@@ -186,46 +197,8 @@ export default function NumberBaseConverter() {
             : t("statusIdle")
       }
       input={
-        <div className="flex flex-col gap-4">
-          <ToolField label={tu("value")} htmlFor="number-base-value">
-            <input
-              id="number-base-value"
-              ref={inputRef}
-              type="text"
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-              placeholder="255, 0xFF, 0b11111111 or -42"
-              aria-invalid={error ? true : undefined}
-              aria-describedby={error ? "number-base-error" : undefined}
-              spellCheck={false}
-              className="tp-field-input font-mono text-[13px]"
-            />
-          </ToolField>
-
-          <ToolField label={tu("from")} htmlFor="number-base-from">
-            <select
-              id="number-base-from"
-              value={fromBase}
-              onChange={(event) => setFromBase(Number(event.target.value) as Base)}
-              className={selectClassName}
-            >
-              {BASES.map((base) => (
-                <option key={base} value={base}>
-                  {baseLabels[base]}
-                </option>
-              ))}
-            </select>
-          </ToolField>
-
-          {error ? (
-            <p id="number-base-error" role="alert" className="tp-workspace-error">
-              {error === "overflow"
-                ? t("number-base-converter.overflow")
-                : t("number-base-converter.invalidNumber")}
-            </p>
-          ) : null}
-
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
+        <div className="flex min-w-0 flex-col gap-4">
+          <div className="tp-workspace-inline-actions justify-end" style={{ marginTop: 0 }}>
             <Button
               type="button"
               variant="ghost"
@@ -246,11 +219,45 @@ export default function NumberBaseConverter() {
               {t("clear")}
             </Button>
           </div>
+
+          <ToolField label={tu("value")} htmlFor="number-base-value">
+            <input
+              id="number-base-value"
+              ref={inputRef}
+              type="text"
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+              placeholder="255, 0xFF, 0b11111111 or -42"
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? "number-base-error" : undefined}
+              spellCheck={false}
+              className="tp-field-input font-mono text-[13px]"
+            />
+          </ToolField>
+
+          <div className="min-w-0">
+            <ToolField label={tu("from")}>
+              <ThemedSelect
+                value={String(fromBase)}
+                onValueChange={(next) => setFromBase(Number(next) as Base)}
+                options={baseOptions}
+                ariaLabel={tu("from")}
+              />
+            </ToolField>
+          </div>
+
+          {error ? (
+            <p id="number-base-error" role="alert" className="tp-workspace-error">
+              {error === "overflow"
+                ? t("number-base-converter.overflow")
+                : t("number-base-converter.invalidNumber")}
+            </p>
+          ) : null}
         </div>
       }
       output={
         parsed.ok && hasInput ? (
-          <div className="flex flex-col gap-3" aria-live="polite">
+          <div className="flex min-w-0 flex-col gap-3" aria-live="polite">
             <BaseRow
               label={t("number-base-converter.binary")}
               value={parsed.outputs.binary}

@@ -4,13 +4,9 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ClipboardPaste, Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
-import {
-  CopyButton,
-  OutputEmpty,
-  selectClassName,
-  ToolField,
-} from "../workspace-ui";
+import { CheckboxRow, CopyButton, OutputEmpty, ToolField } from "../workspace-ui";
 
 const SAMPLE = `[
   { "name": "Toolpika", "category": "code", "meta": { "rank": 1 } },
@@ -232,6 +228,12 @@ export function csvToJson(source: string, delimiter: string): CsvToJsonResult {
 
 type Mode = "toCsv" | "toJson";
 
+const DELIMITER_OPTIONS = [
+  { value: ",", label: "," },
+  { value: ";", label: ";" },
+  { value: "\t", label: "Tab" },
+] as const;
+
 export default function JsonToCsv() {
   const t = useTranslations("tools");
   const tu = useTranslations("toolUi");
@@ -299,34 +301,18 @@ export default function JsonToCsv() {
       onSample={handleSample}
       statusRight={output ? `${output.length} ${tu("characters")}` : undefined}
       input={
-        <div className="flex flex-col gap-3">
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
-            <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
-              <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("paste")}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={!input}
-              onClick={() => setInput("")}
-            >
-              <X className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("clear")}
-            </Button>
-          </div>
-
+        <div className="flex min-w-0 flex-col gap-4">
           <div
-            className="flex flex-wrap gap-2"
             role="group"
             aria-label={t("json-to-csv.title")}
+            className="flex w-full gap-1 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-1 sm:w-auto"
           >
             <Button
               type="button"
               size="sm"
-              variant={mode === "toCsv" ? "default" : "secondary"}
+              variant={mode === "toCsv" ? "default" : "ghost"}
               aria-pressed={mode === "toCsv"}
+              className="min-w-0 flex-1 px-3 sm:flex-none"
               onClick={() => setMode("toCsv")}
             >
               {t("json-to-csv.jsonToCsv")}
@@ -334,50 +320,67 @@ export default function JsonToCsv() {
             <Button
               type="button"
               size="sm"
-              variant={mode === "toJson" ? "default" : "secondary"}
+              variant={mode === "toJson" ? "default" : "ghost"}
               aria-pressed={mode === "toJson"}
+              className="min-w-0 flex-1 px-3 sm:flex-none"
               onClick={() => setMode("toJson")}
             >
               {t("json-to-csv.csvToJson")}
             </Button>
           </div>
 
-          <textarea
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={tu("startTyping")}
-            aria-label={t("input")}
-            spellCheck={false}
-            className="tp-field-input min-h-[280px] font-mono text-[13px]"
-          />
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <ToolField label={t("json-to-csv.delimiter")} htmlFor="j2c-delimiter">
-              <select
-                id="j2c-delimiter"
-                className={selectClassName}
-                value={delimiter}
-                onChange={(event) =>
-                  setDelimiter(event.target.value as CsvDelimiter)
-                }
+          <div className="flex min-w-0 flex-col gap-2">
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => void handlePaste()}
               >
-                <option value=",">,</option>
-                <option value=";">;</option>
-                <option value="\t">Tab</option>
-              </select>
-            </ToolField>
-            <div className="flex flex-col gap-2">
-              <label className="flex h-full cursor-pointer items-center gap-2 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 text-sm text-[var(--text)]">
-                <input
-                  type="checkbox"
-                  checked={includeHeaders}
-                  disabled={mode !== "toCsv"}
-                  onChange={(event) => setIncludeHeaders(event.target.checked)}
-                  className="h-4 w-4 accent-[var(--accent-fill)]"
-                />
-                {t("json-to-csv.includeHeaders")}
-              </label>
+                <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("paste")}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                disabled={!input}
+                onClick={() => setInput("")}
+              >
+                <X className="h-3.5 w-3.5" aria-hidden="true" />
+                {t("clear")}
+              </Button>
             </div>
+
+            <textarea
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              placeholder={tu("startTyping")}
+              aria-label={t("json-to-csv.title")}
+              spellCheck={false}
+              className="tp-field-input min-h-[280px] min-w-0 max-w-full font-mono text-[13px]"
+            />
+          </div>
+
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+            <ToolField label={t("json-to-csv.delimiter")}>
+              <ThemedSelect
+                value={delimiter}
+                onValueChange={(value) => setDelimiter(value as CsvDelimiter)}
+                options={DELIMITER_OPTIONS}
+                ariaLabel={t("json-to-csv.delimiter")}
+              />
+            </ToolField>
+            {mode === "toCsv" ? (
+              <div className="flex items-center">
+                <CheckboxRow
+                  id="j2c-include-headers"
+                  label={t("json-to-csv.includeHeaders")}
+                  checked={includeHeaders}
+                  onChange={setIncludeHeaders}
+                />
+              </div>
+            ) : null}
           </div>
 
           {mode === "toCsv" ? (
@@ -389,8 +392,11 @@ export default function JsonToCsv() {
         </div>
       }
       output={
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-3" aria-live="polite">
+        <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
+          <div
+            className="grid min-w-0 gap-2 sm:grid-cols-[auto_1fr] sm:items-center"
+            aria-live="polite"
+          >
             <span
               className="tp-status-pill"
               data-tone={errorReason ? "danger" : output ? "success" : "neutral"}
@@ -402,7 +408,7 @@ export default function JsonToCsv() {
                   : t("statusIdle")}
             </span>
             {conversion && conversion.ok ? (
-              <span className="tp-workspace-hint">
+              <span className="tp-workspace-hint sm:justify-self-end">
                 {conversion.rows} {t("json-to-csv.rows")} · {conversion.columns}{" "}
                 {t("json-to-csv.columns")}
               </span>
@@ -420,8 +426,10 @@ export default function JsonToCsv() {
           ) : null}
 
           {output ? (
-            <>
-              <pre className="tp-output-pre">{output}</pre>
+            <div className="flex min-w-0 flex-col gap-3">
+              <pre className="tp-output-pre min-w-0 max-w-full whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
+                {output}
+              </pre>
               <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
                 <CopyButton
                   text={output}
@@ -439,9 +447,12 @@ export default function JsonToCsv() {
                   {t("downloadResult")}
                 </Button>
               </div>
-            </>
+            </div>
           ) : (
-            <OutputEmpty message={t("resultEmpty")} className="min-h-[200px]" />
+            <OutputEmpty
+              message={t("resultEmpty")}
+              className="min-h-[200px] min-w-0 overflow-hidden break-words [overflow-wrap:anywhere]"
+            />
           )}
         </div>
       }
