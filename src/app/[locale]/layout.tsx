@@ -4,6 +4,8 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { getSiteUrl } from "@/lib/site-url";
+import { buildSiteSchemas } from "@/lib/seo/json-ld";
+import { JsonLdScripts } from "@/components/seo/json-ld";
 import { inter, display, jakarta } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
 import { SiteMotion } from "@/components/site-motion";
@@ -79,6 +81,7 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const siteSchemas = buildSiteSchemas({ locale, siteUrl: getSiteUrl() });
 
   return (
     <html
@@ -89,6 +92,7 @@ export default async function LocaleLayout({
     >
       <head>
         <ThemeScript />
+        <JsonLdScripts schemas={siteSchemas} />
       </head>
       <body className="min-h-screen bg-[var(--bg)] font-sans text-base leading-[1.6] text-[var(--text)] antialiased">
         <NextIntlClientProvider messages={messages}>

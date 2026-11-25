@@ -12,6 +12,7 @@ import {
 } from "@/lib/tools/registry";
 import { getToolPageContent } from "@/lib/tools/tool-content";
 import { buildToolSchemas } from "@/lib/tools/tool-schema";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 import { FullToolPage } from "@/components/tools/full-tool-page";
 
 const LOCALES = [
@@ -197,9 +198,7 @@ export default async function ToolPage({ params }: LocalePageProps) {
         <script
           key={index}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
-          }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
         />
       ))}
       <FullToolPage

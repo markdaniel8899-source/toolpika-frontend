@@ -41,12 +41,8 @@ export function buildToolSchemas({
     {
       "@context": "https://schema.org",
       "@graph": [
-        {
-          "@type": "Organization",
-          "@id": organizationId,
-          name: "Toolpika",
-          url: siteUrl,
-        },
+        // Organization is emitted site-wide by [locale]/layout.tsx and is
+        // referenced here by @id, so it is not duplicated on tool pages.
         {
           "@type": "WebApplication",
           "@id": appId,
