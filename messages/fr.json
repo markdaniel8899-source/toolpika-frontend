@@ -462,7 +462,7 @@
         "howTo": "Collez votre tableau d'objets JSON dans la zone de saisie.\nChoisissez un séparateur : virgule, point-virgule ou tabulation.\nDécidez si la première ligne doit contenir les en-têtes de colonnes.\nCopiez le CSV ou téléchargez-le sous forme de fichier.\nOuvrez le fichier dans un tableur pour vérifier l'alignement des colonnes.",
         "exampleTitle": "Exemple de conversion",
         "exampleLabel": "Deux enregistrements deviennent deux lignes",
-        "exampleInput": "[{\"name\":\"Ada\",\"role\":\"Engineer\"},{\"name\":\"Lin\",\"role\":\"Designer\"}]",
+        "exampleInput": "[{\"name\":\"Ada\",\"role\":\"Ingénieur\"},{\"name\":\"Lin\",\"role\":\"Designer\"}]",
         "exampleOutput": "nom,rôle\nAda,Ingénieur\nLin,Concepteur",
         "exampleNote": "L'ordre des colonnes suit le premier objet. Les objets suivants peuvent ajouter ou omettre des clés ; les clés manquantes produisent des cellules vides.",
         "featuresTitle": "Ce que gère ce convertisseur",
@@ -598,7 +598,43 @@
       }
     },
     "timestamp-converter": {
-      "title": "Convertisseur d'horodatage"
+      "title": "Convertisseur d'horodatage",
+      "shortDesc": "Convertir les timestamps Unix en dates et inversement.",
+      "seo": {
+        "title": "Convertisseur de timestamps - Epoch Unix vers date et ISO",
+        "description": "Convertissez des secondes ou millisecondes Unix en dates UTC et locales, chaînes ISO, ou une date vers l'époque Unix, le tout dans votre navigateur."
+      },
+      "seconds": "Secondes",
+      "milliseconds": "Millisecondes",
+      "utc": "UTC",
+      "local": "Heure locale",
+      "iso": "ISO 8601",
+      "dateTime": "Date et heure",
+      "useNow": "Utiliser l'heure actuelle",
+      "invalidTimestamp": "Entrez un horodatage Unix valide ou une date et une heure.",
+      "page": {
+        "byline": "Outils pour développeurs",
+        "directAnswer": "Convertissez les horodatages Unix en dates UTC et locales lisibles, ou transformez une date et une heure en secondes et millisecondes. Basculez entre les unités d'époque, copiez les chaînes ISO et vérifiez les dates limites sans envoyer de données nulle part. Utilisez l'heure actuelle comme point de départ.",
+        "aboutTitle": "À propos du convertisseur d'horodatages",
+        "contextualLink": "Les journaux contiennent souvent aussi des valeurs encodées. %%TOOL%% peut les décoder avant que vous ne lisiez les dates.",
+        "whatIsTitle": "Qu'est-ce qu'un timestamp Unix ?",
+        "whatIs": "Un timestamp Unix compte les secondes depuis le 1er janvier 1970 à 00:00 UTC. De nombreuses API utilisent aussi les millisecondes, soit le même compte multiplié par mille.\n\nComme ce compte est indépendant du fuseau horaire, c'est un moyen fiable de stocker un instant. Son affichage nécessite toutefois un fuseau, c'est pourquoi cet outil affiche à la fois l'UTC et votre heure locale.",
+        "howToTitle": "Comment convertir un timestamp",
+        "howTo": "Choisissez secondes ou millisecondes selon votre valeur.\nCollez le timestamp pour voir les sorties UTC, locale et ISO.\nBasculez sur le panneau date pour convertir une date en unités epoch.\nUtilisez le bouton « heure actuelle » comme exemple rapide.",
+        "exampleTitle": "Exemple de conversion",
+        "exampleLabel": "Un timestamp Unix familier",
+        "exampleInput": "1700000000",
+        "exampleOutput": "UTC : 2023-11-14T22:13:20Z\nLocal : le fuseau horaire de votre navigateur\nMillisecondes : 1700000000000",
+        "exampleNote": "Le résultat local dépend du fuseau horaire configuré sur votre appareil.",
+        "featuresTitle": "Ce que cet outil affiche",
+        "features": "Conversion bidirectionnelle::De l'époque à la date et de la date à l'époque.\nChoix de l'unité::Secondes ou millisecondes, avec indication de l'ordre de grandeur.\nSorties multiples::Heure UTC, heure locale et chaînes ISO 8601.\nHeure actuelle::Un clic insère l'instant présent.",
+        "useCasesTitle": "Quand convertir les horodatages",
+        "useCases": "Lire les logs::Convertir les valeurs epoch en dates pendant le débogage.\nComparer les événements::Normaliser les enregistrements de différents systèmes.\nVérifier l'expiration::Contrôler l'échéance d'un jeton en heure locale.\nRédiger des rapports::Inclure des dates lisibles dans la documentation.",
+        "mistakesTitle": "Erreurs courantes et limites",
+        "limitsTitle": "Limites",
+        "mistakes": "Confondre secondes et millisecondes::Une valeur à treize chiffres correspond généralement à des millisecondes.\nIgnorer le fuseau horaire::La sortie UTC et locale diffère selon votre décalage.\nSupposer que toute valeur est valide::Les dates antérieures à l'époque nécessitent un horodatage négatif.",
+        "limits": "Les dates JavaScript sont limitées à environ ±8,64e15 millisecondes.\nLa précision au-dessous de la milliseconde n'est pas conservée.\nLes particularités des calendriers historiques avant 1970 ne sont pas modélisées."
+      }
     }
   },
   "search": {
