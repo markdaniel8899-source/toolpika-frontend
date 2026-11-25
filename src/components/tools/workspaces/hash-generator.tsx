@@ -8,7 +8,6 @@ import {
   DownloadButton,
   SegmentedControl,
   Stat,
-  ToolBadge,
   ToolEmpty,
   ToolField,
   ToolPane,
@@ -202,12 +201,6 @@ export default function HashGenerator() {
   };
 
   const bits = DIGEST_BITS[algorithm];
-  const statusLabel = hashing
-    ? tw("hash-generator.hashing")
-    : digest
-      ? tw("hash-generator.ready")
-      : tw("hash-generator.waiting");
-  const statusTone = hashing ? "accent" : digest ? "success" : "neutral";
   const isFileSource = source.kind === "file" && file !== null;
   const downloadContent = digest ? `${algorithm}: ${digest}\n` : null;
 
@@ -228,13 +221,7 @@ export default function HashGenerator() {
       shortcutHint={tw("hash-generator.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
-      notice={
-        errorMessage
-          ? undefined
-          : algorithm === "SHA-1"
-            ? tw("hash-generator.sha1Warning")
-            : notice || undefined
-      }
+      notice={notice || undefined}
       noticeTone="warning"
       input={
         <ToolPane
@@ -259,22 +246,39 @@ export default function HashGenerator() {
               </Button>
             </>
           }
-          footer={
-            isFileSource
-              ? `${file.name} · ${formatBytes(file.size)}`
-              : `${t("characters")}: ${text.length} / ${MAX_TEXT_CHARS}`
-          }
         >
-          <textarea
-            ref={textRef}
-            id="hash-text"
-            className="tp-tool-editor"
-            value={text}
-            onChange={(event) => handleTextChange(event.target.value)}
-            placeholder={t("startTyping")}
-            aria-label={t("pasteText")}
-            spellCheck={false}
-          />
+          <div className="tp-tool-group tp-tool-group--flush">
+            <ToolField label={tw("hash-generator.algorithm")}>
+              <SegmentedControl
+                label={tw("hash-generator.algorithm")}
+                value={algorithm}
+                options={algorithmOptions}
+                onChange={(value) => update({ algorithm: value })}
+              />
+            </ToolField>
+            {algorithm === "SHA-1" ? (
+              <p className="tp-tool-hint" role="status">
+                {tw("hash-generator.sha1Warning")}
+              </p>
+            ) : null}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="hash-text" className="tp-tool-label">
+              {tw("hash-generator.textLabel")}
+            </label>
+            <textarea
+              ref={textRef}
+              id="hash-text"
+              className="tp-tool-editor"
+              value={text}
+              onChange={(event) => handleTextChange(event.target.value)}
+              placeholder={t("startTyping")}
+              spellCheck={false}
+              aria-invalid={Boolean(errorMessage)}
+              aria-describedby={errorMessage ? "hash-error" : undefined}
+            />
+          </div>
 
           <label
             className="tp-tool-drop"
@@ -304,11 +308,13 @@ export default function HashGenerator() {
               type="file"
               className="sr-only"
               onChange={(event) => handleFile(event.target.files?.[0])}
+              aria-invalid={Boolean(errorMessage)}
+              aria-describedby={errorMessage ? "hash-error" : undefined}
             />
           </label>
 
           {errorMessage ? (
-            <p className="tp-tool-error" role="alert">
+            <p className="tp-tool-error" id="hash-error" role="alert">
               {errorMessage}
             </p>
           ) : null}
@@ -318,11 +324,9 @@ export default function HashGenerator() {
         <ToolPane
           id="hash-result-title"
           title={t("result")}
-          hint={tw("hash-generator.resultHint")}
           result
           actions={
             <>
-              <ToolBadge tone={statusTone}>{statusLabel}</ToolBadge>
               <Button
                 type="button"
                 size="sm"
@@ -345,41 +349,26 @@ export default function HashGenerator() {
             </>
           }
         >
-          {digest ? (
-            <div className="tp-tool-result">
-              <pre className="tp-tool-code" tabIndex={0} aria-live="polite">
-                {digest}
-              </pre>
-              <dl className="tp-tool-stats">
-                <Stat label={tw("hash-generator.bits")} value={bits} />
-                <Stat label={tw("hash-generator.bytes")} value={bits / 8} />
-              </dl>
-            </div>
-          ) : (
-            <ToolEmpty
-              icon={<Clock />}
-              title={hashing ? tw("hash-generator.hashing") : tw("hash-generator.emptyTitle")}
-              hint={tw("hash-generator.emptyHint")}
-            />
-          )}
-        </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("hash-generator.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
-            <ToolField label={tw("hash-generator.algorithm")}>
-              <SegmentedControl
-                label={tw("hash-generator.algorithm")}
-                value={algorithm}
-                options={algorithmOptions}
-                onChange={(value) => update({ algorithm: value })}
+          <div aria-live="polite">
+            {digest ? (
+              <div className="tp-tool-result">
+                <pre className="tp-tool-code" tabIndex={0}>
+                  {digest}
+                </pre>
+                <dl className="tp-tool-stats">
+                  <Stat label={tw("hash-generator.bits")} value={bits} />
+                  <Stat label={tw("hash-generator.bytes")} value={bits / 8} />
+                </dl>
+              </div>
+            ) : (
+              <ToolEmpty
+                icon={<Clock />}
+                title={hashing ? tw("hash-generator.hashing") : tw("hash-generator.emptyTitle")}
+                hint={tw("hash-generator.emptyHint")}
               />
-            </ToolField>
+            )}
           </div>
-        </>
+        </ToolPane>
       }
     />
   );

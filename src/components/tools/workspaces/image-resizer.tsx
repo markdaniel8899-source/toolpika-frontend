@@ -8,7 +8,6 @@ import {
   DownloadButton,
   SegmentedControl,
   Stat,
-  ToolBadge,
   ToolEmpty,
   ToolField,
   ToolPane,
@@ -345,13 +344,6 @@ export default function ImageResizer() {
     ? `${parseFileName(loaded.name).base || tw("image-resizer.defaultFileName")}-resized.${extensionForFormat(options.format)}`
     : `${tw("image-resizer.defaultFileName")}-resized.${extensionForFormat(options.format)}`;
 
-  const statusLabel = busy
-    ? tw("image-resizer.processing")
-    : output
-      ? tw("image-resizer.ready")
-      : tw("image-resizer.waiting");
-  const statusTone = busy ? "accent" : output ? "success" : "neutral";
-
   const lockOptions: { value: AspectLock; label: string }[] = [
     { value: "width", label: tw("image-resizer.lockWidth") },
     { value: "height", label: tw("image-resizer.lockHeight") },
@@ -418,73 +410,12 @@ export default function ImageResizer() {
                 void loadFile(event.target.files?.[0]);
                 event.target.value = "";
               }}
+              aria-invalid={Boolean(errorMessage)}
+              aria-describedby={errorMessage ? "resize-error" : undefined}
             />
           </label>
 
-          {loaded ? (
-            <dl className="tp-tool-stats">
-              <Stat label={tw("image-resizer.originalSize")} value={formatBytes(loaded.size)} />
-              <Stat
-                label={tw("image-resizer.originalDimensions")}
-                value={`${loaded.width} × ${loaded.height}`}
-              />
-            </dl>
-          ) : null}
-
-          {errorMessage ? (
-            <p className="tp-tool-error" role="alert">
-              {errorMessage}
-            </p>
-          ) : null}
-        </ToolPane>
-      }
-      result={
-        <ToolPane
-          id="resize-result-title"
-          title={t("result")}
-          hint={tw("image-resizer.resultHint")}
-          result
-          actions={
-            <>
-              <ToolBadge tone={statusTone}>{statusLabel}</ToolBadge>
-              <DownloadButton
-                content={output?.blob ?? null}
-                fileName={downloadName}
-                label={t("download")}
-              />
-            </>
-          }
-        >
-          {output ? (
-            <div className="tp-tool-result">
-              <div className="tp-tool-preview">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={output.url} alt={tw("image-resizer.previewAlt")} />
-              </div>
-              <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("image-resizer.outputDimensions")}
-                  value={`${output.width} × ${output.height}`}
-                />
-                <Stat label={tw("image-resizer.outputSize")} value={formatBytes(output.size)} />
-                <Stat label={tw("image-resizer.savedPercent")} value={`${savedPercent}%`} />
-              </dl>
-            </div>
-          ) : (
-            <ToolEmpty
-              icon={busy ? <LoaderCircle /> : <ImageIcon />}
-              title={busy ? tw("image-resizer.processing") : tw("image-resizer.emptyTitle")}
-              hint={busy ? tw("image-resizer.processingHint") : tw("image-resizer.emptyHint")}
-            />
-          )}
-        </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("image-resizer.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ToolField label={tw("image-resizer.width")} htmlFor="resize-width">
               <input
                 id="resize-width"
@@ -509,56 +440,113 @@ export default function ImageResizer() {
                 onChange={(event) => update({ height: event.target.value })}
               />
             </ToolField>
-            <ToolField label={tw("image-resizer.aspectLock")}>
-              <SegmentedControl
-                label={tw("image-resizer.aspectLock")}
-                value={options.lock}
-                options={lockOptions}
-                onChange={(value) => update({ lock: value })}
-              />
-            </ToolField>
-            <ToolField label={tw("image-resizer.format")} htmlFor="resize-format">
-              <select
-                id="resize-format"
-                className="tp-tool-select"
-                value={options.format}
-                onChange={(event) => update({ format: event.target.value as ImageFormat })}
-              >
-                {formatOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </ToolField>
-            <ToolField
-              label={t("quality")}
-              htmlFor="resize-quality"
-              hint={
-                options.format === "image/png"
-                  ? tw("image-resizer.qualityPngHint")
-                  : tw("image-resizer.qualityHint")
-              }
-            >
-              <div className="tp-tool-group">
-                <input
-                  id="resize-quality"
-                  type="range"
-                  min={0.1}
-                  max={1}
-                  step={0.01}
-                  className="tp-tool-range"
-                  value={options.quality}
-                  disabled={options.format === "image/png"}
-                  onChange={(event) => update({ quality: Number(event.target.value) })}
-                />
-                <span className="tp-tool-hint">
-                  {Math.round(options.quality * 100)}%
-                </span>
-              </div>
-            </ToolField>
           </div>
-        </>
+
+          <ToolField label={tw("image-resizer.aspectLock")}>
+            <SegmentedControl
+              label={tw("image-resizer.aspectLock")}
+              value={options.lock}
+              options={lockOptions}
+              onChange={(value) => update({ lock: value })}
+            />
+          </ToolField>
+
+          {loaded ? (
+            <dl className="tp-tool-stats">
+              <Stat label={tw("image-resizer.originalSize")} value={formatBytes(loaded.size)} />
+              <Stat
+                label={tw("image-resizer.originalDimensions")}
+                value={`${loaded.width} × ${loaded.height}`}
+              />
+            </dl>
+          ) : null}
+
+          {errorMessage ? (
+            <p className="tp-tool-error" id="resize-error" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
+        </ToolPane>
+      }
+      result={
+        <ToolPane id="resize-result-title" title={t("result")} result>
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="min-w-[170px] flex-1">
+              <ToolField label={tw("image-resizer.format")} htmlFor="resize-format">
+                <select
+                  id="resize-format"
+                  className="tp-tool-select"
+                  value={options.format}
+                  onChange={(event) => update({ format: event.target.value as ImageFormat })}
+                >
+                  {formatOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </ToolField>
+            </div>
+            <div className="min-w-[170px] flex-1">
+              <ToolField
+                label={t("quality")}
+                htmlFor="resize-quality"
+                hint={
+                  options.format === "image/png"
+                    ? tw("image-resizer.qualityPngHint")
+                    : tw("image-resizer.qualityHint")
+                }
+              >
+                <div className="tp-tool-group">
+                  <input
+                    id="resize-quality"
+                    type="range"
+                    min={0.1}
+                    max={1}
+                    step={0.01}
+                    className="tp-tool-range"
+                    value={options.quality}
+                    disabled={options.format === "image/png"}
+                    onChange={(event) => update({ quality: Number(event.target.value) })}
+                  />
+                  <span className="tp-tool-hint">
+                    {Math.round(options.quality * 100)}%
+                  </span>
+                </div>
+              </ToolField>
+            </div>
+            <DownloadButton
+              content={output?.blob ?? null}
+              fileName={downloadName}
+              label={t("download")}
+            />
+          </div>
+
+          <div aria-live="polite">
+            {output ? (
+              <div className="tp-tool-result">
+                <div className="tp-tool-preview">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={output.url} alt={tw("image-resizer.previewAlt")} />
+                </div>
+                <dl className="tp-tool-stats">
+                  <Stat
+                    label={tw("image-resizer.outputDimensions")}
+                    value={`${output.width} × ${output.height}`}
+                  />
+                  <Stat label={tw("image-resizer.outputSize")} value={formatBytes(output.size)} />
+                  <Stat label={tw("image-resizer.savedPercent")} value={`${savedPercent}%`} />
+                </dl>
+              </div>
+            ) : (
+              <ToolEmpty
+                icon={busy ? <LoaderCircle /> : <ImageIcon />}
+                title={busy ? tw("image-resizer.processing") : tw("image-resizer.emptyTitle")}
+                hint={busy ? tw("image-resizer.processingHint") : tw("image-resizer.emptyHint")}
+              />
+            )}
+          </div>
+        </ToolPane>
       }
     />
   );

@@ -9,14 +9,12 @@ import {
   DownloadButton,
   SegmentedControl,
   Stat,
-  ToolBadge,
   ToolEmpty,
   ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
   useDebounced,
-  usePersistedOptions,
   useToolNotice,
 } from "@/components/tools/workspace-ui";
 import {
@@ -27,16 +25,16 @@ import {
   scaleDimensions,
   type Dimensions,
   type Ratio,
-  type RoundingMode,
 } from "./aspect-ratio-calculator.logic";
 
 type LockMode = "width" | "height";
-type AspectOptions = { rounding: RoundingMode; lock: LockMode };
 
 type Calculation =
   | { status: "idle" }
   | { status: "error"; message: string }
   | { status: "ready"; dimensions: Dimensions; ratio: Ratio };
+
+const ERROR_ID = "tp-arc-error";
 
 export default function AspectRatioCalculator() {
   const t = useTranslations("toolUi");
@@ -45,10 +43,7 @@ export default function AspectRatioCalculator() {
   const [height, setHeight] = useState("");
   const [target, setTarget] = useState("");
   const [preset, setPreset] = useState("");
-  const { options, update } = usePersistedOptions<AspectOptions>(
-    "toolpika:aspect-ratio-calculator:options",
-    { rounding: "nearest", lock: "width" },
-  );
+  const [lock, setLock] = useState<LockMode>("width");
   const { notice, showNotice } = useToolNotice();
   const widthRef = useRef<HTMLInputElement | null>(null);
 
@@ -81,8 +76,8 @@ export default function AspectRatioCalculator() {
         dimensions: scaleDimensions(
           sourceWidth,
           sourceHeight,
-          options.lock === "width" ? { width: goal } : { height: goal },
-          options.rounding,
+          lock === "width" ? { width: goal } : { height: goal },
+          "nearest",
         ),
         ratio: reduceRatio(sourceWidth, sourceHeight),
       };
@@ -93,7 +88,7 @@ export default function AspectRatioCalculator() {
           : tw("aspect-ratio-calculator.errorPositive");
       return { status: "error", message };
     }
-  }, [delayedWidth, delayedHeight, delayedTarget, options.lock, options.rounding, tw]);
+  }, [delayedWidth, delayedHeight, delayedTarget, lock, tw]);
 
   const resultText = useMemo(() => {
     if (calculation.status !== "ready") return "";
@@ -123,14 +118,15 @@ export default function AspectRatioCalculator() {
     setWidth("1920");
     setHeight("1080");
     setPreset("16:9");
-    setTarget(options.lock === "width" ? "1280" : "720");
-  }, [options.lock]);
+    setTarget(lock === "width" ? "1280" : "720");
+  }, [lock]);
 
   const handleReset = useCallback(() => {
     setWidth("");
     setHeight("");
     setTarget("");
     setPreset("");
+    setLock("width");
     widthRef.current?.focus();
   }, []);
 
@@ -160,14 +156,7 @@ export default function AspectRatioCalculator() {
     setHeight(String(matched.h));
   };
 
-  const statusBadge =
-    calculation.status === "ready" ? (
-      <ToolBadge tone="success">{tw("aspect-ratio-calculator.statusReady")}</ToolBadge>
-    ) : calculation.status === "error" ? (
-      <ToolBadge tone="danger">{tw("aspect-ratio-calculator.statusError")}</ToolBadge>
-    ) : (
-      <ToolBadge>{tw("aspect-ratio-calculator.statusIdle")}</ToolBadge>
-    );
+  const describedBy = calculation.status === "error" ? ERROR_ID : undefined;
 
   return (
     <ToolShell
@@ -220,6 +209,8 @@ export default function AspectRatioCalculator() {
                 inputMode="numeric"
                 className="tp-tool-field"
                 value={width}
+                aria-invalid={calculation.status === "error"}
+                aria-describedby={describedBy}
                 onChange={(event) => {
                   setWidth(event.target.value);
                   setPreset("");
@@ -235,6 +226,8 @@ export default function AspectRatioCalculator() {
                 inputMode="numeric"
                 className="tp-tool-field"
                 value={height}
+                aria-invalid={calculation.status === "error"}
+                aria-describedby={describedBy}
                 onChange={(event) => {
                   setHeight(event.target.value);
                   setPreset("");
@@ -265,18 +258,18 @@ export default function AspectRatioCalculator() {
           <div className="tp-tool-group tp-tool-group--flush">
             <SegmentedControl<LockMode>
               label={tw("aspect-ratio-calculator.lockLabel")}
-              value={options.lock}
+              value={lock}
               options={[
                 { value: "width", label: tw("aspect-ratio-calculator.byWidth") },
                 { value: "height", label: tw("aspect-ratio-calculator.byHeight") },
               ]}
-              onChange={(value) => update({ lock: value })}
+              onChange={setLock}
             />
           </div>
 
           <ToolField
             label={
-              options.lock === "width"
+              lock === "width"
                 ? tw("aspect-ratio-calculator.targetWidthLabel")
                 : tw("aspect-ratio-calculator.targetHeightLabel")
             }
@@ -290,12 +283,19 @@ export default function AspectRatioCalculator() {
               inputMode="numeric"
               className="tp-tool-field"
               value={target}
+              aria-invalid={calculation.status === "error"}
+              aria-describedby={describedBy}
               onChange={(event) => setTarget(event.target.value)}
             />
           </ToolField>
 
           {calculation.status === "error" ? (
-            <p className="tp-tool-error" role="alert">
+            <p
+              id={ERROR_ID}
+              className="tp-tool-error"
+              role="status"
+              aria-live="polite"
+            >
               {calculation.message}
             </p>
           ) : null}
@@ -309,7 +309,6 @@ export default function AspectRatioCalculator() {
           result
           actions={
             <>
-              {statusBadge}
               <CopyButton
                 text={resultText}
                 label={t("copy")}
@@ -325,7 +324,7 @@ export default function AspectRatioCalculator() {
           }
         >
           {calculation.status === "ready" ? (
-            <div className="tp-tool-result">
+            <div className="tp-tool-result" aria-live="polite">
               <div className="flex flex-col gap-1">
                 <span className="tp-tool-label">
                   {tw("aspect-ratio-calculator.reducedLabel")}
@@ -336,8 +335,14 @@ export default function AspectRatioCalculator() {
               </div>
 
               <dl className="tp-tool-stats">
-                <Stat label={tw("aspect-ratio-calculator.widthStat")} value={calculation.dimensions.width} />
-                <Stat label={tw("aspect-ratio-calculator.heightStat")} value={calculation.dimensions.height} />
+                <Stat
+                  label={tw("aspect-ratio-calculator.widthStat")}
+                  value={calculation.dimensions.width}
+                />
+                <Stat
+                  label={tw("aspect-ratio-calculator.heightStat")}
+                  value={calculation.dimensions.height}
+                />
               </dl>
 
               <div className="flex flex-col gap-1">
@@ -359,40 +364,15 @@ export default function AspectRatioCalculator() {
               />
             </div>
           ) : (
-            <ToolEmpty
-              icon={<Ruler />}
-              title={tw("aspect-ratio-calculator.emptyTitle")}
-              hint={tw("aspect-ratio-calculator.emptyHint")}
-            />
+            <div aria-live="polite">
+              <ToolEmpty
+                icon={<Ruler />}
+                title={tw("aspect-ratio-calculator.emptyTitle")}
+                hint={tw("aspect-ratio-calculator.emptyHint")}
+              />
+            </div>
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("aspect-ratio-calculator.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">
-                {tw("aspect-ratio-calculator.roundingLabel")}
-              </p>
-              <select
-                id="tp-arc-rounding"
-                className="tp-tool-select"
-                aria-label={tw("aspect-ratio-calculator.roundingLabel")}
-                value={options.rounding}
-                onChange={(event) =>
-                  update({ rounding: event.target.value as RoundingMode })
-                }
-              >
-                <option value="nearest">{tw("aspect-ratio-calculator.roundNearest")}</option>
-                <option value="up">{tw("aspect-ratio-calculator.roundUp")}</option>
-                <option value="down">{tw("aspect-ratio-calculator.roundDown")}</option>
-              </select>
-            </div>
-          </div>
-        </>
       }
     />
   );

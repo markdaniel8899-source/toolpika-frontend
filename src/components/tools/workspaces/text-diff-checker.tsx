@@ -9,7 +9,6 @@ import {
   DownloadButton,
   SegmentedControl,
   Stat,
-  ToolBadge,
   ToolEmpty,
   ToolPane,
   ToolShell,
@@ -44,7 +43,6 @@ export default function TextDiffChecker() {
 
   const delayedOriginal = useDebounced(original, 180);
   const delayedRevised = useDebounced(revised, 180);
-  const ready = Boolean(original.trim() && revised.trim());
 
   const evaluation = useMemo(() => {
     if (!delayedOriginal.trim() || !delayedRevised.trim()) {
@@ -85,12 +83,19 @@ export default function TextDiffChecker() {
     [showNotice, tw],
   );
 
-  const handleClear = useCallback(() => {
-    setOriginal("");
-    setRevised("");
-    clearNotice();
-    originalRef.current?.focus();
-  }, [clearNotice]);
+  const clearField = useCallback(
+    (target: "original" | "revised") => {
+      clearNotice();
+      if (target === "original") {
+        setOriginal("");
+        originalRef.current?.focus();
+      } else {
+        setRevised("");
+        revisedRef.current?.focus();
+      }
+    },
+    [clearNotice],
+  );
 
   const handleSample = useCallback(() => {
     setOriginal(SAMPLE_ORIGINAL);
@@ -115,21 +120,6 @@ export default function TextDiffChecker() {
   }, [plainDiff, showNotice, tw]);
   useCopyShortcut(copyShortcut);
 
-  const status = evaluation.error
-    ? tw("text-diff-checker.statusError")
-    : evaluation.result
-      ? tw("text-diff-checker.statusReady")
-      : ready
-        ? tw("text-diff-checker.statusWorking")
-        : tw("text-diff-checker.statusIdle");
-  const statusTone = evaluation.error
-    ? "danger"
-    : evaluation.result
-      ? "success"
-      : ready
-        ? "warning"
-        : "neutral";
-
   return (
     <ToolShell
       title={tw("text-diff-checker.title")}
@@ -146,13 +136,6 @@ export default function TextDiffChecker() {
         <ToolPane
           id="diff-input-title"
           title={tw("text-diff-checker.inputTitle")}
-          hint={tw("text-diff-checker.inputHint")}
-          actions={
-            <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-              <X className="h-3.5 w-3.5" aria-hidden="true" />
-              {tw("text-diff-checker.clear")}
-            </Button>
-          }
         >
           <div
             style={{
@@ -173,16 +156,28 @@ export default function TextDiffChecker() {
                 <label className="tp-tool-label" htmlFor="diff-original">
                   {tw("text-diff-checker.originalLabel")}
                 </label>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => void pasteInto("original")}
-                  aria-label={`${tw("text-diff-checker.paste")} ${tw("text-diff-checker.originalLabel")}`}
-                >
-                  <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-                  {tw("text-diff-checker.paste")}
-                </Button>
+                <div style={{ display: "flex", gap: 4 }}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => void pasteInto("original")}
+                    aria-label={`${tw("text-diff-checker.paste")} ${tw("text-diff-checker.originalLabel")}`}
+                  >
+                    <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
+                    {tw("text-diff-checker.paste")}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => clearField("original")}
+                    aria-label={`${tw("text-diff-checker.clear")} ${tw("text-diff-checker.originalLabel")}`}
+                  >
+                    <X className="h-3.5 w-3.5" aria-hidden="true" />
+                    {tw("text-diff-checker.clear")}
+                  </Button>
+                </div>
               </div>
               <textarea
                 id="diff-original"
@@ -192,6 +187,7 @@ export default function TextDiffChecker() {
                 onChange={(event) => setOriginal(event.target.value)}
                 placeholder={tw("text-diff-checker.originalPlaceholder")}
                 aria-label={tw("text-diff-checker.originalLabel")}
+                aria-describedby={evaluation.error ? "diff-error" : undefined}
                 spellCheck={false}
               />
             </div>
@@ -207,16 +203,28 @@ export default function TextDiffChecker() {
                 <label className="tp-tool-label" htmlFor="diff-revised">
                   {tw("text-diff-checker.revisedLabel")}
                 </label>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => void pasteInto("revised")}
-                  aria-label={`${tw("text-diff-checker.paste")} ${tw("text-diff-checker.revisedLabel")}`}
-                >
-                  <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-                  {tw("text-diff-checker.paste")}
-                </Button>
+                <div style={{ display: "flex", gap: 4 }}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => void pasteInto("revised")}
+                    aria-label={`${tw("text-diff-checker.paste")} ${tw("text-diff-checker.revisedLabel")}`}
+                  >
+                    <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
+                    {tw("text-diff-checker.paste")}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => clearField("revised")}
+                    aria-label={`${tw("text-diff-checker.clear")} ${tw("text-diff-checker.revisedLabel")}`}
+                  >
+                    <X className="h-3.5 w-3.5" aria-hidden="true" />
+                    {tw("text-diff-checker.clear")}
+                  </Button>
+                </div>
               </div>
               <textarea
                 id="diff-revised"
@@ -226,6 +234,7 @@ export default function TextDiffChecker() {
                 onChange={(event) => setRevised(event.target.value)}
                 placeholder={tw("text-diff-checker.revisedPlaceholder")}
                 aria-label={tw("text-diff-checker.revisedLabel")}
+                aria-describedby={evaluation.error ? "diff-error" : undefined}
                 spellCheck={false}
               />
             </div>
@@ -236,25 +245,21 @@ export default function TextDiffChecker() {
         <ToolPane
           id="diff-result-title"
           title={tw("text-diff-checker.resultTitle")}
-          hint={tw("text-diff-checker.resultHint")}
           result
           actions={
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-              <ToolBadge tone={statusTone}>{status}</ToolBadge>
-              <SegmentedControl<DiffMode>
-                label={tw("text-diff-checker.modeLabel")}
-                value={options.mode}
-                options={[
-                  { value: "lines", label: tw("text-diff-checker.lines") },
-                  { value: "words", label: tw("text-diff-checker.words") },
-                ]}
-                onChange={(mode) => update({ mode })}
-              />
-            </div>
+            <SegmentedControl<DiffMode>
+              label={tw("text-diff-checker.modeLabel")}
+              value={options.mode}
+              options={[
+                { value: "lines", label: tw("text-diff-checker.lines") },
+                { value: "words", label: tw("text-diff-checker.words") },
+              ]}
+              onChange={(mode) => update({ mode })}
+            />
           }
         >
           {evaluation.error ? (
-            <p className="tp-tool-error" role="alert">
+            <p id="diff-error" className="tp-tool-error" role="alert">
               {evaluation.error}
             </p>
           ) : null}

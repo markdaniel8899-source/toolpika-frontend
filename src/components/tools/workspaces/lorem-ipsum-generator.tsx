@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl";
 import { Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
+  CheckboxRow,
   CopyButton,
   DownloadButton,
   SegmentedControl,
   Stat,
-  ToolBadge,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -38,7 +38,6 @@ export default function LoremIpsumGenerator() {
 
   const debouncedOptions = useDebounced(options, 120);
   const text = useMemo(() => generateLorem(debouncedOptions), [debouncedOptions]);
-  const paragraphs = text ? text.split(/\n\s*\n/u).length : 0;
 
   const countField: "paragraphs" | "sentencesPerParagraph" | "wordsPerSentence" =
     options.type === "words"
@@ -101,9 +100,75 @@ export default function LoremIpsumGenerator() {
       notice={notice}
       input={
         <ToolPane
-          id="lorem-output-title"
-          title={tw("lorem-ipsum-generator.outputTitle")}
-          hint={tw("lorem-ipsum-generator.outputHint")}
+          id="lorem-settings-title"
+          title={tw("lorem-ipsum-generator.settingsTitle")}
+        >
+          <div className="tp-tool-group">
+            <p className="tp-tool-group-title">
+              {tw("lorem-ipsum-generator.typeLabel")}
+            </p>
+            <SegmentedControl<LoremType>
+              label={tw("lorem-ipsum-generator.typeLabel")}
+              value={options.type}
+              options={[
+                {
+                  value: "paragraphs",
+                  label: tw("lorem-ipsum-generator.typeOptionParagraphs"),
+                },
+                {
+                  value: "sentences",
+                  label: tw("lorem-ipsum-generator.typeOptionSentences"),
+                },
+                {
+                  value: "words",
+                  label: tw("lorem-ipsum-generator.typeOptionWords"),
+                },
+              ]}
+              onChange={(type) => update({ type })}
+            />
+          </div>
+
+          <div className="tp-tool-group">
+            <label className="tp-tool-label" htmlFor="lorem-count-range">
+              {tw("lorem-ipsum-generator.countLabel")}
+            </label>
+            <input
+              id="lorem-count-range"
+              type="range"
+              className="tp-tool-range"
+              min={limits.min}
+              max={limits.max}
+              value={count}
+              onChange={(event) => setCount(Number(event.target.value))}
+            />
+            <label className="tp-tool-label" htmlFor="lorem-count-number">
+              {tw("lorem-ipsum-generator.countNumberLabel")}
+            </label>
+            <input
+              id="lorem-count-number"
+              type="number"
+              className="tp-tool-field"
+              style={{ maxWidth: 120 }}
+              min={limits.min}
+              max={limits.max}
+              value={count}
+              onChange={(event) => setCount(Number(event.target.value))}
+            />
+          </div>
+
+          <CheckboxRow
+            id="lorem-start"
+            label={tw("lorem-ipsum-generator.startWithLorem")}
+            checked={options.startWithLorem}
+            onChange={(checked) => update({ startWithLorem: checked })}
+          />
+        </ToolPane>
+      }
+      result={
+        <ToolPane
+          id="lorem-result-title"
+          title={tw("lorem-ipsum-generator.resultTitle")}
+          result
           actions={
             <>
               <CopyButton
@@ -119,120 +184,34 @@ export default function LoremIpsumGenerator() {
             </>
           }
         >
-          <textarea
-            className="tp-tool-code tp-tool-code--tall"
-            value={text}
-            readOnly
-            spellCheck={false}
-            aria-label={tw("lorem-ipsum-generator.generatedTextLabel")}
-          />
-        </ToolPane>
-      }
-      result={
-        <ToolPane
-          id="lorem-summary-title"
-          title={tw("lorem-ipsum-generator.summaryTitle")}
-          hint={tw("lorem-ipsum-generator.summaryHint")}
-          result
-          actions={
-            <ToolBadge tone={text ? "success" : "neutral"}>
-              {text
-                ? tw("lorem-ipsum-generator.statusReady")
-                : tw("lorem-ipsum-generator.statusIdle")}
-            </ToolBadge>
-          }
-        >
           <div className="tp-tool-result" aria-live="polite">
-            <dl className="tp-tool-stats">
-              <Stat label={t("words")} value={countWords(text)} />
-              <Stat label={t("characters")} value={text.length} />
-              <Stat label={t("paragraphs")} value={paragraphs} />
-            </dl>
-            <Button type="button" size="sm" onClick={handleNewSeed}>
-              <Shuffle className="h-3.5 w-3.5" aria-hidden="true" />
-              {tw("lorem-ipsum-generator.newSeed")}
-            </Button>
+            <textarea
+              className="tp-tool-code tp-tool-code--tall"
+              value={text}
+              readOnly
+              spellCheck={false}
+              aria-label={tw("lorem-ipsum-generator.generatedTextLabel")}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                flexWrap: "wrap",
+              }}
+            >
+              <dl className="tp-tool-stats">
+                <Stat label={t("words")} value={countWords(text)} />
+                <Stat label={t("characters")} value={text.length} />
+              </dl>
+              <Button type="button" size="sm" onClick={handleNewSeed}>
+                <Shuffle className="h-3.5 w-3.5" aria-hidden="true" />
+                {tw("lorem-ipsum-generator.newSeed")}
+              </Button>
+            </div>
           </div>
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("lorem-ipsum-generator.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">
-                {tw("lorem-ipsum-generator.countGroup")}
-              </p>
-              <label className="tp-tool-label" htmlFor="lorem-count-range">
-                {tw("lorem-ipsum-generator.countLabel")}
-              </label>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <input
-                  id="lorem-count-range"
-                  type="range"
-                  className="tp-tool-range"
-                  min={limits.min}
-                  max={limits.max}
-                  value={count}
-                  onChange={(event) => setCount(Number(event.target.value))}
-                />
-                <input
-                  type="number"
-                  className="tp-tool-field"
-                  style={{ maxWidth: 84 }}
-                  min={limits.min}
-                  max={limits.max}
-                  value={count}
-                  aria-label={tw("lorem-ipsum-generator.countNumberLabel")}
-                  onChange={(event) => setCount(Number(event.target.value))}
-                />
-              </div>
-            </div>
-
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">
-                {tw("lorem-ipsum-generator.typeGroup")}
-              </p>
-              <SegmentedControl<LoremType>
-                label={tw("lorem-ipsum-generator.typeLabel")}
-                value={options.type}
-                options={[
-                  {
-                    value: "paragraphs",
-                    label: tw("lorem-ipsum-generator.typeOptionParagraphs"),
-                  },
-                  {
-                    value: "sentences",
-                    label: tw("lorem-ipsum-generator.typeOptionSentences"),
-                  },
-                  {
-                    value: "words",
-                    label: tw("lorem-ipsum-generator.typeOptionWords"),
-                  },
-                ]}
-                onChange={(type) => update({ type })}
-              />
-            </div>
-
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">
-                {tw("lorem-ipsum-generator.seedGroup")}
-              </p>
-              <label className="tp-tool-check">
-                <input
-                  type="checkbox"
-                  checked={options.startWithLorem}
-                  onChange={(event) =>
-                    update({ startWithLorem: event.target.checked })
-                  }
-                />
-                {tw("lorem-ipsum-generator.startWithLorem")}
-              </label>
-            </div>
-          </div>
-        </>
       }
     />
   );

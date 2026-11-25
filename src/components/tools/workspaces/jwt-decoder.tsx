@@ -28,10 +28,7 @@ import {
 
 type View = "header" | "payload" | "claims";
 type TimeState = "expired" | "valid" | "future";
-
-type JwtOptions = {
-  view: View;
-};
+type JwtOptions = { view: View };
 
 const DEFAULT_JWT_OPTIONS: JwtOptions = { view: "payload" };
 
@@ -151,6 +148,13 @@ export default function JwtDecoder() {
     inputRef.current?.focus();
   }, [showNotice, tw]);
 
+  const handleClear = useCallback(() => {
+    setToken("");
+    resetCopy();
+    clearNotice();
+    inputRef.current?.focus();
+  }, [clearNotice, resetCopy]);
+
   const handleSample = useCallback(() => {
     setToken(SAMPLE_JWT);
     resetCopy();
@@ -193,21 +197,13 @@ export default function JwtDecoder() {
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  setToken("");
-                  resetCopy();
-                  clearNotice();
-                  inputRef.current?.focus();
-                }}
+                onClick={handleClear}
                 disabled={!token}
               >
                 <X className="h-3.5 w-3.5" aria-hidden="true" />
                 {t("clear")}
               </Button>
             </>
-          }
-          footer={
-            <span aria-live="polite">{`${token.trim().length} ${t("characters").toLowerCase()}`}</span>
           }
         >
           <textarea
@@ -218,7 +214,8 @@ export default function JwtDecoder() {
               resetCopy();
               clearNotice();
             }}
-            aria-label={t("pasteText")}
+            aria-label={tw("jwt-decoder.inputTitle")}
+            aria-describedby={errorCode ? "jwt-error" : undefined}
             placeholder={tw("jwt-decoder.placeholder")}
             spellCheck={false}
             dir="ltr"
@@ -230,19 +227,9 @@ export default function JwtDecoder() {
         <ToolPane
           id="jwt-result-title"
           title={tw("jwt-decoder.resultTitle")}
-          hint={tw("jwt-decoder.resultHint")}
           result
           actions={
             <>
-              <ToolBadge
-                tone={decoded ? "success" : errorCode ? "danger" : "neutral"}
-              >
-                {decoded
-                  ? tw("jwt-decoder.statusDecoded")
-                  : errorCode
-                    ? tw("jwt-decoder.statusInvalid")
-                    : tw("jwt-decoder.statusWaiting")}
-              </ToolBadge>
               <Button type="button" size="sm" variant="secondary" onClick={handleCopy} disabled={!viewContent}>
                 {copied ? (
                   <Check className="h-3.5 w-3.5" aria-hidden="true" />
@@ -260,12 +247,26 @@ export default function JwtDecoder() {
             </>
           }
         >
-          <p className="tp-tool-notice" role="note">
-            <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
-            {tw("jwt-decoder.warning")}
-          </p>
+          <div className="tp-tool-group tp-tool-group--flush">
+            <SegmentedControl<View>
+              label={tw("jwt-decoder.resultTitle")}
+              value={options.view}
+              options={[
+                { value: "header", label: tw("jwt-decoder.viewHeader") },
+                { value: "payload", label: tw("jwt-decoder.viewPayload") },
+                { value: "claims", label: tw("jwt-decoder.viewClaims") },
+              ]}
+              onChange={(view) => update({ view })}
+            />
+          </div>
+          {decoded ? (
+            <p className="tp-tool-notice" role="note">
+              <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+              {tw("jwt-decoder.notVerifiedNotice")}
+            </p>
+          ) : null}
           {errorCode ? (
-            <p className="tp-tool-error" role="alert">
+            <p className="tp-tool-error" id="jwt-error" role="alert">
               {errorHint(errorCode)}
             </p>
           ) : null}
@@ -316,28 +317,6 @@ export default function JwtDecoder() {
             />
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("jwt-decoder.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
-            <div className="tp-tool-group tp-tool-group--flush">
-              <p className="tp-tool-group-title">{tw("jwt-decoder.viewTitle")}</p>
-              <SegmentedControl<View>
-                label={tw("jwt-decoder.viewTitle")}
-                value={options.view}
-                options={[
-                  { value: "header", label: tw("jwt-decoder.viewHeader") },
-                  { value: "payload", label: tw("jwt-decoder.viewPayload") },
-                  { value: "claims", label: tw("jwt-decoder.viewClaims") },
-                ]}
-                onChange={(view) => update({ view })}
-              />
-            </div>
-          </div>
-        </>
       }
     />
   );

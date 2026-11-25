@@ -6,15 +6,12 @@ import { ArrowLeftRight, Check, Copy, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DownloadButton,
-  SegmentedControl,
-  ToolBadge,
   ToolEmpty,
   ToolField,
   ToolPane,
   ToolShell,
   useCopyFeedback,
   useCopyShortcut,
-  usePersistedOptions,
 } from "@/components/tools/workspace-ui";
 import {
   calculate,
@@ -23,8 +20,7 @@ import {
   type Mode,
 } from "./percentage-calculator.logic";
 
-type Decimals = 2 | 4 | 6;
-type DecimalsValue = "2" | "4" | "6";
+const ERROR_ID = "tp-percentage-error";
 
 function parseValue(raw: string): number | null {
   const trimmed = raw.trim();
@@ -40,10 +36,6 @@ export default function PercentageCalculator() {
   const [mode, setMode] = useState<Mode>(DEFAULTS.mode);
   const [a, setA] = useState("");
   const [b, setB] = useState("");
-  const { options, update } = usePersistedOptions<{ decimals: Decimals }>(
-    "tp-percentage-calculator-options",
-    { decimals: 2 },
-  );
   const { copied, copy, reset } = useCopyFeedback();
 
   const parsedA = parseValue(a);
@@ -61,9 +53,9 @@ export default function PercentageCalculator() {
   const formatter = useMemo(
     () =>
       new Intl.NumberFormat(locale, {
-        maximumFractionDigits: options.decimals,
+        maximumFractionDigits: 2,
       }),
-    [locale, options.decimals],
+    [locale],
   );
   const formatted =
     calculation && !calculation.error
@@ -104,29 +96,18 @@ export default function PercentageCalculator() {
     reset();
   };
 
-  const errorText = (error: CalculationError | undefined) => {
-    if (error === "DIVISION_BY_ZERO") {
-      return `${tw("percentage-calculator.errorDivision")} ${tw("percentage-calculator.fixDivision")}`;
-    }
-    if (error === "INVALID_NUMBER") {
-      return `${tw("percentage-calculator.errorInvalid")} ${tw("percentage-calculator.fixInvalid")}`;
-    }
-    return "";
-  };
-
   const hasValues = a.trim().length > 0 && b.trim().length > 0;
-  const hasError = Boolean(calculation?.error) || invalidA || invalidB;
-  const statusTone: "neutral" | "success" | "danger" = hasError
-    ? "danger"
-    : formatted
-      ? "success"
-      : "neutral";
-  const statusLabel = hasError
-    ? tw("percentage-calculator.statusError")
-    : formatted
-      ? tw("percentage-calculator.statusLive")
-      : tw("percentage-calculator.statusIdle");
-  const decimalsValue = String(options.decimals) as DecimalsValue;
+  const invalid = invalidA || invalidB;
+  const error: CalculationError | undefined = calculation?.error;
+  const errorText = invalid
+    ? `${tw("percentage-calculator.errorInvalid")} ${tw("percentage-calculator.fixInvalid")}`
+    : error
+      ? `${tw("percentage-calculator.errorDivision")} ${tw("percentage-calculator.fixDivision")}`
+      : "";
+  const describedBy = errorText ? ERROR_ID : undefined;
+  const errorHint = invalid
+    ? tw("percentage-calculator.fixInvalid")
+    : tw("percentage-calculator.fixDivision");
 
   return (
     <ToolShell
@@ -142,14 +123,11 @@ export default function PercentageCalculator() {
         <ToolPane
           id="tp-percentage-input-title"
           title={tw("percentage-calculator.inputTitle")}
-          hint={tw("percentage-calculator.inputHint")}
           footer={
-            <>
-              <Button type="button" variant="outline" size="sm" onClick={swap}>
-                <ArrowLeftRight className="h-3.5 w-3.5" aria-hidden="true" />
-                {tw("percentage-calculator.swap")}
-              </Button>
-            </>
+            <Button type="button" variant="outline" size="sm" onClick={swap}>
+              <ArrowLeftRight className="h-3.5 w-3.5" aria-hidden="true" />
+              {tw("percentage-calculator.swap")}
+            </Button>
           }
         >
           <div>
@@ -199,14 +177,10 @@ export default function PercentageCalculator() {
                 reset();
               }}
               placeholder={String(DEFAULTS.a)}
-              aria-invalid={invalidA}
+              aria-invalid={Boolean(errorText)}
+              aria-describedby={describedBy}
               autoComplete="off"
             />
-            {invalidA ? (
-              <p className="tp-tool-error" role="alert">
-                {tw("percentage-calculator.invalidNumber")}
-              </p>
-            ) : null}
           </ToolField>
 
           <ToolField
@@ -225,14 +199,10 @@ export default function PercentageCalculator() {
                 reset();
               }}
               placeholder={String(DEFAULTS.b)}
-              aria-invalid={invalidB}
+              aria-invalid={Boolean(errorText)}
+              aria-describedby={describedBy}
               autoComplete="off"
             />
-            {invalidB ? (
-              <p className="tp-tool-error" role="alert">
-                {tw("percentage-calculator.invalidNumber")}
-              </p>
-            ) : null}
           </ToolField>
         </ToolPane>
       }
@@ -240,11 +210,9 @@ export default function PercentageCalculator() {
         <ToolPane
           id="tp-percentage-result-title"
           title={t("result")}
-          hint={tw("percentage-calculator.resultHint")}
           result
           actions={
             <>
-              <ToolBadge tone={statusTone}>{statusLabel}</ToolBadge>
               <Button
                 type="button"
                 variant="secondary"
@@ -268,74 +236,58 @@ export default function PercentageCalculator() {
           }
         >
           {!hasValues ? (
-            <ToolEmpty
-              icon={<Percent aria-hidden="true" />}
-              title={tw("percentage-calculator.emptyTitle")}
-              hint={tw("percentage-calculator.emptyHint")}
-            />
-          ) : invalidA || invalidB ? (
             <div className="tp-tool-result" aria-live="polite">
-              <p className="tp-tool-error" role="alert">
-                {errorText("INVALID_NUMBER")}
+              <ToolEmpty
+                icon={<Percent aria-hidden="true" />}
+                title={tw("percentage-calculator.emptyTitle")}
+                hint={tw("percentage-calculator.emptyHint")}
+              />
+            </div>
+          ) : errorText ? (
+            <div className="tp-tool-result" aria-live="polite">
+              <p id={ERROR_ID} className="tp-tool-error" role="alert">
+                {errorText}
               </p>
               <ToolEmpty
                 icon={<Percent aria-hidden="true" />}
                 title={tw("percentage-calculator.errorTitle")}
-                hint={tw("percentage-calculator.fixInvalid")}
+                hint={errorHint}
               />
             </div>
-          ) : calculation?.error ? (
+          ) : calculation && formatted ? (
             <div className="tp-tool-result" aria-live="polite">
-              <p className="tp-tool-error" role="alert">
-                {errorText(calculation.error)}
+              <p className="tp-tool-label">
+                {tw("percentage-calculator.resultLabel")}
               </p>
-              <ToolEmpty
-                icon={<Percent aria-hidden="true" />}
-                title={tw("percentage-calculator.errorTitle")}
-                hint={tw("percentage-calculator.fixDivision")}
-              />
-            </div>
-          ) : calculation ? (
-            <div className="tp-tool-result" aria-live="polite">
-              <dl className="tp-tool-stats">
-                <div className="tp-tool-stat" data-accent="true">
-                  <dt>{tw("percentage-calculator.resultLabel")}</dt>
-                  <dd>{formatted}</dd>
-                </div>
-              </dl>
-
-              {calculation.formula ? (
-                <pre className="tp-tool-code">{calculation.formula}</pre>
-              ) : null}
+              <output
+                dir="ltr"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "18px 16px",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                  background: "var(--surface)",
+                  color: "var(--accent)",
+                  textAlign: "center",
+                  fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                  fontSize: "clamp(32px, 5vw, 46px)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.1,
+                }}
+              >
+                {formatted}
+              </output>
+              <pre
+                dir="ltr"
+                className="m-0 overflow-auto whitespace-pre-wrap rounded-[10px] border border-[var(--border)] bg-[var(--surface)] px-3 py-2 font-mono text-[13px] leading-relaxed"
+              >
+                {calculation.formula}
+              </pre>
             </div>
           ) : null}
         </ToolPane>
-      }
-      options={
-        <div>
-          <div className="tp-tool-options-head">
-            <h3>{tw("percentage-calculator.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">
-                {tw("percentage-calculator.decimalsLabel")}
-              </p>
-              <SegmentedControl
-                label={tw("percentage-calculator.decimalsLabel")}
-                value={decimalsValue}
-                options={[
-                  { value: "2" as DecimalsValue, label: "2" },
-                  { value: "4" as DecimalsValue, label: "4" },
-                  { value: "6" as DecimalsValue, label: "6" },
-                ]}
-                onChange={(value) =>
-                  update({ decimals: Number(value) as Decimals })
-                }
-              />
-            </div>
-          </div>
-        </div>
       }
     />
   );

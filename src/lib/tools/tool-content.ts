@@ -252,92 +252,19 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
     "mistakes",
     "faq",
   ],
-  // Placeholder text: the shape of the output matters, so a worked example
-  // earns its place above the fold of the article.
-  "lorem-ipsum-generator": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
-  // A diff is easier to understand from a real side-by-side example than
-  // from a feature grid alone.
-  "text-diff-checker": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  // Generated identifiers have no fixed example output; focus on the rules.
-  "uuid-generator": [
-    "definition",
-    "steps",
-    "facts",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "jwt-decoder": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
-  "regex-tester": [
-    "definition",
-    "steps",
-    "example",
-    "mistakes",
-    "faq",
-  ],
-  "percentage-calculator": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "aspect-ratio-calculator": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "utm-builder": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
-  "hash-generator": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
-  // Image tooling is visual; the page explains the pipeline instead of
-  // pretending a text example can show the result.
-  "image-resizer": [
-    "definition",
-    "steps",
-    "facts",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
+  // Each plan follows the task: reference first where standards matter,
+  // worked example first where the output shape matters, and no filler
+  // modules where the tool simply has nothing useful to say in them.
+  "lorem-ipsum-generator": ["definition", "steps", "example", "mistakes", "faq"],
+  "text-diff-checker": ["definition", "example", "steps", "mistakes", "faq"],
+  "uuid-generator": ["definition", "facts", "steps", "mistakes", "faq"],
+  "jwt-decoder": ["definition", "example", "facts", "mistakes", "faq"],
+  "regex-tester": ["definition", "steps", "example", "facts", "mistakes", "faq"],
+  "percentage-calculator": ["definition", "example", "steps", "useCases", "mistakes", "faq"],
+  "aspect-ratio-calculator": ["definition", "steps", "useCases", "mistakes", "faq"],
+  "utm-builder": ["definition", "facts", "steps", "example", "mistakes", "faq"],
+  "hash-generator": ["definition", "facts", "example", "mistakes", "faq"],
+  "image-resizer": ["definition", "facts", "steps", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {

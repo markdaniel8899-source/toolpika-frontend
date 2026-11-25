@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { ClipboardPaste, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  CheckboxRow,
   CopyButton,
   DownloadButton,
   ToolEmpty,
@@ -14,12 +13,11 @@ import {
   ToolShell,
   useCopyShortcut,
   useDebounced,
-  usePersistedOptions,
   useToolNotice,
 } from "@/components/tools/workspace-ui";
 import { buildUtmUrl, parseUtmUrl, type UtmBuildResult } from "./utm-builder.logic";
 
-type UtmOptions = { lowerCase: boolean; keepFragment: boolean };
+const ERROR_ID = "tp-utm-error";
 
 export default function UtmBuilder() {
   const t = useTranslations("toolUi");
@@ -30,10 +28,6 @@ export default function UtmBuilder() {
   const [campaign, setCampaign] = useState("");
   const [term, setTerm] = useState("");
   const [content, setContent] = useState("");
-  const { options, update } = usePersistedOptions<UtmOptions>(
-    "toolpika:utm-builder:options",
-    { lowerCase: false, keepFragment: false },
-  );
   const { notice, showNotice } = useToolNotice();
   const baseRef = useRef<HTMLInputElement | null>(null);
 
@@ -46,20 +40,14 @@ export default function UtmBuilder() {
 
   const calculation = useMemo<UtmBuildResult>(
     () =>
-      buildUtmUrl(
-        {
-          baseUrl: delayedBase,
-          source: delayedSource,
-          medium: delayedMedium,
-          campaign: delayedCampaign,
-          term: delayedTerm,
-          content: delayedContent,
-        },
-        {
-          lowerCaseValues: options.lowerCase,
-          keepFragment: options.keepFragment,
-        },
-      ),
+      buildUtmUrl({
+        baseUrl: delayedBase,
+        source: delayedSource,
+        medium: delayedMedium,
+        campaign: delayedCampaign,
+        term: delayedTerm,
+        content: delayedContent,
+      }),
     [
       delayedBase,
       delayedSource,
@@ -67,22 +55,20 @@ export default function UtmBuilder() {
       delayedCampaign,
       delayedTerm,
       delayedContent,
-      options.lowerCase,
-      options.keepFragment,
     ],
   );
 
-  const resultText = useMemo(() => {
-    if (!calculation.url) return "";
-    const valueOf = (key: string) =>
-      calculation.params.find((param) => param.key === key)?.value ?? "";
-    return tw("utm-builder.copyText", {
-      url: calculation.url,
-      source: valueOf("utm_source"),
-      medium: valueOf("utm_medium"),
-      campaign: valueOf("utm_campaign"),
-    });
-  }, [calculation, tw]);
+  const resultText = calculation.url;
+
+  const errorText =
+    calculation.error === "INVALID_URL"
+      ? tw("utm-builder.errorInvalidUrl")
+      : calculation.error === "MISSING_REQUIRED"
+        ? tw("utm-builder.errorRequired")
+        : "";
+
+  const missingRequired = calculation.error === "MISSING_REQUIRED";
+  const describedBy = errorText ? ERROR_ID : undefined;
 
   const handleCopy = useCallback(() => {
     if (!resultText) return;
@@ -136,15 +122,6 @@ export default function UtmBuilder() {
     baseRef.current?.focus();
   }, [showNotice, tw]);
 
-  const inputError =
-    calculation.error === "INVALID_URL"
-      ? tw("utm-builder.errorInvalidUrl")
-      : calculation.error === "MISSING_REQUIRED"
-        ? tw("utm-builder.errorRequired")
-        : calculation.error === "EMPTY"
-          ? tw("utm-builder.emptyHint")
-          : "";
-
   return (
     <ToolShell
       title={tw("utm-builder.title")}
@@ -185,10 +162,7 @@ export default function UtmBuilder() {
             </>
           }
         >
-          <ToolField
-            label={tw("utm-builder.baseUrlLabel")}
-            htmlFor="tp-utm-base"
-          >
+          <ToolField label={tw("utm-builder.baseUrlLabel")} htmlFor="tp-utm-base">
             <input
               id="tp-utm-base"
               ref={baseRef}
@@ -199,15 +173,11 @@ export default function UtmBuilder() {
               className="tp-tool-field"
               placeholder={tw("utm-builder.baseUrlPlaceholder")}
               value={baseUrl}
-              aria-invalid={calculation.error === "INVALID_URL"}
+              aria-invalid={calculation.error === "INVALID_URL" || missingRequired}
+              aria-describedby={describedBy}
               onChange={(event) => setBaseUrl(event.target.value)}
             />
           </ToolField>
-          {inputError ? (
-            <p className="tp-tool-error" role="alert">
-              {inputError}
-            </p>
-          ) : null}
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ToolField label={tw("utm-builder.sourceLabel")} htmlFor="tp-utm-source">
@@ -216,6 +186,8 @@ export default function UtmBuilder() {
                 className="tp-tool-field"
                 placeholder={tw("utm-builder.sourcePlaceholder")}
                 value={source}
+                aria-invalid={missingRequired}
+                aria-describedby={describedBy}
                 onChange={(event) => setSource(event.target.value)}
               />
             </ToolField>
@@ -226,6 +198,8 @@ export default function UtmBuilder() {
                 className="tp-tool-field"
                 placeholder={tw("utm-builder.mediumPlaceholder")}
                 value={medium}
+                aria-invalid={missingRequired}
+                aria-describedby={describedBy}
                 onChange={(event) => setMedium(event.target.value)}
               />
             </ToolField>
@@ -236,14 +210,13 @@ export default function UtmBuilder() {
                 className="tp-tool-field"
                 placeholder={tw("utm-builder.campaignPlaceholder")}
                 value={campaign}
+                aria-invalid={missingRequired}
+                aria-describedby={describedBy}
                 onChange={(event) => setCampaign(event.target.value)}
               />
             </ToolField>
 
-            <ToolField
-              label={tw("utm-builder.termLabel")}
-              htmlFor="tp-utm-term"
-            >
+            <ToolField label={tw("utm-builder.termLabel")} htmlFor="tp-utm-term">
               <input
                 id="tp-utm-term"
                 className="tp-tool-field"
@@ -253,10 +226,7 @@ export default function UtmBuilder() {
               />
             </ToolField>
 
-            <ToolField
-              label={tw("utm-builder.contentLabel")}
-              htmlFor="tp-utm-content"
-            >
+            <ToolField label={tw("utm-builder.contentLabel")} htmlFor="tp-utm-content">
               <input
                 id="tp-utm-content"
                 className="tp-tool-field"
@@ -266,6 +236,17 @@ export default function UtmBuilder() {
               />
             </ToolField>
           </div>
+
+          {errorText ? (
+            <p
+              id={ERROR_ID}
+              className="tp-tool-error"
+              role="status"
+              aria-live="polite"
+            >
+              {errorText}
+            </p>
+          ) : null}
         </ToolPane>
       }
       result={
@@ -290,41 +271,22 @@ export default function UtmBuilder() {
             </>
           }
         >
-          {calculation.url ? (
+          {resultText ? (
             <div className="tp-tool-result">
               <div className="tp-tool-url">
-                <code aria-live="polite">{calculation.url}</code>
+                <code aria-live="polite">{resultText}</code>
               </div>
             </div>
           ) : (
-            <ToolEmpty
-              icon={<Link2 />}
-              title={calculation.error === "EMPTY" ? tw("utm-builder.emptyTitle") : tw("utm-builder.errorTitle")}
-              hint={calculation.error === "EMPTY" ? tw("utm-builder.emptyHint") : inputError}
-            />
+            <div aria-live="polite">
+              <ToolEmpty
+                icon={<Link2 />}
+                title={tw("utm-builder.emptyTitle")}
+                hint={tw("utm-builder.emptyHint")}
+              />
+            </div>
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("utm-builder.optionsTitle")}</h3>
-          </div>
-          <div className="tp-tool-options-grid">
-            <CheckboxRow
-              id="tp-utm-lower"
-              label={tw("utm-builder.lowerCaseLabel")}
-              checked={options.lowerCase}
-              onChange={(checked) => update({ lowerCase: checked })}
-            />
-            <CheckboxRow
-              id="tp-utm-fragment"
-              label={tw("utm-builder.keepFragmentLabel")}
-              checked={options.keepFragment}
-              onChange={(checked) => update({ keepFragment: checked })}
-            />
-          </div>
-        </>
       }
     />
   );

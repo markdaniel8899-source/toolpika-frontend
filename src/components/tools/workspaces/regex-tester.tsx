@@ -25,6 +25,7 @@ import {
 const SAMPLE_PATTERN = "(\\w+)@(\\w+\\.\\w+)";
 const SAMPLE_TEXT = "Contact ada@example.com or grace@site.org";
 const FLAG_ORDER = ["g", "i", "m", "s", "u"] as const;
+const ERROR_ID = "tp-regex-error";
 
 export default function RegexTester() {
   const t = useTranslations("toolUi");
@@ -127,17 +128,6 @@ export default function RegexTester() {
   ];
 
   const ready = pattern.length > 0 && text.length > 0;
-  const statusTone: "neutral" | "success" | "danger" = result.error
-    ? "danger"
-    : result.matches.length > 0
-      ? "success"
-      : "neutral";
-  const statusLabel = result.error
-    ? tw("regex-tester.statusError")
-    : ready
-      ? tw("regex-tester.statusLive")
-      : tw("regex-tester.statusIdle");
-
   const errorMessage = (code: RegexErrorCode | undefined) => {
     switch (code) {
       case "INVALID_PATTERN":
@@ -150,6 +140,56 @@ export default function RegexTester() {
         return "";
     }
   };
+  const errorText = errorMessage(result.error?.code);
+  const describedBy = errorText ? ERROR_ID : undefined;
+  const countVisible =
+    ready &&
+    result.error?.code !== "INVALID_PATTERN" &&
+    result.error?.code !== "INVALID_FLAG";
+
+  const preview = (
+    <div>
+      <p className="tp-tool-label">{tw("regex-tester.previewLabel")}</p>
+      <p className="tp-tool-code" style={{ minHeight: 64 }}>
+        {segments.map((segment, index) =>
+          segment.hit ? (
+            <mark
+              key={index}
+              className="tp-tool-highlight"
+              data-tone="success"
+            >
+              {segment.text}
+            </mark>
+          ) : (
+            <span key={index}>{segment.text}</span>
+          ),
+        )}
+      </p>
+    </div>
+  );
+
+  const matchList = (
+    <ul className="tp-tool-list">
+      {result.matches.map((item, index) => (
+        <li className="tp-tool-row" key={`${item.index}-${index}`}>
+          <span className="tp-tool-pill">
+            {item.match || tw("regex-tester.emptyMatch")}
+          </span>
+          <span className="flex flex-wrap justify-end gap-1">
+            <span>{tw("regex-tester.indexPill", { index: item.index })}</span>
+            {item.groups.map((group, groupIndex) => (
+              <span key={groupIndex}>
+                {tw("regex-tester.groupPill", {
+                  index: groupIndex + 1,
+                  value: group || tw("regex-tester.emptyGroup"),
+                })}
+              </span>
+            ))}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <ToolShell
@@ -167,7 +207,6 @@ export default function RegexTester() {
         <ToolPane
           id="tp-regex-input-title"
           title={tw("regex-tester.inputTitle")}
-          hint={tw("regex-tester.inputHint")}
           actions={
             <>
               <Button
@@ -210,6 +249,11 @@ export default function RegexTester() {
                   reset();
                 }}
                 placeholder={tw("regex-tester.patternPlaceholder")}
+                aria-invalid={
+                  result.error?.code === "INVALID_PATTERN" ||
+                  result.error?.code === "INVALID_FLAG"
+                }
+                aria-describedby={describedBy}
                 spellCheck={false}
                 autoComplete="off"
               />
@@ -252,7 +296,7 @@ export default function RegexTester() {
                 reset();
               }}
               placeholder={tw("regex-tester.testStringPlaceholder")}
-              aria-label={tw("regex-tester.testStringLabel")}
+              aria-describedby={describedBy}
               spellCheck={false}
             />
           </div>
@@ -265,7 +309,13 @@ export default function RegexTester() {
           result
           actions={
             <>
-              <ToolBadge tone={statusTone}>{statusLabel}</ToolBadge>
+              {countVisible ? (
+                <ToolBadge tone="accent">
+                  {tw("regex-tester.matchCount", {
+                    count: result.matches.length,
+                  })}
+                </ToolBadge>
+              ) : null}
               <Button
                 type="button"
                 variant="secondary"
@@ -287,40 +337,27 @@ export default function RegexTester() {
               />
             </>
           }
-          footer={
-            <ToolBadge tone="accent">
-              {tw("regex-tester.matchCount", { count: result.matches.length })}
-            </ToolBadge>
-          }
         >
           {!ready ? (
-            <ToolEmpty
-              icon={<Regex aria-hidden="true" />}
-              title={tw("regex-tester.emptyTitle")}
-              hint={tw("regex-tester.emptyHint")}
-            />
+            <div className="tp-tool-result" aria-live="polite">
+              <ToolEmpty
+                icon={<Regex aria-hidden="true" />}
+                title={tw("regex-tester.emptyTitle")}
+                hint={tw("regex-tester.emptyHint")}
+              />
+            </div>
           ) : result.error?.code === "TOO_MANY_MATCHES" ? (
             <div className="tp-tool-result" aria-live="polite">
-              <p className="tp-tool-error" role="alert">
-                {errorMessage(result.error.code)}
+              <p id={ERROR_ID} className="tp-tool-error" role="alert">
+                {errorText}
               </p>
-              <ul className="tp-tool-list">
-                {result.matches.map((item, index) => (
-                  <li className="tp-tool-row" key={`${item.index}-${index}`}>
-                    <span className="tp-tool-pill">
-                      {item.match || tw("regex-tester.emptyMatch")}
-                    </span>
-                    <span>
-                      {tw("regex-tester.indexPill", { index: item.index })}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {preview}
+              {matchList}
             </div>
           ) : result.error ? (
             <div className="tp-tool-result" aria-live="polite">
-              <p className="tp-tool-error" role="alert">
-                {errorMessage(result.error.code)}
+              <p id={ERROR_ID} className="tp-tool-error" role="alert">
+                {errorText}
               </p>
               <ToolEmpty
                 icon={<Regex aria-hidden="true" />}
@@ -329,54 +366,17 @@ export default function RegexTester() {
               />
             </div>
           ) : result.matches.length === 0 ? (
-            <ToolEmpty
-              icon={<Regex aria-hidden="true" />}
-              title={tw("regex-tester.noMatches")}
-              hint={tw("regex-tester.noMatchesHint")}
-            />
+            <div className="tp-tool-result" aria-live="polite">
+              <ToolEmpty
+                icon={<Regex aria-hidden="true" />}
+                title={tw("regex-tester.noMatches")}
+                hint={tw("regex-tester.noMatchesHint")}
+              />
+            </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <ul className="tp-tool-list">
-                {result.matches.map((item, index) => (
-                  <li className="tp-tool-row" key={`${item.index}-${index}`}>
-                    <span className="tp-tool-pill">
-                      {item.match || tw("regex-tester.emptyMatch")}
-                    </span>
-                    <span className="flex flex-wrap justify-end gap-1">
-                      <span>
-                        {tw("regex-tester.indexPill", { index: item.index })}
-                      </span>
-                      {item.groups.map((group, groupIndex) => (
-                        <span key={groupIndex}>
-                          {tw("regex-tester.groupPill", {
-                            index: groupIndex + 1,
-                            value: group || tw("regex-tester.emptyGroup"),
-                          })}
-                        </span>
-                      ))}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <div>
-                <p className="tp-tool-label">{tw("regex-tester.previewLabel")}</p>
-                <p className="tp-tool-code">
-                  {segments.map((segment, index) =>
-                    segment.hit ? (
-                      <mark
-                        key={index}
-                        className="tp-tool-highlight"
-                        data-tone="success"
-                      >
-                        {segment.text}
-                      </mark>
-                    ) : (
-                      <span key={index}>{segment.text}</span>
-                    ),
-                  )}
-                </p>
-              </div>
+              {preview}
+              {matchList}
             </div>
           )}
         </ToolPane>

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   DownloadButton,
   SegmentedControl,
-  ToolBadge,
   ToolEmpty,
   ToolField,
   ToolPane,
@@ -21,15 +20,17 @@ import {
   DEFAULT_UUID_OPTIONS,
   UUID_MAX_COUNT,
   UUID_MIN_COUNT,
-  UUID_SEPARATORS,
-  formatUuids,
   generateUuids,
-  type UuidOptions,
-  type UuidSeparator,
   type UuidVersion,
 } from "./uuid-generator.logic";
 
 type VersionChoice = "4" | "7" | "nil";
+type UuidSetup = { count: number; version: UuidVersion };
+
+const DEFAULT_SETUP: UuidSetup = {
+  count: DEFAULT_UUID_OPTIONS.count,
+  version: DEFAULT_UUID_OPTIONS.version,
+};
 
 function parseVersion(choice: VersionChoice): UuidVersion {
   return choice === "nil" ? "nil" : choice === "4" ? 4 : 7;
@@ -38,33 +39,18 @@ function parseVersion(choice: VersionChoice): UuidVersion {
 export default function UuidGenerator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
-  const { options, update, reset: resetOptions } = usePersistedOptions<UuidOptions>(
+  const { options, update, reset: resetOptions } = usePersistedOptions<UuidSetup>(
     "tp-uuid-generator-options",
-    DEFAULT_UUID_OPTIONS,
+    DEFAULT_SETUP,
   );
   const [identifiers, setIdentifiers] = useState<string[]>([]);
-  // A null draft means "show the persisted option"; while typing, the draft
-  // temporarily overrides it so an empty or partial number stays editable.
+  // A null draft shows the persisted count; a string draft keeps partial input editable.
   const [countDraft, setCountDraft] = useState<string | null>(null);
   const countValue = countDraft ?? String(options.count);
   const { notice, showNotice, clearNotice } = useToolNotice();
   const { copied, copy, reset: resetCopy } = useCopyFeedback();
 
-  const versionLabel = (version: UuidVersion) => {
-    if (version === 7) return tw("uuid-generator.version7");
-    if (version === "nil") return tw("uuid-generator.versionNil");
-    return tw("uuid-generator.version4");
-  };
-
-  const displayed = useMemo(
-    () => (options.uppercase ? identifiers.map((value) => value.toUpperCase()) : identifiers),
-    [identifiers, options.uppercase],
-  );
-
-  const output = useMemo(
-    () => formatUuids(displayed, UUID_SEPARATORS[options.separator]),
-    [displayed, options.separator],
-  );
+  const output = useMemo(() => identifiers.join("\n"), [identifiers]);
 
   const handleGenerate = useCallback(() => {
     try {
@@ -78,9 +64,7 @@ export default function UuidGenerator() {
 
   const handleSample = useCallback(() => {
     try {
-      setIdentifiers(
-        generateUuids(DEFAULT_UUID_OPTIONS.count, DEFAULT_UUID_OPTIONS.version),
-      );
+      setIdentifiers(generateUuids(DEFAULT_SETUP.count, DEFAULT_SETUP.version));
       resetOptions();
       setCountDraft(null);
       resetCopy();
@@ -120,7 +104,7 @@ export default function UuidGenerator() {
     const parsed = Number(countDraft);
     const next = Number.isFinite(parsed)
       ? Math.min(UUID_MAX_COUNT, Math.max(UUID_MIN_COUNT, Math.floor(parsed)))
-      : DEFAULT_UUID_OPTIONS.count;
+      : DEFAULT_SETUP.count;
     setCountDraft(null);
     update({ count: next });
   };
@@ -142,72 +126,15 @@ export default function UuidGenerator() {
         <ToolPane
           id="uuid-setup-title"
           title={tw("uuid-generator.setupTitle")}
-          hint={tw("uuid-generator.setupHint")}
-        >
-          <Button type="button" onClick={handleGenerate}>
-            <RefreshCw className="h-4 w-4" aria-hidden="true" />
-            {tw("uuid-generator.generate")}
-          </Button>
-        </ToolPane>
-      }
-      result={
-        <ToolPane
-          id="uuid-result-title"
-          title={t("result")}
-          hint={tw("uuid-generator.resultHint")}
-          result
           actions={
-            <>
-              <ToolBadge tone="accent">{`${versionLabel(options.version)} · ${displayed.length}`}</ToolBadge>
-              <Button type="button" size="sm" variant="secondary" onClick={handleCopy} disabled={!output}>
-                {copied ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-                {copied ? t("copied") : t("copy")}
-              </Button>
-              <DownloadButton
-                content={output || null}
-                fileName={tw("uuid-generator.downloadName")}
-                label={t("download")}
-              />
-            </>
-          }
-          footer={
-            <span aria-live="polite">{`${displayed.length} ${tw("uuid-generator.countUnit")}`}</span>
+            <Button type="button" onClick={handleGenerate}>
+              <RefreshCw className="h-4 w-4" aria-hidden="true" />
+              {tw("uuid-generator.generate")}
+            </Button>
           }
         >
-          {displayed.length === 0 ? (
-            <ToolEmpty
-              icon={<Hash aria-hidden="true" />}
-              title={tw("uuid-generator.emptyTitle")}
-              hint={tw("uuid-generator.emptyHint")}
-            />
-          ) : (
-            <ol className="tp-tool-list tp-tool-result" aria-live="polite">
-              {displayed.map((value, index) => (
-                <li className="tp-tool-row" key={`${index}-${value}`}>
-                  <span className="tp-tool-pill" dir="ltr">
-                    {index + 1}
-                  </span>
-                  <code dir="ltr">{value}</code>
-                </li>
-              ))}
-            </ol>
-          )}
-        </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{tw("uuid-generator.optionsTitle")}</h3>
-          </div>
           <div className="tp-tool-options-grid">
-            <ToolField
-              label={tw("uuid-generator.countTitle")}
-              htmlFor="uuid-count"
-            >
+            <ToolField label={tw("uuid-generator.countTitle")} htmlFor="uuid-count">
               <input
                 id="uuid-count"
                 type="number"
@@ -234,32 +161,54 @@ export default function UuidGenerator() {
                 onChange={(choice) => update({ version: parseVersion(choice) })}
               />
             </div>
-            <ToolField label={tw("uuid-generator.separatorTitle")} htmlFor="uuid-separator">
-              <select
-                id="uuid-separator"
-                className="tp-tool-select"
-                value={options.separator}
-                onChange={(event) => update({ separator: event.target.value as UuidSeparator })}
-              >
-                <option value="newline">{tw("uuid-generator.valueNewline")}</option>
-                <option value="comma">{tw("uuid-generator.valueComma")}</option>
-                <option value="space">{tw("uuid-generator.valueSpace")}</option>
-              </select>
-            </ToolField>
-            <div className="tp-tool-group tp-tool-group--flush">
-              <p className="tp-tool-group-title">{tw("uuid-generator.caseTitle")}</p>
-              <label className="tp-tool-check" htmlFor="uuid-uppercase">
-                <input
-                  id="uuid-uppercase"
-                  type="checkbox"
-                  checked={options.uppercase}
-                  onChange={(event) => update({ uppercase: event.target.checked })}
-                />
-                {tw("uuid-generator.uppercaseLabel")}
-              </label>
-            </div>
           </div>
-        </>
+        </ToolPane>
+      }
+      result={
+        <ToolPane
+          id="uuid-result-title"
+          title={t("result")}
+          result
+          actions={
+            <>
+              <Button type="button" size="sm" variant="secondary" onClick={handleCopy} disabled={!output}>
+                {copied ? (
+                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                ) : (
+                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                )}
+                {copied ? t("copied") : t("copy")}
+              </Button>
+              <DownloadButton
+                content={output || null}
+                fileName={tw("uuid-generator.downloadName")}
+                label={t("download")}
+              />
+            </>
+          }
+          footer={
+            <span aria-live="polite">{`${identifiers.length} ${tw("uuid-generator.countUnit")}`}</span>
+          }
+        >
+          {identifiers.length === 0 ? (
+            <ToolEmpty
+              icon={<Hash aria-hidden="true" />}
+              title={tw("uuid-generator.emptyTitle")}
+              hint={tw("uuid-generator.emptyHint")}
+            />
+          ) : (
+            <ol className="tp-tool-list tp-tool-result" aria-live="polite">
+              {identifiers.map((value, index) => (
+                <li className="tp-tool-row" key={`${index}-${value}`}>
+                  <span className="tp-tool-pill" dir="ltr">
+                    {index + 1}
+                  </span>
+                  <code dir="ltr">{value}</code>
+                </li>
+              ))}
+            </ol>
+          )}
+        </ToolPane>
       }
     />
   );
