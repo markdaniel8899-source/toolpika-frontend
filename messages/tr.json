@@ -789,7 +789,19 @@
       "page": {
         "byline": "Tasarım araçları · 25 Kasım 2026 tarihinde incelendi",
         "directAnswer": "Lorem Ipsum Generator, wireframe ve mockup'lar için gerçekçi doldurma metni sağlar. Gerçek içerik bulunmadığı için incelemeyi dikkat dağıtmamaktadır. Paragraf, cümle veya kelime seçin, sayı ve tohumu ayarlayın, klasik başlangıcı aç/kapa, ardından tam olarak yeniden üretebileceğiniz temiz bir metni kopyalayın veya indirin.",
-        "aboutTitle": "Lorem Ipsum Generator Hakkında"
+        "aboutTitle": "Lorem Ipsum Generator Hakkında",
+        "contextualLink": "Yer tutucu metin gerçek işaretleme haline geldiğinde, %%TOOL%% ile dönüştürün.",
+        "whatIsTitle": "Lorem Ipsum Oluşturucu Nedir?",
+        "whatIs": "Lorem Ipsum Oluşturucu, tasarımın son metni yazılmadan önce değerlendirilmesini sağlayacak inandırıcı dolgu metin blokları üretir. Biçim, miktar ve tohum seçersiniz; araç, yazı gibi görün ama anlam ifade etmeyen metin döndürür, böylece incelenirken dikkat boşluklara ve hiyerarşiye odaklanır.\n\nBu oluşturucu, sabit klasik bir kelime listesi ve tohumlanmış mulberry32 rutininden yararlanır. Aynı biçim, sayı ve tohum her zaman aynı paragrafı yeniden oluşturur; bu, tasarımcı ve geliştiricinin aynı mockup'ları karşılaştırması gerektiğinde önemlidir. Yeni tohum düğmesine basıldığında tohum 7919 kadar ilerletilir ve metin diğer hiçbir ayara dokunulmadan yeniden yazılır; bu da yeniden üretilebilir yeni bir örnek sağlar.\n\nBiçim anahtarı, kontrol ettiğiniz birimi değiştirir. Paragraflar modu, aralarında boş satır bulunan ayrı bloklar döndürür; makale gövdeleri ve uzun formlar için uygundur. Cümleler modu, altyazı ve liste öğeleri için tek bir akış korur. Kelimeler modu, belirli bir belirteç sayısında durur ve son noktayı eklemez; bu da noktalama işaretlerinin düzeni bozabilecek çip, etiket ve buton öğeleri için uygundur.\n\nCümle uzunluğu sabit değildir: her cümle, hedeften rastgele bir faktörle yuvarlanır ve ardından üç ile otuz kelime arasında sınırlanır, böylece satırlar inandırıcı noktalarda kırılır. Virgüller, öngörülebilir duraklamalarda görünür ve Lorem ipsum ile başla anahtarı geleneksel açışı zorunlu kılar. Sonuç iskelet metindir, asıl içerik değildir; sayfa bitmiş olarak okunmadan önce değiştirilmelidir.",
+        "howToTitle": "Lorem Ipsum Oluşturucu Nasıl Kullanılır?",
+        "howTo": "Girdi panelindeki biçim anahtarıyla Paragraflar, Cümleler veya Kelimeler'i seçin.\nKaydırıcıyla miktarı ayarlayın veya aynı değeri Kesin sayı alanına yazın.\nGeleneksel açışı istiyorsanız Lorem ipsum ile başla seçeneğini işaretli bırakın.\nSonuç panelinde oluşturulan metni ve kelime ve karakter sayaçlarını okuyun.\nFarklı bir yeniden üretilebilir paragraf için Yeni tohum düğmesine basın, ardından Kopyala veya .txt İndir'e tıklayın.",
+        "exampleTitle": "Örnek",
+        "exampleLabel": "Tohum 1'den iki paragraf",
+        "exampleNote": "Örneği dene işlemi ayrıca her paragrafa yaklaşık on kelimelik üç cümle ekler. Yeni tohum düğmesine basın ve ifade değişirken iki paragraf yapısı aynı kalır.",
+        "mistakesTitle": "Yaygın hatalar ve sınırlar",
+        "limitsTitle": "Sınırlar",
+        "mistakes": "Doldurucu metniyle yayına çıkma::Yer tutucu paragraflar düzen incelemesi için çerçeve görevi görür. Sayfa yayına çıkmadan önce gerçek metinle değiştirin.\nKesin cümle sayısına odaklanma::Miktar alanı biçime bağlı olarak paragraf, cümle veya kelime sayısını kontrol eder. Her blok içinde cümle uzunluğu değişir.\nTohumu unutma::İki mockup sadece tohum değiştiği için farklı görünür. Her iki ekranda da aynı doldurucu metni gerekiyorsa onu değiştirmeyin.\nGövde metni için kelime modu kullanma::Kelime modu bitiş noktasız tek bir token dizisi döndürür. Bloklar arasında boş satır gerekiyorsa paragrafları seçin.",
+        "limits": "Miktarlar 20 paragraf, paragraf başına 12 cümle veya cümle başına 30 kelime ile sınırlıdır.\nHer cümle 3 ile 30 kelime arasında tutulur, bu yüzden çok düşük bir hedef yine de kısa bir cümle üretir.\nYalnızca ayarlar bu cihazda kalır; metin her ziyaretinde onlardan yeniden oluşturulur."
       }
     }
   },
