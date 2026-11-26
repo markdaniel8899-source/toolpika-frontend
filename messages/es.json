@@ -2449,7 +2449,9 @@
         "faqs": "¿Qué es una cadena aleatoria?::Una cadena aleatoria es una secuencia de caracteres elegidos aleatoriamente.\n¿Para qué sirve?::Sirve para generar contraseñas, claves API, identificadores y más.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
         "trustTitle": "Información de esta herramienta",
         "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
-      }
+      },
+      "lowerLabel": "Letras minúsculas",
+      "upperLabel": "Letras mayúsculas"
     }
   },
   "search": {
