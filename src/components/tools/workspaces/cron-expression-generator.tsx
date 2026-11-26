@@ -6,8 +6,10 @@ import { Clock3 } from "lucide-react";
 import {
   CopyButton,
   DownloadButton,
+  SegmentedControl,
   ToolBadge,
   ToolEmpty,
+  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -71,6 +73,7 @@ export default function CronExpressionGenerator() {
   const tw = useTranslations("tools");
   const locale = useLocale();
   const [fields, setFields] = useState<CronFields>(SAMPLE);
+  const [timezone, setTimezone] = useState<"local" | "utc">("local");
 
   const activePreset = useMemo(
     () => PRESET_DEFS.find((preset) => sameFields(preset.value, fields))?.key ?? null,
@@ -115,8 +118,9 @@ export default function CronExpressionGenerator() {
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: timezone === "utc" ? "UTC" : undefined,
       }),
-    [locale],
+    [locale, timezone],
   );
 
   const reportText = useMemo(() => {
@@ -183,6 +187,25 @@ export default function CronExpressionGenerator() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            <ToolField label={tw("cron-expression-generator.timezoneLabel")}>
+              <SegmentedControl<"local" | "utc">
+                label={tw("cron-expression-generator.timezoneLabel")}
+                value={timezone}
+                options={[
+                  { value: "local", label: tw("cron-expression-generator.timezoneLocal") },
+                  { value: "utc", label: tw("cron-expression-generator.timezoneUtc") },
+                ]}
+                onChange={setTimezone}
+              />
+            </ToolField>
+
+            <div className="tp-cron-operators" role="group" aria-label={tw("cron-expression-generator.operatorsLabel")}>
+              <span className="tp-cron-operator"><code>*</code>{tw("cron-expression-generator.operatorAny")}</span>
+              <span className="tp-cron-operator"><code>,</code>{tw("cron-expression-generator.operatorList")}</span>
+              <span className="tp-cron-operator"><code>-</code>{tw("cron-expression-generator.operatorRange")}</span>
+              <span className="tp-cron-operator"><code>/</code>{tw("cron-expression-generator.operatorStep")}</span>
             </div>
 
             <div className="tp-cron-grid grid grid-cols-2 gap-3">

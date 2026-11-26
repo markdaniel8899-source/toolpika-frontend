@@ -9415,6 +9415,29 @@ textarea::-webkit-scrollbar-thumb,
   gap: 10px;
 }
 
+.tp-cron-operators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tp-cron-operator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.tp-cron-operator code {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .tp-cron-tile {
   display: flex;
   flex-direction: column;

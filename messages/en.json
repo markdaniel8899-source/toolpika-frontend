@@ -2050,7 +2050,15 @@
         "faqs": "What do the five fields mean?::They are minute, hour, day of month, month and day of week, in that order. Minute runs from 0 to 59, hour from 0 to 23, day from 1 to 31, month from 1 to 12 and weekday from 0 to 7. Zero and seven both mean Sunday.\nCan I use names such as MON or JAN?::Yes. Three-letter names work in the month and weekday fields, and they are not case sensitive. The canonical expression rewrites them as numbers, which keeps the result readable in tools that do not accept names. Names are rejected in the minute, hour and day fields because they have no meaning there.\nWhy does my job still run many times on a weekday?::If a field still contains an asterisk it places no restriction on that part of the schedule. A weekday value alone does not limit the hour or minute, so the job may fire repeatedly that day. Set the hour and minute fields as well, or use one of the presets.\nHow far ahead does the next-run preview look?::It scans minute by minute for one year from the moment the page calculates it. That covers annual schedules, but a date such as 29 February may show fewer than three results in a year without that day. Times come from your device clock, so check the server timezone separately.\nIs my schedule stored anywhere?::No. The five fields live only in this browser tab. Nothing is sent to a server, there is no sign-in, and the copy and download actions read the expression from the page. Closing the tab clears what you typed.",
         "trustTitle": "About this tool",
         "trustBody": "Parses five fields against per-field ranges, rewrites them into one canonical expression and previews three runs within a year. Everything runs locally in your browser. Updated 26 November 2026."
-      }
+      },
+      "timezoneLabel": "Preview timezone",
+      "timezoneLocal": "Local",
+      "timezoneUtc": "UTC",
+      "operatorsLabel": "Operators",
+      "operatorAny": "any value",
+      "operatorList": "list",
+      "operatorRange": "range",
+      "operatorStep": "step"
     },
     "hmac-generator": {
       "title": "HMAC Generator",
