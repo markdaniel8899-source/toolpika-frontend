@@ -231,7 +231,6 @@ export const tools: Tool[] = [
     inputs: [],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "text-diff-checker",
@@ -243,7 +242,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "uuid-generator",
@@ -255,7 +253,6 @@ export const tools: Tool[] = [
     inputs: [],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "jwt-decoder",
@@ -267,7 +264,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "regex-tester",
@@ -279,7 +275,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "percentage-calculator",
@@ -291,7 +286,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "aspect-ratio-calculator",
@@ -303,7 +297,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "utm-builder",
@@ -315,7 +308,6 @@ export const tools: Tool[] = [
     inputs: ["url"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "hash-generator",
@@ -327,7 +319,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "image-resizer",
@@ -339,7 +330,6 @@ export const tools: Tool[] = [
     inputs: ["file"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "remove-duplicate-lines",
