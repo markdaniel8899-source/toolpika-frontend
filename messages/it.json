@@ -1370,6 +1370,77 @@
         "trustTitle": "Informazioni su questo strumento",
         "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
       }
+    },
+    "uuid-generator": {
+      "title": "Generatore UUID",
+      "shortDesc": "Genera UUID v4, v7 e nil con un clic, completamente nel tuo browser.",
+      "seo": {
+        "title": "Generatore UUID Online",
+        "description": "Usa il Generatore UUID per creare identificatori univoci universali v4, v7 e nil. Tutto avviene nel tuo browser, senza caricamento."
+      },
+      "subtitle": "Identificatori univoci generati localmente",
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "version4": "v4",
+      "version7": "v7",
+      "versionNil": "Nil",
+      "generate": "Genera",
+      "emptyTitle": "Nessun UUID ancora",
+      "emptyHint": "Scegli una versione e premi Genera per creare UUID.",
+      "downloadName": "uuid.txt",
+      "page": {
+        "byline": "Strumenti di utilità · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Generatore UUID crea identificatori univoci universali (UUID) versione 4, 7 e nil direttamente nel tuo browser. Copia o scarica i UUID generati.",
+        "aboutTitle": "Informazioni sul Generatore UUID",
+        "contextualLink": "Hai bisogno di un identificatore univoco per il tuo progetto? Usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è un UUID?",
+        "whatIs": "Un UUID (Identificatore Univoco Universale) è un identificatore di 128 bit usato per identificare informazioni univocamente nei sistemi informatici. Gli UUID sono progettati per essere univoci nello spazio e nel tempo, senza bisogno di un'autorità centrale di assegnazione.\n\nQuesto strumento supporta tre versioni di UUID:\n- v4: UUID generato casualmente (il più comune)\n- v7: UUID ordinabile nel tempo\n- nil: UUID con tutti gli zeri\n\nTutto avviene nel tuo browser e nessun UUID viene inviato a un server.",
+        "howToTitle": "Come usare il Generatore UUID",
+        "howTo": "Scegli la versione UUID (v4, v7 o nil).\nScegli quanti UUID generare.\nPremi Genera.\nCopia o scarica gli UUID generati.",
+        "featuresTitle": "Funzionalità",
+        "features": "Tre versioni::UUID v4, v7 e nil.\nQuantità personalizzabile::Genera più UUID alla volta.\nCopia e scarica::Copia negli appunti o scarica come file di testo.\nLocale::Tutto avviene nel tuo browser.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "UUID v7 non supportato ovunque::Alcuni sistemi più vecchi potrebbero non supportare UUID v7.\nUUID nil::L'UUID nil è tutto zeri e non dovrebbe essere usato come identificatore reale.",
+        "limitsTitle": "Limiti",
+        "limits": "Fino a 100 UUID alla volta.\nTutto avviene nel tuo browser.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è un UUID v4?::Un UUID v4 è generato usando numeri casuali.\nCos'è un UUID v7?::Un UUID v7 contiene un timestamp ed è ordinabile nel tempo.\nGli UUID sono univoci?::Sì, la probabilità di collisione è estremamente bassa.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
+    },
+    "jwt-decoder": {
+      "title": "JWT Decoder",
+      "shortDesc": "Decodifica token JWT e visualizza header e payload in modo leggibile.",
+      "seo": {
+        "title": "JWT Decoder Online",
+        "description": "Usa il JWT Decoder per decodificare token JSON Web Token e visualizzare header e payload. Tutto avviene nel tuo browser, senza caricamento."
+      },
+      "subtitle": "Token JWT decodificati localmente",
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "inputTitle": "Token JWT",
+      "resultTitle": "Risultato decodifica",
+      "emptyTitle": "Nessun token ancora",
+      "emptyHint": "Incolla un token JWT per decodificarlo.",
+      "page": {
+        "byline": "Strumenti di sicurezza · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il JWT Decoder decodifica token JSON Web Token (JWT) e mostra header e payload in formato leggibile. La firma viene mostrata come è, senza verifiche.",
+        "aboutTitle": "Informazioni sul JWT Decoder",
+        "contextualLink": "Se hai bisogno di generare JWT, usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è un JWT?",
+        "whatIs": "Un JWT (JSON Web Token) è un formato compatto e sicuro per URL per rappresentare rivendicazioni tra due parti. È composto da tre parti separate da punti: header, payload e firma.\n\nQuesto strumento decodifica le prime due parti (header e payload) dalla codifica Base64URL e le mostra come JSON leggibile. La firma non viene verificata.\n\nTutto avviene nel tuo browser e nessun token viene inviato a un server.",
+        "featuresTitle": "Funzionalità",
+        "features": "Decodifica header e payload::Mostra le prime due parti del JWT come JSON.\nVisualizza firma::Mostra la terza parte come è.\nLocale::Tutto avviene nel tuo browser.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Token non valido::Un token JWT non valido mostrerà un errore.\nFirma non verificata::La firma non viene verificata da questo strumento.",
+        "limitsTitle": "Limiti",
+        "limits": "I token sono limitati a 10.000 caratteri.\nLa firma non viene verificata.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è un JWT?::Un JSON Web Token è un formato per rappresentare rivendicazioni tra due parti.\nLa firma viene verificata?::No, questo strumento solo decodifica header e payload.\nIl token viene caricato?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
     }
   },
   "search": {
