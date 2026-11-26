@@ -9193,10 +9193,31 @@ textarea::-webkit-scrollbar-thumb,
   min-width: 0;
 }
 
+/* Every option control sits in an equal-sized card, including checkboxes. */
+.tp-tool-options-grid > * {
+  box-sizing: border-box;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  align-self: stretch;
+}
+
+.tp-tool-options-grid > .tp-tool-group--flush {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
 /* Option columns hug the leading edge instead of filling the whole tray. */
 .tp-tool-options-grid--single {
   grid-template-columns: minmax(0, 320px);
   justify-content: start;
+}
+
+.tp-tool-options-grid--single > * {
+  width: 100%;
 }
 
 /* Breathing room between result stats, output card and actions. */
