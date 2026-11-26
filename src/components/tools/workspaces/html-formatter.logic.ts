@@ -20,10 +20,10 @@ export class HtmlFormatError extends Error {
 
 export const HTML_MAX_CHARS = 100_000;
 
-export interface HtmlFormatOptions {
+export type HtmlFormatOptions = {
   indentSize: IndentSize;
   escapeMarkup: boolean;
-}
+};
 
 export const DEFAULT_HTML_FORMAT_OPTIONS: HtmlFormatOptions = {
   indentSize: "2",
