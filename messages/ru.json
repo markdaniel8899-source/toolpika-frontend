@@ -2186,13 +2186,52 @@
         "useCasesTitle": "Когда использовать Подсчетчик плотности ключевых слов",
         "useCases": "SEO-контент::Проверьте, содержат ли страницы ключевые слова целевые запросы с подходящей плотностью без избыточного повторения одного и того же слова в каждом предложении.\nРедакционная обработка::Найдите повторяющиеся слова, делающие абзац монотонным, и замените их синонимами, когда это поможет читателю.\nПроверка ключевых слов SEO::Сравните черновик с ключевыми словами, которые вы планируете использовать, и посмотрите, какие из них попадаются реже.\nОбучение и демо::Покажите учащимся, как работает частота слов, с помощью таблицы, которая обновляется при вводе текста.\nПроверка простого языка::Найдите жаргон, который используется слишком часто, и замените его более простыми словами.",
         "mistakesTitle": "Частые ошибки и ограничения",
-        "mistakes": "Игнорирование стоп-слов::Без фильтрации слова типа \"the\", \"and\" и \"of\" доминируют в рейтинге.\nМинимальная длина слишком высока::Вы рискуете исключить важные слова из трех или четырех букв.\nПутаница плотности с релевантностью::Высокая плотность не означает, что контент релевантный или хорошо написанный.",
+        "mistakes": "Ignorar las palabras vacía::Sin filtrar, palabras comunes como \"the\", \"and\" y \"of\" dominan la clasificación.\nLongitud mínima demasiado alta::Riesgas excluir palabras importantes de tres o cuatro letras.\nConfundir densidad con relevancia::Una densidad alta no significa que el contenido sea relevante o esté bien escrito.",
         "limitsTitle": "Ограничения",
-        "limits": "Текст ограничен 10.000 знаками.\nВсе происходит в вашем браузере.",
-        "faqTitle": "Часто задаваемые вопросы",
-        "faqs": "Как рассчитывается плотность ключевых слов?::Разделите количество вхождений слова на общее число слов и умножьте на сто.\nКак считаются предложения?::Предложения считаются по точкам, восклицательным и вопросительным знакам.\nЗагружается ли текст?::Нет, всё происходит в браузере.",
-        "trustTitle": "Об этом инструменте",
-        "trustBody": "Создано командой Toolpika. Всё происходит локально в вашем браузере."
+        "limits": "El texto está limitado a 10.000 caracteres.\nTodo ocurre en tu navegador.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Cómo se calcula la densidad de palabras clave?::Divide el número de apariciones de una palabra por el total de palabras y multiplica por cien.\n¿Cómo se cuentan las frases?::Las oraciones se cuentan según el punto final, signo de exclamación y signo de interrogación.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
+        "trustTitle": "Información de esta herramienta",
+        "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
+      }
+    },
+    "random-string-generator": {
+      "title": "Generador de Cadenas Aleatorias",
+      "shortDesc": "Genera cadenas aleatorias con longitud, conjuntos de caracteres y conteggio de lote elegidos, completamente en tu navegador.",
+      "seo": {
+        "title": "Generador de Cadenas Aleatorias en Línea",
+        "description": "Usa el Generador de Cadenas Aleatorias para crear cadenas aleatorias con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares, luego copia o descarga las cadenas."
+      },
+      "subtitle": "Aleatoriedad criptográfica generada localmente",
+      "trySample": "Prueba ejemplo",
+      "reset": "Restablecer",
+      "lengthLabel": "Longitud",
+      "countLabel": "Conteo de lote",
+      "digitsLabel": "Dígitos",
+      "symbolsLabel": "Símbolos",
+      "lookAlikeLabel": "Excluir similares",
+      "generate": "Generar",
+      "resultTitle": "Cadenas generadas",
+      "emptyTitle": "Aún no hay cadenas",
+      "emptyHint": "Elige las opciones y presiona Generar para crear cadenas aleatorias.",
+      "copyUnavailable": "Acceso al portapapeles bloqueado. Selecciona las cadenas y cópialas manualmente.",
+      "page": {
+        "byline": "Herramientas de utilidad · Actualizado el 26 de noviembre de 2026",
+        "directAnswer": "El Generador de Cadenas Aleatorias crea cadenas aleatorias con letras, cifras y símbolos con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares si es necesario, luego copia o descarga las cadenas.",
+        "aboutTitle": "Acerca del Generador de Cadenas Aleatorias",
+        "contextualLink": "Si necesitas una clave secreta, usa %%TOOL%%.",
+        "whatIsTitle": "¿Qué es un Generador de Cadenas Aleatorias?",
+        "whatIs": "Un generador de cadenas aleatorias es una herramienta que crea cadenas de caracteres elegidos aleatoriamente de un conjunto de caracteres especificado. Es útil para generar contraseñas, claves API, identificadores y más.\n\nEsta herramienta admite conjuntos de caracteres personalizables, longitud y conteo de lote.\n\nTodo ocurre en tu navegador y ningún dato se envía a un servidor.",
+        "howToTitle": "Cómo usar el Generador de Cadenas Aleatorias",
+        "howTo": "Establece la longitud de la cadena.\nEstablece el conteo de lote.\nElige los conjuntos de caracteres que quieres incluir.\nPresiona Generar.\nCopia o descarga las cadenas generadas.",
+        "featuresTitle": "Funcionalidades",
+        "features": "Conjuntos de caracteres personalizables::Elige qué caracteres incluir.\nLongitud personalizada::Establece la longitud de la cadena.\nConteo de lote::Genera varias cadenas a la vez.\nLocal::Todo ocurre en tu navegador.",
+        "mistakes": "Longitud cero::No puedes generar cadenas de longitud cero.\nNingún conjunto de caracteres::Debes seleccionar al menos un conjunto de caracteres.",
+        "limits": "La longitud está limitada a 100 caracteres.\nEl conteo de lote está limitado a 100.\nTodo ocurre en tu navegador.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Qué es una cadena aleatoria?::Una cadena aleatoria es una secuencia de caracteres elegidos aleatoriamente.\n¿Para qué sirve?::Sirve para generar contraseñas, claves API, identificadores y más.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
+        "trustTitle": "Información de esta herramienta",
+        "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
       }
     }
   },
