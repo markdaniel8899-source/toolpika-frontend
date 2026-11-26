@@ -1545,7 +1545,12 @@
         "faqTitle": "Domande frequenti",
         "faqs": "Cos'è un confronto testo?::Un confronto testo mostra le differenze tra due versioni di un testo.\nPosso confrontare codice?::Sì, puoi confrontare qualsiasi tipo di testo, incluso il codice.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
         "trustTitle": "Informazioni su questo strumento",
-        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser.",
+        "exampleTitle": "Esempio",
+        "exampleLabel": "Testi di esempio",
+        "exampleInput": "Testo originale: Ciao mondo\nTesto revisionato: Ciao mondo bello",
+        "exampleOutput": "Ciao mondo\n+ bello",
+        "exampleNote": "Le differenze vengono evidenziate con colori diversi."
       }
     },
     "hash-generator": {
@@ -1569,9 +1574,9 @@
         "byline": "Strumenti di sicurezza · Aggiornato 26 novembre 2026",
         "directAnswer": "Il Generatore Hash crea hash crittografici SHA-1, SHA-256 e SHA-512 da testo direttamente nel tuo browser. Copia o scarica l'hash generato.",
         "aboutTitle": "Informazioni sul Generatore Hash",
-        "contextualLink": "Hai bisogno di verificare un hash? Usa %%TOOL%%.",
+        "contextualLink": "Se hai bisogno di verificare un hash, usa %%TOOL%%.",
         "whatIsTitle": "Cos'è un hash crittografico?",
-        "whatIs": "Un hash crittografico è una funzione che prende un input di dimensioni arbitrarie e produce un output di dimensione fissa, chiamato hash o digest. Gli hash sono usati per verificare l'integrità dei dati, memorizzare password e molto altro.\n\nQuesto strumento supporta tre algoritmi di hash:\n- SHA-1: 160 bit (non raccomandato per uso critico)\n- SHA-256: 256 bit (standard attuale)\n- SHA-512: 512 bit (massima sicurezza)\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "whatIs": "Un hash crittografico è una funzione che prende un input di dimensioni arbitrarie e produce un output di dimensione fissa, chiamato hash o digest. Gli hash sono usati per verificare l'integrità dei dati, memorizzare password e molto altro.\n\nQuesto strumento supporta tre algoritmi di hash:\n- SHA-1: 160 bit (non raccomandato per uso crittografico)\n- SHA-256: 256 bit (standard attuale)\n- SHA-512: 512 bit (massima sicurezza)\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
         "featuresTitle": "Funzionalità",
         "features": "Tre algoritmi::SHA-1, SHA-256 e SHA-512.\nOutput esadecimale::L'hash viene mostrato in formato esadecimale.\nCopia e scarica::Copia negli appunti o scarica come file di testo.\nLocale::Tutto avviene nel tuo browser.",
         "mistakesTitle": "Errori comuni e limiti",
