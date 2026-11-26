@@ -103,71 +103,77 @@ export default function CssMinifier() {
           id="css-minify-input-title"
           title={tw("css-minifier.inputTitle")}
           hint={tw("css-minifier.inputHint")}
-        >
-          <div className="tp-tool-group tp-tool-group--flush">
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <div className="tp-tool-inline-actions">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void handlePaste()}
-                  aria-label={tw("css-minifier.paste")}
-                >
-                  <ClipboardPaste aria-hidden="true" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleClear}
-                  aria-label={t("clear")}
-                >
-                  <X aria-hidden="true" />
-                </Button>
-              </div>
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={tw("css-minifier.paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={handleClear}
+                aria-label={t("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
             </div>
-            <textarea
-              id="css-minify-input"
-              ref={inputRef}
-              className="tp-tool-editor"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder={t("startTyping")}
-              aria-label={tw("css-minifier.cssLabel")}
-              aria-describedby={evaluation.error ? "css-minify-error" : undefined}
-              spellCheck={false}
-            />
-          </div>
+          }
+        >
+          <textarea
+            id="css-minify-input"
+            ref={inputRef}
+            className="tp-tool-editor"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            placeholder={t("startTyping")}
+            aria-label={tw("css-minifier.cssLabel")}
+            aria-describedby={evaluation.error ? "css-minify-error" : undefined}
+            spellCheck={false}
+          />
           <>
             <div className="tp-tool-options-head">
               <h3>{t("options")}</h3>
             </div>
             <div className="tp-tool-options-grid tp-tool-options-grid--single">
-              <CheckboxRow
-                id="css-minify-strip-comments"
-                label={tw("css-minifier.stripComments")}
-                checked={options.stripComments}
-                onChange={(stripComments) => update({ stripComments })}
-              />
-              <CheckboxRow
-                id="css-minify-compact-colors"
-                label={tw("css-minifier.compactColors")}
-                checked={options.compactColors}
-                onChange={(compactColors) => update({ compactColors })}
-              />
-              <CheckboxRow
-                id="css-minify-remove-last-semicolon"
-                label={tw("css-minifier.removeLastSemicolon")}
-                checked={options.removeLastSemicolon}
-                onChange={(removeLastSemicolon) => update({ removeLastSemicolon })}
-              />
-              <CheckboxRow
-                id="css-minify-lowercase-hex"
-                label={tw("css-minifier.lowercaseHex")}
-                checked={options.lowercaseHex}
-                onChange={(lowercaseHex) => update({ lowercaseHex })}
-              />
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="css-minify-strip-comments"
+                  label={tw("css-minifier.stripComments")}
+                  checked={options.stripComments}
+                  onChange={(stripComments) => update({ stripComments })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="css-minify-compact-colors"
+                  label={tw("css-minifier.compactColors")}
+                  checked={options.compactColors}
+                  onChange={(compactColors) => update({ compactColors })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="css-minify-remove-last-semicolon"
+                  label={tw("css-minifier.removeLastSemicolon")}
+                  checked={options.removeLastSemicolon}
+                  onChange={(removeLastSemicolon) => update({ removeLastSemicolon })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="css-minify-lowercase-hex"
+                  label={tw("css-minifier.lowercaseHex")}
+                  checked={options.lowercaseHex}
+                  onChange={(lowercaseHex) => update({ lowercaseHex })}
+                />
+              </div>
             </div>
           </>
         </ToolPane>

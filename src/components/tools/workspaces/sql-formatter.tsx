@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { ClipboardPaste, Database, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
+  CheckboxRow,
   CodeOutput,
   SegmentedControl,
   Stat,
@@ -109,44 +110,45 @@ export default function SqlFormatter() {
       onReset={handleReset}
       notice={notice}
       input={
-        <ToolPane id="sql-formatter-input-title" title={tw("sql-formatter.inputTitle")}>
-          <div className="tp-tool-group tp-tool-group--flush">
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <div className="tp-tool-inline-actions">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void handlePaste()}
-                  aria-label={tw("sql-formatter.paste")}
-                >
-                  <ClipboardPaste aria-hidden="true" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={!source}
-                  onClick={handleClear}
-                  aria-label={t("clear")}
-                >
-                  <X aria-hidden="true" />
-                </Button>
-              </div>
+        <ToolPane
+          id="sql-formatter-input-title"
+          title={tw("sql-formatter.inputTitle")}
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={tw("sql-formatter.paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={!source}
+                onClick={handleClear}
+                aria-label={t("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
             </div>
-            <textarea
-              id="sql-formatter-source"
-              ref={sourceRef}
-              className="tp-tool-editor"
-              value={source}
-              onChange={(event) => setSource(event.target.value)}
-              placeholder={tw("sql-formatter.sqlPlaceholder")}
-              aria-label={t("pasteText")}
-              aria-describedby={evaluation.error ? "sql-formatter-error" : undefined}
-              spellCheck={false}
-            />
-          </div>
-          <div>
+          }
+        >
+          <textarea
+            id="sql-formatter-source"
+            ref={sourceRef}
+            className="tp-tool-editor"
+            value={source}
+            onChange={(event) => setSource(event.target.value)}
+            placeholder={tw("sql-formatter.sqlPlaceholder")}
+            aria-label={t("pasteText")}
+            aria-describedby={evaluation.error ? "sql-formatter-error" : undefined}
+            spellCheck={false}
+          />
+          <>
             <div className="tp-tool-options-head">
               <h3>{t("options")}</h3>
             </div>
@@ -165,30 +167,26 @@ export default function SqlFormatter() {
               </div>
               <div className="tp-tool-group">
                 <p className="tp-tool-group-title">{tw("sql-formatter.formatTitle")}</p>
-                <label className="tp-tool-check" htmlFor="sql-formatter-uppercase">
-                  <input
-                    id="sql-formatter-uppercase"
-                    type="checkbox"
-                    className="tp-checkbox"
-                    checked={options.uppercaseKeywords}
-                    onChange={(event) => update({ uppercaseKeywords: event.target.checked })}
-                  />
-                  <span>{tw("sql-formatter.uppercaseKeywords")}</span>
-                </label>
-                <div className="tp-tool-check">
+                <CheckboxRow
+                  id="sql-formatter-uppercase"
+                  label={tw("sql-formatter.uppercaseKeywords")}
+                  checked={options.uppercaseKeywords}
+                  onChange={(uppercaseKeywords) => update({ uppercaseKeywords })}
+                />
+                <div className="tp-check-row">
                   <ToggleSwitch
                     id="sql-formatter-single-line-clauses"
                     label={tw("sql-formatter.singleLineClauses")}
                     checked={options.singleLineClauses}
                     onChange={() => update({ singleLineClauses: !options.singleLineClauses })}
                   />
-                  <label htmlFor="sql-formatter-single-line-clauses">
+                  <label htmlFor="sql-formatter-single-line-clauses" className="tp-check-label">
                     {tw("sql-formatter.singleLineClauses")}
                   </label>
                 </div>
               </div>
             </div>
-          </div>
+          </>
         </ToolPane>
       }
       result={

@@ -1,12 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, X } from "lucide-react";
+import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
-import { WorkspaceLayout } from "../workspace-layout";
-import { CheckboxRow, CodeOutput, OutputEmpty, ToolField } from "../workspace-ui";
+import {
+  CheckboxRow,
+  CodeOutput,
+  SegmentedControl,
+  Stat,
+  ToolEmpty,
+  ToolPane,
+  ToolShell,
+} from "../workspace-ui";
 
 const SAMPLE = `[
   { "name": "Toolpika", "category": "code", "meta": { "rank": 1 } },
@@ -241,6 +248,7 @@ export default function JsonToCsv() {
   const [mode, setMode] = useState<Mode>("toCsv");
   const [delimiter, setDelimiter] = useState<CsvDelimiter>(",");
   const [includeHeaders, setIncludeHeaders] = useState(true);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const conversion = useMemo(() => {
     if (!input.trim()) return null;
@@ -249,17 +257,21 @@ export default function JsonToCsv() {
       : csvToJson(input, delimiter);
   }, [input, mode, delimiter, includeHeaders]);
 
-  let output = "";
-  if (conversion && conversion.ok) {
-    output = "csv" in conversion ? conversion.csv : conversion.json;
-  }
   const errorReason = conversion && !conversion.ok ? conversion.reason : null;
+
+  const errorMessage =
+    errorReason === "invalidJson"
+      ? t("json-to-csv.invalidJson")
+      : errorReason === "notTabular"
+        ? t("json-to-csv.notTabular")
+        : t("json-to-csv.invalidCsv");
 
   const clearAll = () => {
     setInput("");
     setMode("toCsv");
     setDelimiter(",");
     setIncludeHeaders(true);
+    inputRef.current?.focus();
   };
 
   const handleSample = () => {
@@ -267,6 +279,7 @@ export default function JsonToCsv() {
     setMode("toCsv");
     setDelimiter(",");
     setIncludeHeaders(true);
+    inputRef.current?.focus();
   };
 
   const handlePaste = async () => {
@@ -276,143 +289,137 @@ export default function JsonToCsv() {
     } catch {
       // Clipboard permission can be denied; the editor remains usable.
     }
+    inputRef.current?.focus();
   };
 
   return (
-    <WorkspaceLayout
+    <ToolShell
       title={t("json-to-csv.title")}
+      subtitle={t("json-to-csv.shortDesc")}
       icon="Code"
-      onReset={clearAll}
+      sampleLabel={t("trySample")}
+      resetLabel={t("reset")}
+      privacyLabel={t("privacyRibbon")}
       onSample={handleSample}
-      statusRight={output ? `${output.length} ${tu("characters")}` : undefined}
+      onReset={clearAll}
       input={
-        <div className="flex min-w-0 flex-col gap-4">
-          <div
-            role="group"
-            aria-label={t("json-to-csv.title")}
-            className="flex w-full gap-2 sm:w-auto"
-          >
-            <Button
-              type="button"
-              size="sm"
-              variant={mode === "toCsv" ? "default" : "outline"}
-              aria-pressed={mode === "toCsv"}
-              className={`min-w-0 flex-1 px-3 sm:flex-none ${mode === "toCsv" ? "" : "bg-[var(--surface)]"}`}
-              onClick={() => setMode("toCsv")}
-            >
-              {t("json-to-csv.jsonToCsv")}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={mode === "toJson" ? "default" : "outline"}
-              aria-pressed={mode === "toJson"}
-              className={`min-w-0 flex-1 px-3 sm:flex-none ${mode === "toJson" ? "" : "bg-[var(--surface)]"}`}
-              onClick={() => setMode("toJson")}
-            >
-              {t("json-to-csv.csvToJson")}
-            </Button>
-          </div>
-
-          <div className="flex min-w-0 flex-col gap-2">
-            <div className="flex flex-wrap items-center justify-end gap-2">
+        <ToolPane
+          id="json-to-csv-input-title"
+          title={t("input")}
+          actions={
+            <div className="tp-tool-inline-actions">
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => void handlePaste()}
+                aria-label={t("paste")}
               >
-                <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-                {t("paste")}
+                <ClipboardPaste aria-hidden="true" />
               </Button>
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 disabled={!input}
-                onClick={() => setInput("")}
+                onClick={clearAll}
+                aria-label={t("clear")}
               >
-                <X className="h-3.5 w-3.5" aria-hidden="true" />
-                {t("clear")}
+                <X aria-hidden="true" />
               </Button>
             </div>
-
-            <textarea
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder={tu("startTyping")}
-              aria-label={t("json-to-csv.title")}
-              spellCheck={false}
-              className="tp-field-input min-h-[220px] min-w-0 max-w-full font-mono text-[13px]"
-            />
-          </div>
-
-          <p className="tp-workspace-hint" aria-live="polite">
-            {input.length} {tu("characters").toLowerCase()}
-          </p>
-        </div>
-      }
-      output={
-        <div className="flex min-w-0 flex-col gap-4 overflow-hidden">
-          <div className="grid min-w-0 items-end gap-3 sm:grid-cols-2">
-            <ToolField label={t("json-to-csv.delimiter")}>
-              <ThemedSelect
-                value={delimiter}
-                onValueChange={(value) => setDelimiter(value as CsvDelimiter)}
-                options={DELIMITER_OPTIONS}
-                ariaLabel={t("json-to-csv.delimiter")}
-              />
-            </ToolField>
-            {mode === "toCsv" ? (
-              <div className="flex min-h-[42px] items-center">
-                <CheckboxRow
-                  id="j2c-include-headers"
-                  label={t("json-to-csv.includeHeaders")}
-                  checked={includeHeaders}
-                  onChange={setIncludeHeaders}
+          }
+          footer={
+            <span aria-live="polite">
+              {input.length} {tu("characters").toLowerCase()}
+            </span>
+          }
+        >
+          <SegmentedControl<Mode>
+            label={t("json-to-csv.title")}
+            value={mode}
+            options={[
+              { value: "toCsv", label: t("json-to-csv.jsonToCsv") },
+              { value: "toJson", label: t("json-to-csv.csvToJson") },
+            ]}
+            onChange={setMode}
+          />
+          <textarea
+            id="json-to-csv-input"
+            ref={inputRef}
+            className="tp-tool-editor"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            placeholder={tu("startTyping")}
+            aria-label={t("json-to-csv.title")}
+            spellCheck={false}
+          />
+          <>
+            <div className="tp-tool-options-head">
+              <h3>{tu("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <div className="tp-tool-group">
+                <p className="tp-tool-group-title">{t("json-to-csv.delimiter")}</p>
+                <ThemedSelect
+                  value={delimiter}
+                  onValueChange={(value) => setDelimiter(value as CsvDelimiter)}
+                  options={DELIMITER_OPTIONS}
+                  ariaLabel={t("json-to-csv.delimiter")}
                 />
               </div>
+              {mode === "toCsv" ? (
+                <div className="tp-tool-group">
+                  <CheckboxRow
+                    id="j2c-include-headers"
+                    label={t("json-to-csv.includeHeaders")}
+                    checked={includeHeaders}
+                    onChange={setIncludeHeaders}
+                  />
+                </div>
+              ) : null}
+            </div>
+            {mode === "toCsv" ? (
+              <p className="tp-tool-hint">{t("json-to-csv.flattenNote")}</p>
             ) : null}
-          </div>
-          {mode === "toCsv" ? (
-            <p className="tp-workspace-hint">{t("json-to-csv.flattenNote")}</p>
-          ) : null}
-          <div className="grid min-w-0 gap-2" aria-live="polite">
-            {conversion && conversion.ok ? (
-              <span className="tp-workspace-hint">
-                {conversion.rows} {t("json-to-csv.rows")} · {conversion.columns}{" "}
-                {t("json-to-csv.columns")}
-              </span>
-            ) : null}
-          </div>
-
+          </>
+        </ToolPane>
+      }
+      result={
+        <ToolPane id="json-to-csv-result-title" title={t("result")} result>
           {errorReason ? (
-            <p role="alert" aria-live="polite" className="tp-workspace-error">
-              {errorReason === "invalidJson"
-                ? t("json-to-csv.invalidJson")
-                : errorReason === "notTabular"
-                  ? t("json-to-csv.notTabular")
-                  : t("json-to-csv.invalidCsv")}
+            <p role="alert" aria-live="polite" className="tp-tool-error">
+              {errorMessage}
             </p>
           ) : null}
 
-          {output ? (
-            <CodeOutput
-              code={output}
-              language="csv"
-              storageKey="tp-json-to-csv-code-view"
-              label={tu("result")}
-              fileName="data.csv"
-              mimeType="text/csv;charset=utf-8"
-              className="min-w-0 max-w-full"
-            />
-          ) : (
-            <OutputEmpty
-              message={t("resultEmpty")}
-              className="min-h-[200px] min-w-0 overflow-hidden break-words [overflow-wrap:anywhere]"
+          {conversion && conversion.ok ? (
+            <div className="tp-tool-result" aria-live="polite">
+              <dl className="tp-tool-stats">
+                <Stat label={t("json-to-csv.rows")} value={conversion.rows} />
+                <Stat label={t("json-to-csv.columns")} value={conversion.columns} />
+              </dl>
+              <CodeOutput
+                code={"csv" in conversion ? conversion.csv : conversion.json}
+                language={mode === "toCsv" ? "csv" : "json"}
+                storageKey="tp-json-to-csv-code-view"
+                label={tu("result")}
+                fileName={mode === "toCsv" ? "data.csv" : "data.json"}
+                mimeType={
+                  mode === "toCsv"
+                    ? "text/csv;charset=utf-8"
+                    : "application/json;charset=utf-8"
+                }
+              />
+            </div>
+          ) : errorReason ? null : (
+            <ToolEmpty
+              icon={<Code aria-hidden="true" />}
+              title={t("resultEmpty")}
+              hint={t("pasteContent")}
             />
           )}
-        </div>
+        </ToolPane>
       }
     />
   );

@@ -10,7 +10,6 @@ import {
   SegmentedControl,
   Stat,
   ToolEmpty,
-  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -154,7 +153,8 @@ export default function CssFormatter() {
               <h3>{t("options")}</h3>
             </div>
             <div className="tp-tool-options-grid tp-tool-options-grid--single">
-              <ToolField label={tw("css-formatter.indentLabel")}>
+              <div className="tp-tool-group">
+                <p className="tp-tool-group-title">{tw("css-formatter.indentLabel")}</p>
                 <SegmentedControl<IndentChoice>
                   label={tw("css-formatter.indentLabel")}
                   value={options.indent}
@@ -164,7 +164,7 @@ export default function CssFormatter() {
                   ]}
                   onChange={(indent) => update({ indent })}
                 />
-              </ToolField>
+              </div>
 
               <div className="tp-tool-group">
                 <CheckboxRow

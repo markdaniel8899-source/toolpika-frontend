@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, X } from "lucide-react";
+import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { WorkspaceLayout } from "../workspace-layout";
-import { CodeOutput, OutputEmpty } from "../workspace-ui";
+import {
+  CodeOutput,
+  ToolBadge,
+  ToolEmpty,
+  ToolPane,
+  ToolShell,
+} from "../workspace-ui";
 
 const SAMPLE = '{"name":"Toolpika","tools":8,"free":true}';
 
@@ -17,12 +21,18 @@ export default function JsonFormatter() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"format" | "minify" | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleReset = () => {
+  const clearAll = () => {
     setInput("");
     setOutput("");
     setError(null);
     setMode(null);
+    inputRef.current?.focus();
+  };
+
+  const handleReset = () => {
+    clearAll();
   };
 
   const handleSample = () => {
@@ -30,6 +40,7 @@ export default function JsonFormatter() {
     setOutput("");
     setError(null);
     setMode(null);
+    inputRef.current?.focus();
   };
 
   const handlePaste = async () => {
@@ -44,6 +55,7 @@ export default function JsonFormatter() {
     } catch {
       // Clipboard permission can be denied; the editor remains usable.
     }
+    inputRef.current?.focus();
   };
 
   const run = (next: "format" | "minify") => {
@@ -71,36 +83,52 @@ export default function JsonFormatter() {
   };
 
   return (
-    <WorkspaceLayout
+    <ToolShell
       title={tw("json-formatter.title")}
+      subtitle={tw("json-formatter.shortDesc")}
       icon="Code"
-      onReset={handleReset}
+      sampleLabel={tw("trySample")}
+      resetLabel={tw("reset")}
+      privacyLabel={tw("privacyRibbon")}
       onSample={handleSample}
-      statusRight={output ? `${output.length} ${t("characters")}` : undefined}
+      onReset={handleReset}
       input={
-        <div className="flex flex-col gap-3">
-          <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
-            <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
-              <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-              {tw("paste")}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={!input}
-              onClick={() => {
-                setInput("");
-                setOutput("");
-                setError(null);
-                setMode(null);
-              }}
-            >
-              <X className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("clear")}
-            </Button>
-          </div>
-          <Textarea
+        <ToolPane
+          id="json-formatter-input-title"
+          title={tw("input")}
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={tw("paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={!input}
+                onClick={clearAll}
+                aria-label={tw("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
+            </div>
+          }
+          footer={
+            <span aria-live="polite">
+              {input.length} {t("characters").toLowerCase()}
+            </span>
+          }
+        >
+          <textarea
+            id="json-formatter-input"
+            ref={inputRef}
+            className="tp-tool-editor"
             value={input}
             onChange={(event) => {
               setInput(event.target.value);
@@ -110,62 +138,67 @@ export default function JsonFormatter() {
             }}
             placeholder={t("startTyping")}
             aria-label={t("pasteText")}
+            aria-describedby={error ? "json-formatter-error" : undefined}
             spellCheck={false}
-            className="min-h-[300px] font-mono text-[13px]"
           />
-          <p className="tp-workspace-hint" aria-live="polite">
-            {input.length} {t("characters").toLowerCase()}
-          </p>
-        </div>
+        </ToolPane>
       }
-      output={
-        <div className="flex flex-col gap-4" aria-live="polite">
-          <div className="flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant={mode === "format" ? "default" : "secondary"}
-              aria-pressed={mode === "format"}
-              disabled={!input.trim()}
-              onClick={() => run("format")}
-            >
-              {t("formatJson")}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={mode === "minify" ? "default" : "secondary"}
-              aria-pressed={mode === "minify"}
-              disabled={!input.trim()}
-              onClick={() => run("minify")}
-            >
-              {t("minifyJson")}
-            </Button>
-          </div>
-
+      result={
+        <ToolPane
+          id="json-formatter-result-title"
+          title={tw("result")}
+          result
+          actions={
+            <>
+              <Button
+                type="button"
+                size="sm"
+                variant={mode === "format" ? "default" : "secondary"}
+                aria-pressed={mode === "format"}
+                disabled={!input.trim()}
+                onClick={() => run("format")}
+              >
+                {t("formatJson")}
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant={mode === "minify" ? "default" : "secondary"}
+                aria-pressed={mode === "minify"}
+                disabled={!input.trim()}
+                onClick={() => run("minify")}
+              >
+                {t("minifyJson")}
+              </Button>
+            </>
+          }
+          footer={output ? <ToolBadge tone="success">{t("jsonValid")}</ToolBadge> : null}
+        >
           {error ? (
-            <p role="alert" className="tp-workspace-error">
+            <p id="json-formatter-error" className="tp-tool-error" role="alert">
               {t("jsonInvalid", { message: error })}
             </p>
           ) : null}
 
           {output ? (
-            <>
-              <p className="tp-status-pill" data-tone="success">
-                {t("jsonValid")}
-              </p>
+            <div className="tp-tool-result" aria-live="polite">
               <CodeOutput
                 code={output}
                 language="json"
                 storageKey="tp-json-formatter-code-view"
                 label={t("result")}
-                fileName="formatted.json"
+                fileName={mode === "minify" ? "minified.json" : "formatted.json"}
+                mimeType="application/json;charset=utf-8"
               />
-            </>
-          ) : (
-            <OutputEmpty message={tw("resultEmpty")} className="min-h-[200px]" />
+            </div>
+          ) : error ? null : (
+            <ToolEmpty
+              icon={<Code aria-hidden="true" />}
+              title={tw("resultEmpty")}
+              hint={tw("pasteContent")}
+            />
           )}
-        </div>
+        </ToolPane>
       }
     />
   );

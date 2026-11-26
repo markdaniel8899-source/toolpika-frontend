@@ -220,7 +220,7 @@ export function ToolShell({
           <span className="tp-tool-mark" aria-hidden="true">
             <ToolIcon name={icon} />
           </span>
-          <span>
+          <span className="tp-tool-identity-text">
             <span className="tp-tool-name">{title}</span>
             {subtitle ? <span className="tp-tool-subtitle">{subtitle}</span> : null}
           </span>
@@ -562,8 +562,8 @@ export function CodeOutput({
   return (
     <div className={cn("tp-code-editor", className)}>
       <div className="tp-code-editor-bar">
-        <span className="tp-tool-group-title">{label}</span>
-        <div className="tp-tool-inline-actions">
+        <span className="tp-tool-group-title tp-code-editor-label">{label}</span>
+        <div className="tp-code-editor-actions">
           <Button type="button" variant="secondary" size="sm" onClick={() => void handleCopy()} disabled={!code}>
             {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
             {copied ? t("copied") : t("copy")}
@@ -574,7 +574,7 @@ export function CodeOutput({
           </Button>
         </div>
       </div>
-      <div className="tp-code-editor-body" role="region" aria-label={label}>
+      <div className="tp-code-editor-body" role="region" aria-label={label} dir="ltr">
         {lines.map((line, index) => (
           <div className="tp-code-line" key={index}>
             <span className="tp-code-line-num" aria-hidden="true">{index + 1}</span>

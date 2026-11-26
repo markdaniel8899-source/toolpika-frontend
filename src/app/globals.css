@@ -7859,6 +7859,11 @@ html:lang(hi) .tp-tool-hero-accent {
   gap: 12px;
 }
 
+/* Let the title/subtitle column shrink so long names never overflow the bar. */
+.tp-tool-identity-text {
+  min-inline-size: 0;
+}
+
 .tp-tool-mark {
   display: grid;
   width: 38px;
@@ -8142,6 +8147,7 @@ html:lang(hi) .tp-tool-hero-accent {
 .tp-tool-options-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  align-items: start;
   gap: 14px 18px;
 }
 
@@ -9181,10 +9187,10 @@ textarea::-webkit-scrollbar-thumb,
   flex: none;
 }
 
-/* Equal-sized result stats across every tool. */
+/* Result stats share one row when they fit, then wrap without a 2+1 orphan. */
 .tp-tool-pane--result .tp-tool-stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
   gap: 8px;
 }
 
@@ -9193,37 +9199,48 @@ textarea::-webkit-scrollbar-thumb,
   min-width: 0;
 }
 
-/* Checkbox cards match the neighbouring control card without restyling it. */
+/* Option cards keep their natural height so checkboxes and selects never clip. */
 .tp-tool-options-grid > .tp-tool-group {
-  min-height: 64px;
   width: 100%;
-  display: flex;
-  align-items: center;
+  min-inline-size: 0;
 }
 
 .tp-tool-options-grid > .tp-tool-group--flush {
-  min-height: 0;
   display: block;
 }
 
-/* Option cards: identical 64px rows on the leading edge. */
+/* Option cards wrap into clean columns instead of one long narrow stack. */
 .tp-tool-options-grid--single {
-  grid-template-columns: minmax(0, 320px);
-  grid-auto-rows: 64px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 320px));
   justify-content: start;
 }
 
 .tp-tool-options-grid--single > * {
   box-sizing: border-box;
   width: 100%;
-  height: 64px;
-  min-height: 64px;
+  min-block-size: 0;
 }
 
-.tp-tool-options-grid--single > *:not(.tp-tool-group) {
+/* Result output grows into the stretched pane instead of leaving a blank gap. */
+.tp-tool-pane--result .tp-tool-result {
   display: flex;
+  flex: 1;
+  min-inline-size: 0;
   flex-direction: column;
-  justify-content: center;
+  gap: 14px;
+}
+
+.tp-tool-pane--result .tp-code-editor {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-block-size: 240px;
+  max-block-size: 460px;
+}
+
+.tp-tool-pane--result .tp-code-editor-body {
+  flex: 1 1 auto;
+  max-block-size: none;
 }
 
 /* Clean read-only code editor: fixed 13.5px, line numbers, syntax colours. */
@@ -9246,13 +9263,32 @@ textarea::-webkit-scrollbar-thumb,
   background: var(--surface);
 }
 
-.tp-code-editor-bar .tp-tool-inline-actions {
+/* The editor owns its action sizing so generic icon-button rules never apply. */
+.tp-code-editor-label {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.tp-code-editor-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.tp-code-editor-bar .tp-tool-inline-actions button {
-  min-width: 88px;
-  justify-content: center;
+.tp-code-editor-actions button {
+  width: auto;
+  min-width: 0;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+
+.tp-code-editor-actions button svg {
+  width: 14px;
+  height: 14px;
 }
 
 .tp-code-editor-body {
@@ -9466,6 +9502,23 @@ textarea::-webkit-scrollbar-thumb,
   .tp-search-clear .tp-icon {
     width: 16px;
     height: 16px;
+  }
+
+  /* Legacy workspace headers stack so the tool name keeps its full width. */
+  .tp-workspace-bar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 20px;
+  }
+
+  .tp-workspace-bar-actions {
+    width: 100%;
+  }
+
+  .tp-workspace-bar-actions > button {
+    flex: 1 1 auto;
+    justify-content: center;
   }
 }
 

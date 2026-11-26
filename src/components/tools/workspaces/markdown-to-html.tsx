@@ -2,11 +2,17 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, X } from "lucide-react";
+import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { WorkspaceLayout } from "../workspace-layout";
-import { CodeOutput, OutputEmpty, Stat } from "../workspace-ui";
+import {
+  CodeOutput,
+  Stat,
+  ToolBadge,
+  ToolEmpty,
+  ToolPane,
+  ToolShell,
+  useToolNotice,
+} from "../workspace-ui";
 
 const SAMPLE = [
   "# A safe heading",
@@ -208,8 +214,8 @@ export default function MarkdownToHtml() {
   const t = useTranslations("tools");
   const tu = useTranslations("toolUi");
   const [input, setInput] = useState("");
-  const [error, setError] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const { notice, showNotice, clearNotice } = useToolNotice();
 
   const html = useMemo(() => (input.trim() ? markdownToHtml(input) : ""), [input]);
   const stats = useMemo(() => {
@@ -221,21 +227,17 @@ export default function MarkdownToHtml() {
     };
   }, [input]);
 
-  const status = error
-    ? t("statusError")
-    : html
-      ? t("statusReady")
-      : t("statusIdle");
+  const status = html ? t("statusReady") : t("statusIdle");
 
   const handleReset = () => {
     setInput("");
-    setError(false);
+    clearNotice();
     inputRef.current?.focus();
   };
 
   const handleSample = () => {
     setInput(SAMPLE);
-    setError(false);
+    clearNotice();
     inputRef.current?.focus();
   };
 
@@ -244,108 +246,114 @@ export default function MarkdownToHtml() {
       const clip = await navigator.clipboard.readText();
       if (clip) {
         setInput((previous) => (previous ? `${previous}\n${clip}` : clip));
-        setError(false);
+        clearNotice();
       }
     } catch {
-      setError(true);
+      showNotice(tu("error"));
     }
     inputRef.current?.focus();
   };
 
   const handleClear = () => {
     setInput("");
-    setError(false);
+    clearNotice();
     inputRef.current?.focus();
   };
 
   return (
-    <WorkspaceLayout
+    <ToolShell
       title={t("markdown-to-html.title")}
+      subtitle={t("markdown-to-html.shortDesc")}
       icon="Code"
-      onReset={handleReset}
+      sampleLabel={t("trySample")}
+      resetLabel={t("reset")}
+      privacyLabel={t("privacyRibbon")}
       onSample={handleSample}
-      statusRight={html ? `${html.length} ${tu("characters")}` : undefined}
+      onReset={handleReset}
+      notice={notice}
       input={
-        <div className="flex min-w-0 flex-col gap-3">
-          <div
-            className="tp-workspace-inline-actions justify-end"
-            style={{ marginTop: 0 }}
-          >
-            <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
-              <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("paste")}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={!input}
-              onClick={handleClear}
-            >
-              <X className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("clear")}
-            </Button>
-          </div>
-          <Textarea
+        <ToolPane
+          id="markdown-to-html-input-title"
+          title={t("input")}
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={t("paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={!input}
+                onClick={handleClear}
+                aria-label={t("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
+            </div>
+          }
+          footer={
+            <span aria-live="polite">
+              {stats.characters} {tu("characters").toLowerCase()} · {stats.words}{" "}
+              {tu("words").toLowerCase()} · {stats.lines} {tu("lines").toLowerCase()}
+            </span>
+          }
+        >
+          <textarea
+            id="markdown-to-html-input"
             ref={inputRef}
+            className="tp-tool-editor"
             value={input}
             onChange={(event) => {
               setInput(event.target.value);
-                        setError(false);
+              clearNotice();
             }}
             placeholder={tu("startTyping")}
             aria-label={tu("pasteText")}
             spellCheck={false}
-            className="min-h-[300px] min-w-0 font-mono text-[13px]"
           />
-          <p className="tp-workspace-hint break-words" aria-live="polite">
-            {stats.characters} {tu("characters").toLowerCase()} · {stats.words}{" "}
-            {tu("words").toLowerCase()} · {stats.lines} {tu("lines").toLowerCase()}
-          </p>
-          {error ? (
-            <p className="tp-workspace-error break-words" role="alert">
-              {tu("error")}
-            </p>
-          ) : null}
-        </div>
+        </ToolPane>
       }
-      output={
-        <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
+      result={
+        <ToolPane
+          id="markdown-to-html-result-title"
+          title={t("result")}
+          result
+          actions={
+            <ToolBadge tone={html ? "success" : "neutral"}>{status}</ToolBadge>
+          }
+        >
           {html ? (
-            <CodeOutput
-              code={html}
-              language="html"
-              storageKey="tp-markdown-to-html-code-view"
-              label={tu("result")}
-              fileName="converted.html"
-              mimeType="text/html;charset=utf-8"
-              className="min-w-0 max-w-full"
-            />
-          ) : (
-            <OutputEmpty message={t("resultEmpty")} className="min-h-[220px]" />
-          )}
-
-          {html ? (
-            <dl className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-3">
-              <div className="min-w-0 overflow-hidden">
+            <div className="tp-tool-result" aria-live="polite">
+              <dl className="tp-tool-stats">
                 <Stat label={tu("characters")} value={html.length} />
-              </div>
-              <div className="min-w-0 overflow-hidden">
                 <Stat label={tu("words")} value={stats.words} />
-              </div>
-              <div className="min-w-0 overflow-hidden">
                 <Stat label={tu("lines")} value={html.split("\n").length} />
-              </div>
-            </dl>
-          ) : null}
-
-          <p className="tp-workspace-hint break-words" role="status" aria-live="polite">
-            {status}
-          </p>
-          <p className="tp-workspace-hint break-words">
-            {t("markdown-to-html.unsafeNote")}
-          </p>
-        </div>
+              </dl>
+              <CodeOutput
+                code={html}
+                language="html"
+                storageKey="tp-markdown-to-html-code-view"
+                label={tu("result")}
+                fileName="converted.html"
+                mimeType="text/html;charset=utf-8"
+              />
+              <p className="tp-tool-hint">{t("markdown-to-html.unsafeNote")}</p>
+            </div>
+          ) : (
+            <ToolEmpty
+              icon={<Code aria-hidden="true" />}
+              title={t("resultEmpty")}
+              hint={t("pasteContent")}
+            />
+          )}
+        </ToolPane>
       }
     />
   );

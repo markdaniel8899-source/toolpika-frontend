@@ -10,7 +10,6 @@ import {
   SegmentedControl,
   Stat,
   ToolEmpty,
-  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -143,7 +142,7 @@ export default function HtmlFormatter() {
           <textarea
             id="html-formatter-input"
             ref={inputRef}
-            className="tp-tool-code"
+            className="tp-tool-editor"
             value={input}
             onChange={(event) => {
               setInput(event.target.value);
@@ -159,7 +158,8 @@ export default function HtmlFormatter() {
               <h3>{t("options")}</h3>
             </div>
             <div className="tp-tool-options-grid tp-tool-options-grid--single">
-              <ToolField label={tw("html-formatter.indentLabel")}>
+              <div className="tp-tool-group">
+                <p className="tp-tool-group-title">{tw("html-formatter.indentLabel")}</p>
                 <SegmentedControl<IndentSize>
                   label={tw("html-formatter.indentLabel")}
                   value={options.indentSize}
@@ -169,7 +169,7 @@ export default function HtmlFormatter() {
                   ]}
                   onChange={(indentSize) => update({ indentSize })}
                 />
-              </ToolField>
+              </div>
 
               <div className="tp-tool-group">
                 <CheckboxRow

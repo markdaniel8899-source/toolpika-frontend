@@ -101,72 +101,81 @@ export default function JsMinifier() {
       onReset={handleReset}
       notice={notice}
       input={
-        <ToolPane id="js-minifier-input-title" title={tw("js-minifier.inputTitle")}>
-          <div className="tp-tool-group tp-tool-group--flush">
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <div className="tp-tool-inline-actions">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void handlePaste()}
-                  aria-label={tw("js-minifier.paste")}
-                >
-                  <ClipboardPaste aria-hidden="true" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={!source}
-                  onClick={handleClear}
-                  aria-label={t("clear")}
-                >
-                  <X aria-hidden="true" />
-                </Button>
-              </div>
+        <ToolPane
+          id="js-minifier-input-title"
+          title={tw("js-minifier.inputTitle")}
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={tw("js-minifier.paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={!source}
+                onClick={handleClear}
+                aria-label={t("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
             </div>
-            <textarea
-              id="js-minifier-source"
-              ref={sourceRef}
-              className="tp-tool-editor"
-              value={source}
-              onChange={(event) => setSource(event.target.value)}
-              placeholder={tw("js-minifier.sourcePlaceholder")}
-              aria-label={t("pasteText")}
-              aria-describedby={evaluation.error ? "js-minifier-error" : undefined}
-              spellCheck={false}
-            />
-          </div>
+          }
+        >
+          <textarea
+            id="js-minifier-source"
+            ref={sourceRef}
+            className="tp-tool-editor"
+            value={source}
+            onChange={(event) => setSource(event.target.value)}
+            placeholder={tw("js-minifier.sourcePlaceholder")}
+            aria-label={t("pasteText")}
+            aria-describedby={evaluation.error ? "js-minifier-error" : undefined}
+            spellCheck={false}
+          />
           <>
             <div className="tp-tool-options-head">
               <h3>{t("options")}</h3>
             </div>
             <div className="tp-tool-options-grid tp-tool-options-grid--single">
-              <CheckboxRow
-                id="js-minify-strip-comments"
-                label={tw("js-minifier.stripComments")}
-                checked={options.stripComments}
-                onChange={(stripComments) => update({ stripComments })}
-              />
-              <CheckboxRow
-                id="js-minify-preserve-semicolons"
-                label={tw("js-minifier.preserveSemicolons")}
-                checked={options.preserveSemicolons}
-                onChange={(preserveSemicolons) => update({ preserveSemicolons })}
-              />
-              <CheckboxRow
-                id="js-minify-collapse-booleans"
-                label={tw("js-minifier.collapseBooleans")}
-                checked={options.collapseBooleans}
-                onChange={(collapseBooleans) => update({ collapseBooleans })}
-              />
-              <CheckboxRow
-                id="js-minify-remove-debugger"
-                label={tw("js-minifier.removeDebugger")}
-                checked={options.removeDebugger}
-                onChange={(removeDebugger) => update({ removeDebugger })}
-              />
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="js-minify-strip-comments"
+                  label={tw("js-minifier.stripComments")}
+                  checked={options.stripComments}
+                  onChange={(stripComments) => update({ stripComments })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="js-minify-preserve-semicolons"
+                  label={tw("js-minifier.preserveSemicolons")}
+                  checked={options.preserveSemicolons}
+                  onChange={(preserveSemicolons) => update({ preserveSemicolons })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="js-minify-collapse-booleans"
+                  label={tw("js-minifier.collapseBooleans")}
+                  checked={options.collapseBooleans}
+                  onChange={(collapseBooleans) => update({ collapseBooleans })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="js-minify-remove-debugger"
+                  label={tw("js-minifier.removeDebugger")}
+                  checked={options.removeDebugger}
+                  onChange={(removeDebugger) => update({ removeDebugger })}
+                />
+              </div>
             </div>
           </>
         </ToolPane>
@@ -185,14 +194,6 @@ export default function JsMinifier() {
 
           {evaluation.result ? (
             <div className="tp-tool-result" aria-live="polite">
-              <CodeOutput
-                code={output}
-                language="js"
-                storageKey="tp-js-minifier-code-view"
-                label={t("result")}
-                fileName="minified.min.js"
-                mimeType="text/javascript;charset=utf-8"
-              />
               <dl className="tp-tool-stats tp-tool-stats--inline">
                 <Stat
                   label={tw("js-minifier.originalLabel")}
@@ -207,6 +208,14 @@ export default function JsMinifier() {
                   value={`${evaluation.result.stats.savedPercent}%`}
                 />
               </dl>
+              <CodeOutput
+                code={output}
+                language="js"
+                storageKey="tp-js-minifier-code-view"
+                label={t("result")}
+                fileName="minified.min.js"
+                mimeType="text/javascript;charset=utf-8"
+              />
             </div>
           ) : evaluation.error ? null : (
             <ToolEmpty

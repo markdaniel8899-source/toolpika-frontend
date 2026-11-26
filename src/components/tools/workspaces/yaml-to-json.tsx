@@ -2,14 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, X } from "lucide-react";
+import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CodeOutput,
-  OutputEmpty,
   ToolBadge,
-  ToolField,
+  ToolEmpty,
   ToolPane,
   ToolShell,
 } from "../workspace-ui";
@@ -343,6 +342,19 @@ function parseBlock(
   return { value: list, next: cursor };
 }
 
+function detectIndentStep(source: string): YamlIndent {
+  const lines = source.replace(/^\uFEFF/u, "").split(/\r\n|\r|\n/u);
+  let smallest = Number.POSITIVE_INFINITY;
+  for (const original of lines) {
+    if (/^[ \t]*\t/u.test(original)) return 2;
+    const content = stripComment(original).trim();
+    if (!content || content === "---" || content === "...") continue;
+    const spaces = original.length - original.replace(/^ +/u, "").length;
+    if (spaces > 0 && spaces < smallest) smallest = spaces;
+  }
+  return smallest === 4 ? 4 : 2;
+}
+
 /** Pure, deterministic YAML-subset to JSON conversion. */
 export function yamlToJson(
   source: string,
@@ -350,9 +362,10 @@ export function yamlToJson(
 ): YamlToJsonResult {
   try {
     if (!source.trim()) return { ok: false, reason: "invalidYaml" };
-    const lines = tokenize(source, indent);
+    const step = detectIndentStep(source);
+    const lines = tokenize(source, step);
     if (lines.length === 0) return { ok: false, reason: "invalidYaml" };
-    const parsed = parseBlock(lines, 0, lines[0].indent, indent);
+    const parsed = parseBlock(lines, 0, lines[0].indent, step);
     if (parsed.next !== lines.length) {
       return { ok: false, reason: "invalidYaml" };
     }
@@ -409,6 +422,7 @@ export default function YamlToJson() {
   return (
     <ToolShell
       title={t("yaml-to-json.title")}
+      subtitle={t("yaml-to-json.shortDesc")}
       icon="Code"
       sampleLabel={t("trySample")}
       resetLabel={t("reset")}
@@ -441,14 +455,22 @@ export default function YamlToJson() {
             spellCheck={false}
             className="tp-tool-editor"
           />
-          <ToolField label={t("yaml-to-json.indent")}>
-            <ThemedSelect
-              value={String(indent)}
-              onValueChange={(value) => setIndent(value === "4" ? 4 : 2)}
-              options={indentOptions}
-              ariaLabel={t("yaml-to-json.indent")}
-            />
-          </ToolField>
+          <>
+            <div className="tp-tool-options-head">
+              <h3>{tu("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <div className="tp-tool-group">
+                <p className="tp-tool-group-title">{t("yaml-to-json.indent")}</p>
+                <ThemedSelect
+                  value={String(indent)}
+                  onValueChange={(value) => setIndent(value === "4" ? 4 : 2)}
+                  options={indentOptions}
+                  ariaLabel={t("yaml-to-json.indent")}
+                />
+              </div>
+            </div>
+          </>
         </ToolPane>
       }
       result={
@@ -456,10 +478,10 @@ export default function YamlToJson() {
           id="yaml-result-title"
           title={t("result")}
           result
-          actions={
-            <ToolBadge tone={errorReason ? "danger" : output ? "success" : "neutral"}>
-              {errorReason ? t("statusError") : output ? t("statusReady") : t("statusIdle")}
-            </ToolBadge>
+          footer={
+            output ? (
+              <ToolBadge tone="success">{t("statusReady")}</ToolBadge>
+            ) : null
           }
         >
           {errorReason ? (
@@ -473,17 +495,18 @@ export default function YamlToJson() {
             <div className="tp-tool-result" aria-live="polite">
               <CodeOutput
                 code={output}
-                language="yaml"
+                language="json"
                 storageKey="tp-yaml-to-json-code-view"
                 label={tu("result")}
                 fileName="data.json"
                 mimeType="application/json;charset=utf-8"
               />
             </div>
-          ) : (
-            <OutputEmpty
-              message={t("resultEmpty")}
-              className="min-h-[200px] min-w-0 break-words"
+          ) : errorReason ? null : (
+            <ToolEmpty
+              icon={<Code aria-hidden="true" />}
+              title={t("resultEmpty")}
+              hint={t("pasteContent")}
             />
           )}
         </ToolPane>
