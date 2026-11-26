@@ -456,7 +456,27 @@
       "sizeInstagramSquare": "Instagram quadrato: 1080 × 1080",
       "sizeInstagramPortrait": "Instagram ritratto: 1080 × 1350",
       "sizeInstagramLandscape": "Instagram paesaggio: 1080 × 566",
-      "sizeInstagramStory": "Storia Instagram: 1080 × 1920"
+      "sizeInstagramStory": "Storia Instagram: 1080 × 1920",
+      "page": {
+        "byline": "Strumenti di immagine · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Ridimensionatore Immagini ridimensiona immagini a dimensioni comuni o personalizzate direttamente nel tuo browser. Supporta JPEG, PNG e WebP fino a 20 MB.",
+        "aboutTitle": "Informazioni sul Ridimensionatore Immagini",
+        "contextualLink": "Se hai bisogno di comprimere l'immagine ridimensionata, usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è un Ridimensionatore Immagini?",
+        "whatIs": "Un ridimensionatore immagini è uno strumento che cambia le dimensioni di un'immagine mantenendo o meno le proporzioni. È utile per preparare immagini per web, social media o stampa.\n\nSupporta preset di dimensioni comuni per web, social media e Instagram, oppure dimensioni personalizzate.\n\nTutto avviene nel tuo browser e nessuna immagine viene caricata su un server.",
+        "howToTitle": "Come usare il Ridimensionatore Immagini",
+        "howTo": "Scegli un'immagine dal tuo computer o trascinala nell'area di rilascio.\nSeleziona una dimensione predefinita o inserisci dimensioni personalizzate.\nAttiva o disattiva mantieni proporzioni.\nPremi Ridimensiona.\nScarica l'immagine ridimensionata.",
+        "featuresTitle": "Funzionalità",
+        "features": "Preset comuni::Dimensioni per web, social media e Instagram.\nDimensioni personalizzate::Inserisci larghezza e altezza personalizzate.\nMantieni proporzioni::Mantieni il rapporto aspetto originale.\nLocale::Tutto avviene nel tuo browser.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Immagini molto grandi::Immagini molto grandi potrebbero essere lente da elaborare.\nFormati non supportati::Solo JPEG, PNG e WebP sono supportati.",
+        "limitsTitle": "Limiti",
+        "limits": "Le immagini sono limitate a 20 MB.\nLe dimensioni massime sono 4000 × 4000 pixel.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è il ridimensionamento immagini?::Il ridimensionamento immagini cambia le dimensioni di un'immagine.\nLa qualità viene persa?::Il ridimensionamento può ridurre leggermente la qualità.\nLe immagini vengono caricate?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
     },
     "remove-duplicate-lines": {
       "title": "Rimuovi Linee Duplicate",
