@@ -1285,8 +1285,8 @@
       }
     },
     "image-resizer": {
-      "title": "Redimensionador de imágenes",
-      "shortDesc": "Cambia el tamaño de imágenes JPEG, PNG y WebP a dimensiones exactas en píxeles sin subirlas.",
+      "title": "Generador de Imágenes Aleatorias",
+      "shortDesc": "Genera imágenes aleatorias con Web Crypto.",
       "seo": {
         "title": "Redimensionador de imágenes - Tamaño exacto JPEG, PNG y WebP",
         "description": "Establece dimensiones exactas en píxeles para imágenes JPEG, PNG y WebP, conserva la proporción y muestra una vista previa antes de descargar el resultado en tu dispositivo."
@@ -2281,7 +2281,7 @@
     },
     "keyword-density-checker": {
       "title": "Contador de Densidad de Palabras Clave",
-      "shortDesc": "Clasifica las palabras por frecuencia con conteos y porcentajes en tiempo real, más reglas de longitud y stopword que controlas.",
+      "shortDesc": "Clasifica las palabras por frecuencia con conteos y porcentajes en tiempo real, más reglas de longitud y palabras vacía que controlas.",
       "seo": {
         "title": "Contador de Densidad de Palabras Clave - Frecuencia de Palabras",
         "description": "Usa el Contador de Densidad de Palabras Clave para clasificar palabras por conteo y porcentaje. Establece una longitud mínima de palabra, filtra las palabras vacía, luego copia o descarga el informe."
