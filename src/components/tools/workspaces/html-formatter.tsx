@@ -154,6 +154,33 @@ export default function HtmlFormatter() {
             aria-describedby={evaluation.error ? "html-formatter-error" : undefined}
             spellCheck={false}
           />
+          <>
+            <div className="tp-tool-options-head">
+              <h3>{t("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <ToolField label={tw("html-formatter.indentLabel")}>
+                <SegmentedControl<IndentSize>
+                  label={tw("html-formatter.indentLabel")}
+                  value={options.indentSize}
+                  options={[
+                    { value: "2", label: tw("html-formatter.indent2") },
+                    { value: "4", label: tw("html-formatter.indent4") },
+                  ]}
+                  onChange={(indentSize) => update({ indentSize })}
+                />
+              </ToolField>
+
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="html-formatter-escape"
+                  label={tw("html-formatter.escapeLabel")}
+                  checked={options.escapeMarkup}
+                  onChange={(escapeMarkup) => update({ escapeMarkup })}
+                />
+              </div>
+            </div>
+          </>
         </ToolPane>
       }
       result={
@@ -206,35 +233,6 @@ export default function HtmlFormatter() {
             />
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{t("options")}</h3>
-          </div>
-          <div className="tp-tool-options-grid tp-tool-options-grid--single">
-            <ToolField label={tw("html-formatter.indentLabel")}>
-              <SegmentedControl<IndentSize>
-                label={tw("html-formatter.indentLabel")}
-                value={options.indentSize}
-                options={[
-                  { value: "2", label: tw("html-formatter.indent2") },
-                  { value: "4", label: tw("html-formatter.indent4") },
-                ]}
-                onChange={(indentSize) => update({ indentSize })}
-              />
-            </ToolField>
-
-            <div className="tp-tool-group">
-              <CheckboxRow
-                id="html-formatter-escape"
-                label={tw("html-formatter.escapeLabel")}
-                checked={options.escapeMarkup}
-                onChange={(escapeMarkup) => update({ escapeMarkup })}
-              />
-            </div>
-          </div>
-        </>
       }
     />
   );

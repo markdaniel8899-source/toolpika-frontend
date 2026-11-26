@@ -149,6 +149,33 @@ export default function CssFormatter() {
             aria-describedby={evaluation.error ? "css-format-error" : undefined}
             spellCheck={false}
           />
+          <>
+            <div className="tp-tool-options-head">
+              <h3>{t("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <ToolField label={tw("css-formatter.indentLabel")}>
+                <SegmentedControl<IndentChoice>
+                  label={tw("css-formatter.indentLabel")}
+                  value={options.indent}
+                  options={[
+                    { value: "2", label: tw("css-formatter.indentTwo") },
+                    { value: "4", label: tw("css-formatter.indentFour") },
+                  ]}
+                  onChange={(indent) => update({ indent })}
+                />
+              </ToolField>
+
+              <div className="tp-tool-group">
+                <CheckboxRow
+                  id="css-format-property-line"
+                  label={tw("css-formatter.propertyPerLine")}
+                  checked={options.propertyPerLine}
+                  onChange={(propertyPerLine) => update({ propertyPerLine })}
+                />
+              </div>
+            </div>
+          </>
         </ToolPane>
       }
       result={
@@ -186,35 +213,6 @@ export default function CssFormatter() {
             />
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{t("options")}</h3>
-          </div>
-          <div className="tp-tool-options-grid tp-tool-options-grid--single">
-            <ToolField label={tw("css-formatter.indentLabel")}>
-              <SegmentedControl<IndentChoice>
-                label={tw("css-formatter.indentLabel")}
-                value={options.indent}
-                options={[
-                  { value: "2", label: tw("css-formatter.indentTwo") },
-                  { value: "4", label: tw("css-formatter.indentFour") },
-                ]}
-                onChange={(indent) => update({ indent })}
-              />
-            </ToolField>
-
-            <div className="tp-tool-group">
-              <CheckboxRow
-                id="css-format-property-line"
-                label={tw("css-formatter.propertyPerLine")}
-                checked={options.propertyPerLine}
-                onChange={(propertyPerLine) => update({ propertyPerLine })}
-              />
-            </div>
-          </div>
-        </>
       }
     />
   );

@@ -138,6 +138,37 @@ export default function JsMinifier() {
               spellCheck={false}
             />
           </div>
+          <>
+            <div className="tp-tool-options-head">
+              <h3>{t("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <CheckboxRow
+                id="js-minify-strip-comments"
+                label={tw("js-minifier.stripComments")}
+                checked={options.stripComments}
+                onChange={(stripComments) => update({ stripComments })}
+              />
+              <CheckboxRow
+                id="js-minify-preserve-semicolons"
+                label={tw("js-minifier.preserveSemicolons")}
+                checked={options.preserveSemicolons}
+                onChange={(preserveSemicolons) => update({ preserveSemicolons })}
+              />
+              <CheckboxRow
+                id="js-minify-collapse-booleans"
+                label={tw("js-minifier.collapseBooleans")}
+                checked={options.collapseBooleans}
+                onChange={(collapseBooleans) => update({ collapseBooleans })}
+              />
+              <CheckboxRow
+                id="js-minify-remove-debugger"
+                label={tw("js-minifier.removeDebugger")}
+                checked={options.removeDebugger}
+                onChange={(removeDebugger) => update({ removeDebugger })}
+              />
+            </div>
+          </>
         </ToolPane>
       }
       result={
@@ -185,39 +216,6 @@ export default function JsMinifier() {
             />
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{t("options")}</h3>
-          </div>
-          <div className="tp-tool-options-grid tp-tool-options-grid--single">
-            <CheckboxRow
-              id="js-minify-strip-comments"
-              label={tw("js-minifier.stripComments")}
-              checked={options.stripComments}
-              onChange={(stripComments) => update({ stripComments })}
-            />
-            <CheckboxRow
-              id="js-minify-preserve-semicolons"
-              label={tw("js-minifier.preserveSemicolons")}
-              checked={options.preserveSemicolons}
-              onChange={(preserveSemicolons) => update({ preserveSemicolons })}
-            />
-            <CheckboxRow
-              id="js-minify-collapse-booleans"
-              label={tw("js-minifier.collapseBooleans")}
-              checked={options.collapseBooleans}
-              onChange={(collapseBooleans) => update({ collapseBooleans })}
-            />
-            <CheckboxRow
-              id="js-minify-remove-debugger"
-              label={tw("js-minifier.removeDebugger")}
-              checked={options.removeDebugger}
-              onChange={(removeDebugger) => update({ removeDebugger })}
-            />
-          </div>
-        </>
       }
     />
   );

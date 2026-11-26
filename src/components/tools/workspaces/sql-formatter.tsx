@@ -146,6 +146,49 @@ export default function SqlFormatter() {
               spellCheck={false}
             />
           </div>
+          <div>
+            <div className="tp-tool-options-head">
+              <h3>{t("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <div className="tp-tool-group">
+                <p className="tp-tool-group-title">{tw("sql-formatter.indentLabel")}</p>
+                <SegmentedControl<IndentChoice>
+                  label={tw("sql-formatter.indentLabel")}
+                  value={indentValue}
+                  options={[
+                    { value: "2", label: tw("sql-formatter.indentTwo") },
+                    { value: "4", label: tw("sql-formatter.indentFour") },
+                  ]}
+                  onChange={(value) => update({ indent: value === "4" ? 4 : 2 })}
+                />
+              </div>
+              <div className="tp-tool-group">
+                <p className="tp-tool-group-title">{tw("sql-formatter.formatTitle")}</p>
+                <label className="tp-tool-check" htmlFor="sql-formatter-uppercase">
+                  <input
+                    id="sql-formatter-uppercase"
+                    type="checkbox"
+                    className="tp-checkbox"
+                    checked={options.uppercaseKeywords}
+                    onChange={(event) => update({ uppercaseKeywords: event.target.checked })}
+                  />
+                  <span>{tw("sql-formatter.uppercaseKeywords")}</span>
+                </label>
+                <div className="tp-tool-check">
+                  <ToggleSwitch
+                    id="sql-formatter-single-line-clauses"
+                    label={tw("sql-formatter.singleLineClauses")}
+                    checked={options.singleLineClauses}
+                    onChange={() => update({ singleLineClauses: !options.singleLineClauses })}
+                  />
+                  <label htmlFor="sql-formatter-single-line-clauses">
+                    {tw("sql-formatter.singleLineClauses")}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
         </ToolPane>
       }
       result={
@@ -186,51 +229,6 @@ export default function SqlFormatter() {
             />
           )}
         </ToolPane>
-      }
-      options={
-        <div>
-          <div className="tp-tool-options-head">
-            <h3>{t("options")}</h3>
-          </div>
-          <div className="tp-tool-options-grid tp-tool-options-grid--single">
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">{tw("sql-formatter.indentLabel")}</p>
-              <SegmentedControl<IndentChoice>
-                label={tw("sql-formatter.indentLabel")}
-                value={indentValue}
-                options={[
-                  { value: "2", label: tw("sql-formatter.indentTwo") },
-                  { value: "4", label: tw("sql-formatter.indentFour") },
-                ]}
-                onChange={(value) => update({ indent: value === "4" ? 4 : 2 })}
-              />
-            </div>
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">{tw("sql-formatter.formatTitle")}</p>
-              <label className="tp-tool-check" htmlFor="sql-formatter-uppercase">
-                <input
-                  id="sql-formatter-uppercase"
-                  type="checkbox"
-                  className="tp-checkbox"
-                  checked={options.uppercaseKeywords}
-                  onChange={(event) => update({ uppercaseKeywords: event.target.checked })}
-                />
-                <span>{tw("sql-formatter.uppercaseKeywords")}</span>
-              </label>
-              <div className="tp-tool-check">
-                <ToggleSwitch
-                  id="sql-formatter-single-line-clauses"
-                  label={tw("sql-formatter.singleLineClauses")}
-                  checked={options.singleLineClauses}
-                  onChange={() => update({ singleLineClauses: !options.singleLineClauses })}
-                />
-                <label htmlFor="sql-formatter-single-line-clauses">
-                  {tw("sql-formatter.singleLineClauses")}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
       }
     />
   );

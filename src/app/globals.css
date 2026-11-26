@@ -9239,11 +9239,20 @@ textarea::-webkit-scrollbar-thumb,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
   padding: 10px 14px;
   border-block-end: 1px solid var(--border);
   background: var(--surface);
+}
+
+.tp-code-editor-bar .tp-tool-inline-actions {
+  gap: 8px;
+}
+
+.tp-code-editor-bar .tp-tool-inline-actions button {
+  min-width: 88px;
+  justify-content: center;
 }
 
 .tp-code-editor-body {

@@ -139,6 +139,37 @@ export default function CssMinifier() {
               spellCheck={false}
             />
           </div>
+          <>
+            <div className="tp-tool-options-head">
+              <h3>{t("options")}</h3>
+            </div>
+            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+              <CheckboxRow
+                id="css-minify-strip-comments"
+                label={tw("css-minifier.stripComments")}
+                checked={options.stripComments}
+                onChange={(stripComments) => update({ stripComments })}
+              />
+              <CheckboxRow
+                id="css-minify-compact-colors"
+                label={tw("css-minifier.compactColors")}
+                checked={options.compactColors}
+                onChange={(compactColors) => update({ compactColors })}
+              />
+              <CheckboxRow
+                id="css-minify-remove-last-semicolon"
+                label={tw("css-minifier.removeLastSemicolon")}
+                checked={options.removeLastSemicolon}
+                onChange={(removeLastSemicolon) => update({ removeLastSemicolon })}
+              />
+              <CheckboxRow
+                id="css-minify-lowercase-hex"
+                label={tw("css-minifier.lowercaseHex")}
+                checked={options.lowercaseHex}
+                onChange={(lowercaseHex) => update({ lowercaseHex })}
+              />
+            </div>
+          </>
         </ToolPane>
       }
       result={
@@ -180,39 +211,6 @@ export default function CssMinifier() {
             />
           )}
         </ToolPane>
-      }
-      options={
-        <>
-          <div className="tp-tool-options-head">
-            <h3>{t("options")}</h3>
-          </div>
-          <div className="tp-tool-options-grid tp-tool-options-grid--single">
-            <CheckboxRow
-              id="css-minify-strip-comments"
-              label={tw("css-minifier.stripComments")}
-              checked={options.stripComments}
-              onChange={(stripComments) => update({ stripComments })}
-            />
-            <CheckboxRow
-              id="css-minify-compact-colors"
-              label={tw("css-minifier.compactColors")}
-              checked={options.compactColors}
-              onChange={(compactColors) => update({ compactColors })}
-            />
-            <CheckboxRow
-              id="css-minify-remove-last-semicolon"
-              label={tw("css-minifier.removeLastSemicolon")}
-              checked={options.removeLastSemicolon}
-              onChange={(removeLastSemicolon) => update({ removeLastSemicolon })}
-            />
-            <CheckboxRow
-              id="css-minify-lowercase-hex"
-              label={tw("css-minifier.lowercaseHex")}
-              checked={options.lowercaseHex}
-              onChange={(lowercaseHex) => update({ lowercaseHex })}
-            />
-          </div>
-        </>
       }
     />
   );
