@@ -143,7 +143,7 @@ export default function JsMinifier() {
             <div className="tp-tool-options-head">
               <h3>{t("options")}</h3>
             </div>
-            <div className="tp-tool-options-grid tp-tool-options-grid--single">
+            <div className="tp-tool-options-grid tp-tool-options-grid--two">
               <div className="tp-tool-group">
                 <CheckboxRow
                   id="js-minify-strip-comments"

@@ -8663,7 +8663,8 @@ html:lang(hi) .tp-tool-hero-accent {
     width: auto;
   }
 
-  .tp-tool-options-grid {
+  .tp-tool-options-grid,
+  .tp-tool-options-grid--two {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -9219,6 +9220,11 @@ textarea::-webkit-scrollbar-thumb,
   box-sizing: border-box;
   width: 100%;
   min-block-size: 0;
+}
+
+/* Compact 2x2 option layouts for small checkbox groups. */
+.tp-tool-options-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /* Result output grows into the stretched pane instead of leaving a blank gap. */
