@@ -2293,7 +2293,7 @@
       "textLabel": "Líneas de texto",
       "optionsTitle": "Reglas de conteo",
       "minWordLengthLabel": "Longitud mínima de palabra",
-      "emptyTitle": "Aún no hay análisis",
+      "emptyTitle": "Ninguna análisis aún",
       "emptyHint": "Pega el texto y presiona Analizar para ver la densidad de palabras clave.",
       "page": {
         "byline": "Herramientas de contenido · Actualizado el 26 de noviembre de 2026",
