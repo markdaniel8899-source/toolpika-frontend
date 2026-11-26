@@ -2452,6 +2452,9 @@
       },
       "lowerLabel": "Letras minúsculas",
       "upperLabel": "Letras mayúsculas"
+    },
+    "open-graph-generator": {
+      "title": "Generador de Código Abierto"
     }
   },
   "search": {
