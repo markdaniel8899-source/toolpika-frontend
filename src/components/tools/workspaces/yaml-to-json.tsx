@@ -6,8 +6,7 @@ import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import {
-  CopyButton,
-  DownloadButton,
+  CodeOutput,
   OutputEmpty,
   ToolBadge,
   ToolField,
@@ -458,17 +457,9 @@ export default function YamlToJson() {
           title={t("result")}
           result
           actions={
-            <>
-              <ToolBadge tone={errorReason ? "danger" : output ? "success" : "neutral"}>
-                {errorReason ? t("statusError") : output ? t("statusReady") : t("statusIdle")}
-              </ToolBadge>
-              <DownloadButton
-                content={output || null}
-                fileName="data.json"
-                mimeType="application/json;charset=utf-8"
-                label={t("downloadResult")}
-              />
-            </>
+            <ToolBadge tone={errorReason ? "danger" : output ? "success" : "neutral"}>
+              {errorReason ? t("statusError") : output ? t("statusReady") : t("statusIdle")}
+            </ToolBadge>
           }
         >
           {errorReason ? (
@@ -480,10 +471,14 @@ export default function YamlToJson() {
           ) : null}
           {output ? (
             <div className="tp-tool-result" aria-live="polite">
-              <pre className="tp-tool-code tp-tool-code--tall" style={{ overflowWrap: "anywhere" }}>
-                {output}
-              </pre>
-              <CopyButton text={output} label={t("copyResult")} copiedLabel={tu("copied")} />
+              <CodeOutput
+                code={output}
+                language="yaml"
+                storageKey="tp-yaml-to-json-code-view"
+                label={tu("result")}
+                fileName="data.json"
+                mimeType="application/json;charset=utf-8"
+              />
             </div>
           ) : (
             <OutputEmpty

@@ -5,8 +5,7 @@ import { useTranslations } from "next-intl";
 import { ClipboardPaste, Database, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  CopyButton,
-  DownloadButton,
+  CodeOutput,
   SegmentedControl,
   Stat,
   ToggleSwitch,
@@ -154,17 +153,6 @@ export default function SqlFormatter() {
           id="sql-formatter-result-title"
           title={t("result")}
           result
-          actions={
-            <>
-              <CopyButton text={output} label={t("copy")} copiedLabel={t("copied")} />
-              <DownloadButton
-                content={output}
-                fileName="formatted.sql"
-                mimeType="application/sql;charset=utf-8"
-                label={t("download")}
-              />
-            </>
-          }
         >
           {evaluation.error ? (
             <p id="sql-formatter-error" className="tp-tool-error" role="alert">
@@ -181,12 +169,13 @@ export default function SqlFormatter() {
                 />
                 <Stat label={tw("sql-formatter.linesLabel")} value={evaluation.result.stats.lines} />
               </dl>
-              <textarea
-                className="tp-tool-code tp-tool-code--tall"
-                value={output}
-                readOnly
-                spellCheck={false}
-                aria-label={tw("sql-formatter.codeLabel")}
+              <CodeOutput
+                code={output}
+                language="sql"
+                storageKey="tp-sql-formatter-code-view"
+                label={t("result")}
+                fileName="formatted.sql"
+                mimeType="text/plain;charset=utf-8"
               />
             </div>
           ) : evaluation.error ? null : (

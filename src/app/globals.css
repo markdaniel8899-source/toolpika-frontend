@@ -9193,21 +9193,17 @@ textarea::-webkit-scrollbar-thumb,
   min-width: 0;
 }
 
-/* Every option control sits in an equal-sized card, including checkboxes. */
-.tp-tool-options-grid > * {
-  box-sizing: border-box;
+/* Checkbox cards match the neighbouring control card without restyling it. */
+.tp-tool-options-grid > .tp-tool-group {
   min-height: 64px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  align-self: stretch;
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .tp-tool-options-grid > .tp-tool-group--flush {
-  padding: 0;
-  border: 0;
-  background: transparent;
+  min-height: 0;
+  display: block;
 }
 
 /* Option columns hug the leading edge instead of filling the whole tray. */
@@ -9218,6 +9214,137 @@ textarea::-webkit-scrollbar-thumb,
 
 .tp-tool-options-grid--single > * {
   width: 100%;
+}
+
+/* Read-only code editor: gutter, themed token colours and view options. */
+.tp-code-editor {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--background);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+}
+
+.tp-code-editor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-block-end: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.tp-code-editor-options {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-block-end: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-raised) 40%, var(--surface));
+}
+
+.tp-code-editor-options .tp-check-row {
+  min-height: 28px;
+}
+
+.tp-code-editor-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tp-code-editor-size .tp-tool-label {
+  margin: 0;
+}
+
+.tp-code-editor-size .tp-tool-segment button {
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+.tp-code-editor-body {
+  max-height: 360px;
+  min-height: 160px;
+  overflow: auto;
+  padding: 12px 0;
+  font-size: var(--tp-code-size, 13px);
+  line-height: 1.65;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 45%, transparent) transparent;
+}
+
+.tp-code-editor-body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.tp-code-editor-body::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--text-muted) 45%, transparent);
+  background-clip: padding-box;
+}
+
+.tp-code-line {
+  display: flex;
+  align-items: flex-start;
+  min-width: max-content;
+}
+
+.tp-code-line-num {
+  width: 44px;
+  flex: none;
+  padding-inline-end: 12px;
+  color: var(--text-muted);
+  text-align: end;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.tp-code-line-text {
+  padding-inline-end: 18px;
+  white-space: pre;
+  color: var(--text);
+}
+
+.tp-code-editor-body[data-wrap="true"] .tp-code-line {
+  min-width: 0;
+}
+
+.tp-code-editor-body[data-wrap="true"] .tp-code-line-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tp-code-token--keyword,
+.tp-code-token--tag {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tp-code-token--string {
+  color: var(--success);
+}
+
+.tp-code-token--number,
+.tp-code-token--boolean {
+  color: var(--warning);
+}
+
+.tp-code-token--comment {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.tp-code-token--property {
+  color: var(--info, var(--accent));
+}
+
+.tp-code-token--punctuation {
+  color: var(--text-muted);
 }
 
 /* Breathing room between result stats, output card and actions. */

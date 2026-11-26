@@ -6,8 +6,7 @@ import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CheckboxRow,
-  CopyButton,
-  DownloadButton,
+  CodeOutput,
   SegmentedControl,
   Stat,
   ToolEmpty,
@@ -188,23 +187,16 @@ export default function HtmlFormatter() {
                 </p>
               ) : null}
 
-              <pre className="tp-tool-code tp-tool-code--tall">{result.output}</pre>
+              <CodeOutput
+                code={result.output}
+                language="html"
+                storageKey="tp-html-formatter-code-view"
+                label={t("result")}
+                fileName="formatted.html"
+                mimeType="text/html;charset=utf-8"
+              />
 
               <p className="tp-tool-hint">{tw("html-formatter.limitsNote")}</p>
-
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <CopyButton
-                  text={result.output}
-                  label={t("copy")}
-                  copiedLabel={t("copied")}
-                />
-                <DownloadButton
-                  content={result.output}
-                  fileName="formatted.html"
-                  mimeType="text/html;charset=utf-8"
-                  label={t("download")}
-                />
-              </div>
             </div>
           ) : evaluation.error ? null : (
             <ToolEmpty

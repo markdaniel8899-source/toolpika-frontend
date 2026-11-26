@@ -6,7 +6,7 @@ import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkspaceLayout } from "../workspace-layout";
-import { CopyButton, OutputEmpty } from "../workspace-ui";
+import { CodeOutput, OutputEmpty } from "../workspace-ui";
 
 const SAMPLE = '{"name":"Toolpika","tools":8,"free":true}';
 
@@ -154,8 +154,13 @@ export default function JsonFormatter() {
               <p className="tp-status-pill" data-tone="success">
                 {t("jsonValid")}
               </p>
-              <pre className="tp-output-pre">{output}</pre>
-              <CopyButton text={output} label={t("copy")} copiedLabel={t("copied")} />
+              <CodeOutput
+                code={output}
+                language="json"
+                storageKey="tp-json-formatter-code-view"
+                label={t("result")}
+                fileName="formatted.json"
+              />
             </>
           ) : (
             <OutputEmpty message={tw("resultEmpty")} className="min-h-[200px]" />

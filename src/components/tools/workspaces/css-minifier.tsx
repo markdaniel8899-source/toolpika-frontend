@@ -6,8 +6,7 @@ import { Braces, ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CheckboxRow,
-  CopyButton,
-  DownloadButton,
+  CodeOutput,
   Stat,
   ToolEmpty,
   ToolPane,
@@ -147,20 +146,6 @@ export default function CssMinifier() {
           id="css-minify-result-title"
           title={tw("css-minifier.resultTitle")}
           result
-          actions={
-            <>
-              <CopyButton
-                text={evaluation.result?.css ?? ""}
-                label={t("copy")}
-                copiedLabel={t("copied")}
-              />
-              <DownloadButton
-                content={evaluation.result?.css ?? null}
-                fileName="style.min.css"
-                label={t("download")}
-              />
-            </>
-          }
         >
           {evaluation.error ? (
             <p id="css-minify-error" className="tp-tool-error" role="alert">
@@ -178,7 +163,14 @@ export default function CssMinifier() {
                   value={`${evaluation.result.stats.savedPercent}%`}
                 />
               </dl>
-              <pre className="tp-tool-code tp-tool-code--tall">{evaluation.result.css}</pre>
+              <CodeOutput
+                code={evaluation.result.css}
+                language="css"
+                storageKey="tp-css-minifier-code-view"
+                label={t("result")}
+                fileName="style.min.css"
+                mimeType="text/css;charset=utf-8"
+              />
             </div>
           ) : evaluation.error ? null : (
             <ToolEmpty

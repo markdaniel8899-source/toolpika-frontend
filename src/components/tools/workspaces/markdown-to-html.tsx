@@ -2,11 +2,11 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, Download, X } from "lucide-react";
+import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkspaceLayout } from "../workspace-layout";
-import { CopyButton, OutputEmpty, Stat } from "../workspace-ui";
+import { CodeOutput, OutputEmpty, Stat } from "../workspace-ui";
 
 const SAMPLE = [
   "# A safe heading",
@@ -208,7 +208,6 @@ export default function MarkdownToHtml() {
   const t = useTranslations("tools");
   const tu = useTranslations("toolUi");
   const [input, setInput] = useState("");
-  const [showPreview, setShowPreview] = useState(false);
   const [error, setError] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -230,14 +229,12 @@ export default function MarkdownToHtml() {
 
   const handleReset = () => {
     setInput("");
-    setShowPreview(false);
     setError(false);
     inputRef.current?.focus();
   };
 
   const handleSample = () => {
     setInput(SAMPLE);
-    setShowPreview(false);
     setError(false);
     inputRef.current?.focus();
   };
@@ -257,22 +254,8 @@ export default function MarkdownToHtml() {
 
   const handleClear = () => {
     setInput("");
-    setShowPreview(false);
     setError(false);
     inputRef.current?.focus();
-  };
-
-  const handleDownload = () => {
-    if (!html) return;
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "converted.html";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
   };
 
   return (
@@ -308,8 +291,7 @@ export default function MarkdownToHtml() {
             value={input}
             onChange={(event) => {
               setInput(event.target.value);
-              setShowPreview(false);
-              setError(false);
+                        setError(false);
             }}
             placeholder={tu("startTyping")}
             aria-label={tu("pasteText")}
@@ -329,59 +311,16 @@ export default function MarkdownToHtml() {
       }
       output={
         <div className="flex min-w-0 flex-col gap-3 overflow-hidden">
-          <div
-            className="tp-workspace-inline-actions justify-end"
-            style={{ marginTop: 0 }}
-          >
-            <Button
-              type="button"
-              size="sm"
-              variant={showPreview ? "default" : "secondary"}
-              aria-pressed={showPreview}
-              disabled={!html}
-              onClick={() => setShowPreview((previous) => !previous)}
-            >
-              {t("markdown-to-html.preview")}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={!html}
-              aria-label={tu("download")}
-              onClick={handleDownload}
-            >
-              <Download className="h-3.5 w-3.5" aria-hidden="true" />
-              {t("downloadResult")}
-            </Button>
-            {html ? (
-              <CopyButton
-                text={html}
-                label={t("copyResult")}
-                copiedLabel={tu("copied")}
-              />
-            ) : null}
-          </div>
-
           {html ? (
-            showPreview ? (
-              <div className="min-w-0 overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-3">
-                <span className="block text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--muted)]">
-                  {t("markdown-to-html.preview")}
-                </span>
-                <pre className="mt-2 max-h-[360px] min-w-0 overflow-auto whitespace-pre-wrap break-words font-mono text-[13px] leading-[1.6] text-[var(--text)] [overflow-wrap:anywhere]">
-                  {html}
-                </pre>
-              </div>
-            ) : (
-              <Textarea
-                value={html}
-                readOnly
-                aria-label={t("markdown-to-html.title")}
-                spellCheck={false}
-                className="min-h-[220px] min-w-0 break-words bg-[var(--bg)] font-mono text-[13px] [overflow-wrap:anywhere]"
-              />
-            )
+            <CodeOutput
+              code={html}
+              language="html"
+              storageKey="tp-markdown-to-html-code-view"
+              label={tu("result")}
+              fileName="converted.html"
+              mimeType="text/html;charset=utf-8"
+              className="min-w-0 max-w-full"
+            />
           ) : (
             <OutputEmpty message={t("resultEmpty")} className="min-h-[220px]" />
           )}

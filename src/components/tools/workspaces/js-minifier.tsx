@@ -6,8 +6,7 @@ import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CheckboxRow,
-  CopyButton,
-  DownloadButton,
+  CodeOutput,
   Stat,
   ToolEmpty,
   ToolPane,
@@ -146,17 +145,6 @@ export default function JsMinifier() {
           id="js-minifier-result-title"
           title={t("result")}
           result
-          actions={
-            <>
-              <CopyButton text={output} label={t("copy")} copiedLabel={t("copied")} />
-              <DownloadButton
-                content={output}
-                fileName="minified.min.js"
-                mimeType="text/javascript;charset=utf-8"
-                label={t("download")}
-              />
-            </>
-          }
         >
           {evaluation.error ? (
             <p id="js-minifier-error" className="tp-tool-error" role="alert">
@@ -166,12 +154,13 @@ export default function JsMinifier() {
 
           {evaluation.result ? (
             <div className="tp-tool-result" aria-live="polite">
-              <textarea
-                className="tp-tool-code"
-                value={output}
-                readOnly
-                spellCheck={false}
-                aria-label={tw("js-minifier.codeLabel")}
+              <CodeOutput
+                code={output}
+                language="js"
+                storageKey="tp-js-minifier-code-view"
+                label={t("result")}
+                fileName="minified.min.js"
+                mimeType="text/javascript;charset=utf-8"
               />
               <dl className="tp-tool-stats tp-tool-stats--inline">
                 <Stat

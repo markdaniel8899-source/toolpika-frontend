@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type Ref } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type Ref } from "react";
+import { useTranslations } from "next-intl";
 import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, Download, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
+import { tokenizeCode, type CodeLanguage } from "@/lib/tools/code-highlight";
 import { cn } from "@/lib/utils";
 
 /** A single labelled number in the result pane. */
@@ -491,6 +493,94 @@ export function NumberStepper({
           <ChevronDown aria-hidden="true" />
         </button>
       </span>
+    </div>
+  );
+}
+
+/**
+ * Read-only code editor for code outputs: line numbers, theme-aware syntax
+ * colours, wrapping and font size. Options persist; user input never does.
+ */
+export function CodeOutput({
+  code,
+  language,
+  storageKey,
+  label,
+  fileName,
+  mimeType,
+  className,
+}: {
+  code: string;
+  language: CodeLanguage;
+  storageKey: string;
+  label: string;
+  fileName: string;
+  mimeType?: string;
+  className?: string;
+}) {
+  const t = useTranslations("toolUi");
+  const { options, update } = usePersistedOptions<{
+    lineNumbers: boolean;
+    wrap: boolean;
+    size: "12" | "13" | "14";
+  }>(storageKey, { lineNumbers: true, wrap: true, size: "13" });
+  const lines = useMemo(() => tokenizeCode(code, language), [code, language]);
+
+  return (
+    <div
+      className={cn("tp-code-editor", className)}
+      style={{ "--tp-code-size": `${options.size}px` } as CSSProperties}
+    >
+      <div className="tp-code-editor-bar">
+        <span className="tp-tool-group-title">{label}</span>
+        <div className="tp-tool-inline-actions">
+          <CopyButton text={code} label={t("copy")} copiedLabel={t("copied")} />
+          <DownloadButton content={code} fileName={fileName} mimeType={mimeType} label={t("download")} />
+        </div>
+      </div>
+      <div className="tp-code-editor-options">
+        <CheckboxRow
+          id={`${storageKey}-numbers`}
+          label={t("lineNumbers")}
+          checked={options.lineNumbers}
+          onChange={(lineNumbers) => update({ lineNumbers })}
+        />
+        <CheckboxRow
+          id={`${storageKey}-wrap`}
+          label={t("wordWrap")}
+          checked={options.wrap}
+          onChange={(wrap) => update({ wrap })}
+        />
+        <div className="tp-code-editor-size">
+          <span className="tp-tool-label">{t("fontSize")}</span>
+          <SegmentedControl
+            label={t("fontSize")}
+            value={options.size}
+            options={[
+              { value: "12", label: "12" },
+              { value: "13", label: "13" },
+              { value: "14", label: "14" },
+            ]}
+            onChange={(size) => update({ size: size as "12" | "13" | "14" })}
+          />
+        </div>
+      </div>
+      <div className="tp-code-editor-body" data-wrap={options.wrap ? "true" : undefined} aria-live="polite">
+        {lines.map((line, index) => (
+          <div className="tp-code-line" key={index}>
+            {options.lineNumbers ? (
+              <span className="tp-code-line-num" aria-hidden="true">{index + 1}</span>
+            ) : null}
+            <span className="tp-code-line-text">
+              {line.tokens.map((token, tokenIndex) => (
+                <span key={tokenIndex} className={`tp-code-token tp-code-token--${token.type}`}>
+                  {token.text}
+                </span>
+              ))}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

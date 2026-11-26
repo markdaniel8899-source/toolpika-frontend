@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ClipboardPaste, Download, X } from "lucide-react";
+import { ClipboardPaste, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import { WorkspaceLayout } from "../workspace-layout";
-import { CheckboxRow, CopyButton, OutputEmpty, ToolField } from "../workspace-ui";
+import { CheckboxRow, CodeOutput, OutputEmpty, ToolField } from "../workspace-ui";
 
 const SAMPLE = `[
   { "name": "Toolpika", "category": "code", "meta": { "rank": 1 } },
@@ -278,21 +278,6 @@ export default function JsonToCsv() {
     }
   };
 
-  const handleDownload = () => {
-    if (!output) return;
-    const mime = mode === "toCsv" ? "text/csv" : "application/json";
-    const extension = mode === "toCsv" ? "csv" : "json";
-    const blob = new Blob([output], { type: `${mime};charset=utf-8` });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `data.${extension}`;
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <WorkspaceLayout
       title={t("json-to-csv.title")}
@@ -412,28 +397,15 @@ export default function JsonToCsv() {
           ) : null}
 
           {output ? (
-            <div className="flex min-w-0 flex-col gap-3">
-              <pre className="tp-output-pre min-w-0 max-w-full whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
-                {output}
-              </pre>
-              <div className="tp-workspace-inline-actions" style={{ marginTop: 0 }}>
-                <CopyButton
-                  text={output}
-                  label={t("copyResult")}
-                  copiedLabel={tu("copied")}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDownload}
-                  aria-label={tu("download")}
-                >
-                  <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                  {t("downloadResult")}
-                </Button>
-              </div>
-            </div>
+            <CodeOutput
+              code={output}
+              language="csv"
+              storageKey="tp-json-to-csv-code-view"
+              label={tu("result")}
+              fileName="data.csv"
+              mimeType="text/csv;charset=utf-8"
+              className="min-w-0 max-w-full"
+            />
           ) : (
             <OutputEmpty
               message={t("resultEmpty")}

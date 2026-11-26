@@ -2,17 +2,15 @@
 
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { AlertCircle, Check, ClipboardPaste, Copy, KeyRound, X } from "lucide-react";
+import { AlertCircle, ClipboardPaste, KeyRound, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  DownloadButton,
+  CodeOutput,
   SegmentedControl,
   ToolBadge,
   ToolEmpty,
   ToolPane,
   ToolShell,
-  useCopyFeedback,
-  useCopyShortcut,
   useDebounced,
   usePersistedOptions,
   useToolNotice,
@@ -61,7 +59,6 @@ export default function JwtDecoder() {
     DEFAULT_JWT_OPTIONS,
   );
   const { notice, showNotice, clearNotice } = useToolNotice();
-  const { copied, copy, reset: resetCopy } = useCopyFeedback();
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const debouncedToken = useDebounced(token);
 
@@ -107,33 +104,11 @@ export default function JwtDecoder() {
     return pretty(options.view === "header" ? decoded.header : decoded.payload);
   }, [claimLabel, decoded, options.view]);
 
-  const downloadContent = useMemo(
-    () =>
-      decoded
-        ? pretty({
-            header: decoded.header,
-            payload: decoded.payload,
-            signature: decoded.signature,
-            claims: decoded.claims,
-          })
-        : null,
-    [decoded],
-  );
-
   const errorHint = (code: JwtErrorCode) => {
     if (code === "FORMAT") return tw("jwt-decoder.errorFormat");
     if (code === "BASE64") return tw("jwt-decoder.errorBase64");
     return tw("jwt-decoder.errorJson");
   };
-
-  const handleCopy = useCallback(() => {
-    if (!viewContent) return;
-    void copy(viewContent).then((ok) => {
-      if (!ok) showNotice(tw("jwt-decoder.copyFailed"));
-    });
-  }, [copy, showNotice, tw, viewContent]);
-
-  useCopyShortcut(handleCopy);
 
   const handlePaste = useCallback(async () => {
     try {
@@ -150,24 +125,21 @@ export default function JwtDecoder() {
 
   const handleClear = useCallback(() => {
     setToken("");
-    resetCopy();
     clearNotice();
     inputRef.current?.focus();
-  }, [clearNotice, resetCopy]);
+  }, [clearNotice]);
 
   const handleSample = useCallback(() => {
     setToken(SAMPLE_JWT);
-    resetCopy();
     clearNotice();
     inputRef.current?.focus();
-  }, [clearNotice, resetCopy]);
+  }, [clearNotice]);
 
   const handleReset = useCallback(() => {
     setToken("");
-    resetCopy();
     clearNotice();
     inputRef.current?.focus();
-  }, [clearNotice, resetCopy]);
+  }, [clearNotice]);
 
   return (
     <ToolShell
@@ -210,8 +182,7 @@ export default function JwtDecoder() {
             value={token}
             onChange={(event) => {
               setToken(event.target.value);
-              resetCopy();
-              clearNotice();
+                        clearNotice();
             }}
             aria-label={tw("jwt-decoder.inputTitle")}
             aria-describedby={errorCode ? "jwt-error" : undefined}
@@ -227,24 +198,6 @@ export default function JwtDecoder() {
           id="jwt-result-title"
           title={tw("jwt-decoder.resultTitle")}
           result
-          actions={
-            <>
-              <Button type="button" size="sm" variant="secondary" onClick={handleCopy} disabled={!viewContent}>
-                {copied ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-                {copied ? t("copied") : t("copy")}
-              </Button>
-              <DownloadButton
-                content={downloadContent}
-                fileName={tw("jwt-decoder.downloadName")}
-                mimeType="application/json;charset=utf-8"
-                label={t("download")}
-              />
-            </>
-          }
         >
           <div className="tp-tool-group tp-tool-group--flush">
             <SegmentedControl<View>
@@ -298,9 +251,14 @@ export default function JwtDecoder() {
                 <p className="tp-tool-hint">{tw("jwt-decoder.claimsEmpty")}</p>
               )
             ) : (
-              <pre className="tp-tool-code tp-tool-code--tall" aria-live="polite" dir="ltr">
-                {viewContent}
-              </pre>
+              <CodeOutput
+                code={viewContent}
+                language="json"
+                storageKey="tp-jwt-decoder-code-view"
+                label={t("result")}
+                fileName="jwt-decoded.json"
+                mimeType="application/json;charset=utf-8"
+              />
             )
           ) : errorCode ? (
             <ToolEmpty
