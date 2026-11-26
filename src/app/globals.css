@@ -15,6 +15,10 @@
   --bg: #f7f5f1;
   --surface: #ffffff;
   --surface-2: #f1efe9;
+  /* Dropdown menus and cron cards mix these into color-mix(); they must exist
+     in both themes or the whole declaration is dropped (transparent panels). */
+  --surface-soft: var(--surface-2);
+  --surface-strong: #ffffff;
   --text: #14151a;
   --muted: #6b6c75;
 
@@ -97,6 +101,8 @@
   --bg: #0b0c0f;
   --surface: #121318;
   --surface-2: #17181e;
+  --surface-soft: var(--surface-2);
+  --surface-strong: #2b2d37;
   --text: #f6f6f7;
   --muted: #9ea0aa;
 
