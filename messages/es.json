@@ -2281,12 +2281,12 @@
     },
     "keyword-density-checker": {
       "title": "Contador de Densidad de Palabras Clave",
-      "shortDesc": "Clasifica palabras por frecuencia con conteos y porcentajes en tiempo real, más reglas de longitud y stopword que controlas.",
+      "shortDesc": "Clasifica las palabras por frecuencia con conteos y porcentajes en tiempo real, más reglas de longitud y stopword que controlas.",
       "seo": {
         "title": "Contador de Densidad de Palabras Clave - Frecuencia de Palabras",
-        "description": "Usa el Contador de Densidad de Palabras Clave para clasificar palabras por conteo y porcentaje. Establece una longitud mínima de palabra, filtra stopwords, luego copia o descarga el informe."
+        "description": "Usa el Contador de Densidad de Palabras Clave para clasificar palabras por conteo y porcentaje. Establece una longitud mínima de palabra, filtra las palabras vacía, luego copia o descarga el informe."
       },
-      "trySample": "Probar ejemplo",
+      "trySample": "Prueba ejemplo",
       "reset": "Restablecer",
       "privacyRibbon": "El conteo se ejecuta en tu navegador. Tu texto no se sube nunca.",
       "inputTitle": "Tu texto",
