@@ -33,6 +33,16 @@ const AspectRatioCalculator = dynamic(() => import("./workspaces/aspect-ratio-ca
 const UtmBuilder = dynamic(() => import("./workspaces/utm-builder"), { loading });
 const HashGenerator = dynamic(() => import("./workspaces/hash-generator"), { loading });
 const ImageResizer = dynamic(() => import("./workspaces/image-resizer"), { loading });
+const RemoveDuplicateLines = dynamic(() => import("./workspaces/remove-duplicate-lines"), { loading });
+const SortTextLines = dynamic(() => import("./workspaces/sort-text-lines"), { loading });
+const FindAndReplaceText = dynamic(() => import("./workspaces/find-and-replace-text"), { loading });
+const CharacterFrequencyCounter = dynamic(() => import("./workspaces/character-frequency-counter"), { loading });
+const ReadabilityScoreChecker = dynamic(() => import("./workspaces/readability-score-checker"), { loading });
+const HtmlFormatter = dynamic(() => import("./workspaces/html-formatter"), { loading });
+const CssFormatter = dynamic(() => import("./workspaces/css-formatter"), { loading });
+const CssMinifier = dynamic(() => import("./workspaces/css-minifier"), { loading });
+const JsMinifier = dynamic(() => import("./workspaces/js-minifier"), { loading });
+const SqlFormatter = dynamic(() => import("./workspaces/sql-formatter"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -61,6 +71,16 @@ const WORKSPACES = {
   "utm-builder": UtmBuilder,
   "hash-generator": HashGenerator,
   "image-resizer": ImageResizer,
+  "remove-duplicate-lines": RemoveDuplicateLines,
+  "sort-text-lines": SortTextLines,
+  "find-and-replace-text": FindAndReplaceText,
+  "character-frequency-counter": CharacterFrequencyCounter,
+  "readability-score-checker": ReadabilityScoreChecker,
+  "html-formatter": HtmlFormatter,
+  "css-formatter": CssFormatter,
+  "css-minifier": CssMinifier,
+  "js-minifier": JsMinifier,
+  "sql-formatter": SqlFormatter,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

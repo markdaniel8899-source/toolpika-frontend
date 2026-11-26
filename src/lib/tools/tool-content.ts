@@ -119,6 +119,16 @@ const WITH_FULL_CONTENT = new Set([
   "utm-builder",
   "hash-generator",
   "image-resizer",
+  "remove-duplicate-lines",
+  "sort-text-lines",
+  "find-and-replace-text",
+  "character-frequency-counter",
+  "readability-score-checker",
+  "html-formatter",
+  "css-formatter",
+  "css-minifier",
+  "js-minifier",
+  "sql-formatter",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -134,6 +144,10 @@ const WITH_SEARCH_INTENTS = new Set([
   "utm-builder",
   "hash-generator",
   "image-resizer",
+  "remove-duplicate-lines",
+  "sort-text-lines",
+  "sql-formatter",
+  "js-minifier",
 ]);
 
 /**
@@ -265,6 +279,16 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "utm-builder": ["definition", "facts", "steps", "example", "mistakes", "faq"],
   "hash-generator": ["definition", "facts", "example", "mistakes", "faq"],
   "image-resizer": ["definition", "facts", "steps", "mistakes", "faq"],
+  "remove-duplicate-lines": ["definition", "steps", "example", "mistakes", "faq"],
+  "sort-text-lines": ["definition", "example", "steps", "mistakes", "faq"],
+  "find-and-replace-text": ["definition", "steps", "example", "facts", "mistakes", "faq"],
+  "character-frequency-counter": ["definition", "facts", "steps", "mistakes", "faq"],
+  "readability-score-checker": ["definition", "steps", "useCases", "mistakes", "faq"],
+  "html-formatter": ["definition", "example", "steps", "facts", "mistakes", "faq"],
+  "css-formatter": ["definition", "steps", "facts", "mistakes", "faq"],
+  "css-minifier": ["definition", "facts", "steps", "mistakes", "faq"],
+  "js-minifier": ["definition", "steps", "facts", "mistakes", "faq"],
+  "sql-formatter": ["definition", "example", "steps", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {

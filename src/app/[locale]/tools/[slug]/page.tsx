@@ -63,6 +63,16 @@ const CURATED_RELATED: Record<string, string[]> = {
   "utm-builder": ["url-encoder", "slug-generator", "text-diff-checker"],
   "hash-generator": ["password-generator", "jwt-decoder", "number-base-converter"],
   "image-resizer": ["aspect-ratio-calculator", "image-compressor", "color-converter", "data-storage-converter"],
+  "remove-duplicate-lines": ["sort-text-lines", "find-and-replace-text", "character-frequency-counter", "readability-score-checker"],
+  "sort-text-lines": ["remove-duplicate-lines", "find-and-replace-text", "character-frequency-counter"],
+  "find-and-replace-text": ["remove-duplicate-lines", "sort-text-lines", "character-frequency-counter", "readability-score-checker"],
+  "character-frequency-counter": ["remove-duplicate-lines", "sort-text-lines", "find-and-replace-text", "readability-score-checker"],
+  "readability-score-checker": ["find-and-replace-text", "character-frequency-counter", "remove-duplicate-lines"],
+  "html-formatter": ["css-formatter", "sql-formatter", "css-minifier"],
+  "css-formatter": ["html-formatter", "js-minifier", "css-minifier", "sql-formatter"],
+  "css-minifier": ["css-formatter", "js-minifier", "html-formatter"],
+  "js-minifier": ["css-minifier", "css-formatter", "sql-formatter"],
+  "sql-formatter": ["js-minifier", "html-formatter", "css-formatter"],
 };
 
 /** Matches the contextual %%TOOL%% link written into each tool's About copy. */
@@ -93,6 +103,14 @@ const CONTEXTUAL_TOOL: Record<string, string> = {
   "jwt-decoder": "uuid-generator",
   "utm-builder": "url-encoder",
   "url-encoder": "utm-builder",
+  "remove-duplicate-lines": "sort-text-lines",
+  "sort-text-lines": "remove-duplicate-lines",
+  "find-and-replace-text": "character-frequency-counter",
+  "character-frequency-counter": "find-and-replace-text",
+  "html-formatter": "sql-formatter",
+  "css-formatter": "js-minifier",
+  "js-minifier": "css-formatter",
+  "sql-formatter": "html-formatter",
 };
 
 type LocalePageProps = {
