@@ -9193,8 +9193,23 @@ textarea::-webkit-scrollbar-thumb,
   min-width: 0;
 }
 
+/* Option columns hug the leading edge instead of filling the whole tray. */
 .tp-tool-options-grid--single {
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 320px);
+  justify-content: start;
+}
+
+/* Breathing room between result stats, output card and actions. */
+.tp-tool-pane--result .tp-tool-pane-body {
+  gap: 16px;
+}
+
+.tp-tool-pane--result .tp-tool-stats {
+  margin-block-end: 4px;
+}
+
+.tp-tool-pane--result .tp-tool-code {
+  padding: 18px 20px;
 }
 
 /* ==========================================================================

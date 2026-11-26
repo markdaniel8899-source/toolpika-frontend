@@ -194,7 +194,7 @@ export default function CssMinifier() {
           <div className="tp-tool-options-head">
             <h3>{t("options")}</h3>
           </div>
-          <div className="tp-tool-options-grid">
+          <div className="tp-tool-options-grid tp-tool-options-grid--single">
             <CheckboxRow
               id="css-minify-strip-comments"
               label={tw("css-minifier.stripComments")}
