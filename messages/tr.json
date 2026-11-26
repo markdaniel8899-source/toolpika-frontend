@@ -801,8 +801,24 @@
         "mistakesTitle": "Yaygın hatalar ve sınırlar",
         "limitsTitle": "Sınırlar",
         "mistakes": "Doldurucu metniyle yayına çıkma::Yer tutucu paragraflar düzen incelemesi için çerçeve görevi görür. Sayfa yayına çıkmadan önce gerçek metinle değiştirin.\nKesin cümle sayısına odaklanma::Miktar alanı biçime bağlı olarak paragraf, cümle veya kelime sayısını kontrol eder. Her blok içinde cümle uzunluğu değişir.\nTohumu unutma::İki mockup sadece tohum değiştiği için farklı görünür. Her iki ekranda da aynı doldurucu metni gerekiyorsa onu değiştirmeyin.\nGövde metni için kelime modu kullanma::Kelime modu bitiş noktasız tek bir token dizisi döndürür. Bloklar arasında boş satır gerekiyorsa paragrafları seçin.",
-        "limits": "Miktarlar 20 paragraf, paragraf başına 12 cümle veya cümle başına 30 kelime ile sınırlıdır.\nHer cümle 3 ile 30 kelime arasında tutulur, bu yüzden çok düşük bir hedef yine de kısa bir cümle üretir.\nYalnızca ayarlar bu cihazda kalır; metin her ziyaretinde onlardan yeniden oluşturulur."
+        "limits": "Miktarlar 20 paragraf, paragraf başına 12 cümle veya cümle başına 30 kelime ile sınırlıdır.\nHer cümle 3 ile 30 kelime arasında tutulur, bu yüzden çok düşük bir hedef yine de kısa bir cümle üretir.\nYalnızca ayarlar bu cihazda kalır; metin her ziyaretinde onlardan yeniden oluşturulur.",
+        "faqTitle": "Sık sorulan sorular",
+        "faqs": "Mockup'ta gerçek cümleler yerine lorem ipsum neden tercih edilir?::Gerçek metin, düzen netleşmeden önce inceleyenlerin mesajı üzerinde değişiklik yapmaya teşvik eder. Klasik doldurma metni, dikkati satır uzunluğuna, paragraf akışına ve yazı boyutuna odaklar. Yapı onaylandıktan sonra yer tutucu, sayfa yeniden yapılandırılmadan nihai içerikle değiştirilir.\nYeni tohum neyi değiştirir?::Tohumu 7919 kadar ilerletir, bu yüzden rastgele rutin farklı kelimeler ve cümle uzunlukları seçer. Biçim, miktar ve başlangıç anahtarı ayarladığınız gibi kalır. Yeni değer belirleyici olduğundan, aynı tohumu kullanan bir meslektaş aynı paragrafı elde eder.\nTam olarak 30 kelime isteyebilir miyim?::Evet. Biçim anahtarından Kelimeleri seçin ve Kesin miktar alanına 30 yazın; araç boşlukla ayrılmış otuz kelime döndürür, sondaki nokta yoktur. Klasik başlangıç ilk iki kelimeyi Lorem ipsum yapmaya zorlar, bu da dar alanlardaki etiketleri test etmek için yararlıdır.\nOluşturulan cümleler farklı uzunluklarda mı?::Her cümle hedefini rastgele bir faktörle yuvarlar, ardından üç ile otuz kelime arasında kalır. Bu varyasyon, aynı satırlardan oluşan katı bir ızgara yerine gerçekçi satır sonları üretir. Virgüller, doğal bir duraklama önermek için başlangıç cümlesinde sabit konumlara yerleştirilir.\nSayfayı kapattığımda metin kaydedilsin mi?::Biçiminiz, miktarınız, başlangıç anahtarınız ve mevcut tohumunuz bu cihazdaki yerel depolamada tutulur, bu yüzden döndüğünüzde paragraf yeniden oluşturulur. Oluşturulan metin kendisi saklanmaz; Örneği dene düğmesine basmak yukarıdaki örnekte kullanılan iki paragraf ön ayarını geri yükler.",
+        "trustTitle": "Bu araç hakkında",
+        "trustBody": "Yukarıdaki oluşturucu, sabit klasik bir kelime listesi üzerinden tohumlanmış bir mulberry32 rutinini kullanır; bu nedenle aynı biçim, miktar ve tohum her seferinde aynı paragrafı yeniden oluşturur.",
+        "searchIntents": "tekrarlanabilir metin için tohumlu lorem ipsum oluşturucu\nwireframe düzenleri için yer tutucu paragraflar\nkesin kelime sayısıyla doldurma metni oluştur\nlorem ipsum'u txt dosyası olarak indir"
       }
+    },
+    "text-diff-checker": {
+      "title": "Metin Karşılaştırma Aracı",
+      "shortDesc": "İki taslağı satır satır veya kelime kelime karşılaştırın ve tüm değişiklikleri görün.",
+      "seo": {
+        "title": "Satır ve Kelime Görünümleriyle Metin Fark Denetleyici",
+        "description": "İki taslak arasında satır veya kelime bazında farkı karşılaştırın. Eklenen, kaldırılan ve değişmeyen satırları ve benzerlik oranını görün, ardından düz metin farkını kopyalayın veya kaydedin."
+      },
+      "subtitle": "Yükleme yapmadan iki taslak arasındaki kesin değişiklikler",
+      "trySample": "Örneği dene",
+      "reset": "Sıfırla"
     }
   },
   "search": {
