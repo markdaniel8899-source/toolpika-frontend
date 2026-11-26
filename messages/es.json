@@ -2362,6 +2362,48 @@
         "byline": "Herramientas de salud · Actualizado el 26 de noviembre de 2026",
         "directAnswer": "El Calculador de IMC transforma tu peso y altura en un índice de masa corporal, muestra la categoría de la OMS correspondiente y estima un rango de peso saludable para esa altura. Cambia entre unidades métricas e imperiales, luego copia o descarga el informe en un paso."
       }
+    },
+    "pomodoro-timer": {
+      "title": "Temporizador Pomodoro",
+      "shortDesc": "Ejecuta rondas de concentración con longitudes de trabajo y descanso integradas, un conteo regresivo en tiempo real y un contador de rondas.",
+      "seo": {
+        "title": "Temporizador Pomodoro con Pausas y Rondas Integradas",
+        "description": "Configura las longitudes de trabajo, pausa corta y pausa larga, luego inicia una ronda de enfoque con un conteo regresivo en tiempo real, un contador de rondas y un aviso escrito cuando una fase termina. Local."
+      },
+      "trySample": "Prueba ejemplo",
+      "reset": "Restablecer",
+      "privacyRibbon": "El temporizador se ejecuta en tu navegador. No se usa audio, cuenta ni solicitud de red.",
+      "inputTitle": "Longitudes de sesión",
+      "inputHint": "Configura minutos enteros para cada fase. La pausa larga comienza automáticamente después de cada cuarta ronda de trabajo.",
+      "durationWork": "Minutos de trabajo",
+      "hintWork": "La ronda Pomodoro clásica es de 25 minutos.",
+      "durationShort": "Minutos de pausa corta",
+      "hintShort": "Una pausa corta después de cada ronda de trabajo suele ser de 5 minutos.",
+      "durationLong": "Minutos de pausa larga",
+      "hintLong": "Una pausa larga después de cuatro rondas suele ser de 15 minutos.",
+      "errorEmpty": "Ingresa un número de minutos.",
+      "errorNotNumber": "Usa solo dígitos enteros, sin letras ni símbolos.",
+      "errorOutOfRange": "Elige un valor de 1 a 180 minutos.",
+      "errorTitle": "Corrige los campos de duración",
+      "start": "Iniciar",
+      "pause": "Pausa",
+      "completedRoundsLabel": "Rondas completadas",
+      "longBreakInLabel": "Rondas hasta la pausa larga",
+      "phaseWork": "Enfoque",
+      "phaseShortBreak": "Pausa corta",
+      "phaseLongBreak": "Pausa larga",
+      "statusRunning": "Ejecutando",
+      "statusPaused": "En pausa",
+      "completeWork": "Ronda de trabajo terminada. Tu pausa corta ha comenzado.",
+      "completeLongBreak": "Cuatro rondas terminadas. Disfruta de la pausa larga.",
+      "completeBreak": "Pausa terminada. La próxima ronda de enfoque está lista.",
+      "page": {
+        "byline": "Herramientas de productividad · Actualizado el 26 de noviembre de 2026",
+        "directAnswer": "Un Temporizador Pomodoro divide el trabajo en sesiones de enfoque separadas por pausas cortas, con una pausa más larga después de cuatro rondas. Configura las tres duraciones, presiona Iniciar y observa el conteo regresivo, el recuento de rondas y el aviso de completación actualizarse en tu navegador sin cuenta.",
+        "aboutTitle": "Acerca del Temporizador Pomodoro",
+        "contextualLink": "Para horarios repetitivos en un calendario en lugar de una sesión de enfoque, %%TOOL%% escribe la línea cron que los dispara.",
+        "whatIsTitle": "¿Qué es un Temporizador Pomodoro?"
+      }
     }
   },
   "search": {
