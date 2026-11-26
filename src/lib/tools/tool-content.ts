@@ -129,6 +129,16 @@ const WITH_FULL_CONTENT = new Set([
   "css-minifier",
   "js-minifier",
   "sql-formatter",
+  "cron-expression-generator",
+  "hmac-generator",
+  "random-string-generator",
+  "meta-tag-generator",
+  "keyword-density-checker",
+  "open-graph-generator",
+  "compound-interest-calculator",
+  "loan-emi-calculator",
+  "bmi-calculator",
+  "pomodoro-timer",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -148,6 +158,10 @@ const WITH_SEARCH_INTENTS = new Set([
   "sort-text-lines",
   "sql-formatter",
   "js-minifier",
+  "cron-expression-generator",
+  "hmac-generator",
+  "random-string-generator",
+  "pomodoro-timer",
 ]);
 
 /**
@@ -289,6 +303,16 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "css-minifier": ["definition", "facts", "steps", "mistakes", "faq"],
   "js-minifier": ["definition", "steps", "facts", "mistakes", "faq"],
   "sql-formatter": ["definition", "example", "steps", "mistakes", "faq"],
+  "cron-expression-generator": ["definition", "facts", "steps", "example", "mistakes", "faq"],
+  "hmac-generator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "random-string-generator": ["definition", "facts", "steps", "mistakes", "faq"],
+  "meta-tag-generator": ["definition", "example", "steps", "facts", "mistakes", "faq"],
+  "keyword-density-checker": ["definition", "steps", "useCases", "mistakes", "faq"],
+  "open-graph-generator": ["definition", "example", "facts", "mistakes", "faq"],
+  "compound-interest-calculator": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
+  "loan-emi-calculator": ["definition", "example", "steps", "facts", "mistakes", "faq"],
+  "bmi-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "pomodoro-timer": ["definition", "useCases", "steps", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {

@@ -43,6 +43,16 @@ const CssFormatter = dynamic(() => import("./workspaces/css-formatter"), { loadi
 const CssMinifier = dynamic(() => import("./workspaces/css-minifier"), { loading });
 const JsMinifier = dynamic(() => import("./workspaces/js-minifier"), { loading });
 const SqlFormatter = dynamic(() => import("./workspaces/sql-formatter"), { loading });
+const CronExpressionGenerator = dynamic(() => import("./workspaces/cron-expression-generator"), { loading });
+const HmacGenerator = dynamic(() => import("./workspaces/hmac-generator"), { loading });
+const RandomStringGenerator = dynamic(() => import("./workspaces/random-string-generator"), { loading });
+const MetaTagGenerator = dynamic(() => import("./workspaces/meta-tag-generator"), { loading });
+const KeywordDensityChecker = dynamic(() => import("./workspaces/keyword-density-checker"), { loading });
+const OpenGraphGenerator = dynamic(() => import("./workspaces/open-graph-generator"), { loading });
+const CompoundInterestCalculator = dynamic(() => import("./workspaces/compound-interest-calculator"), { loading });
+const LoanEmiCalculator = dynamic(() => import("./workspaces/loan-emi-calculator"), { loading });
+const BmiCalculator = dynamic(() => import("./workspaces/bmi-calculator"), { loading });
+const PomodoroTimer = dynamic(() => import("./workspaces/pomodoro-timer"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -81,6 +91,16 @@ const WORKSPACES = {
   "css-minifier": CssMinifier,
   "js-minifier": JsMinifier,
   "sql-formatter": SqlFormatter,
+  "cron-expression-generator": CronExpressionGenerator,
+  "hmac-generator": HmacGenerator,
+  "random-string-generator": RandomStringGenerator,
+  "meta-tag-generator": MetaTagGenerator,
+  "keyword-density-checker": KeywordDensityChecker,
+  "open-graph-generator": OpenGraphGenerator,
+  "compound-interest-calculator": CompoundInterestCalculator,
+  "loan-emi-calculator": LoanEmiCalculator,
+  "bmi-calculator": BmiCalculator,
+  "pomodoro-timer": PomodoroTimer,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

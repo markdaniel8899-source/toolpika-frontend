@@ -73,6 +73,16 @@ const CURATED_RELATED: Record<string, string[]> = {
   "css-minifier": ["css-formatter", "js-minifier", "html-formatter"],
   "js-minifier": ["css-minifier", "css-formatter", "sql-formatter"],
   "sql-formatter": ["js-minifier", "html-formatter", "css-formatter"],
+  "cron-expression-generator": ["pomodoro-timer", "open-graph-generator", "hmac-generator"],
+  "pomodoro-timer": ["cron-expression-generator", "bmi-calculator", "random-string-generator", "compound-interest-calculator", "loan-emi-calculator"],
+  "hmac-generator": ["random-string-generator", "meta-tag-generator", "cron-expression-generator"],
+  "random-string-generator": ["hmac-generator", "pomodoro-timer", "open-graph-generator"],
+  "meta-tag-generator": ["open-graph-generator", "keyword-density-checker", "hmac-generator"],
+  "open-graph-generator": ["meta-tag-generator", "keyword-density-checker", "cron-expression-generator", "random-string-generator"],
+  "keyword-density-checker": ["meta-tag-generator", "open-graph-generator", "bmi-calculator"],
+  "bmi-calculator": ["keyword-density-checker", "pomodoro-timer", "compound-interest-calculator", "loan-emi-calculator"],
+  "compound-interest-calculator": ["loan-emi-calculator", "bmi-calculator", "pomodoro-timer"],
+  "loan-emi-calculator": ["compound-interest-calculator", "bmi-calculator", "pomodoro-timer"],
 };
 
 /** Matches the contextual %%TOOL%% link written into each tool's About copy. */
@@ -111,6 +121,16 @@ const CONTEXTUAL_TOOL: Record<string, string> = {
   "css-formatter": "js-minifier",
   "js-minifier": "css-formatter",
   "sql-formatter": "html-formatter",
+  "cron-expression-generator": "pomodoro-timer",
+  "pomodoro-timer": "cron-expression-generator",
+  "hmac-generator": "random-string-generator",
+  "random-string-generator": "hmac-generator",
+  "meta-tag-generator": "open-graph-generator",
+  "open-graph-generator": "meta-tag-generator",
+  "keyword-density-checker": "bmi-calculator",
+  "compound-interest-calculator": "loan-emi-calculator",
+  "loan-emi-calculator": "compound-interest-calculator",
+  "bmi-calculator": "keyword-density-checker",
 };
 
 type LocalePageProps = {
