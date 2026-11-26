@@ -475,7 +475,7 @@
         "mistakes": "Derin iç içe veri kullanımı::Yalnızca tek bir düzleştirme seviyesi sunulur, bu yüzden derin yapılar yapısını kaybeder.\nUyuşmayan anahtarlar::Farklı anahtarlı nesneler hata yerine boş hücre oluşturur.\nTür koruması varsayımı::CSV metin saklar, bu yüzden sayılar ve mantıksal değerler içe aktarma sırasında elektronik tablo değerleri olur.",
         "limits": "Çok büyük diziler tarayıcıda yavaş görüntülenebilir.\nYinelenen veya eksik anahtarlar ilk kayıt üzerinden çözülür.\nSatır sonları LF kullanır; çoğu elektronik tablo uygulaması bunu kabul eder.",
         "faqTitle": "Sıkça sorulan sorular",
-        "faqs": "Bu sayfa JSON'umu sunucuya yüklüyor mu?::Hayır. Ayrıştırma ve dışa aktarma tamamen tarayıcı sekmenizde gerçekleşir, bu yüzden kayıtlarınız asla bir sunucuya ulaşmaz.\nNesnelerim farklı anahtarlara sahipse ne olur?::İlk nesne sütun sırasını belirler. Sadece sonraki nesnelerde bulunan anahtarlar yeni sütun olarak eklenir, eksik değerler boş kalır.\nCSV'yi tekrar JSON'a aktarabilir miyim?::Bu sayfa JSON'dan CSV'ye odaklanmıştır. Şema kontrolüyle sıkı ters dönüşüm gerekiyorsa özel bir CSV ayrıştırıcı kullanın.\nDeğerler içindeki virgüller nasıl işlenir?::Virgül, tırnak veya yeni satır içeren değerler çift tırnak içine alınır, içteki tırnaklar iki katlanır ve RFC 4180 kuralları izlenir.",
+        "faqs": "JSON dosyam yüklenecek mi?::Hayır. Ayrıştırma ve dışa aktarma tamamen tarayıcı sekmenizin içinde çalışır, bu yüzden kayıtlarınız asla bir sunucuya ulaşmaz. Hesap yok, yükleme yok ve ağ isteği yok; sayfayı temizlemek girdinizi bellekten kaldırır.\nNesnelerim farklı anahtarlara sahipse ne olur?::İlk nesne sütun sırasını belirler. Sadece sonraki nesnelerde görünen anahtarlar yeni sütun olarak eklenir; eksik değerler hata yerine boş hücre olarak kalır, bu yüzden tablonuz eksiksiz kalır.\nCSV'yi tekrar JSON'a aktarabilir miyim?::Bu sayfa JSON'dan CSV'ye dönüşüm üzerine odaklanmıştır. Tür ve şema kontrolüyle sıkı bir ters dönüşüm için bunun yerine özel bir CSV ayrıştırıcısı kullanın. Bu, alıntılanmış değerleri ve başlıkları daha güvenilir şekilde işlemenizi sağlar.\nİçerisinde virgül olan değerler nasıl işlenir?::Virgül, tırnak veya satır sonu içeren değerler çift tırnak içine alınır ve içteki tırnaklar çiftlenir. Bu RFC 4180 kurallarına uygun olduğundan, elektronik tablo uygulamaları ayraç değerin içinde görünse bile her değeri doğru okur.",
         "trustTitle": "Tasarımla gizlilik",
         "trustBody": "Dönüşüm yalnızca tarayıcı API'lerini kullanır. Hesap, dosya yükleme veya ağ isteği gerekmez ve sayfayı temizlemek girdinizi siler."
       }
@@ -484,7 +484,7 @@
       "title": "Markdown'dan HTML'e Dönüştürücü",
       "shortDesc": "Markdown'u temiz ve güvenli HTML'e dönüştürün.",
       "seo": {
-        "title": "Markdown'dan HTML'e Dönüştürücü - Güvenli İstemci Tarafı Çıktısı",
+        "title": "Markdown'dan HTML'e dönüştürücü - güvenli çıktı, çevrimiçi",
         "description": "Markdown başlıklarını, listeleri, kod bloklarını ve bağlantılarını HTML'e dönüştürün. Ham işaretleme dönüşümden önce kaçırılır, bu nedenle yapıştırılan betikler asla çalıştırılmaz."
       },
       "preview": "Önizleme",
@@ -512,7 +512,7 @@
         "mistakes": "Her türlü özelliği beklemek::Tablolar, dipnotlar ve görev listeleri bu alt küme dışındadır.\nHam HTML yapıştırmak::Etiketler özel karakterlere dönüştürülür, bu yüzden işaretleme yerine metin olarak görünür.\nBoş satırları atlamak::Paragrafların doğru ayrılması için aralarında boş bir satır olmalıdır.",
         "limits": "Resimler, dosya olarak yüklenmek yerine metin bağlantısı olarak gösterilir.\nÇok uzun belgeler önizleme panelinde yavaş görüntülenebilir.\nÖzel Markdown uzantıları desteklenmiyor.",
         "faqTitle": "Sık sorulan sorular",
-        "faqs": "Güvenilmeyen Markdown yapıştırmak güvenli mi?::Evet. Dönüşümden önce ham HTML escape edilir ve önizleme asla betik çalıştırır, bu yüzden yapıştırılan işaretleme sayfada çalıştırılamaz.\nHangi Markdown türü desteklenir?::Araç, yaygın başlıkları, listeleri, vurguları, bağlantıları, alıntıları ve kod bloklarını destekler. Tablolar gibi gelişmiş uzantılar amaçlı olarak eklenmemiştir.\nSonucu indirebilir miyim?::Evet. HTML panoya kopyalanabilir veya sonuç panelinden .html dosyası olarak kaydedilebilir.\nHam HTML'im neden metin olarak görünüyor?::Böyle olması amaçlıdır. Escape işlemi betiklerin çalışmasını engeller ve üretilen çıktıyı öngörülebilir kılar.",
+        "faqs": "Güvenilmeyen Markdown yapıştırmak güvenli mi?::Evet. Ham HTML dönüşümden önce kaçırılır ve önizleme asla komut dosyası çalıştırır. Yapıştırılan işaretleme düz metin olarak gösterilir, bu yüzden sayfada çalışamaz veya oluşturulan çıktıyı zararlı bir şekilde değiştiremez.\nHangi Markdown türü desteklenir?::Araç, CommonMark'ın pratik bir alt kümesini kapsar: başlıklar, listeler, vurgular, bağlantılar, alıntı blokları ve kod blokları. Çıktının öngörülebilir kalması amacıyla tablolar, ayak notları ve görev listeleri gibi gelişmiş uzantılar kasıtlı olarak dışarı bırakılmıştır.\nSonucu indirebilir miyim?::Evet. Markdown'unuz dönüştürüldükten sonra, oluşturulan HTML'i panoya kopyalayabilir veya sonuç panelinden .html dosyası olarak kaydedebilirsiniz. Çıktıyı tutmak için hesap veya sunucu gerekmez.\nHam HTML'im neden metin olarak görünüyor?::Bu kasıtlıdır. Ham HTML'nin kaçırılması komut dosyalarının çalışmasını engeller ve oluşturulan işaretlemenin öngörülebilir kalmasını sağlar. HTML olarak yapıştıran her şey düz metin olarak değerlendirilir, bu yüzden etiket olarak yorumlanmak yerine çıktıda görünür.",
         "trustTitle": "Tasarımdan itibaren gizlilik",
         "trustBody": "Dönüşüm tarayıcınızda yerel olarak gerçekleşir. Hiçbir şey yüklenmez ve hesap gerektirmez."
       }
@@ -552,7 +552,7 @@
         "mistakes": "Söz dizimlerini karıştırmak::Hex değerlerinde # veya HSL değerlerinde % eksik olduğunda hata oluşur.\nAlpha desteği varsayımı::Sekiz basamaklı hex ve rgba bu dönüştürücü tarafından desteklenmiyor.\nErken yuvarlama::Kanal yuvarlama, dönüşüm sırasında rengi bir adım kaydırabilir.",
         "limits": "Yalnızca sRGB renkleri desteklenir; geniş gamutlu renk uzayları desteklenmez.\nİsimlendirilmiş CSS renkleri ayrıştırılmaz.\nAlpha şeffaflığı çıkış biçimlerinde gösterilmez.",
         "faqTitle": "Sık sorulan sorular",
-        "faqs": "Kısaltılmış hex kodu yapıştırabilir miyim?::Evet. #abc gibi bir değer dönüşümden önce #aabbcc olarak genişletilir, yani altı basamaklı formla aynı şekilde davranır.\nBir kanal aralık dışında olursa ne olur?::Araç sessizce kısıtlamak yerine satır içi bir hata gösterir. RGB kanalları 0-255, ton 0-360 ve doygunluk veya parlaklık 0-100% olmalıdır.\nŞeffaflığı destekliyor mu?::Henüz değil. Çıktı formatları alfa kanalı olmadan HEX, RGB ve HSL'dir, bu yüzden kısmen şeffaf renkler başka bir yerde işlenmelidir.\nRenkler ekranda farklı neden görünüyor?::Renk yönetimi ve ekran profilleri, sayısal kanallar eşleşse bile algılanan görünümü değiştirebilir.",
+        "faqs": "Kısaltılmış hex yapıştırabilir miyim?::Evet, kısaltılmış hex kabul edilir. #abc gibi üç basamaklı bir değer, herhangi bir işlemden önce her basamağın kopyalanmasıyla #aabbcc'ye genişletilir. Oluşan RGB ve HSL değerleri altı basamaklı formla tamamen eşleşir, bu yüzden her iki stili de yapıştırabilir ve stil sayfanızın ihtiyaç duyduğu gösterimi kopyalayabilirsiniz.\nBir kanal aralığın dışında çıkarsa ne olur?::Araç satır içi bir hata gösterir ve dönüştürmeyi reddeder. RGB kanalları 0 ile 255 arasında, ton 0 ile 360 derece arasında, doygunluk veya parlaklık ise 0 ile 100 yüzde arasında olmalı. Hiçbir şey sessizce sınırlandırılmaz, bu yüzden çıktıyı kopyalamadan önce hatayı tam olarak görebilir ve değeri düzeltebilirsiniz.\nŞeffaflığı destekliyor mu?::Hayır, bu dönüştürücüde şeffaflık desteklenmez. Çıktı yalnızca HEX, RGB ve HSL ile sınırlıdır ve bunların hiçbiri alfa kanalı taşımıyor. Sekiz basamaklı hex kodları ve rgba değerleri desteklenen giriş biçimleri dışındadır, bu yüzden kısmen şeffaf renkler için farklı bir araç gereklidir. Canlı örnek her zaman tamamen opak bir sonuç gösterir.\nRenkler ekranda farklı neden görünüyor?::Renk yönetimi ve ekran profilleri, sayısal kanalları tamamen eşleşse bile bir rengin görünüşünü değiştirebilir. Farklı kalibrasyona sahip iki monitör aynı RGB değerlerini farklı şekilde gösterebilir ve işletim sistemleri kendi gama ayarlarını uygular. Sayıları gerçeklik kaynağı olarak görüntüleyin ve hassas görsel eşleşme önemli olduğunda ekranları kalibre edin.",
         "trustTitle": "Tasarımdan itibaren gizlilik",
         "trustBody": "Dönüşüm sadece tarayıcınızda yapılır. Renkleriniz asla bir sunucuya gönderilmez."
       }
@@ -561,7 +561,7 @@
       "title": "Sayı Tabanı Dönüştürücü",
       "shortDesc": "Sayıları ikili, sekizli, onluk ve onaltılı tabanlar arasında dönüştürün.",
       "seo": {
-        "title": "Sayı Tabanı Dönüştürücü - İkili, Sekizli, Onluk, Onaltılı",
+        "title": "Sayı Tabanı Dönüştürücü - İkili'den Onaltılı'ya Çevrimiçi",
         "description": "2, 8, 10 ve 16 tabanları arasındaki tam sayıları dönüştürün. Bazlara göre rakamları doğrulayın, yaygın önekleri kabul edin ve sonuçları anında kopyalayın."
       },
       "binary": "İkili",
@@ -587,7 +587,173 @@
         "featuresTitle": "Dönüşüm ayrıntıları",
         "features": "Önek desteği::0b, 0o ve 0x önekleri tanınır.\nİşaretli değerler::Baştaki eksi işareti tabanlar arasında korunur.\nBüyük tamsayı işlemleri::Büyük tamsayılar kayan nokta yuvarlamasından kaçınır.\nRakam doğrulama::Seçilen taban için geçersiz rakamlar erken reddedilir.",
         "useCasesTitle": "Sayı tabanlarını ne zaman dönüştürmelisiniz?",
-        "useCases": "Bit maskelerini okuyun::İkili veya onaltılı olarak yazılmış bayrakları inceleyin.\nRenkleri kontrol edin::Ondalık kanallar ile onaltılı değerler arasında geçiş yapın.\nBilgisayar bilimi kavramlarını öğretin::Konumsal gösterimin nasıl çalıştığını gösterin.\nProtokollerde hata ayıklayın::Ağ değerlerini kaydedilen tamsayılarla karşılaştırın."
+        "useCases": "Bit maskelerini okuyun::İkili veya onaltılı olarak yazılmış bayrakları inceleyin.\nRenkleri kontrol edin::Ondalık kanallar ile onaltılı değerler arasında geçiş yapın.\nBilgisayar bilimi kavramlarını öğretin::Konumsal gösterimin nasıl çalıştığını gösterin.\nProtokollerde hata ayıklayın::Ağ değerlerini kaydedilen tamsayılarla karşılaştırın.",
+        "mistakesTitle": "Yaygın hatalar ve sınırlar",
+        "limitsTitle": "Sınırlar",
+        "mistakes": "Onsekizli sistemde sekiz veya dokuz kullanımı::Bu rakamlar taban 8'de mevcut değildir.\nOnaltılı harfleri unutmak::G ve üzeri geçerli onaltılı basamak değildir.\nÖnekleri karıştırmak::Ondalık bir değerdeki 0x öneki onaltılı olarak kabul edilir.",
+        "limits": "Yalnızca tam sayılar desteklenir; kesirli sayılar ve üsler kabul edilmez.\nÇok uzun girdilerin biçimlendirilmesi yavaş olabilir.\nNegatif onaltılı çıktı, iki'li tamamlayıcı biçim yerine eksi işaretini korur.",
+        "faqTitle": "Sıkça sorulan sorular",
+        "faqs": "Negatif sayılar destekliyor musunuz?::Evet, başındaki eksi işareti tüm dört taban boyunca korunur. -10 girildiğinde, iki'lik tamamlayıcı gösterimi yerine negatif bir ikili, sekizli ve onaltılı değer elde edilir. İşaret her dönüşüm adımında taşınır, böylece sonucu elle yeniden uygulamak zorunda kalmadan tabanlar arasında geçiş yapabilirsiniz.\nGeçersiz rakam hatası neden alıyorum?::Her taban yalnız belirli bir rakam kümesini kabul eder. İkili 0 ve 1'i, sekizli 0'dan 7'ye kadar olanları, ondalık 0'dan 9'a kadar olanları kabul eder; onaltılı ise A'dan F'ye kadar harfleri ekler. Başka bir karakter o tabanda bir değeri kodlayamaz, bu yüzden dönüştürmeden önce kaynak tabanı değiştirin veya bu karakteri kaldırın.\nÖneki olan bir değeri yapıştırabilir miyim?::Evet, yaygın önekler otomatik olarak tanınır ve kaldırılır. 0b, 0o veya 0x ile başlayan değerler, harf büyüklüğüne bakılmaksızın sırasıyla ikili, sekizli veya onaltılı olarak okunur. Seçili kaynak tabanla çakışan bir önek de yapıştırabilirsiniz; bu durumda önek geçerli olur, bu yüzden dönüştürülen çıktıyı kopyalamadan önce tabanı tekrar kontrol edin.\nSayı ne kadar büyük olabilir?::Araç BigInt aritmetiği kullandığı için JavaScript'in güvenli tamsayı aralığından kaynaklanan sabit bir üst sınır yok. Boyut, genellikle kullanılabilir bellek ve tarayıcınızın çok uzun dizeleri ne kadar hızlı biçimleyebileceğine bağlıdır. Yüzlerce rakam içeren girdiler doğru şekilde dönüştürülür, ancak rakam sayısı arttıkça görüntüleme yavaşlayabilir.",
+        "trustTitle": "Tasarımdan itibaren gizlilik",
+        "trustBody": "Tüm işlemler yerel olarak çalışır. Hiçbir istek gönderilmez ve hiçbir değer saklanmaz."
+      }
+    },
+    "timestamp-converter": {
+      "title": "Zaman Damgası Dönüştürücü",
+      "shortDesc": "Unix zaman damgalarını tarihe ve tarihten zaman damgasına dönüştürün.",
+      "seo": {
+        "title": "Zaman Damgası Dönüştürücü - Unix Epoch'tan Tarih ve ISO Formatına",
+        "description": "Unix saniyelerini veya milisaniyeleri UTC ve yerel tarihler, ISO dizgeleri veya bir tarihi tekrar epoch zamanına dönüştürün. Tüm işlem tarayıcınızda gerçekleşir."
+      },
+      "seconds": "Saniye",
+      "milliseconds": "Milisaniye",
+      "utc": "UTC",
+      "local": "Yerel zaman",
+      "iso": "ISO 8601",
+      "dateTime": "Tarih ve saat",
+      "useNow": "Geçerli zamanı kullan",
+      "invalidTimestamp": "Geçerli bir Unix zaman damgası veya tarih ve saat girin.",
+      "page": {
+        "byline": "Geliştirici araçları",
+        "directAnswer": "Unix zaman damgalarını okunabilir UTC ve yerel tarihlere dönüştürün veya bir tarih ve saati saniye ve milisaniyeye geri dönüştürün. Zaman birimi arasında geçiş yapın, ISO dizelerini kopyalayın ve veriyi hiçbir yere gönderilmeden sınır tarihlerini kontrol edin. Başlangıç noktası olarak geçerli zamanı kullanın.",
+        "aboutTitle": "Zaman damgası dönüştürücü hakkında",
+        "contextualLink": "Kayıt dosyaları genellikle kodlanmış değerler de içerir. %%TOOL%% tarihleri okumadan önce bunları çözebilir.",
+        "whatIsTitle": "Unix zaman damgası nedir?",
+        "whatIs": "Unix zaman damgası, 1 Ocak 1970 00:00 UTC tarihinden itibaren geçen saniyeleri sayar. Birçok API ayrıca milisaniye kullanır; bu, aynı sayının bin ile çarpılmasıdır.\n\nSayı saat diliminden bağımsız olduğundan, bir anı depolamak için güvenli bir yoldur. Görüntülemek için hala bir saat dilimi gerekli olduğundan bu araç hem UTC'yi hem de yerel zamanınızı gösterir.",
+        "howToTitle": "Zaman damgası nasıl dönüştürülür?",
+        "howTo": "Değeriniz için saniye veya milisaniye seçin.\nUTC, yerel ve ISO çıktısını görmek için zaman damgasını yapıştırın.\nTarihi tekrar epoch birimine dönüştürmek için tarih paneline geçin.\nHızlı bir örnek için şu anki zaman düğmesini kullanın.",
+        "exampleTitle": "Örnek dönüşüm",
+        "exampleLabel": "Bildiğiniz bir epoch değeri",
+        "exampleInput": "1700000000",
+        "exampleOutput": "UTC: 2023-11-14T22:13:20Z\nYerel: tarayıcınızın saat dilimi\nMilisaniye: 1700000000000",
+        "exampleNote": "Yerel sonuç, cihazınızdaki saat dilimi ayarına bağlıdır.",
+        "featuresTitle": "Bu aracın gösterdikleri",
+        "features": "İki yönlü dönüşüm::Epok'tan tarihe ve tarihten epoka.\nBirim seçimi::Saniye veya milisaniye, büyüklük ipuçlarıyla.\nÇoklu çıktı::UTC, yerel saat ve ISO 8601 dizeleri.\nGeçerli zaman::Tek tıklamayla şu anı ekler.",
+        "useCasesTitle": "Zaman damgalarını ne zaman dönüştüreceksiniz?",
+        "useCases": "Günlükleri oku::Hata ayıklama sırasında epok değerlerini tarihe dönüştür.\nOlayları karşılaştır::Farklı sistemlerden gelen kayıtları standartlaştır.\nSona erme tarihini kontrol et::Yerel saatte bir token son tarihini doğrula.\nRapor yaz::Belgelere okunabilir tarihler ekle.",
+        "mistakesTitle": "Yaygın hatalar ve sınırlar",
+        "limitsTitle": "Sınırlar",
+        "mistakes": "Saniye ve milisaniyeyi karıştırmak::On üç haneli bir değer genellikle milisaniyedir.\nZaman dilimini görmezden gelmek::UTC ve yerel çıktı, zaman diliminize göre farklıdır.\nHer değerin geçerli olduğunu varsaymak::Epoktan önceki tarihler negatif zaman damgası gerektirir.",
+        "limits": "JavaScript tarihleri yaklaşık ±8.64e15 milisaniyeyle sınırlıdır.\nMilisaniyeden küçük hassasiyet korunmaz.\n1970'den önceki tarihsel takvim ayrıntıları modellenmemiştir.",
+        "faqTitle": "Sık sorulan sorular",
+        "faqs": "Değerim saniye mi yoksa milisaniye mi olduğunu nasıl anlarım?::Rakam sayısı en hızlı ipucudur: 13 haneli değerler neredeyse her zaman milisaniye, 10 haneli değerler genellikle saniyedir. İlk sonuç beklenmedik bir tarihe düşerse birim seçicisini değiştirip tekrar dönüştürün. Diğer panelde bilinen bir tarihi yapıştırarak hangi birimin değerinizi yeniden ürettiğini de görebilirsiniz.\nYerel saat UTC'den neden farklı?::Yerel saat, cihazınızın saat dilimi farkını ve o tarihte geçerli olan yaz saati kuralını ekler. UTC, API'ler ve günlükler tarafından kullanılan tek bir sabit referanstır, bu yüzden aynı an konumunuza bağlı olarak farklı bir saat olarak görüntülenebilir. Her iki çıktı da aynı anı tanımlar, sadece farklı bölgelere göre ifade edilir.\nBir tarihi tekrar zaman damgasına dönüştürebilir miyim?::Evet, tarih panelı ters dönüşümü yapar. Bir tarih ve saat seçin; araç eşdeğer Unix zaman damgasını hem saniye hem de milisaniye olarak döndürür. İki değerden birini API isteği veya günlük girdisine kopyalayabilirsiniz. Sonuç tarayıcınızın saat dilimini yansıtır, çünkü aynı saatle gösterilen zaman farklı bölgelerde farklı anlara karşılık gelir.\nGeçersiz tarihlerde ne olur?::Araç, yanıltıcı bir tarih yerine satır içi bir hata gösterir. 13. ay veya 30 Şubat gibi imkansız kombinasyonlar geçerli bir an üretemeyeceği için hiçbir şey sessizce sonraki aya ileri alınmaz. Alanları düzeltin; tarih geçerli olduğunda UTC, yerel ve ISO çıktıları birlikte güncellenecektir.",
+        "trustTitle": "Tasarımla gizlilik",
+        "trustBody": "Tarih hesaplamaları tarayıcınızda çalışır. Hiçbir zaman damgası iletilmez veya saklanmaz."
+      }
+    },
+    "data-storage-converter": {
+      "title": "Veri depolama dönüştürücü",
+      "shortDesc": "SI ve ikili depolama birimleri arasında dönüştürün.",
+      "seo": {
+        "title": "Veri Depolama Dönüştürücü - KB, MB, GB ve GiB",
+        "description": "Depolama boyutlarını ondalık SI ve ikili IEC birimleri arasında dönüştürün. KB, MB ve GB'yi anında karşılaştırın, yönü değiştirin ve yerel ayara uygun sonuçları görün."
+      },
+      "system": "Birim sistemi",
+      "si": "SI · taban 1000",
+      "iec": "IEC · taban 1024",
+      "invalidValue": "Negatif olmayan bir sayı girin.",
+      "page": {
+        "byline": "Ölçüm araçları",
+        "directAnswer": "Depolama boyutlarını ondalık SI birimleri ile ikili IEC birimleri arasında dönüştürün. Bir değer girin, kaynak ve hedef birimleri seçin, ardından diğer yönü kontrol etmek için birimleri değiştirin. Sonuçlar yerel ayarınızdaki sayı biçimini kullanır ve tarayıcı sekmesinde kalır.",
+        "aboutTitle": "Depolama Dönüştürücü Hakkında",
+        "contextualLink": "Makineye yönelik değerler bazen farklı bir kodlama gerektirir; %%TOOL%% bunu ayrı olarak işler.",
+        "whatIsTitle": "Neden iki farklı depolama birim sistemi var?",
+        "whatIs": "Depolama satıcıları SI birimlerini kullanır; burada bir kilobayt 1000 bayttır. İşletim sistemleri genellikle IEC birimlerini kullanır; burada bir kibibayt 1024 bayttır. Etiketler benzer görünse de temel çarpanlar farklıdır.\n\nBu fark ölçeklendikçe büyür: bir terabaytlık sürücü, sistem tarafından tebibayt olarak bildirildiğinde daha az kullanılabilir alan gösterir. Bu dönüştürücü, seçilen sistemi açıkça belirtir.",
+        "howToTitle": "Depolama birimlerini nasıl dönüştüreceksiniz?",
+        "howTo": "Değer alanına sayısal bir boyut girin.\nİlk seçiciden kaynak birimi seçin.\nİkinci seçiciden hedef birimi seçin.\nYönü ters çevirmek için değiştir düğmesini kullanın, ardından sonucu kopyalayın.",
+        "exampleTitle": "Örnek dönüşüm",
+        "exampleLabel": "Ondalık megabayt'tan gibibayt'a",
+        "exampleInput": "1000 MB",
+        "exampleOutput": "0.93 GiB (ikimlik birimler kullanılarak)",
+        "exampleNote": "Birim sistemini değiştirdiğinizde çarpan da değişir, bu yüzden aynı giriş farklı bir çıktı verebilir.",
+        "featuresTitle": "Dönüştürücünün özellikleri",
+        "features": "Her iki sistem::SI birimleri B'den TB'ye ve IEC birimleri TiB'ye kadar.\nYönü değiştir::Tek tıkla kaynak ve hedefi ters çevirin.\nYerel ayar biçimi::Sayılar tarayıcınızın yerel ayar kurallarına göre biçimlendirilir.\nNet hata mesajları::Negatif veya sayısal olmayan girişler erken reddedilir.",
+        "useCasesTitle": "Depolama boyutlarını ne zaman dönüştürmelisiniz",
+        "useCases": "Disk alanını kontrol et::Sürücü etiketini işletim sistemi tarafından gösterilen değerle karşılaştırın.\nYüklemeleri planla::Kotaya kaç dosya sığacağını tahmin edin.\nTeknik özellikleri oku::Üretici sayılarını ikimlik birimlere dönüştürün.\nUyarıları açıkla::Araçlar arasında bildirilen boyutların neden farklı olduğunu gösterin.",
+        "mistakesTitle": "Yaygın hatalar ve sınırlar",
+        "limitsTitle": "Sınırlar",
+        "mistakes": "KB'nin 1024 bayt anlamına geldiğini varsaymak::Bunun IEC sisteminde KiB olduğu anlamına gelir.\nHesaplama sırasında sistemleri karıştırmak::Tüm dönüşüm için tek bir çarpan seçin.\nNegatif boyut girmek::Depolama miktarları negatif olamaz.",
+        "limits": "Saniyedeki megabit gibi bit ve bayt hızı birimleri dahil değildir.\nSonuçlar görüntüleme için yuvarlanır, kesin muhasebe için değil.\nÇok büyük değerler kayan noktalı matematik kullanır ve hassasiyeti kaybedebilir.",
+        "faqTitle": "Sık sorulan sorular",
+        "faqs": "Sürücüm reklamlandığı kadar yer göstermiyor, neden?::Üreticiler ve işletim sistemleri depolamayı farklı şekilde sayar, bu yüzden aynı sürücü yazılımlarda daha küçük bir sayı gösterir. Satıcılar ondalık SI birimlerini kullanır; burada bir terabayt 1.000.000.000.000 bayttır, ancak birçok sistem ikili tebibayt bildirir. 1 terabaytlık bir sürücü yaklaşık 0,91 TiB olarak görünür, hiçbir kapasite eksik olmasa bile.\nKiB ne anlama gelir?::KiB, IEC sisteminde kibibayt için kullanılan semboldür ve 1024 bayta eşittir. SI etiketi KB genellikle kilobayt, yani 1000 baytı ifade eder; bu iki isim yakın ancak birbirinin yerine kullanılamaz. Dönüştürücüde doğru sistemi seçmek hesaplamanızın tutarlı olmasını sağlar ve küçük ama büyücek bir hatayı önler.\nGigabiti gigabyte'a dönüştürebilir miyim?::Hayır, bu dönüştürücü veri aktarım hızı yerine depolama miktarını işler. Gigabitiniz varsa, önce değeri sekize bölerek gigabyte elde edin, ardından sayıyı buraya yapıştırın. Bitleri baytlardan ayırmak, dosya boyutlarını ağ hızlarıyla karşılaştırırken sekiz katlık hatayı önler.\nSonuç yerel ayarımı mı kullanır?::Evet, görüntülenen sayı tarayıcınızın yerel ayarını Intl.NumberFormat aracılığıyla takip eder. Bu yüzden gruplama ayraçları ve ondalık işaretleri cihazınızda başka yerlerde gördüğünüzle eşleşir. Temel değer değişmez, bu yüzden bir elektronik tabloya veya komut dosyasına kopyaladığınızda dönüşümün tam hassasiyeti korunur.",
+        "trustTitle": "Tasarımdan itibaren gizlilik odaklı",
+        "trustBody": "Hesaplamalar yerel olarak gerçekleşir. Hiçbir değer yüklenmez veya saklanmaz."
+      }
+    },
+    "slug-generator": {
+      "title": "Metinden Slug Oluşturucu",
+      "shortDesc": "Başlıkları temiz ve URL'ye uygun sluglara dönüştürün.",
+      "seo": {
+        "title": "Metinden Slug Oluşturucu - Hızlı ve Temiz URL Slugları",
+        "description": "Başlıklardan URL'ye uygun sluglar oluşturun. Ayırıcı seçin, aksanları ve noktalama işaretlerini kaldırın, yazdığınızı anlık olarak kopyalayın."
+      },
+      "separator": "Ayırıcı",
+      "hyphen": "Tire (-)",
+      "underscore": "Alt çizgi (_)",
+      "stripDiacritics": "Aksanları kaldır",
+      "page": {
+        "byline": "Yazı araçları",
+        "directAnswer": "Başlıkları temiz URL slug'larına dönüştürün. Tire (-) veya alt çizgi (_) ayırıcı seçin, aksanları ve noktalama işaretlerini kaldırın ve sonucu kopyalayın. Önizleme yazdığınız anda güncellenir, böylece yayınlamadan önce yinelenen veya çok uzun slug'ları erken görebilirsiniz.",
+        "aboutTitle": "Metinden Slug Oluşturucu Hakkında",
+        "contextualLink": "İyi bir slug temiz kaynak metinden başlar; %%TOOL%% önce başlığı düzenlemeye yardımcı olur.",
+        "whatIsTitle": "İyi bir URL slug'ı nasıl olmalı?",
+        "whatIs": "Bir slug, bir sayfayı tanımlayan URL'nin okunabilir kısmıdır.\n\nİyi slug'lar kısa, küçük harfli, kararlı ve kodlanması gereken karakter içermiyor.\n\nBu oluşturucu Unicode aksanlarını normalize eder, noktalama işaretlerini kaldırır, boşlukları tekilleştirir ve kelimeleri seçtiğiniz ayırıcı ile birleştirir; böylece bir CMS'e veya rota tanımına yapıştırabileceğiniz bir değer üretir.",
+        "howToTitle": "Slug nasıl oluşturulur?",
+        "howTo": "Giriş kutusuna bir başlık yapıştırın.\nTire veya alt çizgi ayırıcı seçin.\nAksanların kaldırılıp kaldırılmayacağını seçin.\nOluşturulan slug'ı kopyalayın ve CMS'nizde kontrol edin.",
+        "exampleTitle": "Örnek dönüşüm",
+        "exampleLabel": "Başlık bir adres haline gelir",
+        "exampleInput": "Kahve & Croissant: Paris Rehberi!",
+        "exampleOutput": "kahve-croissant-paris-rehberi",
+        "exampleNote": "Aksanlar, çıkarma etkinleştirildiğinde dönüştürülür ve '&' gibi semboller kaldırılır.",
+        "featuresTitle": "Oluşturucu ne yapar?",
+        "features": "Küçük harfli çıktı::Tüm harfler küçük harfe dönüştürülür.\nAyırıcı seçimi::Tek tıklamada tire veya alt çizgi.\nAksan kaldırma::Diakritik işaretler düz ASCII harflerine dönüşür.\nNoktalama temizliği::Fazla sembol ve boşluklar tekilleştirilir.",
+        "useCasesTitle": "Slug ne zaman oluşturulur?",
+        "useCases": "Yazılar yayımlanırken::Yeni makaleler için sabit adresler oluşturulur.\nDokümantasyon sayfaları adlandırılırken::Dokümantasyon URL'leri okunabilir tutulur.\nYönlendirmeler planlanırken::Geçişten önce eski ve yeni slug'lar karşılaştırılır.\nYinelenenlerden kaçınılırken::İçerik takvimindeki çakışmalar tespit edilir.",
+        "mistakesTitle": "Yaygın hatalar ve sınırlar",
+        "limitsTitle": "Sınırlar",
+        "mistakes": "Yayımlamadan sonra slug değiştirilirse::Yönlendirme olmadan mevcut bağlantılar bozulabilir.\nDurdurma kelimelerinin tutulması::Çok uzun slug'lar okunması ve paylaşılması daha zordur.\nAyırıcıların karıştırılması::Site başına tek bir biçim, URL'leri öngörülebilir tutar.",
+        "limits": "Diakritik işareti olmayan Latin dışı yazılar, dönüştürülmek yerine olduğu gibi korunur.\nEmojiler, kodlanmak yerine kaldırılır.\nUzunluk otomatik olarak kısaltılmaz.",
+        "faqTitle": "Sık sorulan sorular",
+        "faqs": "Aksanlı harfler ne olur?::Aksanlı harfler, aksan çıkarma seçeneği açıkken düz ASCII'ye dönüştürülür, bu yüzden café, cafe haline gelir. Oluşturucu, diyakritikleri kaldırmadan önce Unicode normalizasyonu uygular, bu sayede kelime URL'lerde okunabilir kalır. Yazılan karakterleri olduğu gibi korumak istiyorsanız seçeneği kapatın.\nNoktalama işaretleri neden kaldırıldı?::Noktalama işaretleri kaldırılır çünkü & ve iki nokta gibi karakterler ya URL kodlaması gerektirir ya da bir adrese gereksiz karmaşa ekler. Bunları çıkarmak, daha temiz ve daha kararlı bir slug bırakır; bu da okunmasını ve paylaşılmasını kolaylaştırır. Orijinal başlığınızda değişiklik yapılmaz; yalnızca oluşturulan çıktı basitleştirilir.\nTire yerine alt çizgi kullanabilir miyim?::Evet, alt çizgi ayracını seçerek herhangi bir zamanda alt çizgiye geçiş yapabilirsiniz. Bu durumda her kelime sınırı tire yerine alt çizgi kullanır. Ziyaretçiler ve arama motorlarının öngörülebilir ve tutarlı adresler görmesi için tüm sitenizde tek bir kurala sadık kalın.\nAraç uzun slug'ları kısaltır mı?::Hayır, oluşturucu tüm cümleyi tutar, bu yüzden hangi kelimelerin daha önemli olduğuna siz karar verirsiniz. Daha kısa bir adres gerekiyorsa bunun yerine kaynak başlığı düzenleyin. Bu yaklaşım beklenmedik kısaltmayı önler ve slug'larınız CMS'nize veya site haritanıza ulaşmadan önce aşırı uzun olanları tespit etmenize yardımcı olur.",
+        "trustTitle": "Tasarımdan itibaren gizlilik",
+        "trustBody": "Slug oluşturma tarayıcınızda gerçekleşir. Hiçbir başlık kaydedilmez veya yüklenmez."
+      }
+    },
+    "yaml-to-json": {
+      "title": "YAML'dan JSON'a dönüştürücü",
+      "shortDesc": "YAML yapılandırmasını biçimlendirilmiş JSON'a dönüştürün.",
+      "seo": {
+        "title": "YAML'dan JSON'a Dönüştürücü - Girinti Hatası Olmayan Çıktı",
+        "description": "Yaygın YAML haritalarını ve listelerini biçimlendirilmiş JSON'a dönüştürün. Girinti hatalarını giderin, boşlukları yapılandırın ve işleme yalnızca yerel olarak yapılır."
+      },
+      "indent": "Girinti",
+      "spaces": "Boşluklar",
+      "invalidYaml": "Bu YAML çözümlenemedi. Girintiyi ve tırnak işaretlerini kontrol edin.",
+      "unsupported": "YAML'ancaları ve özel etiketler desteklenmiyor.",
+      "page": {
+        "byline": "Geliştirici araçları",
+        "directAnswer": "YAML yapılandırmasını, bir API veya uygulamaya yapıştırabileceğiniz biçimlendirilmiş JSON'a dönüştürün. Ayrıştırıcı girintileri, listeleri, sayıları ve mantıksal değerleri işler ve hata oluşturan satırın tam olarak raporunu verir. Hiçbir şey yüklenmez; dönüşüm tarayıcı sekmenizde yerel olarak çalışır.",
+        "aboutTitle": "YAML'dan JSON'a Dönüştürücü Hakkında",
+        "contextualLink": "Sonuçtan yapılandırılmış bir tabloya ihtiyacınız varsa, %%TOOL%% kayıtları düzleştirebilir.",
+        "whatIsTitle": "YAML Nedir?",
+        "whatIs": "YAML, süslü parantez yerine girintiyi kullanan insan tarafından okunabilir bir veri formatıdır. Yapılandırma dosyalarında yaygınken, JSON API'ler ve JavaScript araçları tarafından daha geniş kabul görür.\n\nBu dönüştürücü, haritaları, listeleri, tırnaklı ve düz dizgileri, sayıları, mantıksal değerleri ve null'u içeren pratik bir YAML alt kümesini okur. Etiketleri veya anchor'ları değerlendirmez.",
+        "howToTitle": "YAML'ı JSON'a nasıl dönüştüreceksiniz",
+        "howTo": "YAML'ı giriş paneline yapıştırın.\nJSON girintisi için iki veya dört boşluk seçin.\nSağdaki biçimlendirilmiş JSON'u okuyun.\nKopyalayın veya .json dosyası olarak indirin.",
+        "exampleTitle": "Örnek dönüşüm",
+        "exampleLabel": "Küçük bir yapılandırma nesnesi",
+        "exampleInput": "name: Sample\nenabled: true\nports:\n  - 80\n  - 443",
+        "exampleOutput": "{\n  \"name\": \"Örnek\",\n  \"enabled\": true,\n  \"ports\": [80, 443]\n}",
+        "exampleNote": "Tırnak içindeki değerler dize olarak kalır; true, false, null ve sayılar ise JSON sabitleri haline gelir.",
+        "featuresTitle": "Çözücü tarafından desteklenenler",
+        "features": "İç içe haritalar::Girintili anahtarlar iç içe JSON nesneleri haline gelir.\nListeler::Blok dizileri JSON dizileri haline gelir.\nSkaler türler::Sayılar, boolean değerler ve null algılanır.\nGirinti kontrolü::Çıktı iki veya dört boşluklu girintide olur.",
+        "useCasesTitle": "YAML'ı JSON'a çevirmeniz gereken durumlar",
+        "useCases": "Uygulamaları yapılandırma::Yapılandırma dosyasını JSON tabanlı bir araca aktarma.\nAPI'leri çağırma::YAML notlarından istek gövdesi hazırlama.\nFormatları karşılaştırma::Bir yapılandırmanın JSON'a nasıl eşlendiğini inceleme.\nVerileri doğrulama::Dağıtımdan önce girinti hatalarını tespit etme.",
+        "mistakesTitle": "Yaygın hatalar ve sınırlar",
+        "limitsTitle": "Sınırlar",
+        "mistakes": "Sekme karakterlerinin kullanımı::YAML girintileme için boşluk gerektirir.\nGirintileme seviyelerinin karıştırılması::Kardeş anahtarlar tam olarak hizalanmalıdır.\nİşaretçilerin beklenmesi::Referanslar ve özel etiketler çözümlenmez.",
+        "limits": "Çok satırlı blok skalerler düz metin olarak değerlendirilir.\nKarmaşık anahtarlar ve birleştirme anahtarları desteklenen alt küme dışındadır.\nÇok büyük belgeler tarayıcıda yavaş görüntülenebilir.",
+        "faqTitle": "Sık sorulan sorular",
+        "faqs": "Dosyam neden ayrıştırılamadı?::Çoğu hata, kaynak metindeki sekme karakterleri veya tutarsız girintilemeden kaynaklanır. Kardeş anahtarların aynı sütunda hizalandığından ve iç içe değerlerin daha sağda olduğundan emin olun. Ayrıştırıcı da boşluk karakteri bekler, bu yüzden dönüşümü tekrar denemeden önce tüm sekme karakterlerini değiştirin.\nBoolean ve sayılar dönüştürülür mü?::Evet, alıntısız true, false, null ve sayısal değerler otomatik olarak eşleşen JSON türlerine dönüşür. Alıntı içindeki değerler dize olarak kalır, bu yüzden \"true\" metin olarak kalırken true bir boolean olur. Bu ayrım, sonucu türleri sıkı bir şekilde doğrulayan bir API'ye yapıştırdığınızda önemlidir.\nİşaretçiler ve takma adları yeniden kullanabilir miyim?::Hayır, işaretçiler, takma adlar ve özel etiketler bu ayrıştırıcının desteklediği alt kümenin dışında tutulmuştur. Dilbilgisinin küçük tutulması, her dönüşümü belirleyici ve güvenli kılar. Yapıştırmadan önce paylaşılan değerleri düz haritalara veya listelere genişletin, aracı geri kalanı normal şekilde ele alacaktır.\nYapılandırma dosyam yükleniyor mu?::Hayır, yapılandırmanız asla yüklenmez veya bir sunucuya gönderilmez. Ayrıştırma ve biçimlendirme tamamen tarayıcı sekmenizin içinde gerçekleşir ve sayfayı kapattıktan sonra hiçbir şey saklanmaz. Özel kimlik bilgilerini veya iç ayarları güvenle giriş paneline yapıştırabilirsiniz."
       }
     }
   },
