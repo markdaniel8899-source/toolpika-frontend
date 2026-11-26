@@ -37,6 +37,12 @@ const BADGE_TONE: Record<BmiCategory, "success" | "warning" | "danger"> = {
   obese: "danger",
 };
 
+// Neutral starting measurements for each unit system, never a target weight.
+const INITIAL = {
+  metric: { weight: 70, height: 170 },
+  imperial: { weight: 154, height: 67 },
+};
+
 function parseValue(raw: string): number | null {
   const trimmed = raw.trim();
   if (!trimmed) return null;
@@ -48,14 +54,15 @@ export default function BmiCalculator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
   const locale = useLocale();
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [showHealthyRange, setShowHealthyRange] = useState(true);
   const { options, update, reset: resetOptions } = usePersistedOptions<{ system: UnitSystem }>(
     "toolpika:bmi-calculator",
     { system: DEFAULTS.system },
   );
   const system = options.system;
+  const starting = system === "metric" ? INITIAL.metric : INITIAL.imperial;
+  const [weight, setWeight] = useState(() => String(starting.weight));
+  const [height, setHeight] = useState(() => String(starting.height));
+  const [showHealthyRange, setShowHealthyRange] = useState(true);
 
   const parsedWeight = parseValue(weight);
   const parsedHeight = parseValue(height);
@@ -103,23 +110,24 @@ export default function BmiCalculator() {
     [tw],
   );
 
-  const reportText = useMemo(
-    () =>
-      ready && calculation
-        ? formatBmiReport(calculation, categoryLabel(calculation.category), {
-            title: tw("bmi-calculator.reportTitle"),
-            bmi: tw("bmi-calculator.reportBmi"),
-            category: tw("bmi-calculator.reportCategory"),
-            healthy: tw("bmi-calculator.reportHealthy"),
-            formula: tw("bmi-calculator.reportFormula"),
-            note: tw("bmi-calculator.reportNote"),
-            unit: system === "metric"
-              ? tw("bmi-calculator.unitKg")
-              : tw("bmi-calculator.unitLb"),
-          })
-        : "",
-    [ready, calculation, categoryLabel, tw, system],
-  );
+  const reportText = useMemo(() => {
+    if (!ready || !calculation) return "";
+    const report = formatBmiReport(calculation, categoryLabel(calculation.category), {
+      title: tw("bmi-calculator.reportTitle"),
+      bmi: tw("bmi-calculator.reportBmi"),
+      category: tw("bmi-calculator.reportCategory"),
+      healthy: tw("bmi-calculator.reportHealthy"),
+      formula: tw("bmi-calculator.reportFormula"),
+      note: tw("bmi-calculator.reportNote"),
+      unit: system === "metric"
+        ? tw("bmi-calculator.unitKg")
+        : tw("bmi-calculator.unitLb"),
+    });
+    const rule = system === "metric"
+      ? tw("bmi-calculator.formulaRuleMetric")
+      : tw("bmi-calculator.formulaRuleImperial");
+    return `${report}\n${tw("bmi-calculator.formulaTitle")}: ${rule}`;
+  }, [ready, calculation, categoryLabel, tw, system]);
 
   const handleCopyShortcut = useCallback(() => {
     if (reportText) void navigator.clipboard.writeText(reportText).catch(() => {});
@@ -128,8 +136,8 @@ export default function BmiCalculator() {
 
   const handleSample = () => {
     update({ system: DEFAULTS.system });
-    setWeight(String(DEFAULTS.weight));
-    setHeight(String(DEFAULTS.height));
+    setWeight(String(INITIAL.metric.weight));
+    setHeight(String(INITIAL.metric.height));
     setShowHealthyRange(true);
   };
 
@@ -193,7 +201,11 @@ export default function BmiCalculator() {
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ToolField label={weightLabel} htmlFor="tp-bmi-weight">
+            <ToolField
+              label={weightLabel}
+              htmlFor="tp-bmi-weight"
+              hint={tw("bmi-calculator.weightHint")}
+            >
               <NumberStepper
                 id="tp-bmi-weight"
                 value={weight}
@@ -207,7 +219,11 @@ export default function BmiCalculator() {
                 onValueChange={setWeight}
               />
             </ToolField>
-            <ToolField label={heightLabel} htmlFor="tp-bmi-height">
+            <ToolField
+              label={heightLabel}
+              htmlFor="tp-bmi-height"
+              hint={tw("bmi-calculator.heightHint")}
+            >
               <NumberStepper
                 id="tp-bmi-height"
                 value={height}
@@ -223,7 +239,12 @@ export default function BmiCalculator() {
             </ToolField>
           </div>
 
+          <p className="tp-tool-hint">{tw("bmi-calculator.defaultsNote")}</p>
+
           <div className="tp-tool-group tp-tool-group--flush">
+            <p className="tp-tool-group-title">
+              {tw("bmi-calculator.displayOptionsTitle")}
+            </p>
             <div className="tp-check-row">
               <ToggleSwitch
                 id="tp-bmi-show-healthy-range"
@@ -305,8 +326,10 @@ export default function BmiCalculator() {
 
               <div className="flex flex-col gap-1">
                 <span className="tp-tool-label">{tw("bmi-calculator.formulaTitle")}</span>
-                <div className="tp-tool-url">
-                  <code dir="ltr">{calculation.formula}</code>
+                <div className="tp-tool-url whitespace-pre-line">
+                  <code dir="ltr">
+                    {`${system === "metric" ? tw("bmi-calculator.formulaRuleMetric") : tw("bmi-calculator.formulaRuleImperial")}\n${calculation.formula}`}
+                  </code>
                 </div>
               </div>
 

@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type SelectOption = { value: string; label: string };
+export type SelectOption = { value: string; label: string; group?: string };
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -62,11 +62,9 @@ export function ThemedSelect({
       if (!trigger || !menu) return;
       const rect = trigger.getBoundingClientRect();
       const menuRect = menu.getBoundingClientRect();
-      const below = rect.bottom + 6;
-      const top =
-        below + menuRect.height > window.innerHeight
-          ? Math.max(8, rect.top - 6 - menuRect.height)
-          : below;
+      // Always open downward; the menu scrolls internally instead of flipping
+      // over the field and covering the controls above it.
+      const top = rect.bottom + 6;
       setPosition({
         top,
         left: Math.max(8, Math.min(rect.left, window.innerWidth - menuRect.width - 8)),
@@ -153,24 +151,28 @@ export function ThemedSelect({
               }}
             >
               {options.map((option, index) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="option"
-                  aria-selected={option.value === value}
-                  className={cn(
-                    "tp-dropdown-option",
-                    index === active && "is-highlighted",
-                    option.value === value && "is-selected",
-                  )}
-                  onMouseEnter={() => setActive(index)}
-                  onClick={() => commit(index)}
-                >
-                  <span>{option.label}</span>
-                  {option.value === value ? (
-                    <Check className="tp-icon" aria-hidden="true" />
+                <div key={option.value}>
+                  {option.group && options[index - 1]?.group !== option.group ? (
+                    <div className="tp-select-group">{option.group}</div>
                   ) : null}
-                </button>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={option.value === value}
+                    className={cn(
+                      "tp-dropdown-option",
+                      index === active && "is-highlighted",
+                      option.value === value && "is-selected",
+                    )}
+                    onMouseEnter={() => setActive(index)}
+                    onClick={() => commit(index)}
+                  >
+                    <span>{option.label}</span>
+                    {option.value === value ? (
+                      <Check className="tp-icon" aria-hidden="true" />
+                    ) : null}
+                  </button>
+                </div>
               ))}
             </div>,
             document.body,

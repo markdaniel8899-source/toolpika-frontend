@@ -1370,7 +1370,29 @@
         "faqs": "Are my images uploaded?::No. The file is decoded and drawn on a canvas inside this tab, and the output blob is created by that same page. Nothing is sent to a server. Closing the tab discards the image, and the download is assembled locally through a temporary object URL.\nWhat does unlocked aspect ratio do?::Unlocked mode preserves the source ratio and fits it inside both numbers you enter. A 1600 by 1200 photo asked for 800 by 800 becomes 800 by 600. Choose the width or height lock when a particular dimension must be exact.\nWhy is quality disabled for PNG?::PNG uses lossless compression, so a quality value would not change the encoded bytes. The slider is disabled and the hint says why. Switch to JPEG or WebP if you want a smaller file and are willing to trade a little detail for compression.\nWhat happens to transparent pixels?::PNG and WebP keep the alpha channel, so transparent areas stay transparent. JPEG cannot store alpha, so the tool fills the canvas with the page surface before drawing. If a transparent background matters, choose PNG or WebP in the result pane.\nWhy was my image rejected?::Only JPEG, PNG and WebP files up to 20 MB are accepted because the browser has to decode them in memory. Convert other formats first or compress a very large photo. If a valid file still fails, re-save it from your image editor.\nCan I make a huge poster-size image?::Width and height are capped at 8192 pixels per side. Browsers enforce canvas limits that vary by device, so a very large output can fail even below that number. For print-sized artwork, use desktop software with a larger canvas budget.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika team. Output comes from the browser's canvas encoder at the format and quality you pick in the result pane, with no upload step. Updated 25 November 2026."
-      }
+      },
+      "keepAspectRatio": "Keep aspect ratio",
+      "customDimensions": "Custom dimensions",
+      "customDimensionsSelect": "Select a size",
+      "chooseFiles": "Choose files",
+      "dropZoneTitle": "Drag & drop images",
+      "dropZoneHint": "JPEG, PNG or WebP up to 20 MB",
+      "groupCommon": "Common sizes",
+      "groupWeb": "Web",
+      "groupSocial": "Social media",
+      "groupInstagram": "Instagram",
+      "sizeSmall": "Small: 640 × 480",
+      "sizeMedium": "Medium: 1280 × 720",
+      "sizeLarge": "Large: 1920 × 1080",
+      "sizeWebHero": "Web Hero: 1920 × 1080",
+      "sizeBlogPost": "Blog Post: 800 × 600",
+      "sizeYouTube": "YouTube: 1280 × 720",
+      "sizeFacebook": "Facebook: 1200 × 630",
+      "sizeLinkedIn": "LinkedIn: 1200 × 1200",
+      "sizeInstagramSquare": "Instagram Square: 1080 × 1080",
+      "sizeInstagramPortrait": "Instagram Portrait: 1080 × 1350",
+      "sizeInstagramLandscape": "Instagram Landscape: 1080 × 566",
+      "sizeInstagramStory": "Instagram Story: 1080 × 1920"
     },
     "catCalculator": "Calculators",
     "remove-duplicate-lines": {
@@ -2397,7 +2419,15 @@
       "frequencyWeekly": "Weekly (52)",
       "frequencyDaily": "Daily (365)",
       "frequencyCustom": "Custom",
-      "showSchedule": "Show year by year table"
+      "showSchedule": "Show year by year table",
+      "principalHint": "Starting amount only. Extra deposits are not included.",
+      "yearsHint": "Whole years, from 1 to 100.",
+      "frequencyHint": "How many times interest is added to the balance each year.",
+      "displayOptionsTitle": "Display options",
+      "defaultsNote": "Starting values are examples you can change, not a recommendation.",
+      "formulaTitle": "How we calculated it",
+      "formula": "A = P(1 + r/n)^(nt)",
+      "formulaHint": "P is the starting amount, r is the annual rate as a decimal, n is compounds per year and t is years. Interest earned is A minus P."
     },
     "loan-emi-calculator": {
       "title": "Loan EMI Calculator",
@@ -2461,7 +2491,13 @@
       "tenureUnitLabel": "Tenure unit",
       "tenureMonths": "Months",
       "tenureYears": "Years",
-      "showAmortisation": "Show amortisation preview"
+      "showAmortisation": "Show amortisation preview",
+      "principalHint": "Amount you borrow. The payment updates as you type.",
+      "displayOptionsTitle": "Display options",
+      "defaultsNote": "Starting values are examples you can change, not a recommendation.",
+      "formulaTitle": "How we calculated it",
+      "formula": "EMI = P r (1 + r)^n / ((1 + r)^n - 1)",
+      "formulaHint": "P is the loan amount, r is the monthly rate (annual rate divided by 1200) and n is the number of months. At a zero rate the payment is P divided by n."
     },
     "bmi-calculator": {
       "title": "BMI Calculator",
@@ -2525,7 +2561,13 @@
         "trustTitle": "About this tool",
         "trustBody": "Applies metric and imperial BMI formulas with WHO adult cutoffs and a healthy weight span. Reviewed 26 November 2026."
       },
-      "showHealthyRange": "Show healthy weight range"
+      "showHealthyRange": "Show healthy weight range",
+      "weightHint": "Your weight in the selected unit, entered as a number.",
+      "heightHint": "Your height in the selected unit, entered as a single number.",
+      "displayOptionsTitle": "Display options",
+      "defaultsNote": "Starting values are examples you can change, not a target.",
+      "formulaRuleMetric": "BMI = kg / m²",
+      "formulaRuleImperial": "BMI = 703 × lb / in²"
     },
     "pomodoro-timer": {
       "title": "Pomodoro Timer",

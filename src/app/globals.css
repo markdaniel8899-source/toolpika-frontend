@@ -8715,6 +8715,15 @@ html:lang(hi) .tp-tool-hero-accent {
   width: 100%;
 }
 
+.tp-select-group {
+  padding: 8px 10px 4px;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .tp-select-portal-menu {
   z-index: 200;
   margin: 0;

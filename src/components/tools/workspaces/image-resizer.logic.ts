@@ -10,7 +10,7 @@ export const MAX_CANVAS_SIDE = 8192;
 export const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 
 export type ImageFormat = (typeof ACCEPTED_TYPES)[number];
-export type AspectLock = "width" | "height" | "auto";
+export type AspectLock = "width" | "height" | "auto" | "free";
 
 export interface Size {
   width: number;
@@ -56,6 +56,13 @@ export function fitWithin(
   const height = positive(targetH);
 
   const safeWidth = (value: number) => Math.max(1, Math.round(value));
+
+  if (lock === "free") {
+    return {
+      width: safeWidth(width ?? sw),
+      height: safeWidth(height ?? sh),
+    };
+  }
 
   if (lock === "width") {
     const w = width ?? (height ? height * ratio : sw);

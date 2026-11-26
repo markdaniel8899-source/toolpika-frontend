@@ -24,6 +24,10 @@ import {
 
 const ERROR_ID = "tp-ci-error";
 
+// A neutral example, never a suggested rate or term. The logic file keeps its
+// own defaults for reference, so the starting point lives here in the UI.
+const INITIAL = { ...DEFAULTS, annualRate: 10 };
+
 function parseValue(raw: string): number | null {
   const trimmed = raw.trim();
   if (!trimmed) return null;
@@ -35,11 +39,11 @@ export default function CompoundInterestCalculator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
   const locale = useLocale();
-  const [principal, setPrincipal] = useState("");
-  const [rate, setRate] = useState("");
-  const [years, setYears] = useState("");
-  const [compounds, setCompounds] = useState("");
-  const [frequency, setFrequency] = useState("12");
+  const [principal, setPrincipal] = useState(String(INITIAL.principal));
+  const [rate, setRate] = useState(String(INITIAL.annualRate));
+  const [years, setYears] = useState(String(INITIAL.years));
+  const [compounds, setCompounds] = useState(String(INITIAL.compoundsPerYear));
+  const [frequency, setFrequency] = useState(String(INITIAL.compoundsPerYear));
   const [showSchedule, setShowSchedule] = useState(true);
   const { copy, reset } = useCopyFeedback();
 
@@ -111,6 +115,7 @@ export default function CompoundInterestCalculator() {
       `${tw("compound-interest-calculator.finalAmountLabel")}: ${fmt.format(result.finalAmount)}`,
       `${tw("compound-interest-calculator.interestLabel")}: ${fmt.format(result.interestEarned)}`,
       `${tw("compound-interest-calculator.effectiveRateLabel")}: ${fmt.format(result.effectiveAnnualRate)}%`,
+      `${tw("compound-interest-calculator.formulaTitle")}: ${tw("compound-interest-calculator.formula")}`,
     ];
     if (showSchedule) {
       lines.push(
@@ -141,11 +146,11 @@ export default function CompoundInterestCalculator() {
   useCopyShortcut(handleCopy);
 
   const handleSample = useCallback(() => {
-    setPrincipal(String(DEFAULTS.principal));
-    setRate(String(DEFAULTS.annualRate));
-    setYears(String(DEFAULTS.years));
-    setCompounds(String(DEFAULTS.compoundsPerYear));
-    setFrequency(String(DEFAULTS.compoundsPerYear));
+    setPrincipal(String(INITIAL.principal));
+    setRate(String(INITIAL.annualRate));
+    setYears(String(INITIAL.years));
+    setCompounds(String(INITIAL.compoundsPerYear));
+    setFrequency(String(INITIAL.compoundsPerYear));
     setShowSchedule(true);
     reset();
   }, [reset]);
@@ -180,6 +185,7 @@ export default function CompoundInterestCalculator() {
           <ToolField
             label={tw("compound-interest-calculator.principalLabel")}
             htmlFor="tp-ci-principal"
+            hint={tw("compound-interest-calculator.principalHint")}
           >
             <NumberStepper
               id="tp-ci-principal"
@@ -224,6 +230,7 @@ export default function CompoundInterestCalculator() {
             <ToolField
               label={tw("compound-interest-calculator.yearsLabel")}
               htmlFor="tp-ci-years"
+              hint={tw("compound-interest-calculator.yearsHint")}
             >
               <NumberStepper
                 id="tp-ci-years"
@@ -246,6 +253,7 @@ export default function CompoundInterestCalculator() {
             <ToolField
               label={tw("compound-interest-calculator.frequencyLabel")}
               htmlFor="tp-ci-frequency"
+              hint={tw("compound-interest-calculator.frequencyHint")}
             >
               <ThemedSelect
                 value={frequency}
@@ -285,7 +293,12 @@ export default function CompoundInterestCalculator() {
             </ToolField>
           </div>
 
+          <p className="tp-tool-hint">{tw("compound-interest-calculator.defaultsNote")}</p>
+
           <div className="tp-tool-group tp-tool-group--flush">
+            <p className="tp-tool-group-title">
+              {tw("compound-interest-calculator.displayOptionsTitle")}
+            </p>
             <div className="tp-check-row">
               <ToggleSwitch
                 id="tp-ci-show-schedule"
@@ -355,6 +368,18 @@ export default function CompoundInterestCalculator() {
                   value={`${fmt.format(result.effectiveAnnualRate)}%`}
                 />
               </dl>
+
+              <div className="flex flex-col gap-1">
+                <span className="tp-tool-label">
+                  {tw("compound-interest-calculator.formulaTitle")}
+                </span>
+                <div className="tp-tool-url">
+                  <code dir="ltr">{tw("compound-interest-calculator.formula")}</code>
+                </div>
+                <p className="tp-tool-hint">
+                  {tw("compound-interest-calculator.formulaHint")}
+                </p>
+              </div>
 
               {showSchedule ? (
                 <div className="flex flex-col gap-1">

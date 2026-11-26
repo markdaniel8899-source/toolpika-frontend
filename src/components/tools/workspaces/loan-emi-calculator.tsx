@@ -32,9 +32,9 @@ export default function LoanEmiCalculator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
   const locale = useLocale();
-  const [principal, setPrincipal] = useState("");
-  const [rate, setRate] = useState("");
-  const [tenure, setTenure] = useState("");
+  const [principal, setPrincipal] = useState(String(DEFAULTS.principal));
+  const [rate, setRate] = useState(String(DEFAULTS.annualRate));
+  const [tenure, setTenure] = useState(String(DEFAULTS.tenureMonths));
   const [tenureUnit, setTenureUnit] = useState<"months" | "years">("months");
   const [showAmortisation, setShowAmortisation] = useState(true);
   const { copy, reset } = useCopyFeedback();
@@ -91,6 +91,7 @@ export default function LoanEmiCalculator() {
       `${tw("loan-emi-calculator.emiLabel")}: ${fmt.format(result.emi)}`,
       `${tw("loan-emi-calculator.totalInterestLabel")}: ${fmt.format(result.totalInterest)}`,
       `${tw("loan-emi-calculator.totalPayableLabel")}: ${fmt.format(result.totalPayable)}`,
+      `${tw("loan-emi-calculator.formulaTitle")}: ${tw("loan-emi-calculator.formula")}`,
     ];
     if (showAmortisation) {
       lines.push(
@@ -162,6 +163,7 @@ export default function LoanEmiCalculator() {
           <ToolField
             label={tw("loan-emi-calculator.principalLabel")}
             htmlFor="tp-emi-principal"
+            hint={tw("loan-emi-calculator.principalHint")}
           >
             <NumberStepper
               id="tp-emi-principal"
@@ -249,7 +251,12 @@ export default function LoanEmiCalculator() {
             />
           </ToolField>
 
+          <p className="tp-tool-hint">{tw("loan-emi-calculator.defaultsNote")}</p>
+
           <div className="tp-tool-group tp-tool-group--flush">
+            <p className="tp-tool-group-title">
+              {tw("loan-emi-calculator.displayOptionsTitle")}
+            </p>
             <div className="tp-check-row">
               <ToggleSwitch
                 id="tp-emi-show-amortisation"
@@ -319,6 +326,18 @@ export default function LoanEmiCalculator() {
                   value={fmt.format(result.totalPayable)}
                 />
               </dl>
+
+              <div className="flex flex-col gap-1">
+                <span className="tp-tool-label">
+                  {tw("loan-emi-calculator.formulaTitle")}
+                </span>
+                <div className="tp-tool-url">
+                  <code dir="ltr">{tw("loan-emi-calculator.formula")}</code>
+                </div>
+                <p className="tp-tool-hint">
+                  {tw("loan-emi-calculator.formulaHint")}
+                </p>
+              </div>
 
               {showAmortisation ? (
                 <div className="flex flex-col gap-1">

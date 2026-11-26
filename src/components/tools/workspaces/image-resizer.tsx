@@ -3,11 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Image as ImageIcon, LoaderCircle, Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import {
+  CheckboxRow,
   DownloadButton,
   NumberStepper,
-  SegmentedControl,
   Stat,
   ToolEmpty,
   ToolField,
@@ -345,11 +346,33 @@ export default function ImageResizer() {
     ? `${parseFileName(loaded.name).base || tw("image-resizer.defaultFileName")}-resized.${extensionForFormat(options.format)}`
     : `${tw("image-resizer.defaultFileName")}-resized.${extensionForFormat(options.format)}`;
 
-  const lockOptions: { value: AspectLock; label: string }[] = [
-    { value: "width", label: tw("image-resizer.lockWidth") },
-    { value: "height", label: tw("image-resizer.lockHeight") },
-    { value: "auto", label: tw("image-resizer.lockUnlocked") },
+  // A blank first option keeps the trigger readable before a size is chosen.
+  // Selecting a size only writes width and height, so the lock mode stays put.
+  const dimensionOptions: { value: string; label: string; group?: string }[] = [
+    { value: "", label: tw("image-resizer.customDimensionsSelect") },
+    { value: "640x480", label: tw("image-resizer.sizeSmall"), group: tw("image-resizer.groupCommon") },
+    { value: "1280x720|medium", label: tw("image-resizer.sizeMedium"), group: tw("image-resizer.groupCommon") },
+    { value: "1920x1080|large", label: tw("image-resizer.sizeLarge"), group: tw("image-resizer.groupCommon") },
+    { value: "1920x1080|web-hero", label: tw("image-resizer.sizeWebHero"), group: tw("image-resizer.groupWeb") },
+    { value: "800x600", label: tw("image-resizer.sizeBlogPost"), group: tw("image-resizer.groupWeb") },
+    { value: "1280x720|youtube", label: tw("image-resizer.sizeYouTube"), group: tw("image-resizer.groupSocial") },
+    { value: "1200x630", label: tw("image-resizer.sizeFacebook"), group: tw("image-resizer.groupSocial") },
+    { value: "1200x1200", label: tw("image-resizer.sizeLinkedIn"), group: tw("image-resizer.groupSocial") },
+    { value: "1080x1080", label: tw("image-resizer.sizeInstagramSquare"), group: tw("image-resizer.groupInstagram") },
+    { value: "1080x1350", label: tw("image-resizer.sizeInstagramPortrait"), group: tw("image-resizer.groupInstagram") },
+    { value: "1080x566", label: tw("image-resizer.sizeInstagramLandscape"), group: tw("image-resizer.groupInstagram") },
+    { value: "1080x1920", label: tw("image-resizer.sizeInstagramStory"), group: tw("image-resizer.groupInstagram") },
   ];
+
+  const customDimensionValue =
+    options.width && options.height ? `${options.width}x${options.height}` : "";
+
+  const handleCustomDimensions = (value: string) => {
+    const [size] = value.split("|");
+    const [width, height] = size.split("x");
+    if (!width || !height) return;
+    update({ width, height });
+  };
 
   const formatOptions: { value: ImageFormat; label: string }[] = [
     { value: "image/jpeg", label: tw("image-resizer.formatJpeg") },
@@ -373,7 +396,7 @@ export default function ImageResizer() {
           title={tw("image-resizer.inputTitle")}
           hint={tw("image-resizer.inputHint")}
         >
-          <label
+          <div
             className="tp-tool-drop"
             data-dragging={dragging ? "true" : undefined}
             onDragOver={(event) => {
@@ -388,14 +411,27 @@ export default function ImageResizer() {
             }}
           >
             <Upload className="h-5 w-5" aria-hidden="true" />
-            <strong>{loaded ? loaded.name : t("chooseImage")}</strong>
-            <span>{loaded ? tw("image-resizer.fileHint") : t("dropImage")}</span>
+            <strong>{loaded ? loaded.name : tw("image-resizer.dropZoneTitle")}</strong>
+            <span>{loaded ? tw("image-resizer.fileHint") : tw("image-resizer.dropZoneHint")}</span>
+            <Button
+              type="button"
+              size="sm"
+              className="mt-1"
+              onClick={(event) => {
+                // The zone is a div, not a label, so this opens the picker once.
+                event.stopPropagation();
+                fileInputRef.current?.click();
+              }}
+            >
+              {tw("image-resizer.chooseFiles")}
+            </Button>
             <input
               ref={fileInputRef}
               id="resize-file"
               type="file"
               accept={ACCEPTED_TYPES.join(",")}
               className="sr-only"
+              aria-label={tw("image-resizer.chooseFiles")}
               onChange={(event) => {
                 void loadFile(event.target.files?.[0]);
                 event.target.value = "";
@@ -403,7 +439,16 @@ export default function ImageResizer() {
               aria-invalid={Boolean(errorMessage)}
               aria-describedby={errorMessage ? "resize-error" : undefined}
             />
-          </label>
+          </div>
+
+          <ToolField label={tw("image-resizer.customDimensions")}>
+            <ThemedSelect
+              value={customDimensionValue}
+              ariaLabel={tw("image-resizer.customDimensions")}
+              options={dimensionOptions}
+              onValueChange={handleCustomDimensions}
+            />
+          </ToolField>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ToolField label={tw("image-resizer.width")}>
@@ -432,14 +477,14 @@ export default function ImageResizer() {
             </ToolField>
           </div>
 
-          <ToolField label={tw("image-resizer.aspectLock")}>
-            <SegmentedControl
-              label={tw("image-resizer.aspectLock")}
-              value={options.lock}
-              options={lockOptions}
-              onChange={(value) => update({ lock: value })}
+          <div className="tp-tool-group tp-tool-group--flush">
+            <CheckboxRow
+              id="resize-keep-aspect"
+              label={tw("image-resizer.keepAspectRatio")}
+              checked={options.lock === "auto"}
+              onChange={(checked) => update({ lock: checked ? "auto" : "free" })}
             />
-          </ToolField>
+          </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <ToolField label={tw("image-resizer.format")}>
