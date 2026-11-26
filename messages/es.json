@@ -2278,6 +2278,43 @@
       "formulaTitle": "Cómo lo calculamos",
       "formula": "Cuota = P * r * (1 + r)^n / ((1 + r)^n - 1)",
       "formulaHint": "P es el monto del préstamo, r es la tasa mensual (tasa anual dividida por 1200) y n es el número de meses. A una tasa cero el pago es P dividido por n."
+    },
+    "keyword-density-checker": {
+      "title": "Contador de Densidad de Palabras Clave",
+      "shortDesc": "Clasifica las palabras por frecuencia con conteos y porcentajes en tiempo real, además de reglas de longitud y palabras vacía que controlas.",
+      "seo": {
+        "title": "Contador de Densidad de Palabras Clave - Frecuencia de Palabras",
+        "description": "Usa el Contador de Densidad de Palabras Clave para clasificar palabras por conteo y porcentaje. Establece una longitud mínima de palabra, filtra palabras vacía, luego copia o descarga el informe."
+      },
+      "trySample": "Prueba ejemplo",
+      "reset": "Restablecer",
+      "privacyRibbon": "El conteo se ejecuta en tu navegador. Tu texto no se sube nunca.",
+      "inputTitle": "Tu texto",
+      "textLabel": "Líneas de texto",
+      "optionsTitle": "Reglas de conteo",
+      "minWordLengthLabel": "Longitud mínima de palabra",
+      "emptyTitle": "Aún no hay análisis",
+      "emptyHint": "Pega el texto y presiona Analizar para ver la densidad de palabras clave.",
+      "page": {
+        "byline": "Herramientas de contenido · Actualizado el 26 de noviembre de 2026",
+        "directAnswer": "El Contador de Densidad de Palabras Clave clasifica las palabras de tu texto por frecuencia, con conteos y porcentajes en tiempo real. Establece una longitud mínima de palabra y filtra las palabras vacía para concentrarte en los términos importantes. Todo ocurre localmente en tu navegador.",
+        "aboutTitle": "Acerca del Contador de Densidad de Palabras Clave",
+        "contextualLink": "Una vez que tu redacción esté ajustada, verifica tus métricas de cuerpo con %%TOOL%% como parte de una rutina de contenido más amplia.",
+        "whatIsTitle": "¿Qué es un Contador de Densidad de Palabras Clave?",
+        "whatIs": "Un contador de densidad de palabras clave cuenta con qué frecuencia aparece cada palabra en un texto y expresa esa cuenta como un porcentaje de todas las palabras. La fórmula habitual es simple: el número de veces que ocurre una palabra dividido por el total de palabras, multiplicado por cien. Una palabra que aparece seis veces en un pasaje de 200 palabras tiene una densidad del tres por ciento. El resultado es una lista ordenada que hace fáciles de detectar los términos repetidos.\n\nEste instrumento tokeniza el texto con reglas de Unicode conscientes. Una palabra comienza con una letra de cualquier escritura y puede contener letras, marcas y dígitos. Los apóstrofos y guiones dentro de una palabra la mantienen unida, así que \"don't\" y \"long tail\" permanecen como entradas únicas. El conteo se hace en puntos de código Unicode en lugar de unidades UTF-16, por lo que las letras fuera del plano multilingüe básico se cuentan correctamente. El interruptor de ignorar mayúsculas/minúsculas convierte la ortografía a minúsculas antes de contar, lo que unifica \"Search\" y \"search\". El interruptor de ignorar stopwords elimina una lista corta predefinida de palabras vacía en inglés como \"the\", \"and\" y \"of\", porque esas palabras suelen dominar cualquier pasaje. El paso de longitud mínima elimina fragmentos cortos; el valor predeterminado de tres caracteres elimina la mayoría de fragmentos de una y dos letras.\n\nLa densidad de palabras clave es una ayuda para escribir, no un factor de posicionamiento. Los motores de búsqueda usan muchas señales, y repetir un término para alcanzar una densidad objetivo puede hacer que el texto suene poco natural. Un porcentaje entre uno y tres por ciento para una palabra clave principal es una señal editorial razonable, no una regla. Los porcentajes se muestran redondeados a un decimal, por lo que las porcentajes visibles pueden no sumar exactamente cien en textos cortos. Solo se muestran las veinte palabras más frecuentes. Todo ocurre en tu navegador y tu texto nunca se sube.",
+        "howToTitle": "Cómo usar el Contador de Densidad de Palabras Clave",
+        "howTo": "Pega o escribe el pasaje que quieres analizar.\nEstablece la longitud mínima de palabra con el paso numérico.\nActiva ignorar mayúsculas/minúsculas y excluir stopwords para ajustar tus reglas.\nLee la tabla en vivo de palabras, conteos y porcentajes.\nCopia el informe o descárgalo como un archivo de texto.",
+        "useCasesTitle": "Casos de uso",
+        "useCases": "Edición de texto SEO::Verifica que una página mencione sus palabras clave objetivo con la frecuencia adecuada sin hacer stuffing de la misma palabra en cada oración.\nEdición editorial::Encuentra palabras repetidas que hacen que un párrafo parezca plano y cámbialas por sinónimos cuando ayude al lector.\nComprobación de palabras clave SEO::Compara un borrador con las palabras clave que planeas usar y ve cuáles aparecen poco.\nEnseñanza y demos::Muestra a los estudiantes cómo funciona la frecuencia de palabras con una tabla que se actualiza mientras escriben.\nComprobación de lenguaje sencillo::Encuentra jerga que se usa demasiado y cámbiala por palabras más claras.",
+        "mistakesTitle": "Errores comunes y límites",
+        "mistakes": "Ignorar las palabras vacía::Sin filtrar, palabras comunes como \"the\", \"and\" y \"of\" dominan la clasificación.\nLongitud mínima demasiado alta::Riesgas excluir palabras importantes de tres o cuatro letras.\nConfundir densidad con relevancia::Una densidad alta no significa que el contenido sea relevante o esté bien escrito.",
+        "limitsTitle": "Límites",
+        "limits": "El texto está limitado a 10.000 caracteres.\nTodo ocurre en tu navegador.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Cómo se calcula la densidad de palabras clave?::Divide el número de apariciones de una palabra por el total de palabras y multiplica por cien.\n¿Cómo se cuentan las frases?::Las oraciones se cuentan según el punto final, signo de exclamación y signo de interrogación.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
+        "trustTitle": "Información de esta herramienta",
+        "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
+      }
     }
   },
   "search": {
