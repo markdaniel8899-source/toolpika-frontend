@@ -1730,6 +1730,80 @@
         "trustTitle": "Informazioni su questo strumento",
         "trustBody": "Questo formatter tokenizza il CSS con stringhe tra virgolette e commenti protetti, poi ricostruisce i blocchi nidificati all'indentazione scelta. Regole e dichiarazioni sono contate dallo stesso flusso di token. La formattazione avviene localmente nel tuo browser."
       }
+    },
+    "random-string-generator": {
+      "title": "Generatore di Stringhe Casuali",
+      "shortDesc": "Genera stringhe casuali con lunghezza, set di caratteri e conteggio batch scelti, interamente nel tuo browser.",
+      "seo": {
+        "title": "Generatore di Stringhe Casuali Online",
+        "description": "Usa il Generatore di Stringhe Casuali per creare stringhe casuali da lettere, cifre e simboli con Web Crypto. Imposta lunghezza e conteggio batch, escludi look-alikes, poi copia o scarica le stringhe."
+      },
+      "subtitle": "Stringhe casuali generate localmente",
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "lengthLabel": "Lunghezza",
+      "countLabel": "Conteggio batch",
+      "digitsLabel": "Cifre",
+      "symbolsLabel": "Simboli",
+      "lookAlikeLabel": "Escludi simili",
+      "generate": "Genera",
+      "resultTitle": "Stringhe generate",
+      "emptyTitle": "Nessuna stringa ancora",
+      "emptyHint": "Scegli le opzioni e premi Genera per creare stringhe casuali.",
+      "copyUnavailable": "Accesso agli appunti bloccato. Seleziona le stringhe e copiale manualmente.",
+      "page": {
+        "byline": "Strumenti di utilità · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Generatore di Stringhe Casuali crea stringhe casuali da lettere, cifre e simboli con Web Crypto. Imposta lunghezza e conteggio batch, escludi look-alikes se necessario, poi copia o scarica le stringhe.",
+        "aboutTitle": "Informazioni sul Generatore di Stringhe Casuali",
+        "contextualLink": "Se hai bisogno di una chiave segreta, usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è un Generatore di Stringhe Casuali?",
+        "whatIs": "Un generatore di stringhe casuali è uno strumento che crea stringhe di caratteri scelti casualmente da un set di caratteri specificato. È utile per generare password, chiavi API, identificatori e altro.\n\nQuesto strumento supporta set di caratteri personalizzabili, lunghezza e conteggio batch.\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "howToTitle": "Come usare il Generatore di Stringhe Casuali",
+        "howTo": "Imposta la lunghezza della stringa.\nImposta il conteggio batch.\nScegli i set di caratteri da includere.\nPremi Genera.\nCopia o scarica le stringhe generate.",
+        "featuresTitle": "Funzionalità",
+        "features": "Set di caratteri personalizzabili::Scegli quali caratteri includere.\nLunghezza personalizzata::Imposta la lunghezza della stringa.\nConteggio batch::Genera più stringhe alla volta.\nLocale::Tutto avviene nel tuo browser.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Lunghezza zero::Non puoi generare stringhe di lunghezza zero.\nNessun set di caratteri::Devi selezionare almeno un set di caratteri.",
+        "limitsTitle": "Limiti",
+        "limits": "La lunghezza è limitata a 100 caratteri.\nIl conteggio batch è limitato a 100.\nTutto avviene nel tuo browser.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è una stringa casuale?::Una stringa casuale è una sequenza di caratteri scelti casualmente.\nA cosa serve?::Serve a generare password, chiavi API, identificatori e altro.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
+    },
+    "keyword-density-checker": {
+      "title": "Controllore Densità Parole Chiave",
+      "shortDesc": "Classifica le parole per frequenza con conteggi e percentuali in tempo reale, più regole lunghezza e stopword che controlli.",
+      "seo": {
+        "title": "Controllore Densità Parole Chiave - Frequenza delle Parole",
+        "description": "Usa il Controllore Densità Parole Chiave per classificare le parole per conteggio e condivisione. Imposta una lunghezza minima della parola, filtra le stopword, poi copia o scarica il rapporto."
+      },
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "privacyRibbon": "L'analisi avviene nel tuo browser. Il tuo testo non viene mai caricato.",
+      "inputTitle": "Il tuo testo",
+      "minWordLengthLabel": "Lunghezza minima parola",
+      "emptyTitle": "Nessuna analisi ancora",
+      "emptyHint": "Incolla del testo e premi Analizza per vedere la densità delle parole chiave.",
+      "page": {
+        "byline": "Strumenti di contenuto · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Controllore Densità Parole Chiave classifica le parole del tuo testo per frequenza, con conteggi e percentuali in tempo reale. Imposta una lunghezza minima della parola e filtra le stopword per concentrarti sui termini importanti. Tutto avviene localmente nel tuo browser.",
+        "aboutTitle": "Informazioni sul Controllore Densità Parole Chiave",
+        "contextualLink": "Se hai bisogno di ottimizzare il testo per SEO, usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è la densità delle parole chiave?",
+        "whatIs": "La densità delle parole chiave misura la frequenza con cui una parola o frase appare in un testo, solitamente espressa in percentuale del numero totale di parole. Questo strumento analizza il tuo testo e classifica ogni parola per numero di occorrenze e percentuale, aiutandoti a identificare i termini più importanti e a evitare il keyword stuffing.\n\nPuoi controllare due filtri: la lunghezza minima della parola e un elenco di stopword personalizzato. Le stopword (articoli, preposizioni, congiunzioni comuni) vengono escluse dall'analisi così puoi concentrarti sulle parole significative.\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "howToTitle": "Come usare il Controllore Densità Parole Chiave",
+        "howTo": "Incolla o scrivi il tuo testo nella casella di input.\nImposta la lunghezza minima della parola se vuoi ignorare le parole molto corte.\nAggiungi stopword personalizzate separate da virgole se necessario.\nAttiva maiuscole/minuscole se vuoi distinguere maiuscole e minuscole.\nPremi Analizza per vedere la classifica delle parole per frequenza.\nCopia o scarica il rapporto.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Ignorare le stopword::Senza filtraggio, parole comuni dominano la classifica.\nLunghezza minima troppo alta::Rischi di escludere parole importanti.\nConfondere densità con rilevanza::Una densità elevata non significa che il contenuto sia pertinente.",
+        "limitsTitle": "Limiti",
+        "limits": "Il testo è limitato a 10.000 caratteri.\nTutto avviene nel tuo browser.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è la densità delle parole chiave?::La densità delle parole chiave misura la frequenza con cui una parola appare in un testo.\nCome si calcola?::Dividi le occorrenze della parola per il totale delle parole e moltiplica per 100.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
     }
   },
   "search": {
