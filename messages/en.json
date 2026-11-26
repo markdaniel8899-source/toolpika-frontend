@@ -762,7 +762,7 @@
       "title": "Lorem Ipsum Generator",
       "shortDesc": "Generate repeatable placeholder paragraphs, sentences or words for layout drafts.",
       "seo": {
-        "title": "Lorem Ipsum Generator for Wireframe Layouts | Toolpika",
+        "title": "Lorem Ipsum Generator for Wireframe Layouts",
         "description": "Generate repeatable lorem ipsum text in paragraphs, sentences or words. Set the count and seed, then copy or download filler for your next mockup."
       },
       "subtitle": "Seeded filler text for layouts that are not written yet",
@@ -815,7 +815,7 @@
       "title": "Text Diff Checker",
       "shortDesc": "Compare two drafts line by line or word by word and see every change.",
       "seo": {
-        "title": "Text Diff Checker with Line and Word Views | Toolpika",
+        "title": "Text Diff Checker with Line and Word Views",
         "description": "Compare two drafts with a line or word diff, see added, removed and unchanged rows plus similarity, then copy or save the plain diff."
       },
       "subtitle": "Exact changes between two drafts, with no upload",
@@ -876,7 +876,7 @@
       "title": "UUID Generator",
       "shortDesc": "Create random v4, time-ordered v7 and nil UUIDs in batches of up to 1000.",
       "seo": {
-        "title": "UUID Generator - Free Bulk v4 and v7 UUIDs | Toolpika",
+        "title": "UUID Generator - Free Bulk v4 and v7 UUIDs",
         "description": "UUID Generator makes bulk identifiers in your browser: v4, time-ordered v7 or nil. Choose 1-1000 values, copy all, and download a plain-text list."
       },
       "subtitle": "Bulk identifiers, made locally",
@@ -923,7 +923,7 @@
       "title": "JWT Decoder",
       "shortDesc": "Read JWT headers, payloads and claims locally, without verifying the signature.",
       "seo": {
-        "title": "JWT Decoder - Read Header, Payload and Claims | Toolpika",
+        "title": "JWT Decoder - Read Header, Payload and Claims",
         "description": "JWT Decoder shows a token's header, payload and claims as readable JSON in your browser. Convert time claims, spot expired tokens, and copy the result."
       },
       "subtitle": "Inspect tokens in this tab",
@@ -992,7 +992,7 @@
       "title": "Regex Tester",
       "shortDesc": "Build a JavaScript pattern, toggle flags and see every match highlighted in your text.",
       "seo": {
-        "title": "Regex Tester - Check Patterns and Flags Live | Toolpika",
+        "title": "Regex Tester - Check Patterns and Flags Live",
         "description": "Use the Regex Tester to check a JavaScript pattern against your text, toggle g, i, m, s and u, and copy matches with groups and offsets."
       },
       "trySample": "Try sample",
@@ -1068,7 +1068,7 @@
       "title": "Percentage Calculator",
       "shortDesc": "Five common percentage questions, one hero answer and the formula behind it.",
       "seo": {
-        "title": "Percentage Calculator - Five Modes, One Answer | Toolpika",
+        "title": "Percentage Calculator - Five Modes, One Answer",
         "description": "Use this Percentage Calculator to find a percent of a number, compare two values or apply a rise or cut. See the answer and its formula."
       },
       "trySample": "Try sample",
@@ -1127,7 +1127,7 @@
       "title": "Aspect Ratio Calculator",
       "shortDesc": "Reduce a pixel pair to its simplest ratio, scale one edge and copy the CSS declaration.",
       "seo": {
-        "title": "Aspect Ratio Calculator: Scale by Width or Height | Toolpika",
+        "title": "Aspect Ratio Calculator: Scale by Width or Height",
         "description": "Reduce width and height to a simple ratio, then scale one edge while keeping proportions. Preview the shape and copy the CSS aspect-ratio line."
       },
       "privacyRibbon": "Ratio maths runs in your browser. Your dimensions are not uploaded.",
@@ -1189,7 +1189,7 @@
       "title": "UTM Builder",
       "shortDesc": "Build tracked campaign URLs from a base address and five UTM tags.",
       "seo": {
-        "title": "UTM Builder: Create Tracked Campaign Links | Toolpika",
+        "title": "UTM Builder: Create Tracked Campaign Links",
         "description": "Build tracked campaign URLs with five UTM tags. Existing query parameters survive, values are encoded automatically, and the link is ready to copy."
       },
       "privacyRibbon": "Link building runs in your browser. No address or tag is uploaded.",
@@ -1251,7 +1251,7 @@
       "title": "Hash Generator",
       "shortDesc": "Compute SHA-256, SHA-512 or SHA-1 digests for text and files in your browser.",
       "seo": {
-        "title": "Hash Generator - SHA-256 and SHA-512 Checksum | Toolpika",
+        "title": "Hash Generator - SHA-256 and SHA-512 Checksum",
         "description": "Hash Generator computes SHA-256, SHA-512 and SHA-1 digests for text or files in your browser. Pick an algorithm, then copy or download the private result."
       },
       "trySample": "Try sample",
@@ -1312,7 +1312,7 @@
       "title": "Image Resizer",
       "shortDesc": "Resize JPEG, PNG and WebP images to exact pixel dimensions without uploading them.",
       "seo": {
-        "title": "Image Resizer - Exact JPEG PNG WebP Sizing | Toolpika",
+        "title": "Image Resizer - Exact JPEG PNG WebP Sizing",
         "description": "Image Resizer sets exact pixel dimensions for JPEG, PNG and WebP files, keeps the aspect ratio and previews the result before you download locally."
       },
       "trySample": "Try sample",
