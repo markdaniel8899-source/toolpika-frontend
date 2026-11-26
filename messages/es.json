@@ -2402,7 +2402,10 @@
         "directAnswer": "Un Temporizador Pomodoro divide el trabajo en sesiones de enfoque separadas por pausas cortas, con una pausa más larga después de cuatro rondas. Configura las tres duraciones, presiona Iniciar y observa el conteo regresivo, el recuento de rondas y el aviso de completación actualizarse en tu navegador sin cuenta.",
         "aboutTitle": "Acerca del Temporizador Pomodoro",
         "contextualLink": "Para horarios repetitivos en un calendario en lugar de una sesión de enfoque, %%TOOL%% escribe la línea cron que los dispara.",
-        "whatIsTitle": "¿Qué es un Temporizador Pomodoro?"
+        "whatIsTitle": "¿Qué es un Temporizador Pomodoro?",
+        "mistakes": "Saltar la pausa corta::La pausa es parte del método, no un extra opcional entre rondas.\nCambiar una longitud a mitad de ronda::Los cambios se aplican a la próxima fase, el conteo regresivo actual conserva su longitud original.\nEsperar un sonido de alerta::Este temporizador no reproduce audio.",
+        "limits": "Las duraciones aceptan minutos enteros de 1 a 180.\nLa pausa larga llega después de cada cuarta ronda de trabajo completada.\nEl estado del temporizador se guarda en esta pestaña y se pierde al cerrar o recargar la página.",
+        "faqTitle": "Preguntas frecuentes"
       }
     }
   },
