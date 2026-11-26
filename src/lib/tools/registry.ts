@@ -341,7 +341,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "sort-text-lines",
@@ -353,7 +352,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "find-and-replace-text",
@@ -365,7 +363,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "character-frequency-counter",
@@ -377,7 +374,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "readability-score-checker",
@@ -389,7 +385,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "html-formatter",
@@ -401,7 +396,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "css-formatter",
@@ -413,7 +407,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "css-minifier",
@@ -425,7 +418,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "js-minifier",
@@ -437,7 +429,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "sql-formatter",
@@ -449,7 +440,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "cron-expression-generator",
