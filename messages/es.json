@@ -2454,7 +2454,16 @@
       "upperLabel": "Letras mayúsculas"
     },
     "open-graph-generator": {
-      "title": "Generador de Código Abierto"
+      "title": "Generador de Cadenas Aleatorias",
+      "shortDesc": "Genera cadenas aleatorias con longitud, conjuntos de caracteres y conteggio de lote elegidos, completamente en tu navegador.",
+      "seo": {
+        "title": "Generador de Cadenas Aleatorias en Línea",
+        "description": "Usa el Generador de Cadenas Aleatorias para crear cadenas aleatorias con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares, luego copia o descarga las cadenas."
+      },
+      "subtitle": "Aleatoriedad criptográfica generada localmente",
+      "trySample": "Prueba ejemplo",
+      "reset": "Restablecer",
+      "inputTitle": "Opciones de cadena"
     }
   },
   "search": {
