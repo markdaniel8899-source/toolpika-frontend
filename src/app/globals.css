@@ -9414,11 +9414,101 @@ textarea::-webkit-scrollbar-thumb,
   color: var(--text-muted);
 }
 
-/* Compact cron field tiles. */
+/* Aligned cron field tiles: same height, badge never wraps, inputs line up. */
 .tp-cron-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
   gap: 10px;
+}
+
+.tp-cron-tile {
+  display: flex;
+  min-height: 150px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+.tp-cron-tile:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+
+.tp-cron-tile:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.tp-cron-tile:last-child {
+  grid-column: 1 / -1;
+}
+
+.tp-cron-tile-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.tp-cron-tile-icon {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  border-radius: 9px;
+  background: var(--accent-wash);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tp-cron-tile-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tp-cron-tile-head .tp-tool-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.tp-cron-tile-head .tp-tool-hint {
+  min-height: 28px;
+  margin: 2px 0 0;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.tp-cron-tile-badge {
+  flex: none;
+  min-width: 38px;
+  margin-inline-start: auto;
+  padding: 3px 7px;
+  border-radius: 99px;
+  background: var(--surface-raised);
+  color: var(--text-muted);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9.5px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tp-cron-tile-input {
+  width: 100%;
+  min-height: 34px;
+  margin-block-start: auto;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.04em;
 }
 
 .tp-cron-operators {
@@ -9444,81 +9534,13 @@ textarea::-webkit-scrollbar-thumb,
   font-weight: 700;
 }
 
-.tp-cron-tile {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
-}
-
-.tp-cron-tile:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-}
-
-.tp-cron-tile:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 16%, transparent);
-}
-
-.tp-cron-tile-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.tp-cron-tile-icon {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  flex: none;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
-  border-radius: 9px;
-  background: var(--accent-wash);
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.tp-cron-tile-icon svg {
-  width: 14px;
-  height: 14px;
-}
-
-.tp-cron-tile-head .tp-tool-label {
-  margin: 0;
-  font-size: 12px;
-}
-
-.tp-cron-tile-head .tp-tool-hint {
-  margin: 0;
-  font-size: 10.5px;
-}
-
-.tp-cron-tile-badge {
-  margin-inline-start: auto;
-  padding: 2px 7px;
-  border-radius: 99px;
-  background: var(--surface-raised);
-  color: var(--text-muted);
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 10px;
-}
-
-.tp-cron-tile-input {
-  min-height: 38px;
-  text-align: center;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-}
-
 @media (max-width: 640px) {
   .tp-cron-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tp-cron-tile:last-child {
+    grid-column: auto;
   }
 }
 
