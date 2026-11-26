@@ -9,6 +9,7 @@ import {
   DownloadButton,
   NumberStepper,
   Stat,
+  ToggleSwitch,
   ToolEmpty,
   ToolField,
   ToolPane,
@@ -39,6 +40,7 @@ export default function CompoundInterestCalculator() {
   const [years, setYears] = useState("");
   const [compounds, setCompounds] = useState("");
   const [frequency, setFrequency] = useState("12");
+  const [showSchedule, setShowSchedule] = useState(true);
   const { copy, reset } = useCopyFeedback();
 
   const frequencyOptions = useMemo(
@@ -109,25 +111,29 @@ export default function CompoundInterestCalculator() {
       `${tw("compound-interest-calculator.finalAmountLabel")}: ${fmt.format(result.finalAmount)}`,
       `${tw("compound-interest-calculator.interestLabel")}: ${fmt.format(result.interestEarned)}`,
       `${tw("compound-interest-calculator.effectiveRateLabel")}: ${fmt.format(result.effectiveAnnualRate)}%`,
-      "",
-      tw("compound-interest-calculator.tableTitle"),
-      [
-        tw("compound-interest-calculator.columnYear"),
-        tw("compound-interest-calculator.columnOpening"),
-        tw("compound-interest-calculator.columnInterest"),
-        tw("compound-interest-calculator.columnClosing"),
-      ].join(" | "),
-      ...result.years.map((row) =>
-        [
-          String(row.year),
-          fmt.format(row.opening),
-          fmt.format(row.interest),
-          fmt.format(row.closing),
-        ].join(" | ")
-      ),
     ];
+    if (showSchedule) {
+      lines.push(
+        "",
+        tw("compound-interest-calculator.tableTitle"),
+        [
+          tw("compound-interest-calculator.columnYear"),
+          tw("compound-interest-calculator.columnOpening"),
+          tw("compound-interest-calculator.columnInterest"),
+          tw("compound-interest-calculator.columnClosing"),
+        ].join(" | "),
+        ...result.years.map((row) =>
+          [
+            String(row.year),
+            fmt.format(row.opening),
+            fmt.format(row.interest),
+            fmt.format(row.closing),
+          ].join(" | ")
+        ),
+      );
+    }
     return lines.join("\n");
-  }, [result, allFilled, fmt, tw]);
+  }, [result, allFilled, fmt, showSchedule, tw]);
 
   const handleCopy = useCallback(() => {
     if (reportText) void copy(reportText);
@@ -140,6 +146,7 @@ export default function CompoundInterestCalculator() {
     setYears(String(DEFAULTS.years));
     setCompounds(String(DEFAULTS.compoundsPerYear));
     setFrequency(String(DEFAULTS.compoundsPerYear));
+    setShowSchedule(true);
     reset();
   }, [reset]);
 
@@ -149,6 +156,7 @@ export default function CompoundInterestCalculator() {
     setYears("");
     setCompounds("");
     setFrequency("12");
+    setShowSchedule(true);
     reset();
   }, [reset]);
 
@@ -277,6 +285,20 @@ export default function CompoundInterestCalculator() {
             </ToolField>
           </div>
 
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="tp-check-row">
+              <ToggleSwitch
+                id="tp-ci-show-schedule"
+                label={tw("compound-interest-calculator.showSchedule")}
+                checked={showSchedule}
+                onChange={() => setShowSchedule((previous) => !previous)}
+              />
+              <label htmlFor="tp-ci-show-schedule" className="tp-check-label">
+                {tw("compound-interest-calculator.showSchedule")}
+              </label>
+            </div>
+          </div>
+
           {errorText ? (
             <p id={ERROR_ID} className="tp-tool-error" role="status" aria-live="polite">
               {errorText}
@@ -334,65 +356,67 @@ export default function CompoundInterestCalculator() {
                 />
               </dl>
 
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">
-                  {tw("compound-interest-calculator.tableTitle")}
-                </span>
-                <div className="max-h-[260px] overflow-auto rounded-[10px] border border-[var(--border)]">
-                  <table
-                    className="w-full border-collapse text-left font-mono text-[12px]"
-                    dir="ltr"
-                  >
-                    <thead className="sticky top-0 bg-[var(--surface)]">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("compound-interest-calculator.columnYear")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("compound-interest-calculator.columnOpening")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("compound-interest-calculator.columnInterest")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("compound-interest-calculator.columnClosing")}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {result.years.map((row) => (
-                        <tr
-                          key={row.year}
-                          className="border-b border-[var(--border)] last:border-0"
-                        >
-                          <td className="px-3 py-2 text-[var(--text)]">{row.year}</td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.opening)}
-                          </td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.interest)}
-                          </td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.closing)}
-                          </td>
+              {showSchedule ? (
+                <div className="flex flex-col gap-1">
+                  <span className="tp-tool-label">
+                    {tw("compound-interest-calculator.tableTitle")}
+                  </span>
+                  <div className="max-h-[260px] overflow-auto rounded-[10px] border border-[var(--border)]">
+                    <table
+                      className="w-full border-collapse text-left font-mono text-[12px]"
+                      dir="ltr"
+                    >
+                      <thead className="sticky top-0 bg-[var(--surface)]">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("compound-interest-calculator.columnYear")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("compound-interest-calculator.columnOpening")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("compound-interest-calculator.columnInterest")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("compound-interest-calculator.columnClosing")}
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {result.years.map((row) => (
+                          <tr
+                            key={row.year}
+                            className="border-b border-[var(--border)] last:border-0"
+                          >
+                            <td className="px-3 py-2 text-[var(--text)]">{row.year}</td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.opening)}
+                            </td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.interest)}
+                            </td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.closing)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">

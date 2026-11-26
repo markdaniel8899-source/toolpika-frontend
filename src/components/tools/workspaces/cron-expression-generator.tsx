@@ -185,30 +185,28 @@ export default function CronExpressionGenerator() {
               </div>
             </div>
 
-            <div className="tp-cron-fields">
+            <div className="tp-cron-grid grid grid-cols-2 gap-3">
               {FIELD_META.map((meta) => {
                 const parsed = analysis.fields.find((field) => field.key === meta.key);
                 const hasError = parsed?.error !== undefined;
                 const inputId = `tp-cron-${meta.key}`;
                 return (
-                  <div key={meta.key} className="tp-cron-field-card">
-                    <div className="tp-cron-field-head">
-                      <div className="tp-cron-field-title">
-                        <span className="tp-cron-field-icon" aria-hidden="true">{meta.icon}</span>
-                        <div className="flex min-w-0 flex-col gap-0.5">
-                          <label className="tp-cron-field-name" htmlFor={inputId}>
-                            {tw(`cron-expression-generator.${meta.labelKey}`)}
-                          </label>
-                          <span className="tp-cron-field-range">
-                            {tw(`cron-expression-generator.${meta.rangeKey}`)}
-                          </span>
-                        </div>
+                  <div key={meta.key} data-field={meta.key} className="tp-cron-tile">
+                    <div className="tp-cron-tile-head">
+                      <span className="tp-cron-tile-icon" aria-hidden="true">{meta.icon}</span>
+                      <div className="flex min-w-0 flex-col gap-0.5">
+                        <label className="tp-tool-label" htmlFor={inputId}>
+                          {tw(`cron-expression-generator.${meta.labelKey}`)}
+                        </label>
+                        <span className="tp-tool-hint">
+                          {tw(`cron-expression-generator.${meta.rangeKey}`)}
+                        </span>
                       </div>
-                      <span className="tp-cron-field-badge">{meta.badge}</span>
+                      <span className="tp-cron-tile-badge">{meta.badge}</span>
                     </div>
                     <input
                       id={inputId}
-                      className="tp-tool-field"
+                      className="tp-cron-tile-input tp-tool-field font-mono"
                       type="text"
                       inputMode="text"
                       autoComplete="off"

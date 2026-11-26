@@ -9,6 +9,7 @@ import {
   NumberStepper,
   SegmentedControl,
   Stat,
+  ToggleSwitch,
   ToolEmpty,
   ToolField,
   ToolPane,
@@ -35,6 +36,7 @@ export default function LoanEmiCalculator() {
   const [rate, setRate] = useState("");
   const [tenure, setTenure] = useState("");
   const [tenureUnit, setTenureUnit] = useState<"months" | "years">("months");
+  const [showAmortisation, setShowAmortisation] = useState(true);
   const { copy, reset } = useCopyFeedback();
 
   const fmt = useMemo(
@@ -89,29 +91,33 @@ export default function LoanEmiCalculator() {
       `${tw("loan-emi-calculator.emiLabel")}: ${fmt.format(result.emi)}`,
       `${tw("loan-emi-calculator.totalInterestLabel")}: ${fmt.format(result.totalInterest)}`,
       `${tw("loan-emi-calculator.totalPayableLabel")}: ${fmt.format(result.totalPayable)}`,
-      "",
-      tw("loan-emi-calculator.tableTitle"),
-      [
-        tw("loan-emi-calculator.columnMonth"),
-        tw("loan-emi-calculator.columnPayment"),
-        tw("loan-emi-calculator.columnInterest"),
-        tw("loan-emi-calculator.columnPrincipal"),
-        tw("loan-emi-calculator.columnBalance"),
-      ].join(" | "),
-      ...result.preview.map((row) =>
-        [
-          String(row.month),
-          fmt.format(row.payment),
-          fmt.format(row.interest),
-          fmt.format(row.principalPaid),
-          fmt.format(row.balance),
-        ].join(" | ")
-      ),
-      "",
-      tw("loan-emi-calculator.roundingNote"),
     ];
+    if (showAmortisation) {
+      lines.push(
+        "",
+        tw("loan-emi-calculator.tableTitle"),
+        [
+          tw("loan-emi-calculator.columnMonth"),
+          tw("loan-emi-calculator.columnPayment"),
+          tw("loan-emi-calculator.columnInterest"),
+          tw("loan-emi-calculator.columnPrincipal"),
+          tw("loan-emi-calculator.columnBalance"),
+        ].join(" | "),
+        ...result.preview.map((row) =>
+          [
+            String(row.month),
+            fmt.format(row.payment),
+            fmt.format(row.interest),
+            fmt.format(row.principalPaid),
+            fmt.format(row.balance),
+          ].join(" | ")
+        ),
+        "",
+        tw("loan-emi-calculator.roundingNote"),
+      );
+    }
     return lines.join("\n");
-  }, [result, allFilled, fmt, tw]);
+  }, [result, allFilled, fmt, showAmortisation, tw]);
 
   const handleCopy = useCallback(() => {
     if (reportText) void copy(reportText);
@@ -123,6 +129,7 @@ export default function LoanEmiCalculator() {
     setRate(String(DEFAULTS.annualRate));
     setTenure(String(DEFAULTS.tenureMonths));
     setTenureUnit("months");
+    setShowAmortisation(true);
     reset();
   }, [reset]);
 
@@ -131,6 +138,7 @@ export default function LoanEmiCalculator() {
     setRate("");
     setTenure("");
     setTenureUnit("months");
+    setShowAmortisation(true);
     reset();
   }, [reset]);
 
@@ -241,6 +249,20 @@ export default function LoanEmiCalculator() {
             />
           </ToolField>
 
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="tp-check-row">
+              <ToggleSwitch
+                id="tp-emi-show-amortisation"
+                label={tw("loan-emi-calculator.showAmortisation")}
+                checked={showAmortisation}
+                onChange={() => setShowAmortisation((previous) => !previous)}
+              />
+              <label htmlFor="tp-emi-show-amortisation" className="tp-check-label">
+                {tw("loan-emi-calculator.showAmortisation")}
+              </label>
+            </div>
+          </div>
+
           {errorText ? (
             <p id={ERROR_ID} className="tp-tool-error" role="status" aria-live="polite">
               {errorText}
@@ -298,77 +320,79 @@ export default function LoanEmiCalculator() {
                 />
               </dl>
 
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">
-                  {tw("loan-emi-calculator.tableTitle")}
-                </span>
-                <div className="max-h-[260px] overflow-auto rounded-[10px] border border-[var(--border)]">
-                  <table
-                    className="w-full min-w-[520px] border-collapse text-left font-mono text-[12px]"
-                    dir="ltr"
-                  >
-                    <thead className="sticky top-0 bg-[var(--surface)]">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("loan-emi-calculator.columnMonth")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("loan-emi-calculator.columnPayment")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("loan-emi-calculator.columnInterest")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("loan-emi-calculator.columnPrincipal")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
-                        >
-                          {tw("loan-emi-calculator.columnBalance")}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {result.preview.map((row) => (
-                        <tr
-                          key={row.month}
-                          className="border-b border-[var(--border)] last:border-0"
-                        >
-                          <td className="px-3 py-2 text-[var(--text)]">{row.month}</td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.payment)}
-                          </td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.interest)}
-                          </td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.principalPaid)}
-                          </td>
-                          <td className="px-3 py-2 text-[var(--text)]">
-                            {fmt.format(row.balance)}
-                          </td>
+              {showAmortisation ? (
+                <div className="flex flex-col gap-1">
+                  <span className="tp-tool-label">
+                    {tw("loan-emi-calculator.tableTitle")}
+                  </span>
+                  <div className="max-h-[260px] overflow-auto rounded-[10px] border border-[var(--border)]">
+                    <table
+                      className="w-full min-w-[520px] border-collapse text-left font-mono text-[12px]"
+                      dir="ltr"
+                    >
+                      <thead className="sticky top-0 bg-[var(--surface)]">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("loan-emi-calculator.columnMonth")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("loan-emi-calculator.columnPayment")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("loan-emi-calculator.columnInterest")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("loan-emi-calculator.columnPrincipal")}
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--muted)]"
+                          >
+                            {tw("loan-emi-calculator.columnBalance")}
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {result.preview.map((row) => (
+                          <tr
+                            key={row.month}
+                            className="border-b border-[var(--border)] last:border-0"
+                          >
+                            <td className="px-3 py-2 text-[var(--text)]">{row.month}</td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.payment)}
+                            </td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.interest)}
+                            </td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.principalPaid)}
+                            </td>
+                            <td className="px-3 py-2 text-[var(--text)]">
+                              {fmt.format(row.balance)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="tp-tool-hint">
+                    {tw("loan-emi-calculator.roundingNote")}
+                  </p>
                 </div>
-                <p className="tp-tool-hint">
-                  {tw("loan-emi-calculator.roundingNote")}
-                </p>
-              </div>
+              ) : null}
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">

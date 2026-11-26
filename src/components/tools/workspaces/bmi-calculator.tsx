@@ -10,6 +10,7 @@ import {
   NumberStepper,
   SegmentedControl,
   Stat,
+  ToggleSwitch,
   ToolBadge,
   ToolEmpty,
   ToolField,
@@ -49,6 +50,7 @@ export default function BmiCalculator() {
   const locale = useLocale();
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
+  const [showHealthyRange, setShowHealthyRange] = useState(true);
   const { options, update, reset: resetOptions } = usePersistedOptions<{ system: UnitSystem }>(
     "toolpika:bmi-calculator",
     { system: DEFAULTS.system },
@@ -128,12 +130,14 @@ export default function BmiCalculator() {
     update({ system: DEFAULTS.system });
     setWeight(String(DEFAULTS.weight));
     setHeight(String(DEFAULTS.height));
+    setShowHealthyRange(true);
   };
 
   const handleReset = () => {
     resetOptions();
     setWeight("");
     setHeight("");
+    setShowHealthyRange(true);
   };
 
   const weightLabel = system === "metric"
@@ -219,6 +223,20 @@ export default function BmiCalculator() {
             </ToolField>
           </div>
 
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="tp-check-row">
+              <ToggleSwitch
+                id="tp-bmi-show-healthy-range"
+                label={tw("bmi-calculator.showHealthyRange")}
+                checked={showHealthyRange}
+                onChange={() => setShowHealthyRange((previous) => !previous)}
+              />
+              <label htmlFor="tp-bmi-show-healthy-range" className="tp-check-label">
+                {tw("bmi-calculator.showHealthyRange")}
+              </label>
+            </div>
+          </div>
+
           {errorText ? (
             <p id={ERROR_ID} className="tp-tool-error" role="alert">
               {errorText}
@@ -276,12 +294,14 @@ export default function BmiCalculator() {
                 </output>
               </div>
 
-              <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("bmi-calculator.healthyRangeLabel")}
-                  value={`${formatter.format(calculation.healthyWeight.min)} - ${formatter.format(calculation.healthyWeight.max)} ${system === "metric" ? tw("bmi-calculator.unitKg") : tw("bmi-calculator.unitLb")}`}
-                />
-              </dl>
+              {showHealthyRange ? (
+                <dl className="tp-tool-stats">
+                  <Stat
+                    label={tw("bmi-calculator.healthyRangeLabel")}
+                    value={`${formatter.format(calculation.healthyWeight.min)} - ${formatter.format(calculation.healthyWeight.max)} ${system === "metric" ? tw("bmi-calculator.unitKg") : tw("bmi-calculator.unitLb")}`}
+                  />
+                </dl>
+              ) : null}
 
               <div className="flex flex-col gap-1">
                 <span className="tp-tool-label">{tw("bmi-calculator.formulaTitle")}</span>

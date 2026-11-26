@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   NumberStepper,
   Stat,
+  ToggleSwitch,
   ToolBadge,
   ToolEmpty,
   ToolField,
@@ -48,7 +49,10 @@ export default function PomodoroTimer() {
   const [remaining, setRemaining] = useState(phaseSeconds("work", DEFAULTS));
   const [rounds, setRounds] = useState(0);
   const [running, setRunning] = useState(false);
+  const [autoStartNext, setAutoStartNext] = useState(false);
   const runningRef = useRef(running);
+  const autoStartRef = useRef(autoStartNext);
+  const intervalRef = useRef<number | null>(null);
   const { notice, showNotice, clearNotice } = useToolNotice();
 
   const errors: Record<keyof Durations, DurationError | undefined> = {
@@ -69,6 +73,10 @@ export default function PomodoroTimer() {
   }, [running]);
 
   useEffect(() => {
+    autoStartRef.current = autoStartNext;
+  }, [autoStartNext]);
+
+  useEffect(() => {
     if (runningRef.current) return;
     setRemaining(phaseSeconds(phase, durations));
   }, [phase, durations]);
@@ -78,12 +86,20 @@ export default function PomodoroTimer() {
     const id = window.setInterval(() => {
       setRemaining((previous) => tick(previous));
     }, 1000);
-    return () => window.clearInterval(id);
-  }, [running]);
+    intervalRef.current = id;
+    return () => {
+      window.clearInterval(id);
+      if (intervalRef.current === id) intervalRef.current = null;
+    };
+  }, [running, phase]);
 
   useEffect(() => {
-    if (remaining > 0 || firstError) return;
-    setRunning(false);
+    if (!running || remaining > 0 || firstError) return;
+    if (intervalRef.current !== null) {
+      window.clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setRunning(autoStartRef.current);
 
     if (phase === "work") {
       const completed = rounds + 1;
@@ -101,7 +117,7 @@ export default function PomodoroTimer() {
       setRemaining(phaseSeconds("work", durations));
       showNotice(tw("pomodoro-timer.completeBreak"));
     }
-  }, [remaining, phase, rounds, durations, firstError, showNotice, tw]);
+  }, [remaining, phase, rounds, durations, firstError, running, showNotice, tw]);
 
   const changeDuration = (key: keyof Durations, value: string) => {
     setRaw((previous) => ({ ...previous, [key]: value }));
@@ -210,6 +226,20 @@ export default function PomodoroTimer() {
               onValueChange={(value) => changeDuration("longBreak", value)}
             />
           </ToolField>
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="tp-check-row">
+              <ToggleSwitch
+                id="tp-pomodoro-auto-start"
+                label={tw("pomodoro-timer.autoStartNext")}
+                checked={autoStartNext}
+                onChange={() => setAutoStartNext((previous) => !previous)}
+              />
+              <label htmlFor="tp-pomodoro-auto-start" className="tp-check-label">
+                {tw("pomodoro-timer.autoStartNext")}
+              </label>
+            </div>
+          </div>
 
           {firstError ? (
             <p id={ERROR_ID} className="tp-tool-error" role="alert">

@@ -2396,7 +2396,8 @@
       "frequencyMonthly": "Monthly (12)",
       "frequencyWeekly": "Weekly (52)",
       "frequencyDaily": "Daily (365)",
-      "frequencyCustom": "Custom"
+      "frequencyCustom": "Custom",
+      "showSchedule": "Show year by year table"
     },
     "loan-emi-calculator": {
       "title": "Loan EMI Calculator",
@@ -2459,7 +2460,8 @@
       },
       "tenureUnitLabel": "Tenure unit",
       "tenureMonths": "Months",
-      "tenureYears": "Years"
+      "tenureYears": "Years",
+      "showAmortisation": "Show amortisation preview"
     },
     "bmi-calculator": {
       "title": "BMI Calculator",
@@ -2522,7 +2524,8 @@
         "faqs": "How is BMI calculated?::In metric units, divide weight in kilograms by height in metres squared. In imperial units, divide weight in pounds by height in inches squared and multiply by 703. The calculator shows the exact formula it used under the result, so you can check the number without trusting a black box.\nWhat does my BMI category mean?::The category places your number into a standard adult band. Below 18.5 is underweight, 18.5 to 25 is healthy, 25 to 30 is overweight, and 30 or more is obese. These bands describe populations and do not diagnose an individual, so discuss concerns with a health professional.\nWhy is the healthy weight range a span?::A height can support many healthy weights because BMI is a ratio. The tool works out the weight at BMI 18.5 and at BMI 25 for your height, then shows that span in your chosen unit. It is a guide, not a target, and individual needs vary.\nDoes BMI measure body fat?::No. BMI uses only weight and height, so it cannot separate muscle, bone and fat. A muscular person may have a high BMI with low body fat, while an older adult may have a healthy BMI with high body fat. Other measures are needed for a fuller picture.\nCan I use this for a child?::No. BMI cutoffs here are for adults. Children and teenagers need age and sex based percentile charts, because body composition changes during growth. Pregnancy also needs different guidance. For anyone in those groups, ask a clinician which measure is appropriate.",
         "trustTitle": "About this tool",
         "trustBody": "Applies metric and imperial BMI formulas with WHO adult cutoffs and a healthy weight span. Reviewed 26 November 2026."
-      }
+      },
+      "showHealthyRange": "Show healthy weight range"
     },
     "pomodoro-timer": {
       "title": "Pomodoro Timer",
@@ -2578,7 +2581,8 @@
         "faqs": "What are the standard Pomodoro lengths?::The usual pattern is 25 minutes of focus, a five minute short break after each round, and a 15 minute long break after four rounds. Those values are loaded as the sample. You can change any of them, but the four-round long break rule stays fixed.\nDoes the timer make a sound?::No. This tool never plays audio and never asks for microphone or notification permission. When a phase ends you get a short written notice in the tool bar, and the next phase starts with its own countdown and label.\nWhat happens when I pause?::Pause freezes the remaining seconds where they are. Press Start again and the countdown continues from that point rather than starting over. Reset returns the phase to focus, clears the round counter and restores the full work duration.\nWhy is the long break shown as four rounds away?::The counter tracks completed work rounds toward the long break. After a long break the count continues with the next group of four, so the number shown is always the remaining rounds in the current group.\nIs my progress saved?::No. Everything lives in this browser tab and nothing is sent to a server. Closing or reloading the page clears the countdown and the round count, so treat the timer as a session tool rather than a long term log.",
         "trustTitle": "About this tool",
         "trustBody": "Runs the full focus and break cycle locally with a one second interval that is cleaned up on unmount. No audio, no network and no saved history. Updated 26 November 2026."
-      }
+      },
+      "autoStartNext": "Start next phase automatically"
     }
   },
   "search": {

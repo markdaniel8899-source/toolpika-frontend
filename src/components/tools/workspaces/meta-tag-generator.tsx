@@ -3,9 +3,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Code } from "lucide-react";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CodeOutput,
-  selectClassName,
   Stat,
   ToolEmpty,
   ToolField,
@@ -103,7 +103,7 @@ export default function MetaTagGenerator() {
       icon="Code"
       sampleLabel={tw("meta-tag-generator.trySample")}
       resetLabel={tw("meta-tag-generator.reset")}
-      privacyLabel={t("privacyRibbon")}
+      privacyLabel={tw("privacyRibbon")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -157,19 +157,16 @@ export default function MetaTagGenerator() {
                 />
               </ToolField>
 
-              <ToolField label={tw("meta-tag-generator.robotsLabel")} htmlFor="tp-meta-robots">
-                <select
-                  id="tp-meta-robots"
-                  className={selectClassName}
+              <ToolField label={tw("meta-tag-generator.robotsLabel")}>
+                <ThemedSelect
                   value={robots}
-                  onChange={(event) => setRobots(event.target.value as RobotsDirective)}
-                >
-                  {ROBOTS_VALUES.map((value) => (
-                    <option key={value} value={value}>
-                      {tw(`meta-tag-generator.robots${robotsKey(value)}`)}
-                    </option>
-                  ))}
-                </select>
+                  onValueChange={(value) => setRobots(value as RobotsDirective)}
+                  options={ROBOTS_VALUES.map((value) => ({
+                    value,
+                    label: tw(`meta-tag-generator.robots${robotsKey(value)}`),
+                  }))}
+                  ariaLabel={tw("meta-tag-generator.robotsLabel")}
+                />
               </ToolField>
             </div>
 

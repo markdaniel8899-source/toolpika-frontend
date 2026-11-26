@@ -4,9 +4,9 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CodeOutput,
-  selectClassName,
   Stat,
   ToolEmpty,
   ToolField,
@@ -188,21 +188,14 @@ export default function OpenGraphGenerator() {
 
             <ToolField
               label={tw("open-graph-generator.typeLabel")}
-              htmlFor="tp-og-type"
               hint={tw("open-graph-generator.typeHint")}
             >
-              <select
-                id="tp-og-type"
-                className={selectClassName}
+              <ThemedSelect
                 value={type}
-                onChange={(event) => setType(event.target.value as OgType)}
-              >
-                {typeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                onValueChange={(value) => setType(value as OgType)}
+                options={typeOptions}
+                ariaLabel={tw("open-graph-generator.typeLabel")}
+              />
             </ToolField>
 
             <ToolField
@@ -225,21 +218,14 @@ export default function OpenGraphGenerator() {
 
             <ToolField
               label={tw("open-graph-generator.cardLabel")}
-              htmlFor="tp-og-card"
               hint={tw("open-graph-generator.cardHint")}
             >
-              <select
-                id="tp-og-card"
-                className={selectClassName}
+              <ThemedSelect
                 value={card}
-                onChange={(event) => setCard(event.target.value as TwitterCard)}
-              >
-                {cardOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                onValueChange={(value) => setCard(value as TwitterCard)}
+                options={cardOptions}
+                ariaLabel={tw("open-graph-generator.cardLabel")}
+              />
             </ToolField>
           </div>
         </ToolPane>
