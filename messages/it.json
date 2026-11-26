@@ -1220,6 +1220,85 @@
         "trustTitle": "Informazioni su questo strumento",
         "trustBody": "Il generatore scrive proprietà Open Graph con attributi property e la carta Twitter con un attributo name. Ogni valore viene escapato nel browser, e l'URL dell'immagine è lasciato esattamente come fornito affinché il crawler social lo recuperi."
       }
+    },
+    "json-to-csv": {
+      "title": "Convertitore JSON in CSV",
+      "shortDesc": "Trasforma record JSON in CSV pronti per foglio di calcolo.",
+      "seo": {
+        "title": "Convertitore JSON in CSV - Esporta Record Istantaneamente",
+        "description": "Converti un array di oggetti JSON in CSV con intestazioni e il delimitatore di tua scelta. I valori annidati vengono appiattiti, e tutto avviene nel tuo browser."
+      },
+      "jsonToCsv": "JSON in CSV",
+      "csvToJson": "CSV in JSON",
+      "delimiter": "Delimitatore",
+      "includeHeaders": "Includi riga di intestazione",
+      "flattenNote": "Gli oggetti annidati vengono appiattiti in colonne separate da punti.",
+      "rows": "Righe",
+      "columns": "Colonne",
+      "invalidJson": "Questo non è JSON valido.",
+      "notTabular": "Usa un array di oggetti o un oggetto di oggetti.",
+      "invalidCsv": "Questo CSV non ha potuto essere analizzato. Controlla virgolette e delimitatore.",
+      "page": {
+        "byline": "Strumenti dati",
+        "directAnswer": "Converti record JSON in una tabella CSV che puoi aprire in qualsiasi foglio di calcolo. Incolla un array di oggetti o un oggetto di oggetti, scegli un delimitatore, e copia o scarica il risultato. I valori annidati vengono appiattiti in colonne senza caricare nulla.",
+        "aboutTitle": "Informazioni sul Convertitore JSON in CSV",
+        "contextualLink": "Se la tua origine ha bisogno di formattazione prima dell'esportazione, puliscila con %%TOOL%% prima, poi incollala qui.",
+        "whatIsTitle": "Cos'è la conversione JSON in CSV?",
+        "whatIs": "JSON memorizza i dati come record annidati chiave-valore, mentre CSV memorizza gli stessi record come righe e colonne. La conversione mappa ogni oggetto a una riga e ogni chiave di primo livello a una colonna.\n\nQuesto strumento si aspetta JSON tabellare: un array di oggetti simili o un oggetto i cui valori sono oggetti. Array e oggetti annidati all'interno di una cella vengono appiattiti con percorsi a punti così la tabella rimane prevedibile.",
+        "howToTitle": "Come convertire JSON in CSV",
+        "howTo": "Incolla il tuo array di oggetti JSON nella casella di input.\nScegli un delimitatore come virgola, punto e virgola o tab.\nDecidi se la prima riga dovrebbe contenere le intestazioni di colonna.\nCopia il CSV o scaricalo come file.\nApri il file in un foglio di calcolo per verificare l'allineamento delle colonne.",
+        "exampleTitle": "Esempio di conversione",
+        "exampleLabel": "Due record diventano due righe",
+        "exampleInput": "[{\"name\":\"Ada\",\"role\":\"Engineer\"},{\"name\":\"Lin\",\"role\":\"Designer\"}]",
+        "exampleOutput": "name,role\nAda,Engineer\nLin,Designer",
+        "exampleNote": "L'ordine delle colonne segue il primo oggetto. Gli oggetti successivi possono aggiungere o omettere chiavi; le chiavi mancanti producono celle vuote.",
+        "featuresTitle": "Cosa gestisce questo convertitore",
+        "features": "Quoting RFC 4180::Virgole, virgolette e interruzioni di riga all'interno dei valori vengono escapati correttamente.\nScelta del delimitatore::L'output con virgola, punto e virgola e tab è supportato.\nControllo intestazioni::Includi o ometti la riga con i nomi delle colonne.\nAppiattimento annidato::Gli oggetti interni diventano nomi di colonne separati da punti.",
+        "useCasesTitle": "Quando esportare JSON come CSV",
+        "useCases": "Condividi dati::Invia risultati API a colleghi che lavorano con fogli di calcolo.\nImporta record::Prepara un file piatto per un CRM o uno strumento di analisi.\nIspeziona un set di dati::Scansiona righe e colonne prima di una migrazione.\nArchivia risposte::Tieni una copia leggibile di dati strutturati.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Usare dati troppo annidati::È offerto solo un livello di appiattimento, quindi alberi profondi perdono struttura.\nChiavi non corrispondenti::Oggetti con chiavi diverse creano celle vuote invece di errori.\nPresupporre preservazione del tipo::CSV memorizza testo, quindi numeri e booleani diventano valori di foglio di calcolo all'importazione.",
+        "limits": "Array molto grandi potrebbero essere lenti da renderizzare nel browser.\nChiavi duplicate o mancanti vengono risolte dal primo record.\nLe interruzioni di riga usano LF, che la maggior parte delle app di foglio di calcolo accetta.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Questo carica il mio JSON?::No. L'analisi e l'esportazione avvengono interamente nella tua scheda del browser, quindi i tuoi record non raggiungono mai un server. Non c'è account, nessun caricamento e nessuna richiesta di rete, e svuotare la pagina rimuove il tuo input dalla memoria.\nCosa succede se i miei oggetti hanno chiavi diverse?::Il primo oggetto imposta l'ordine delle colonne. Le chiavi che appaiono solo in oggetti successivi vengono aggiunte come nuove colonne, e qualsiasi valore mancante resta come cella vuota invece di causare un errore, quindi la tua tabella rimane completa.\nPosso importare CSV in JSON?::Questa pagina si concentra sulla conversione di JSON in CSV. Per una conversione inversa rigorosa con controllo su tipi e schema, usa un parser CSV dedicato. Questo ti dà una gestione più affidabile di valori tra virgolette e intestazioni.\nCome vengono gestite le virgole all'interno dei valori?::I valori contenenti virgole, virgolette o interruzioni di riga vengono avvolti in virgolette doppie, e le virgolette interne vengono raddoppiate. Questo segue le convenzioni RFC 4180, quindi le app di foglio di calcolo leggono ogni valore correttamente anche quando il delimitatore appare al suo interno.",
+        "trustTitle": "Privato per design",
+        "trustBody": "La conversione usa solo API del browser. Nessun account, caricamento o richiesta di rete è coinvolto, e svuotare la pagina rimuove il tuo input."
+      }
+    },
+    "markdown-to-html": {
+      "title": "Convertitore Markdown in HTML",
+      "shortDesc": "Converti Markdown in HTML pulito e sicuro.",
+      "seo": {
+        "title": "Convertitore Markdown in HTML - Output Sicuro Online",
+        "description": "Trasforma intestazioni Markdown, elenchi, blocchi di codice e link in HTML. Il markup grezzo viene escapato prima della conversione, quindi script incollati non vengono mai eseguiti."
+      },
+      "preview": "Anteprima",
+      "unsafeNote": "L'HTML viene escapato. Gli script non vengono mai eseguiti.",
+      "page": {
+        "byline": "Strumenti di scrittura",
+        "directAnswer": "Trasforma Markdown in HTML pulito senza un backend. Scrivi intestazioni, elenchi, blocchi di codice e link a sinistra, poi copia o scarica il markup generato. L'HTML grezzo viene escapato prima, quindi gli script nel testo incollato non vengono mai eseguiti nel tuo browser.",
+        "aboutTitle": "Informazioni sul Convertitore Markdown in HTML",
+        "contextualLink": "Hai bisogno di un indirizzo pulito per la pagina finita? Creane uno con %%TOOL%% dopo aver pubblicato l'HTML.",
+        "whatIsTitle": "Cos'è un Convertitore Markdown in HTML?",
+        "whatIs": "Un convertitore Markdown in HTML trasforma testo formattato con Markdown in HTML che può essere visualizzato da un browser. Supporta intestazioni, elenchi, blocchi di codice, link, immagini e altro.\n\nIl testo Markdown è semplice da scrivere e leggere, e può essere convertito in HTML per la pubblicazione sul web. Questo strumento escapa il markup grezzo prima della conversione, quindi gli script nel testo incollato non vengono mai eseguiti nel tuo browser.\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "howToTitle": "Come usare il Convertitore Markdown in HTML",
+        "howTo": "Scrivi o incolla il tuo testo Markdown nella casella di input.\nOsserva l'anteprima dell'HTML generato a destra.\nCopia l'HTML o scaricalo come file.\nIncolla l'HTML nella tua pagina web.",
+        "exampleTitle": "Esempio",
+        "exampleLabel": "Markdown e HTML risultante",
+        "exampleInput": "# Titolo\n\nQuesto è un paragrafo con **grassetto** e *corsivo*.\n\n- Elemento 1\n- Elemento 2\n- Elemento 3\n\n[Link a Esempio](https://esempio.com)",
+        "exampleOutput": "<h1>Titolo</h1>\n\n<p>Questo è un paragrafo con <strong>grassetto</strong> e <em>corsivo</em>.</p>\n\n<ul>\n<li>Elemento 1</li>\n<li>Elemento 2</li>\n<li>Elemento 3</li>\n</ul>\n\n<p><a href=\"https://esempio.com\">Link a Esempio</a></p>",
+        "exampleNote": "L'HTML generato è pronto per essere incollato in una pagina web.",
+        "featuresTitle": "Cosa supporta questo convertitore",
+        "features": "Intestazioni::Supporta intestazioni da H1 a H6.\nElenchi::Supporta elenchi puntati e numerati.\nBlocchi di codice::Supporta blocchi di codice con evidenziazione sintattica.\nLink::Supporta link inline e di riferimento.\nImmagini::Supporta inserimento immagini.\nEvasione HTML::Il markup grezzo viene escapato per sicurezza.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "HTML grezzo::L'HTML grezzo viene escapato e non eseguito.\nMarkdown non valido::Alcuni costrutti Markdown potrebbero non essere supportati.\nCaratteri speciali::I caratteri speciali vengono escapati correttamente.",
+        "limitsTitle": "Limiti",
+        "limits": "Il testo è limitato a 50.000 caratteri.\nNon tutte le funzionalità Markdown avanzate sono supportate.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è Markdown?::Markdown è un linguaggio di markup leggero per formattare testo in testo semplice.\nPosso usare HTML in Markdown?::Sì, ma l'HTML grezzo viene escapato per sicurezza.\nIl testo viene caricato?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
     }
   },
   "search": {
