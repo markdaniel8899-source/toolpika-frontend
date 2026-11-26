@@ -9336,6 +9336,18 @@ textarea::-webkit-scrollbar-thumb,
   color: var(--text);
 }
 
+.tp-code-editor-body--wrap .tp-code-line {
+  min-width: 0;
+}
+
+.tp-code-editor-body--wrap .tp-code-line-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .tp-code-token--keyword,
 .tp-code-token--tag {
   color: var(--accent);

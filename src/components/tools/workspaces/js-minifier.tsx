@@ -215,6 +215,7 @@ export default function JsMinifier() {
                 label={t("result")}
                 fileName="minified.min.js"
                 mimeType="text/javascript;charset=utf-8"
+                wrap
               />
             </div>
           ) : evaluation.error ? null : (

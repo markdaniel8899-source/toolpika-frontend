@@ -207,6 +207,7 @@ export default function CssMinifier() {
                 label={t("result")}
                 fileName="style.min.css"
                 mimeType="text/css;charset=utf-8"
+                wrap
               />
             </div>
           ) : evaluation.error ? null : (

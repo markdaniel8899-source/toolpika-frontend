@@ -189,6 +189,7 @@ export default function JsonFormatter() {
                 label={t("result")}
                 fileName={mode === "minify" ? "minified.json" : "formatted.json"}
                 mimeType="application/json;charset=utf-8"
+                wrap={mode === "minify"}
               />
             </div>
           ) : error ? null : (

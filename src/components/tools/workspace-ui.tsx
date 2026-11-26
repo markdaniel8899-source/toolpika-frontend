@@ -508,6 +508,7 @@ export function CodeOutput({
   fileName,
   mimeType,
   className,
+  wrap = false,
 }: {
   code: string;
   language: CodeLanguage;
@@ -517,6 +518,8 @@ export function CodeOutput({
   fileName: string;
   mimeType?: string;
   className?: string;
+  /** Wrap long lines instead of horizontal scrolling. Useful for minified output. */
+  wrap?: boolean;
 }) {
   const t = useTranslations("toolUi");
   const [copied, setCopied] = useState(false);
@@ -574,7 +577,12 @@ export function CodeOutput({
           </Button>
         </div>
       </div>
-      <div className="tp-code-editor-body" role="region" aria-label={label} dir="ltr">
+      <div
+        className={cn("tp-code-editor-body", wrap && "tp-code-editor-body--wrap")}
+        role="region"
+        aria-label={label}
+        dir="ltr"
+      >
         {lines.map((line, index) => (
           <div className="tp-code-line" key={index}>
             <span className="tp-code-line-num" aria-hidden="true">{index + 1}</span>
