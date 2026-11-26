@@ -98,7 +98,6 @@ export default function JsMinifier() {
       sampleLabel={tw("js-minifier.trySample")}
       resetLabel={tw("js-minifier.reset")}
       privacyLabel={tw("js-minifier.privacyRibbon")}
-      shortcutHint={tw("js-minifier.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}

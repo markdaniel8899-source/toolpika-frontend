@@ -154,7 +154,6 @@ export default function ReadabilityScoreChecker() {
       sampleLabel={tw("readability-score-checker.trySample")}
       resetLabel={tw("readability-score-checker.reset")}
       privacyLabel={tw("readability-score-checker.privacyRibbon")}
-      shortcutHint={tw("readability-score-checker.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}

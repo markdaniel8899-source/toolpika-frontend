@@ -106,7 +106,6 @@ export default function SqlFormatter() {
       sampleLabel={tw("sql-formatter.trySample")}
       resetLabel={tw("sql-formatter.reset")}
       privacyLabel={tw("sql-formatter.privacyRibbon")}
-      shortcutHint={tw("sql-formatter.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -204,7 +203,7 @@ export default function SqlFormatter() {
           <div className="tp-tool-options-head">
             <h3>{t("options")}</h3>
           </div>
-          <div className="tp-tool-options-grid">
+          <div className="tp-tool-options-grid tp-tool-options-grid--single">
             <div className="tp-tool-group">
               <p className="tp-tool-group-title">{tw("sql-formatter.indentLabel")}</p>
               <SegmentedControl<IndentChoice>

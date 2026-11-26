@@ -132,23 +132,21 @@ export default function SortTextLines() {
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => void handlePaste()}
                 aria-label={`${tw("sort-text-lines.paste")} ${tw("sort-text-lines.textLabel")}`}
               >
                 <ClipboardPaste aria-hidden="true" />
-                {tw("sort-text-lines.paste")}
               </Button>
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={handleClear}
                 disabled={!text}
                 aria-label={`${t("clear")} ${tw("sort-text-lines.textLabel")}`}
               >
                 <X aria-hidden="true" />
-                {t("clear")}
               </Button>
             </div>
           </div>

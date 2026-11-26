@@ -160,7 +160,6 @@ export default function FindAndReplaceText() {
       sampleLabel={tw("find-and-replace-text.trySample")}
       resetLabel={tw("find-and-replace-text.reset")}
       privacyLabel={tw("find-and-replace-text.privacyRibbon")}
-      shortcutHint={tw("find-and-replace-text.shortcutHint")}
       notice={notice}
       onSample={handleSample}
       onReset={handleReset}

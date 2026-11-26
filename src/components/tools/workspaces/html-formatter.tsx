@@ -110,7 +110,6 @@ export default function HtmlFormatter() {
       sampleLabel={tw("html-formatter.trySample")}
       resetLabel={tw("html-formatter.reset")}
       privacyLabel={tw("html-formatter.privacyRibbon")}
-      shortcutHint={tw("html-formatter.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -234,12 +233,14 @@ export default function HtmlFormatter() {
               />
             </ToolField>
 
-            <CheckboxRow
-              id="html-formatter-escape"
-              label={tw("html-formatter.escapeLabel")}
-              checked={options.escapeMarkup}
-              onChange={(escapeMarkup) => update({ escapeMarkup })}
-            />
+            <div className="tp-tool-group">
+              <CheckboxRow
+                id="html-formatter-escape"
+                label={tw("html-formatter.escapeLabel")}
+                checked={options.escapeMarkup}
+                onChange={(escapeMarkup) => update({ escapeMarkup })}
+              />
+            </div>
           </div>
         </>
       }

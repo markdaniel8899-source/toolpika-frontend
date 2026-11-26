@@ -108,7 +108,6 @@ export default function CssFormatter() {
       sampleLabel={tw("css-formatter.trySample")}
       resetLabel={tw("css-formatter.reset")}
       privacyLabel={tw("css-formatter.privacyRibbon")}
-      shortcutHint={tw("css-formatter.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}
@@ -214,12 +213,14 @@ export default function CssFormatter() {
               />
             </ToolField>
 
-            <CheckboxRow
-              id="css-format-property-line"
-              label={tw("css-formatter.propertyPerLine")}
-              checked={options.propertyPerLine}
-              onChange={(propertyPerLine) => update({ propertyPerLine })}
-            />
+            <div className="tp-tool-group">
+              <CheckboxRow
+                id="css-format-property-line"
+                label={tw("css-formatter.propertyPerLine")}
+                checked={options.propertyPerLine}
+                onChange={(propertyPerLine) => update({ propertyPerLine })}
+              />
+            </div>
           </div>
         </>
       }

@@ -96,7 +96,6 @@ export default function CssMinifier() {
       sampleLabel={tw("css-minifier.trySample")}
       resetLabel={tw("css-minifier.reset")}
       privacyLabel={tw("css-minifier.privacyRibbon")}
-      shortcutHint={tw("css-minifier.shortcutHint")}
       onSample={handleSample}
       onReset={handleReset}
       notice={notice}

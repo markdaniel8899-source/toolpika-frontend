@@ -9193,6 +9193,10 @@ textarea::-webkit-scrollbar-thumb,
   min-width: 0;
 }
 
+.tp-tool-options-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* ==========================================================================
    Mobile hardening — one-line header, 16px inputs, comfortable tap targets
    and action bars that never stretch into oversized ghost buttons.

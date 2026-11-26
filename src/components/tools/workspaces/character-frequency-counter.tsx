@@ -160,7 +160,6 @@ export default function CharacterFrequencyCounter() {
       sampleLabel={tw("character-frequency-counter.trySample")}
       resetLabel={tw("character-frequency-counter.reset")}
       privacyLabel={tw("character-frequency-counter.privacyRibbon")}
-      shortcutHint={tw("character-frequency-counter.shortcutHint")}
       notice={notice}
       onSample={handleSample}
       onReset={handleReset}

@@ -187,7 +187,6 @@ export function ToolShell({
   sampleLabel,
   resetLabel,
   privacyLabel,
-  shortcutHint,
   onSample,
   onReset,
   notice,
@@ -203,7 +202,6 @@ export function ToolShell({
   sampleLabel: string;
   resetLabel: string;
   privacyLabel: string;
-  shortcutHint?: string;
   onSample: () => void;
   onReset: () => void;
   notice?: string;
@@ -251,7 +249,6 @@ export function ToolShell({
           <Check className="h-[13px] w-[13px]" aria-hidden="true" />
           {privacyLabel}
         </span>
-        {shortcutHint ? <span className="tp-tool-shortcut">{shortcutHint}</span> : null}
         {ribbonRight}
       </div>
     </div>

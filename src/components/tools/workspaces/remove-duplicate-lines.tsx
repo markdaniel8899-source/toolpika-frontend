@@ -132,23 +132,21 @@ export default function RemoveDuplicateLines() {
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => void handlePaste()}
                 aria-label={`${tw("remove-duplicate-lines.paste")} ${tw("remove-duplicate-lines.textLabel")}`}
               >
                 <ClipboardPaste aria-hidden="true" />
-                {tw("remove-duplicate-lines.paste")}
               </Button>
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={handleClear}
                 disabled={!text}
                 aria-label={`${t("clear")} ${tw("remove-duplicate-lines.textLabel")}`}
               >
                 <X aria-hidden="true" />
-                {t("clear")}
               </Button>
             </div>
           </div>
