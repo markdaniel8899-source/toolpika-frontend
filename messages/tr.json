@@ -753,7 +753,43 @@
         "mistakes": "Sekme karakterlerinin kullanımı::YAML girintileme için boşluk gerektirir.\nGirintileme seviyelerinin karıştırılması::Kardeş anahtarlar tam olarak hizalanmalıdır.\nİşaretçilerin beklenmesi::Referanslar ve özel etiketler çözümlenmez.",
         "limits": "Çok satırlı blok skalerler düz metin olarak değerlendirilir.\nKarmaşık anahtarlar ve birleştirme anahtarları desteklenen alt küme dışındadır.\nÇok büyük belgeler tarayıcıda yavaş görüntülenebilir.",
         "faqTitle": "Sık sorulan sorular",
-        "faqs": "Dosyam neden ayrıştırılamadı?::Çoğu hata, kaynak metindeki sekme karakterleri veya tutarsız girintilemeden kaynaklanır. Kardeş anahtarların aynı sütunda hizalandığından ve iç içe değerlerin daha sağda olduğundan emin olun. Ayrıştırıcı da boşluk karakteri bekler, bu yüzden dönüşümü tekrar denemeden önce tüm sekme karakterlerini değiştirin.\nBoolean ve sayılar dönüştürülür mü?::Evet, alıntısız true, false, null ve sayısal değerler otomatik olarak eşleşen JSON türlerine dönüşür. Alıntı içindeki değerler dize olarak kalır, bu yüzden \"true\" metin olarak kalırken true bir boolean olur. Bu ayrım, sonucu türleri sıkı bir şekilde doğrulayan bir API'ye yapıştırdığınızda önemlidir.\nİşaretçiler ve takma adları yeniden kullanabilir miyim?::Hayır, işaretçiler, takma adlar ve özel etiketler bu ayrıştırıcının desteklediği alt kümenin dışında tutulmuştur. Dilbilgisinin küçük tutulması, her dönüşümü belirleyici ve güvenli kılar. Yapıştırmadan önce paylaşılan değerleri düz haritalara veya listelere genişletin, aracı geri kalanı normal şekilde ele alacaktır.\nYapılandırma dosyam yükleniyor mu?::Hayır, yapılandırmanız asla yüklenmez veya bir sunucuya gönderilmez. Ayrıştırma ve biçimlendirme tamamen tarayıcı sekmenizin içinde gerçekleşir ve sayfayı kapattıktan sonra hiçbir şey saklanmaz. Özel kimlik bilgilerini veya iç ayarları güvenle giriş paneline yapıştırabilirsiniz."
+        "faqs": "Dosyam neden ayrıştırılamadı?::Çoğu hata, kaynak metindeki sekme karakterleri veya tutarsız girintilemeden kaynaklanır. Kardeş anahtarların aynı sütunda hizalandığından ve iç içe değerlerin daha sağda olduğundan emin olun. Ayrıştırıcı da boşluk karakteri bekler, bu yüzden dönüşümü tekrar denemeden önce tüm sekme karakterlerini değiştirin.\nBoolean ve sayılar dönüştürülür mü?::Evet, alıntısız true, false, null ve sayısal değerler otomatik olarak eşleşen JSON türlerine dönüşür. Alıntı içindeki değerler dize olarak kalır, bu yüzden \"true\" metin olarak kalırken true bir boolean olur. Bu ayrım, sonucu türleri sıkı bir şekilde doğrulayan bir API'ye yapıştırdığınızda önemlidir.\nİşaretçiler ve takma adları yeniden kullanabilir miyim?::Hayır, işaretçiler, takma adlar ve özel etiketler bu ayrıştırıcının desteklediği alt kümenin dışında tutulmuştur. Dilbilgisinin küçük tutulması, her dönüşümü belirleyici ve güvenli kılar. Yapıştırmadan önce paylaşılan değerleri düz haritalara veya listelere genişletin, aracı geri kalanı normal şekilde ele alacaktır.\nYapılandırma dosyam yükleniyor mu?::Hayır, yapılandırmanız asla yüklenmez veya bir sunucuya gönderilmez. Ayrıştırma ve biçimlendirme tamamen tarayıcı sekmenizin içinde gerçekleşir ve sayfayı kapattıktan sonra hiçbir şey saklanmaz. Özel kimlik bilgilerini veya iç ayarları güvenle giriş paneline yapıştırabilirsiniz.",
+        "trustTitle": "Tasarımla gizlilik",
+        "trustBody": "Çözümleyici yerel olarak çalışır ve ağ erişimine ihtiyaç duymuyor. Yapılandırmanız bu cihazda kalır."
+      }
+    },
+    "lorem-ipsum-generator": {
+      "title": "Lorem Ipsum Oluşturucu",
+      "shortDesc": "Tasarım taslakları için tekrarlanabilir yer tutucu paragraf, cümle veya kelime oluşturur.",
+      "seo": {
+        "title": "Wireframe Düzenleri İçin Lorem Ipsum Oluşturucu",
+        "description": "Paragraf, cümle veya kelime cinsinden tekrarlanabilir lorem ipsum metni oluşturun. Adet ve başlangıç değerini ayarlayın, ardından sonraki mockup için doldurucu metni kopyalayın veya indirin."
+      },
+      "subtitle": "Henüz yazılmamış düzenler için tohumlu doldurma metni",
+      "trySample": "Örneği dene",
+      "reset": "Ayarları sıfırla",
+      "privacyRibbon": "Tarayıcınızda çalışır. Ayarlarınız bu cihazda kalır.",
+      "shortcutHint": "Ctrl/Cmd + Shift + C metni kopyalar.",
+      "settingsTitle": "Doldurma ayarları",
+      "typeLabel": "Çıktı formatı",
+      "typeOptionParagraphs": "Paragraflar",
+      "typeOptionSentences": "Cümleler",
+      "typeOptionWords": "Kelimeler",
+      "countLabel": "Miktar",
+      "countNumberLabel": "Kesin sayı",
+      "startWithLorem": "Lorem ipsum ile başla",
+      "resultTitle": "Oluşturulan metin",
+      "generatedTextLabel": "Oluşturulan yer tutucu metin",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "download": ".txt olarak indir",
+      "newSeed": "Yeni tohum",
+      "seedNotice": "Yeni tohum uygulandı. Metin değişti.",
+      "copyUnavailable": "Panoya erişim engellenmiş. Metni seçin ve elle kopyalayın.",
+      "page": {
+        "byline": "Tasarım araçları · 25 Kasım 2026 tarihinde incelendi",
+        "directAnswer": "Lorem Ipsum Generator, wireframe ve mockup'lar için gerçekçi doldurma metni sağlar. Gerçek içerik bulunmadığı için incelemeyi dikkat dağıtmamaktadır. Paragraf, cümle veya kelime seçin, sayı ve tohumu ayarlayın, klasik başlangıcı aç/kapa, ardından tam olarak yeniden üretebileceğiniz temiz bir metni kopyalayın veya indirin.",
+        "aboutTitle": "Lorem Ipsum Generator Hakkında"
       }
     }
   },
