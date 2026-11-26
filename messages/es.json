@@ -2463,7 +2463,17 @@
       "subtitle": "Aleatoriedad criptográfica generada localmente",
       "trySample": "Prueba ejemplo",
       "reset": "Restablecer",
-      "inputTitle": "Opciones de cadena"
+      "inputTitle": "Opciones de cadena",
+      "resultTitle": "Cadenas generadas",
+      "emptyTitle": "Aún no hay cadenas",
+      "emptyHint": "Elige las opciones y presiona Generar para crear cadenas aleatorias.",
+      "page": {
+        "byline": "Herramientas de utilidad · Actualizado el 26 de noviembre de 2026",
+        "directAnswer": "El Generador de Cadenas Aleatorias crea cadenas aleatorias con letras, cifras y símbolos con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares si es necesario, luego copia o descarga las cadenas.",
+        "aboutTitle": "Acerca del Generador de Cadenas Aleatorias",
+        "contextualLink": "Si necesitas una clave secreta, usa %%TOOL%%.",
+        "whatIsTitle": "¿Qué es un Generador de Cadenas Aleatorias?"
+      }
     }
   },
   "search": {
