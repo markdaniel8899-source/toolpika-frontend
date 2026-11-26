@@ -88,6 +88,7 @@
   },
   "tools": {
     "title": "Tools",
+    "allCategories": "All categories",
     "subtitle": "Every tool that has a public page.",
     "add": "Add tool",
     "name": "Name",

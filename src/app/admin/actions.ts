@@ -111,9 +111,12 @@ export async function saveTool(
     seo_description: values.seoDescription,
   };
 
-  const query = values.id
-    ? supabase.from("tools").update(payload).eq("id", values.id)
-    : supabase.from("tools").insert(payload);
+  // Registry-backed rows use a placeholder id until they are saved once;
+  // upserting by slug keeps them editable without a database id.
+  const isRegistryPlaceholder = values.id?.startsWith("registry-") ?? false;
+  const query = !values.id || isRegistryPlaceholder
+    ? supabase.from("tools").upsert(payload, { onConflict: "slug" })
+    : supabase.from("tools").update(payload).eq("id", values.id);
 
   const { error } = await query;
 
@@ -129,6 +132,8 @@ export async function saveTool(
 
 export async function deleteTool(id: string): Promise<void> {
   const supabase = await requireUser();
+  // Registry-backed rows have no database row yet, so there is nothing to delete.
+  if (id.startsWith("registry-")) return;
   await supabase.from("tools").delete().eq("id", id);
 
   revalidatePath("/admin/tools");

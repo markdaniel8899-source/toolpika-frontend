@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { assertSupabaseConfigured, isSupabaseConfigured } from "@/lib/supabase/config";
-import { categories } from "@/lib/tools/registry";
+import { categories, getLiveTools } from "@/lib/tools/registry";
 import type {
   AdminPost,
   AdminPostView,
@@ -63,9 +63,36 @@ export async function getCategories(): Promise<AdminCategory[]> {
 
 export async function getTools(): Promise<AdminTool[]> {
   const supabase = await createClient();
-  return rows<AdminTool>(
+  const dbTools = await rows<AdminTool>(
     supabase.from("tools").select("*").order("title", { ascending: true }),
   );
+  const bySlug = new Map(dbTools.map((tool) => [tool.slug, tool]));
+  const registrySlugs = new Set<string>();
+
+  // The registry is the source of truth for live tools. Rows that have not
+  // been created in Supabase yet still appear in the admin list with a
+  // placeholder id; editing one upserts it by slug.
+  const fromRegistry: AdminTool[] = getLiveTools().map((tool) => {
+    registrySlugs.add(tool.slug);
+    const existing = bySlug.get(tool.slug);
+    return {
+      id: existing?.id ?? `registry-${tool.slug}`,
+      slug: tool.slug,
+      title: tool.title,
+      category: tool.category,
+      icon: tool.icon,
+      description: tool.description,
+      status: "live",
+      usage_count: existing?.usage_count ?? 0,
+      seo_title: existing?.seo_title ?? null,
+      seo_description: existing?.seo_description ?? null,
+      created_at: existing?.created_at ?? new Date().toISOString(),
+      updated_at: existing?.updated_at ?? new Date().toISOString(),
+    };
+  });
+
+  return [...fromRegistry, ...dbTools.filter((tool) => !registrySlugs.has(tool.slug))]
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
 export async function getRequests(): Promise<AdminRequest[]> {

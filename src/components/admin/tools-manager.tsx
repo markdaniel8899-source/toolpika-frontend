@@ -42,6 +42,7 @@ export interface ToolFormCopy {
 export interface ToolManagerCopy extends ToolFormCopy {
   title: string;
   category: string;
+  allCategories: string;
   status: string;
   usage: string;
   actions: string;
@@ -87,6 +88,10 @@ export function ToolsManager({
   const router = useRouter();
   const [editing, setEditing] = useState<AdminTool | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const visibleTools = categoryFilter
+    ? tools.filter((tool) => tool.category === categoryFilter)
+    : tools;
   const [state, formAction] = useActionState(saveTool, {
     status: "idle" as const,
   });
@@ -327,7 +332,26 @@ export function ToolsManager({
         </section>
       ) : null}
 
-      {tools.length === 0 ? (
+      <div className="mb-4 flex items-center gap-3">
+        <label htmlFor="tool-category-filter" className="text-sm text-[var(--muted)]">
+          {copy.category}
+        </label>
+        <select
+          id="tool-category-filter"
+          value={categoryFilter}
+          onChange={(event) => setCategoryFilter(event.target.value)}
+          className="h-10 rounded-[10px] border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--text)]"
+        >
+          <option value="">{copy.allCategories}</option>
+          {categories.map((category) => (
+            <option key={category.slug} value={category.slug}>
+              {category.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {visibleTools.length === 0 ? (
         <EmptyState message={copy.empty} />
       ) : (
         <DataTable
@@ -339,7 +363,7 @@ export function ToolsManager({
             copy.actions,
           ]}
         >
-          {tools.map((tool) => (
+          {visibleTools.map((tool) => (
             <tr key={tool.id} data-ui className="border-b border-[var(--border)] last:border-0">
               <td className="px-3 py-3 first:pl-0 last:pr-0">
                 <p className="font-medium">{tool.title}</p>

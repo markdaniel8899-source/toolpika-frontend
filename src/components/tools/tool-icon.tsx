@@ -35,6 +35,7 @@ import {
   X,
   Search,
   Plus,
+  Shuffle,
   Type,
   User,
   Wand2,
