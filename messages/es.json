@@ -2405,7 +2405,50 @@
         "whatIsTitle": "¿Qué es un Temporizador Pomodoro?",
         "mistakes": "Saltar la pausa corta::La pausa es parte del método, no un extra opcional entre rondas.\nCambiar una longitud a mitad de ronda::Los cambios se aplican a la próxima fase, el conteo regresivo actual conserva su longitud original.\nEsperar un sonido de alerta::Este temporizador no reproduce audio.",
         "limits": "Las duraciones aceptan minutos enteros de 1 a 180.\nLa pausa larga llega después de cada cuarta ronda de trabajo completada.\nEl estado del temporizador se guarda en esta pestaña y se pierde al cerrar o recargar la página.",
-        "faqTitle": "Preguntas frecuentes"
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Cuáles son las longitudes de Pomodoro estándar?::El patrón habitual es 25 minutos de enfoque, una pausa corta de cinco minutos después de cada ronda, y una pausa larga de 15 minutos después de cuatro rondas. Estos valores se cargan como el ejemplo. Puedes cambiarlos, pero la regla de la pausa larga después de cuatro rondas se mantiene fija.\n¿El temporizador reproduce sonido?::No. Esta herramienta nunca reproduce audio y nunca pide permiso de micrófono o notificación. Cuando una fase termina recibes un aviso escrito breve en la barra de herramientas, y la siguiente fase comienza con su propio conteo regresivo y etiqueta.\n¿Qué ocurre cuando pauso?::Pausa fija los segundos restantes donde están. Presiona Iniciar de nuevo y el conteo regresivo continúa desde ese punto en lugar de comenzar de nuevo. Reiniciar restablece la fase a enfoque, borra el contador de rondas y restaura la duración completa de trabajo.\n¿Por qué se muestra la pausa larga como cuatro rondas lejana?::El contador sigue las rondas de trabajo completadas hacia la pausa larga. Después de una pausa larga el conteo continúa con el siguiente grupo de cuatro, por lo que el número mostrado es siempre las rondas restantes en el grupo actual.\n¿Se guarda mi progreso?::No. Todo vive en esta pestaña del navegador y nada se envía a un servidor. Cerrar o recargar la página borra el conteo regresivo y el conteo de rondas, trata el temporizador como una herramienta de sesión y no como un registro a largo plazo.",
+        "trustTitle": "Información de esta herramienta",
+        "trustBody": "Ejecuta el ciclo completo de enfoque y pausa localmente con un intervalo de un segundo que se limpia al desmontar. Sin audio, sin red y sin historial guardado. Actualizado el 26 de noviembre de 2026."
+      }
+    },
+    "random-string-generator": {
+      "title": "Generador de Cadenas Aleatorias",
+      "shortDesc": "Genera cadenas aleatorias con longitud, conjuntos de caracteres y conteggio de lote elegidos, completamente en tu navegador.",
+      "seo": {
+        "title": "Generador de Cadenas Aleatorias en Línea",
+        "description": "Usa el Generador de Cadenas Aleatorias para crear cadenas aleatorias con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares, luego copia o descarga las cadenas."
+      },
+      "subtitle": "Aleatoriedad criptográfica generada localmente",
+      "trySample": "Prueba ejemplo",
+      "reset": "Restablecer",
+      "lengthLabel": "Longitud",
+      "countLabel": "Conteo de lote",
+      "digitsLabel": "Dígitos",
+      "symbolsLabel": "Símbolos",
+      "lookAlikeLabel": "Excluir similares",
+      "generate": "Generar",
+      "resultTitle": "Cadenas generadas",
+      "emptyTitle": "Aún no hay cadenas",
+      "emptyHint": "Elige las opciones y presiona Generar para crear cadenas aleatorias.",
+      "copyUnavailable": "Acceso al portapapeles bloqueado. Selecciona las cadenas y cópialas manualmente.",
+      "page": {
+        "byline": "Herramientas de utilidad · Actualizado el 26 de noviembre de 2026",
+        "directAnswer": "El Generador de Cadenas Aleatorias crea cadenas aleatorias con letras, cifras y símbolos con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares si es necesario, luego copia o descarga las cadenas.",
+        "aboutTitle": "Acerca del Generador de Cadenas Aleatorias",
+        "contextualLink": "Si necesitas una clave secreta, usa %%TOOL%%.",
+        "whatIsTitle": "¿Qué es un Generador de Cadenas Aleatorias?",
+        "whatIs": "Un generador de cadenas aleatorias es una herramienta que crea cadenas de caracteres elegidos aleatoriamente de un conjunto de caracteres especificado. Es útil para generar contraseñas, claves API, identificadores y más.\n\nEsta herramienta admite conjuntos de caracteres personalizables, longitud y conteo de lote.\n\nTodo ocurre en tu navegador y ningún dato se envía a un servidor.",
+        "howToTitle": "Cómo usar el Generador de Cadenas Aleatorias",
+        "howTo": "Establece la longitud de la cadena.\nEstablece el conteo de lote.\nElige los conjuntos de caracteres que quieres incluir.\nPresiona Generar.\nCopia o descarga las cadenas generadas.",
+        "featuresTitle": "Funcionalidades",
+        "features": "Conjuntos de caracteres personalizables::Elige qué caracteres incluir.\nLongitud personalizada::Establece la longitud de la cadena.\nConteo de lote::Genera varias cadenas a la vez.\nLocal::Todo ocurre en tu navegador.",
+        "mistakesTitle": "Errores comunes y límites",
+        "mistakes": "Longitud cero::No puedes generar cadenas de longitud cero.\nNingún conjunto de caracteres::Debes seleccionar al menos un conjunto de caracteres.",
+        "limits": "La longitud está limitada a 100 caracteres.\nEl conteo de lote está limitado a 100.\nTodo ocurre en tu navegador.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Qué es una cadena aleatoria?::Una cadena aleatoria es una secuencia de caracteres elegidos aleatoriamente.\n¿Para qué sirve?::Sirve para generar contraseñas, claves API, identificadores y más.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
+        "trustTitle": "Información de esta herramienta",
+        "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
       }
     }
   },
