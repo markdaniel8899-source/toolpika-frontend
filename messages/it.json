@@ -1441,6 +1441,85 @@
         "trustTitle": "Informazioni su questo strumento",
         "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
       }
+    },
+    "text-diff-checker": {
+      "title": "Controllore Differenze Testo",
+      "shortDesc": "Confronta due testi e mostra le differenze parola per parola o carattere per carattere.",
+      "seo": {
+        "title": "Controllore Differenze Testo Online",
+        "description": "Usa il Controllore Differenze Testo per confrontare due testi e vedere le differenze in modo chiaro e visibile."
+      },
+      "subtitle": "Confronta testi e trova differenze localmente",
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "privacyRibbon": "Il confronto avviene nel tuo browser. I tuoi testi non vengono caricati.",
+      "inputTitle": "Testi da confrontare",
+      "originalLabel": "Testo originale",
+      "revisedLabel": "Testo revisionato",
+      "originalPlaceholder": "Incolla il testo originale qui",
+      "revisedPlaceholder": "Incolla il testo revisionato qui",
+      "modeLabel": "Modalità",
+      "resultTitle": "Risultato confronto",
+      "added": "Aggiunto",
+      "removed": "Rimosso",
+      "unchanged": "Invariato",
+      "emptyTitle": "Nessun confronto ancora",
+      "emptyHint": "Incolla due testi per vedere le differenze.",
+      "copyUnavailable": "Accesso agli appunti bloccato. Seleziona il risultato e copialo manualmente.",
+      "page": {
+        "byline": "Strumenti di testo · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Controllore Differenze Testo confronta due testi e mostra le differenze in modo chiaro e visibile, evidenziando aggiunte, rimozioni e parti invariate.",
+        "aboutTitle": "Informazioni sul Controllore Differenze Testo",
+        "contextualLink": "Se hai bisogno di unire le differenze, usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è un Controllore Differenze Testo?",
+        "whatIs": "Un controllore differenze testo è uno strumento che confronta due versioni di un testo e mostra cosa è cambiato. È utile per revisionare documenti, codice sorgente o qualsiasi testo che è stato modificato.\n\nPuoi confrontare parola per parola o carattere per carattere, a seconda delle tue esigenze.\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "howToTitle": "Come usare il Controllore Differenze Testo",
+        "howTo": "Incolla il testo originale nella prima casella.\nIncolla il testo revisionato nella seconda casella.\nScegli la modalità di confronto.\nPremi Confronta.\nLeggi le differenze evidenziate.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Testi molto grandi::Testi molto grandi potrebbero essere lenti da confrontare.\nCaratteri speciali::I caratteri speciali vengono confrontati così come sono.",
+        "limitsTitle": "Limiti",
+        "limits": "I testi sono limitati a 10.000 caratteri ciascuno.\nNon tutte le lingue sono supportate per il confronto parola per parola.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è un confronto testo?::Un confronto testo mostra le differenze tra due versioni di un testo.\nPosso confrontare codice?::Sì, puoi confrontare qualsiasi tipo di testo, incluso il codice.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
+    },
+    "hash-generator": {
+      "title": "Generatore Hash",
+      "shortDesc": "Genera hash SHA-1, SHA-256 e SHA-512 da testo o file, completamente nel tuo browser.",
+      "seo": {
+        "title": "Generatore Hash Online",
+        "description": "Usa il Generatore Hash per creare hash SHA-1, SHA-256 e SHA-512 da testo o file. Tutto avviene nel tuo browser, senza caricamento."
+      },
+      "subtitle": "Hash crittografici generati localmente",
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "inputTitle": "Input hash",
+      "sha1": "SHA-1",
+      "sha256": "SHA-256",
+      "sha512": "SHA-512",
+      "emptyTitle": "Nessun hash ancora",
+      "emptyHint": "Inserisci del testo e scegli un algoritmo per generare un hash.",
+      "copyUnavailable": "Accesso agli appunti bloccato. Seleziona l'hash e copialo manualmente.",
+      "page": {
+        "byline": "Strumenti di sicurezza · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Generatore Hash crea hash crittografici SHA-1, SHA-256 e SHA-512 da testo direttamente nel tuo browser. Copia o scarica l'hash generato.",
+        "aboutTitle": "Informazioni sul Generatore Hash",
+        "contextualLink": "Hai bisogno di verificare un hash? Usa %%TOOL%%.",
+        "whatIsTitle": "Cos'è un hash crittografico?",
+        "whatIs": "Un hash crittografico è una funzione che prende un input di dimensioni arbitrarie e produce un output di dimensione fissa, chiamato hash o digest. Gli hash sono usati per verificare l'integrità dei dati, memorizzare password e molto altro.\n\nQuesto strumento supporta tre algoritmi di hash:\n- SHA-1: 160 bit (non raccomandato per uso critico)\n- SHA-256: 256 bit (standard attuale)\n- SHA-512: 512 bit (massima sicurezza)\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "featuresTitle": "Funzionalità",
+        "features": "Tre algoritmi::SHA-1, SHA-256 e SHA-512.\nOutput esadecimale::L'hash viene mostrato in formato esadecimale.\nCopia e scarica::Copia negli appunti o scarica come file di testo.\nLocale::Tutto avviene nel tuo browser.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "SHA-1 non sicuro::SHA-1 non è più considerato sicuro per usi crittografici.\nHash non reversibile::Gli hash non possono essere invertiti per recuperare l'input originale.",
+        "limitsTitle": "Limiti",
+        "limits": "L'input è limitato a 10.000 caratteri.\nTutto avviene nel tuo browser.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è un hash?::Un hash è un'impronta digitale di un dato.\nPosso verificare un hash?::Questo strumento solo genera hash, non li verifica.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
     }
   },
   "search": {
