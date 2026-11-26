@@ -381,6 +381,13 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
   const moduleText = (kind: ContentSectionKind, key: string) =>
     needs(kind) ? t(k(key)) : "";
 
+  // Example code contains literal JSON braces, which ICU treats as malformed
+  // arguments. Read those messages raw so the sample renders as written.
+  const rawText = (key: string) => {
+    const raw = t.raw?.(key);
+    return typeof raw === "string" ? raw : t(key);
+  };
+
   // Only tools with an explicit searchIntents key should request it. Other
   // tools derive long-tail topics from their own FAQ questions; asking next-intl
   // for a missing key logs noisy MISSING_MESSAGE errors during static builds.
@@ -403,12 +410,12 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
     searchIntents: lines(intentText),
     whatIsTitle: t(k("whatIsTitle")),
     whatIsParagraphs: t(k("whatIs")).split(/\n\s*\n/u).map((p) => p.trim()).filter(Boolean),
-    howToTitle: t(k("howToTitle")),
-    howToSteps: lines(t(k("howTo"))),
+    howToTitle: moduleText("steps", "howToTitle"),
+    howToSteps: lines(moduleText("steps", "howTo")),
     exampleTitle: moduleText("example", "exampleTitle"),
     exampleLabel: moduleText("example", "exampleLabel"),
-    exampleInput: moduleText("example", "exampleInput"),
-    exampleOutput: moduleText("example", "exampleOutput"),
+    exampleInput: needs("example") ? rawText(k("exampleInput")) : "",
+    exampleOutput: needs("example") ? rawText(k("exampleOutput")) : "",
     exampleNote: moduleText("example", "exampleNote"),
     featuresTitle: moduleText("facts", "featuresTitle"),
     features: pairs(moduleText("facts", "features")),

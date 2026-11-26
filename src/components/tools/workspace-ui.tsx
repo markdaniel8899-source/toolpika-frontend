@@ -526,7 +526,7 @@ export function useCopyFeedback(duration = 1800) {
 }
 
 /** Options persist across visits; user input never does. Storage is optional. */
-export function usePersistedOptions<T extends Record<string, unknown>>(
+export function usePersistedOptions<T extends object>(
   key: string,
   defaults: T,
 ) {
