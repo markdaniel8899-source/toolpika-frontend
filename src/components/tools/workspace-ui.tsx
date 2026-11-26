@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type Ref } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type Ref } from "react";
 import { useTranslations } from "next-intl";
 import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, Download, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -498,13 +498,12 @@ export function NumberStepper({
 }
 
 /**
- * Read-only code editor for code outputs: line numbers, theme-aware syntax
- * colours, wrapping and font size. Options persist; user input never does.
+ * Clean read-only code editor: fixed 13.5px, always-on line numbers and
+ * language-aware syntax colours. Copy and Download work in every browser.
  */
 export function CodeOutput({
   code,
   language,
-  storageKey,
   label,
   fileName,
   mimeType,
@@ -512,65 +511,73 @@ export function CodeOutput({
 }: {
   code: string;
   language: CodeLanguage;
-  storageKey: string;
+  /** Kept for call-site compatibility; the editor has no persisted options. */
+  storageKey?: string;
   label: string;
   fileName: string;
   mimeType?: string;
   className?: string;
 }) {
   const t = useTranslations("toolUi");
-  const { options, update } = usePersistedOptions<{
-    lineNumbers: boolean;
-    wrap: boolean;
-    size: "12" | "13" | "14";
-  }>(storageKey, { lineNumbers: true, wrap: true, size: "13" });
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lines = useMemo(() => tokenizeCode(code, language), [code, language]);
 
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current);
+  }, []);
+
+  const handleCopy = async () => {
+    if (!code) return;
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      const helper = document.createElement("textarea");
+      helper.value = code;
+      helper.style.position = "fixed";
+      helper.style.opacity = "0";
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand("copy");
+      helper.remove();
+    }
+    setCopied(true);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopied(false), 1800);
+  };
+
+  const handleDownload = () => {
+    if (!code) return;
+    const blob = new Blob([code], { type: mimeType ?? "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  };
+
   return (
-    <div
-      className={cn("tp-code-editor", className)}
-      style={{ "--tp-code-size": `${options.size}px` } as CSSProperties}
-    >
+    <div className={cn("tp-code-editor", className)}>
       <div className="tp-code-editor-bar">
         <span className="tp-tool-group-title">{label}</span>
         <div className="tp-tool-inline-actions">
-          <CopyButton text={code} label={t("copy")} copiedLabel={t("copied")} />
-          <DownloadButton content={code} fileName={fileName} mimeType={mimeType} label={t("download")} />
+          <Button type="button" variant="secondary" size="sm" onClick={() => void handleCopy()} disabled={!code}>
+            {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+            {copied ? t("copied") : t("copy")}
+          </Button>
+          <Button type="button" variant="secondary" size="sm" onClick={handleDownload} disabled={!code}>
+            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+            {t("download")}
+          </Button>
         </div>
       </div>
-      <div className="tp-code-editor-options">
-        <CheckboxRow
-          id={`${storageKey}-numbers`}
-          label={t("lineNumbers")}
-          checked={options.lineNumbers}
-          onChange={(lineNumbers) => update({ lineNumbers })}
-        />
-        <CheckboxRow
-          id={`${storageKey}-wrap`}
-          label={t("wordWrap")}
-          checked={options.wrap}
-          onChange={(wrap) => update({ wrap })}
-        />
-        <div className="tp-code-editor-size">
-          <span className="tp-tool-label">{t("fontSize")}</span>
-          <SegmentedControl
-            label={t("fontSize")}
-            value={options.size}
-            options={[
-              { value: "12", label: "12" },
-              { value: "13", label: "13" },
-              { value: "14", label: "14" },
-            ]}
-            onChange={(size) => update({ size: size as "12" | "13" | "14" })}
-          />
-        </div>
-      </div>
-      <div className="tp-code-editor-body" data-wrap={options.wrap ? "true" : undefined} aria-live="polite">
+      <div className="tp-code-editor-body" role="region" aria-label={label}>
         {lines.map((line, index) => (
           <div className="tp-code-line" key={index}>
-            {options.lineNumbers ? (
-              <span className="tp-code-line-num" aria-hidden="true">{index + 1}</span>
-            ) : null}
+            <span className="tp-code-line-num" aria-hidden="true">{index + 1}</span>
             <span className="tp-code-line-text">
               {line.tokens.map((token, tokenIndex) => (
                 <span key={tokenIndex} className={`tp-code-token tp-code-token--${token.type}`}>
