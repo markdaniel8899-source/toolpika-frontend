@@ -463,8 +463,8 @@
         "howTo": "Cole o array de objetos JSON no campo de entrada.\nEscolha um delimitador, como vírgula, ponto-e-vírgula ou tabulação.\nDecida se a primeira linha deve conter cabeçalhos de coluna.\nCopie o CSV ou faça o download como arquivo.\nAbra o arquivo em uma planilha para verificar o alinhamento das colunas.",
         "exampleTitle": "Exemplo de conversão",
         "exampleLabel": "Dois registros viram duas linhas",
-        "exampleInput": "[{\"name\":\"Ada\",\"role\":\"Engineer\"},{\"name\":\"Lin\",\"role\":\"Designer\"}]",
-        "exampleOutput": "name,role\nAda,Engineer\nLin,Designer",
+        "exampleInput": "[{\"name\":\"Ada\",\"role\":\"Engenheiro\"},{\"name\":\"Lin\",\"role\":\"Designer\"}]",
+        "exampleOutput": "name,role\nAda,Engenheiro\nLin,Designer",
         "exampleNote": "A ordem das colunas segue o primeiro objeto. Objetos posteriores podem adicionar ou omitir chaves; chaves ausentes geram células vazias.",
         "featuresTitle": "O que este conversor suporta",
         "features": "Aspas RFC 4180::Vírgulas, aspas e quebras de linha dentro dos valores são escapadas corretamente.\nEscolha do delimitador::Saída com vírgula, ponto e vírgula e tabulação é suportada.\nControle do cabeçalho::Incluir ou omitir a linha de nomes das colunas.\nAchatamento de objetos aninhados::Objetos internos tornam-se nomes de colunas separados por ponto.",
@@ -475,7 +475,7 @@
         "mistakes": "Usar dados profundamente aninhados::Somente um nível de achatamento é oferecido, então estruturas profundas perdem a organização.\nChaves incompatíveis::Objetos com chaves diferentes criam células vazias em vez de erros.\nPresumir preservação de tipos::O CSV armazena texto, então números e booleanos se tornam valores de planilha na importação.",
         "limits": "Arrays muito grandes podem ser lentos para renderizar no navegador.\nChaves duplicadas ou ausentes são resolvidas pelo primeiro registro.\nQuebras de linha usam LF, que a maioria dos aplicativos de planilha aceita.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "Isso envia meu JSON?::Não. A conversão e a exportação acontecem inteiramente na aba do seu navegador, então seus dados nunca chegam a um servidor.\nE se meus objetos tiverem chaves diferentes?::O primeiro objeto define a ordem das colunas. Chaves encontradas apenas em objetos posteriores são adicionadas como novas colunas, e valores ausentes ficam vazios.\nPosso importar CSV de volta para JSON?::Esta página foca na conversão de JSON para CSV. Use um analisador CSV dedicado se precisar de conversão reversa estrita com controle de esquema.\nComo as vírgulas dentro dos valores são tratadas?::Valores que contêm vírgulas, aspas ou quebras de linha são envolvidos em aspas duplas, com aspas internas dobradas, seguindo as convenções do RFC 4180.",
+        "faqs": "Isso envia meu JSON?::Não. A conversão e a exportação acontecem inteiramente dentro da aba do navegador, então seus dados nunca chegam a um servidor. Não há conta, upload nem requisição de rede, e limpar a página remove sua entrada da memória.\nE se meus objetos tiverem chaves diferentes?::O primeiro objeto define a ordem das colunas. Chaves que aparecem apenas em objetos posteriores são adicionadas como novas colunas, e valores ausentes permanecem como células vazias em vez de causar um erro, mantendo sua tabela completa.\nPosso importar CSV de volta para JSON?::Esta página foca na conversão de JSON para CSV. Para uma conversão reversa rigorosa com controle sobre tipos e esquema, use um analisador CSV dedicado. Isso oferece um manuseio mais confiável de valores entre aspas e cabeçalhos.\nComo vírgulas dentro dos valores são tratadas?::Valores que contêm vírgulas, aspas ou quebras de linha são envolvidos em aspas duplas, e aspas internas são dobradas. Isso segue as convenções RFC 4180, então aplicativos de planilha leem cada valor corretamente mesmo quando o delimitador aparece dentro dele.",
         "trustTitle": "Privacidade por design",
         "trustBody": "A conversão usa apenas APIs do navegador. Não há conta, upload ou requisição de rede envolvidos, e limpar a página remove o que você inseriu."
       }
@@ -484,7 +484,7 @@
       "title": "Conversor de Markdown para HTML",
       "shortDesc": "Converta Markdown em HTML limpo e seguro.",
       "seo": {
-        "title": "Conversor de Markdown para HTML - Saída segura no lado do cliente",
+        "title": "Conversor de Markdown para HTML - Saída Segura Online",
         "description": "Converta títulos, listas, blocos de código e links do Markdown em HTML. O markup bruto é escapado antes da conversão, então scripts colados nunca são executados."
       },
       "preview": "Pré-visualização",
@@ -512,7 +512,7 @@
         "mistakes": "Esperar suporte a todos os recursos::Tabelas, notas de rodapé e listas de tarefas estão fora deste subconjunto.\nColar HTML bruto::As tags são escapadas, então aparecem como texto em vez de marcação.\nPular linhas em branco::Os parágrafos precisam de uma linha em branco entre eles para serem separados corretamente.",
         "limits": "As imagens são exibidas como links de texto, não como arquivos enviados.\nDocumentos muito longos podem ser exibidos lentamente no painel de visualização.\nExtensões personalizadas do Markdown não são suportadas.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "É seguro colar Markdown não confiável?::Sim. O HTML bruto é escapado antes da conversão e a visualização nunca executa scripts, portanto o markup colado não pode ser executado na página.\nQual versão do Markdown é suportada?::A ferramenta abrange títulos comuns, listas, ênfase, links, citações em bloco e blocos de código delimitados. Extensões avançadas, como tabelas, são intencionalmente omitidas.\nPosso baixar o resultado?::Sim. O HTML pode ser copiado para a área de transferência ou salvo como um arquivo .html no painel de resultado.\nPor que meu HTML bruto aparece como texto?::Isso é intencional. O escape impede que scripts sejam executados e mantém a saída gerada previsível.",
+        "faqs": "É seguro colar Markdown não confiável?::Sim. O HTML bruto é escapado antes da conversão, e a pré-visualização nunca executa scripts. O markup colado é renderizado como texto simples, então não pode ser executado na página nem alterar a saída gerada de forma prejudicial.\nQual variante do Markdown é suportada?::A ferramenta abrange um subconjunto prático do CommonMark: títulos, listas, ênfase, links, blocos de citação e blocos de código cercados. Extensões avançadas como tabelas, notas de rodapé e listas de tarefas são intencionalmente deixadas de fora para manter a saída previsível.\nPosso baixar o resultado?::Sim. Depois que seu Markdown for convertido, você pode copiar o HTML gerado para a área de transferência ou salvá-lo como um arquivo .html no painel de resultado. Nenhuma conta ou servidor é necessário para manter a saída.\nPor que meu HTML bruto aparece como texto?::Isso é intencional. Escapar HTML bruto impede que scripts sejam executados e mantém o markup gerado previsível. Tudo que você colar como HTML é tratado como texto literal, então aparece na saída em vez de ser interpretado como tags.",
         "trustTitle": "Privacidade por design",
         "trustBody": "A conversão ocorre localmente no seu navegador. Nada é enviado e nenhuma conta é necessária."
       }
@@ -552,7 +552,7 @@
         "mistakes": "Misturar sintaxes::Faltar # em valores hex ou % em valores HSL causa um erro.\nAssumir suporte a alfa::Hex de oito dígitos e rgba não são suportados por este conversor.\nArredondar cedo::O arredondamento de canais pode alterar a cor em um passo ao converter de um formato para outro.",
         "limits": "Apenas cores sRGB são processadas; espaços de cores de ampla gama não são suportados.\nCores nomeadas do CSS não são analisadas.\nA transparência alfa não é representada nos formatos de saída.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "Posso colar hexadecimal abreviado?::Sim. Um valor como #abc é expandido para #aabbcc antes da conversão, então se comporta da mesma forma que a forma de seis dígitos.\nE se um canal estiver fora do intervalo?::A ferramenta mostra um erro inline em vez de ajustar silenciosamente. Canais RGB devem ser 0-255, matiz 0-360 e saturação ou luminosidade 0-100%.\nSuporta transparência?::Ainda não. Os formatos de saída são HEX, RGB e HSL sem canal alfa, então cores parcialmente transparentes devem ser tratadas em outro lugar.\nPor que as cores parecem diferentes na tela?::Gerenciamento de cores e perfis de exibição podem alterar a aparência percebida mesmo quando os canais numéricos coincidem.",
+        "faqs": "Posso colar hex abreviado?::Sim, o hex abreviado é aceito. Um valor de três dígitos como #abc é expandido para #aabbcc duplicando cada dígito antes de qualquer cálculo. Os valores RGB e HSL resultantes correspondem exatamente à forma de seis dígitos, então você pode colar qualquer estilo e copiar a notação que sua folha de estilo precisar.\nO que acontece se um canal estiver fora do intervalo?::A ferramenta exibe um erro inline e se recusa a converter. Canais RGB devem ficar entre 0 e 255, matiz entre 0 e 360 graus, e saturação ou claridade entre 0 e 100 por cento. Nada é limitado silenciosamente, então você pode identificar o erro exato e corrigir o valor antes de copiar qualquer saída.\nEle suporta transparência?::Não, este conversor não suporta transparência. A saída é limitada a HEX, RGB e HSL, nenhum dos quais possui um canal alfa. Códigos hex de oito dígitos e valores rgba estão fora dos formatos de entrada suportados, então cores parcialmente transparentes precisam de outra ferramenta. A amostra ao vivo sempre mostra um resultado totalmente opaco.\nPor que as cores parecem diferentes na tela?::Gerenciamento de cores e perfis de exibição podem alterar a aparência de uma cor mesmo quando seus canais numéricos correspondem exatamente. Dois monitores com calibração diferente podem renderizar os mesmos valores RGB de forma diferente, e sistemas operacionais aplicam suas próprias configurações de gama. Trate os números como a fonte da verdade e calibre as telas quando a correspondência visual precisa for importante.",
         "trustTitle": "Privacidade por design",
         "trustBody": "A conversão é feita inteiramente no lado do cliente. Suas cores nunca são enviadas a um servidor."
       }
@@ -561,7 +561,7 @@
       "title": "Conversor de Bases Numéricas",
       "shortDesc": "Converta números entre binário, octal, decimal e hexadecimal.",
       "seo": {
-        "title": "Conversor de Bases Numéricas - Binário, Octal, Decimal, Hexadecimal",
+        "title": "Conversor de Base Numérica - Binário para Hexadecimal Online",
         "description": "Converta números inteiros entre as bases 2, 8, 10 e 16. Valida os dígitos de acordo com a base, aceita prefixos comuns e copia cada resultado instantaneamente."
       },
       "binary": "Binário",
@@ -593,7 +593,7 @@
         "mistakes": "Usar dígitos octais oito ou nove::Esses símbolos não existem na base 8.\nEsquecer letras hexadecimais::G e letras posteriores não são dígitos hexadecimais válidos.\nMisturar prefixos::Um prefixo 0x em um valor decimal é tratado como hexadecimal.",
         "limits": "Apenas números inteiros são suportados; frações e expoentes são rejeitados.\nEntradas extremamente longas podem demorar para ser formatadas.\nA saída hexadecimal negativa mantém o sinal de menos em vez da representação em complemento de dois.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "Ele aceita números negativos?::Sim. O sinal de menos inicial é mantido em todas as quatro bases, então -10 se torna um valor binário e hexadecimal negativo em vez de uma representação em complemento de dois.\nPor que recebo um erro de dígito inválido?::Cada base tem um conjunto fixo de dígitos. O octal aceita 0-7 e o hexadecimal aceita 0-9 mais A-F; qualquer outra coisa não pode representar um valor nessa base.\nPosso colar um valor com prefixo?::Sim. Prefixos como 0b, 0o e 0x são reconhecidos sem diferenciar maiúsculas de minúsculas e são removidos antes da conversão.\nQual o tamanho máximo do número?::A ferramenta usa BigInt, então é limitada pela memória disponível, não pelo intervalo de inteiros seguros do JavaScript.",
+        "faqs": "Aceita números negativos?::Sim, o sinal de menos à esquerda é preservado em todas as quatro bases. Digitar -10 resulta em um valor binário, octal e hexadecimal negativo, e não em uma representação de complemento de dois. O sinal é mantido em cada etapa da conversão, então você pode mudar de base sem precisar reaplicá-lo manualmente ao resultado.\nPor que recebo um erro de dígito inválido?::Cada base aceita apenas um conjunto fixo de dígitos. O binário permite 0 e 1, o octal aceita de 0 a 7, o decimal usa de 0 a 9 e o hexadecimal adiciona as letras de A a F. Qualquer outro caractere não pode representar um valor nessa base, então troque a base de origem ou remova o símbolo antes de converter.\nPosso colar um valor com prefixo?::Sim, os prefixos comuns são reconhecidos e removidos automaticamente. Valores que começam com 0b, 0o ou 0x são lidos como binário, octal ou hexadecimal, independentemente de letras maiúsculas ou minúsculas. Você também pode colar um prefixo que conflita com a base de origem selecionada, e o prefixo prevalece, então verifique a base antes de copiar qualquer resultado convertido.\nQual o tamanho máximo do número?::Não há um limite superior fixo baseado no intervalo de inteiros seguros do JavaScript, porque a ferramenta usa aritmética BigInt. O tamanho é limitado principalmente pela memória disponível e pela velocidade com que o navegador formata strings muito longas. Entradas com centenas de dígitos são convertidas corretamente, embora a renderização possa ficar mais lenta à medida que a quantidade de dígitos aumente.",
         "trustTitle": "Privacidade por design",
         "trustBody": "Todo o cálculo é executado localmente. Nenhuma requisição é feita e nenhum valor é armazenado."
       }
@@ -636,7 +636,7 @@
         "mistakes": "Confundir segundos e milissegundos::Um valor com treze dígitos costuma ser milissegundos.\nIgnorar o fuso horário::A saída em UTC e no horário local difere de acordo com o seu fuso horário.\nSupor que todo valor é válido::Datas anteriores à época precisam de um timestamp negativo.",
         "limits": "As datas do JavaScript são limitadas a aproximadamente ±8,64e15 milissegundos.\nA precisão abaixo de milissegundo não é preservada.\nPeculiaridades históricas de calendário anteriores a 1970 não são modeladas.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "Como saber se o meu valor está em segundos ou milissegundos?::Valores com 13 dígitos são quase sempre milissegundos, enquanto valores com 10 dígitos geralmente são segundos. Você pode mudar o seletor de unidade se o primeiro resultado estiver errado.\nPor que o horário local difere do UTC?::O horário local adiciona o fuso horário do seu dispositivo e as regras de horário de verão. O UTC permanece o mesmo em todos os lugares, então costuma ser mais seguro para logs e APIs.\nPosso converter uma data de volta para um timestamp?::Sim. Escolha o painel de data, selecione uma data e horário, e a ferramenta retorna segundos e milissegundos para aquele instante.\nO que acontece com datas inválidas?::A ferramenta exibe um erro inline em vez de produzir uma data enganosa, por exemplo quando um valor de mês ou dia não pode existir.",
+        "faqs": "Como saber se meu valor está em segundos ou milissegundos?::A quantidade de dígitos é a pista mais rápida: valores com treze dígitos são quase sempre milissegundos, enquanto valores com dez dígitos geralmente são segundos. Se o primeiro resultado cair em uma data inesperada, altere o seletor de unidade e converta novamente. Você também pode colar uma data conhecida no outro painel para ver qual unidade reproduz seu valor.\nPor que o horário local difere do UTC?::O horário local adiciona o fuso horário do seu dispositivo e qualquer regra de horário de verão em vigor naquela data. O UTC é uma referência fixa única usada por APIs e logs, então o mesmo instante pode ser exibido como um horário diferente dependendo de onde você está. Ambas as saídas descrevem o mesmo momento, apenas expresso em fusos diferentes.\nPosso converter uma data de volta para um timestamp?::Sim, o painel de data realiza a conversão inversa. Escolha uma data e um horário, e a ferramenta retorna o timestamp Unix equivalente em segundos e milissegundos. Você pode copiar qualquer um dos valores para uma requisição de API ou entrada de log. O resultado reflete o fuso horário do seu navegador, já que o mesmo horário de relógio mapeia para instantes diferentes em fusos diferentes.\nO que acontece com datas inválidas?::A ferramenta exibe um erro inline em vez de uma data enganosa. Combinações impossíveis, como o mês 13 ou 30 de fevereiro, não podem produzir um instante válido, então nada é avançado silenciosamente para o próximo mês. Corrija os campos e as saídas UTC, local e ISO serão atualizadas juntas assim que a data for válida.",
         "trustTitle": "Privacidade por design",
         "trustBody": "Os cálculos de data são feitos no seu navegador. Nenhum timestamp é transmitido ou armazenado."
       }
@@ -646,7 +646,7 @@
       "shortDesc": "Converte entre unidades de armazenamento SI e binárias.",
       "seo": {
         "title": "Conversor de Armazenamento de Dados - KB, MB, GB e GiB",
-        "description": "Converta tamanhos de armazenamento entre unidades decimais SI e binárias IEC, com formatação localizada e troca com um clique."
+        "description": "Converta tamanhos de armazenamento entre unidades decimais SI e binárias IEC. Compare KB, MB e GB instantaneamente, inverta a direção e veja resultados adaptados ao seu idioma."
       },
       "system": "Sistema de unidades",
       "si": "SI · base 1000",
@@ -675,7 +675,7 @@
         "mistakes": "Assumir que KB significa 1024 bytes::Isso é KiB no sistema IEC.\nMisturar sistemas no meio do cálculo::Escolha um fator para toda a conversão.\nInserir tamanhos negativos::Quantidades de armazenamento não podem ser negativas.",
         "limits": "Unidades de bits e taxas de bytes, como megabits por segundo, não estão incluídas.\nOs resultados são arredondados para exibição, não para contabilidade exata.\nValores muito grandes usam matemática de ponto flutuante e podem perder precisão.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "Por que meu disco mostra menos espaço do que o anunciado?::Os fabricantes contam em potências de dez, enquanto muitos sistemas operacionais contam em potências de dois. Um disco de 1 TB equivale a cerca de 0,91 TiB, então o número informado parece menor, mesmo que nada esteja faltando.\nO que significa KiB?::KiB é o símbolo IEC para kibibyte, que equivale a 1024 bytes. KB geralmente significa quilobyte, ou 1000 bytes, no sistema SI.\nPosso converter gigabits em gigabytes?::Não aqui. Esta ferramenta aborda quantidades de armazenamento, não taxas de transferência; divida os bits por oito primeiro se precisar de bytes.\nO resultado usa minha localidade?::Sim. O número exibido segue a localidade do seu navegador por meio do Intl.NumberFormat, então os separadores de milhares parecem familiares.",
+        "faqs": "Por que meu disco mostra menos espaço do que o anunciado?::Fabricantes e sistemas operacionais contam o armazenamento de forma diferente, então o mesmo disco exibe um número menor no software. Os fabricantes usam unidades decimais SI, em que um terabyte equivale a 1.000.000.000.000 bytes, enquanto muitos sistemas relatam tebibytes binários. Um disco de 1 TB aparece como cerca de 0,91 TiB, mesmo que nenhuma capacidade esteja realmente faltando.\nO que significa KiB?::KiB é o símbolo IEC para kibibyte, uma unidade igual a 1024 bytes. O rótulo SI KB geralmente significa quilobyte, ou 1000 bytes, então os dois nomes são parecidos, mas não intercambiáveis. Escolher o sistema correto no conversor mantém seu cálculo consistente e evita um erro pequeno, mas crescente.\nPosso converter gigabits em gigabytes?::Não, este conversor lida com quantidades de armazenamento, não com taxas de transferência de dados. Se você tiver gigabits, divida o valor por oito para obter gigabytes primeiro e, em seguida, cole esse número aqui. Manter bits e bytes separados evita um erro oito vezes maior ao comparar tamanhos de arquivos com velocidades de rede.\nO resultado segue a minha localidade?::Sim, o número exibido segue a localidade do seu navegador por meio do Intl.NumberFormat. Os separadores de milhar e os sinais decimais, portanto, correspondem ao que você vê em outros lugares do seu dispositivo. O valor subjacente não muda, então copiá-lo para uma planilha ou script preserva toda a precisão da conversão.",
         "trustTitle": "Privacidade por design",
         "trustBody": "Os cálculos são feitos localmente. Nenhum valor é enviado ou retido."
       }
@@ -684,7 +684,7 @@
       "title": "Gerador de slug de texto",
       "shortDesc": "Converta títulos em slugs limpos e seguros para URL.",
       "seo": {
-        "title": "Gerador de slug de texto - Slugs de URL limpos instantaneamente",
+        "title": "Gerador de Slug de Texto - Crie Slugs de URL Limpos Rapidamente",
         "description": "Crie slugs seguros para URL a partir de títulos e cabeçalhos. Escolha um separador, remova acentos e pontuação e copie o resultado enquanto digita."
       },
       "separator": "Separador",
@@ -714,7 +714,7 @@
         "mistakes": "Alterar slugs após a publicação::Links existentes podem quebrar sem redirecionamentos.\nManter palavras de parada::Slugs muito longos são mais difíceis de ler e compartilhar.\nMisturar separadores::Uma convenção por site mantém as URLs previsíveis.",
         "limits": "Escritas não-latinas sem diacríticos são preservadas como estão, em vez de transliteradas.\nEmojis são removidos, em vez de codificados.\nO tamanho não é truncado automaticamente.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "O que acontece com as letras acentuadas?::Com a remoção de acentos ativada, o texto é normalizado e os diacríticos são removidos, então café vira cafe. Desative a opção para manter os caracteres originais.\nPor que a pontuação foi removida?::Caracteres como e comercial, dois pontos e pontos de exclamação precisam de codificação de URL ou adicionam ruído. Removê-los gera um endereço mais limpo e estável.\nPosso usar sublinhados em vez de hífens?::Sim. Escolha o separador de sublinhado e cada separação entre palavras vira um sublinhado. Escolha um estilo e use-o consistentemente em todo o site.\nA ferramenta encurta slugs longos?::Não. Ela mantém a frase completa para você decidir quais palavras importam. Corte o texto de origem se precisar de um endereço mais curto.",
+        "faqs": "O que acontece com as letras acentuadas?::As letras acentuadas viram ASCII simples quando a remoção está ativada, então café vira cafe. O gerador aplica normalização Unicode antes de remover os diacríticos, o que mantém a palavra legível em URLs. Desative a opção se quiser preservar os caracteres originais exatamente como digitados.\nPor que a pontuação foi removida?::A pontuação é removida porque caracteres como e comercial e dois pontos precisam de codificação de URL ou adicionam ruído ao endereço. Removê-los deixa um slug mais limpo e estável, mais fácil de ler e compartilhar. Seu título original permanece inalterado; apenas o resultado gerado é simplificado.\nPosso usar sublinhados em vez de hífens?::Sim, você pode mudar para sublinhados a qualquer momento escolhendo o separador de sublinhado. Cada limite de palavra então usa um sublinhado em vez de hífen. Mantenha uma única convenção em todo o site para que visitantes e mecanismos de busca vejam endereços previsíveis e consistentes.\nA ferramenta encurta slugs longos?::Não, o gerador mantém a frase completa para você decidir quais palavras são mais importantes. Edite o título de origem se precisar de um endereço mais curto. Essa abordagem evita truncamentos inesperados e ajuda a identificar slugs muito longos antes que cheguem ao seu CMS ou sitemap.",
         "trustTitle": "Privacidade por design",
         "trustBody": "A criação do slug acontece no seu navegador. Nenhum título é registrado ou enviado."
       }
@@ -753,7 +753,7 @@
         "mistakes": "Uso de tabs::O YAML exige espaços para indentação.\nMistura de níveis de indentação::Chaves no mesmo nível devem se alinhar exatamente.\nEsperar âncoras::Referências e tags personalizadas não são resolvidas.",
         "limits": "Blocos multilinhas são tratados como texto simples.\nChaves complexas e chaves de mesclagem estão fora do subconjunto.\nDocumentos muito grandes podem demorar a ser renderizados no navegador.",
         "faqTitle": "Perguntas frequentes",
-        "faqs": "Por que meu arquivo não pôde ser analisado?::A maioria das falhas vem de tabs ou de indentação inconsistente. Verifique se as chaves no mesmo nível estão alinhadas na mesma coluna e se os valores aninhados estão indentados mais profundamente.\nOs booleanos e os números são convertidos?::Sim. Os valores true, false, null e numéricos sem aspas se tornam os tipos JSON correspondentes, enquanto os valores entre aspas permanecem como strings.\nPosso reutilizar âncoras e aliases?::Não. Âncoras, aliases e tags personalizadas são intencionalmente não suportadas para que o analisador permaneça determinístico e seguro.\nMinha configuração é enviada?::Não. A análise e a formatação acontecem inteiramente no seu navegador, e nada é armazenado depois que você fecha a página.",
+        "faqs": "Por que meu arquivo não foi analisado?::A maioria das falhas vem de tabulações ou indentação inconsistente no texto de origem. Verifique se as chaves de mesmo nível estão alinhadas na mesma coluna e se os valores aninhados estão mais à direita. O analisador também espera espaços, então substitua qualquer caractere de tabulação antes de tentar a conversão novamente.\nBooleanos e números são convertidos?::Sim, true, false, null e valores numéricos sem aspas se tornam os tipos JSON correspondentes automaticamente. Valores entre aspas continuam strings, então \"true\" permanece como texto enquanto true se torna um booleano. Essa distinção importa quando você cola o resultado em uma API que valida tipos de forma rígida.\nPosso reusar âncoras e aliases?::Não, âncoras, aliases e tags personalizadas estão deliberadamente fora do subconjunto suportado por este analisador. Manter a gramática pequena torna cada conversão determinística e segura. Expanda quaisquer valores compartilhados em mapas ou listas simples antes de colar, e a ferramenta cuidará do restante normalmente.\nMinha configuração é enviada?::Não, sua configuração nunca é enviada ou transmitida a um servidor. A análise e a formatação acontecem inteiramente dentro da aba do navegador, e nada é armazenado depois que você fecha a página. Você pode colar com segurança credenciais privados ou configurações internas no painel de entrada.",
         "trustTitle": "Privacidade por design",
         "trustBody": "O analisador é executado localmente, sem acesso à rede. Sua configuração permanece neste dispositivo."
       }
@@ -762,7 +762,7 @@
       "title": "Gerador de Lorem Ipsum",
       "shortDesc": "Gere parágrafos, frases ou palavras de preenchimento repetíveis para rascunhos de layout.",
       "seo": {
-        "title": "Gerador de Lorem Ipsum para layouts de wireframe | Toolpika",
+        "title": "Gerador de Lorem Ipsum para layouts de wireframe",
         "description": "Gere texto lorem ipsum repetível em parágrafos, frases ou palavras. Defina a quantidade e a semente, depois copie ou faça o download do preenchimento para o seu próximo mockup."
       },
       "subtitle": "Texto de preenchimento com semente para layouts ainda sem conteúdo",
@@ -813,7 +813,7 @@
       "title": "Verificador de Diferenças de Texto",
       "shortDesc": "Compare dois rascunhos linha por linha ou palavra por palavra e veja todas as mudanças.",
       "seo": {
-        "title": "Verificador de Diferenças de Texto com Visualizações por Linha e Palavra | Toolpika",
+        "title": "Verificador de diferença de texto com visualizações por linha e por palavra",
         "description": "Compare dois rascunhos com um diff de linha ou palavra, veja linhas adicionadas, removidas e inalteradas, além da similaridade, e copie ou salve o diff em texto simples."
       },
       "subtitle": "Mudanças exatas entre dois rascunhos, sem upload",
@@ -872,7 +872,7 @@
       "title": "Gerador de UUID",
       "shortDesc": "Gere UUIDs aleatórios v4, v7 ordenados por tempo e nil em lotes de até 1000.",
       "seo": {
-        "title": "Gerador de UUID - UUIDs v4 e v7 gratuitos em lote | Toolpika",
+        "title": "Gerador de UUID - UUIDs v4 e v7 gratuitos em lote",
         "description": "O Gerador de UUID cria identificadores em lote no seu navegador: v4, v7 ordenado por tempo ou nil. Escolha de 1 a 1000 valores, copie tudo e baixe uma lista em texto simples."
       },
       "subtitle": "Identificadores em lote, gerados localmente",
@@ -915,7 +915,7 @@
       "title": "Decodificador JWT",
       "shortDesc": "Leia cabeçalhos, payloads e declarações JWT localmente, sem verificar a assinatura.",
       "seo": {
-        "title": "Decodificador JWT - Leia Cabeçalho, Payload e Declarações | Toolpika",
+        "title": "Decodificador JWT - cabeçalho, payload e claims",
         "description": "O decodificador JWT exibe o cabeçalho, o payload e as declarações do token como JSON legível no navegador. Converta declarações de tempo, identifique tokens expirados e copie o resultado."
       },
       "subtitle": "Inspecione tokens nesta aba",
@@ -981,7 +981,7 @@
       "title": "Testador de Regex",
       "shortDesc": "Crie um padrão JavaScript, alterne sinalizadores e veja todas as correspondências destacadas no seu texto.",
       "seo": {
-        "title": "Testador de Regex - Teste Padrões e Sinalizadores ao Vivo | Toolpika",
+        "title": "Testador de regex - teste padrões e flags em tempo real",
         "description": "Use o Testador de Regex para verificar um padrão JavaScript no seu texto, ativar ou desativar as flags g, i, m, s e u, e copiar as correspondências com grupos e posições."
       },
       "trySample": "Testar exemplo",
@@ -1055,7 +1055,7 @@
       "title": "Calculadora de porcentagem",
       "shortDesc": "Cinco perguntas comuns sobre porcentagem, uma resposta e a fórmula por trás dela.",
       "seo": {
-        "title": "Calculadora de Porcentagem - Cinco Modos, Uma Resposta | Toolpika",
+        "title": "Calculadora de porcentagem - cinco modos, uma resposta",
         "description": "Use esta calculadora de porcentagem para calcular um percentual de um número, comparar dois valores ou aplicar um aumento ou redução. Veja o resultado e a fórmula."
       },
       "trySample": "Experimentar exemplo",
@@ -1112,7 +1112,7 @@
       "title": "Calculadora de proporção de aspecto",
       "shortDesc": "Reduza um par de pixels à proporção mais simples, ajuste um lado e copie a declaração CSS.",
       "seo": {
-        "title": "Calculadora de proporção de aspecto: ajuste por largura ou altura | Toolpika",
+        "title": "Calculadora de proporção de aspecto: ajuste por largura ou altura",
         "description": "Reduza largura e altura a uma proporção simples e ajuste um lado mantendo as proporções. Visualize a forma e copie a linha CSS aspect-ratio."
       },
       "privacyRibbon": "O cálculo de proporção roda no seu navegador. Suas dimensões não são enviadas.",
@@ -1173,7 +1173,7 @@
       "title": "Criador de UTM",
       "shortDesc": "Crie URLs de campanha rastreadas a partir de um endereço base e cinco tags UTM.",
       "seo": {
-        "title": "Criador de UTM: Crie links de campanha rastreados | Toolpika",
+        "title": "Gerador de UTM: crie links de campanha com rastreamento",
         "description": "Crie URLs de campanha com rastreamento usando cinco tags UTM. Parâmetros de consulta existentes são mantidos, os valores são codificados automaticamente e o link fica pronto para copiar."
       },
       "privacyRibbon": "A criação de links ocorre no seu navegador. Nenhum endereço ou tag é enviado.",
@@ -1184,7 +1184,7 @@
       "inputHint": "Comece pela página que você quer vincular e, depois, descreva a campanha.",
       "pasteUrl": "Colar URL",
       "baseUrlLabel": "URL base",
-      "baseUrlPlaceholder": "https://example.com/pricing",
+      "baseUrlPlaceholder": "https://exemplo.com/preços",
       "errorInvalidUrl": "Não foi possível processar esse endereço. Use um host como example.com/pricing e verifique se não há espaços extras.",
       "errorRequired": "Adicione a URL base, a fonte, o meio e a campanha antes de gerar o link.",
       "sourceLabel": "Origem",
@@ -1232,7 +1232,7 @@
       "title": "Gerador de Hash",
       "shortDesc": "Calcule resumos SHA-256, SHA-512 ou SHA-1 para texto e arquivos no seu navegador.",
       "seo": {
-        "title": "Gerador de Hash - Checksum SHA-256 e SHA-512 | Toolpika",
+        "title": "Gerador de hash - checksum SHA-256 e SHA-512",
         "description": "O Gerador de Hash calcula resumos SHA-256, SHA-512 e SHA-1 para texto ou arquivos no seu navegador. Escolha um algoritmo e copie ou baixe o resultado."
       },
       "trySample": "Testar amostra",
@@ -1288,7 +1288,7 @@
       "title": "Redimensionador de imagens",
       "shortDesc": "Redimensione imagens JPEG, PNG e WebP para dimensões exatas em pixels sem enviá-las.",
       "seo": {
-        "title": "Redimensionador de Imagens - Dimensões exatas para JPEG, PNG e WebP | Toolpika",
+        "title": "Redimensionador de Imagens - Tamanho Exato JPEG PNG WebP",
         "description": "O redimensionador de imagens define dimensões exatas em pixels para arquivos JPEG, PNG e WebP, mantém a proporção e exibe uma prévia do resultado antes de baixar localmente."
       },
       "trySample": "Testar amostra",
@@ -1348,7 +1348,223 @@
         "trustBody": "Criado pela equipe da Toolpika. O resultado vem do codificador canvas do navegador, no formato e na qualidade que você escolher no painel de resultados, sem upload. Atualizado em 25 de novembro de 2026."
       }
     },
-    "catCalculator": "Calculadoras"
+    "catCalculator": "Calculadoras",
+    "remove-duplicate-lines": {
+      "title": "Remover linhas duplicadas",
+      "shortDesc": "Mantenha uma cópia de cada linha de uma lista e remova duplicados em segundos.",
+      "seo": {
+        "title": "Remover linhas duplicadas de texto online",
+        "description": "Remova linhas duplicadas de qualquer lista com esta ferramenta gratuita. Escolha a primeira ou a última ocorrência, ignore maiúsculas/minúsculas ou espaços em branco, e copie ou baixe as linhas únicas."
+      },
+      "subtitle": "Uma cópia de cada linha, limpa no seu navegador",
+      "trySample": "Testar exemplo",
+      "reset": "Redefinir",
+      "privacyRibbon": "Executa no seu navegador. Seu texto nunca é enviado.",
+      "inputTitle": "Linhas para limpar",
+      "inputHint": "Uma entrada por linha. Cole uma lista ou digite diretamente na caixa.",
+      "textLabel": "Linhas de texto",
+      "paste": "Colar",
+      "optionsTitle": "Opções de limpeza",
+      "keepLabel": "Qual cópia manter",
+      "keepFirst": "Manter o primeiro",
+      "keepLast": "Manter o último",
+      "caseSensitive": "Diferenciar maiúsculas de minúsculas",
+      "trimWhitespace": "Remover espaços em branco",
+      "resultTitle": "Linhas únicas",
+      "outputLabel": "Texto limpo",
+      "originalLines": "Linhas originais",
+      "uniqueLines": "Linhas únicas",
+      "removedLines": "Duplicatas removidas",
+      "emptyTitle": "Ainda não há linhas para limpar",
+      "emptyHint": "Cole ou digite uma lista acima e escolha Manter primeiro ou Manter último.",
+      "tooLarge": "Essa lista tem mais de 5.000 linhas ou 400.000 caracteres. Encurte-a e tente novamente.",
+      "failed": "Não foi possível concluir a limpeza. Limpe a caixa e cole as linhas novamente.",
+      "pasteUnavailable": "O acesso à área de transferência está bloqueado. Use Ctrl/Cmd + V para colar diretamente na caixa.",
+      "copyUnavailable": "O acesso à área de transferência está bloqueado. Selecione o texto e copie-o manualmente.",
+      "sampleText": "maçã\nbanana\nmaçã\nCereja\ncereja\nbanana\n\npera\npera\nMaçã",
+      "page": {
+        "byline": "Ferramentas de texto · Revisado em 26 de novembro de 2026",
+        "directAnswer": "O Remover Linhas Duplicadas mantém uma cópia de cada linha repetida em uma lista, transformando uma exportação bagunçada em um conjunto limpo de entradas. Escolha manter a primeira ou a última ocorrência, ative ou desative a diferenciação de maiúsculas e minúsculas ou a remoção de espaços em branco, e então copie ou faça o download do resultado com contagens exatas.",
+        "aboutTitle": "Sobre o Remover Linhas Duplicadas",
+        "contextualLink": "Depois de limpar a lista, o %%TOOL%% coloca o que sobrou em ordem.",
+        "whatIsTitle": "O que é o Remover Linhas Duplicadas?",
+        "whatIs": "Uma ferramenta de remover linhas duplicadas examina uma lista linha por linha e mantém uma única cópia de cada entrada distinta. Ela não reescreve suas palavras. Apenas decide quais linhas sobrevivem e as retorna em uma ordem previsível, para que você possa colar o resultado em uma planilha, formulário, script ou documento.\n\nA maioria das listas vem de planilhas copiadas, arquivos de log ou exportações de formulários, onde o mesmo valor aparece várias vezes. Remover duplicatas manualmente é lento e fácil de errar, especialmente quando a lista tem centenas de linhas. A ferramenta compara uma chave para cada linha, e a primeira ou a última linha com essa chave é mantida. Escolher Manter primeiro preserva a posição mais antiga, o que serve para listas de inscrições. Escolher Manter último preserva a entrada mais recente, o que serve para um log onde o valor mais recente é o que importa.\n\nDuas opções alteram o que conta como a mesma linha. Diferenciar maiúsculas e minúsculas trata Apple e apple como entradas diferentes, o que é adequado para código, identificadores e códigos de produto; desativá-la trata ambas como uma. Remover espaços em branco elimina espaços e tabs no início e no final, tanto na comparação quanto na saída, de modo que uma linha colada com um espaço extra não cria mais uma segunda entrada. Linhas em branco são tratadas como linhas reais, então linhas vazias repetidas se reduzem a uma.\n\nTudo roda no navegador. O painel de resultado mostra o texto limpo, a contagem original de linhas, a contagem de linhas únicas e quantas linhas foram removidas. Você pode copiar o texto ou fazer o download como um arquivo .txt. Quebras de linha reais são usadas, então uma linha longa que quebra na tela continua sendo uma linha. Entradas muito grandes são limitadas com um erro amigável, em vez de travar a aba.",
+        "howToTitle": "Como usar Remover Linhas Duplicadas",
+        "howTo": "Cole uma lista na caixa de texto ou use o botão Colar embutido.\nEscolha Manter primeiro ou Manter último em Opções de limpeza.\nAtive Diferenciar maiúsculas de minúsculas ou Remover espaços em branco para corresponder aos seus dados.\nLeia o texto limpo e as contagens de linhas originais, únicas e removidas à direita.\nCopie o resultado ou faça o download como um arquivo .txt.",
+        "exampleTitle": "Exemplo",
+        "exampleLabel": "Lista de frutas repetidas",
+        "exampleInput": "maçã\nbanana\nmaçã\nCereja\ncereja\nbanana\n\npera\npera\nMaçã\nManter primeiro, Diferenciar maiúsculas de minúsculas ativado, Remover espaços em branco ativado",
+        "exampleOutput": "maçã\nbanana\nCereja\ncereja\n\npera\nMaçã\nLinhas originais: 10\nLinhas únicas: 7\nDuplicatas removidas: 3",
+        "exampleNote": "Apple e apple permanecem separados porque a diferenciação entre maiúsculas e minúsculas está ativada. A linha vazia aparece apenas uma vez porque as linhas em branco também são tratadas como duplicatas.",
+        "mistakesTitle": "Erros comuns e limites",
+        "limitsTitle": "Limites",
+        "mistakes": "Deixar a diferenciação de maiúsculas e minúsculas ativada::Apple e apple são linhas diferentes quando a opção está ativada. Desative-a para nomes que devem ser mesclados.\nEsquecer os espaços em branco::Uma linha com espaço no final parece única até ativar a opção Remover espaços em branco; a opção também limpa a saída.\nEsperar apenas um resumo da contagem::O resultado mantém uma linha por chave distinta, então escolha Manter o último quando uma linha posterior deve substituir uma anterior.\nColar um parágrafo inteiro::A ferramenta divide por quebras de linha, não por frases. Coloque uma entrada em cada linha antes de limpar a lista.",
+        "limits": "Cada entrada aceita no máximo 5.000 linhas ou 400.000 caracteres.\nLinhas em branco são contadas e tratadas como duplicatas como qualquer outra linha.\nA conversão para minúsculas usa mapeamento simples, não regras sensíveis à localidade.\nNada é normalizado além de finais de linha e remoção opcional de espaços em branco.",
+        "faqTitle": "Perguntas frequentes",
+        "faqs": "Qual cópia de uma linha repetida é mantida?::As guias Manter primeiro e Manter último decidem isso. Manter primeiro deixa a linha mais antiga na posição original; Manter último move a linha sobrevivente para onde a última cópia apareceu. Ambas as opções preservam a ordem das linhas que restam, então o resultado fica próximo à sua lista de origem.\nA diferenciação entre maiúsculas e minúsculas altera o que conta como duplicata?::Sim. Com Diferenciar maiúsculas e minúsculas ativado, Apple e apple são duas linhas distintas, o que é útil para códigos e identificadores. Desligue-a e ambas são convertidas para minúsculas apenas para comparação; a saída ainda mostra a grafia original da linha que sobrevive.\nO que faz Remover espaços em branco?::Remove espaços e tabulações no início e no final de cada linha antes da comparação e na saída limpa. Uma linha colada com um espaço extra não parecerá mais única. O espaçamento dentro de uma linha permanece exatamente como estava, então palavras e separadores não são alterados.\nLinhas em branco são removidas?::Linhas em branco repetidas colapsam para uma única linha vazia, porque uma string vazia é comparada como qualquer outra linha. Uma única linha em branco é mantida, o que permite preservar uma pausa visual entre grupos. Use um editor de texto se quiser remover todas as linhas em branco.\nMeu texto é enviado para upload?::Não. Divisão, comparação e exportação acontecem dentro da guia do navegador. Sua lista nunca é enviada para um servidor, armazenada em uma conta ou gravada no armazenamento local. Apenas as opções selecionadas são lembradas neste dispositivo; feche a guia e o texto some.",
+        "trustTitle": "Sobre esta ferramenta",
+        "trustBody": "Esta ferramenta cria um mapa de chaves de comparação e mantém a primeira ou a última linha para cada chave na ordem de origem. Listas com até 5.000 linhas são executadas localmente; nada sai da guia.",
+        "searchIntents": "remover linhas duplicadas de uma lista\nremover linhas duplicadas de texto colado\nmanter a primeira ou a última linha duplicada\nlimpar entradas repetidas em um arquivo de texto"
+      }
+    },
+    "sort-text-lines": {
+      "title": "Ordenar linhas de texto",
+      "shortDesc": "Organize qualquer lista em ordem alfabética ou numérica mantendo todas as linhas.",
+      "seo": {
+        "title": "Ordenar linhas de texto alfabeticamente ou numericamente",
+        "description": "Ordene linhas de texto em ordem crescente ou decrescente com esta ferramenta. Ative a ordenação natural para item2 e item10, escolha o tratamento de maiúsculas e minúsculas e, em seguida, copie ou faça o download."
+      },
+      "subtitle": "Uma lista organizada na ordem que você escolher",
+      "trySample": "Experimentar exemplo",
+      "reset": "Redefinir",
+      "privacyRibbon": "Executa no seu navegador. Seu texto nunca é enviado.",
+      "inputTitle": "Linhas para ordenar",
+      "inputHint": "Coloque um item por linha. Cole uma lista ou digite diretamente.",
+      "textLabel": "Linhas de texto",
+      "paste": "Colar",
+      "optionsTitle": "Opções de ordenação",
+      "directionLabel": "Ordem de ordenação",
+      "ascending": "Crescente",
+      "descending": "Decrescente",
+      "caseSensitive": "Diferenciar maiúsculas e minúsculas",
+      "naturalSort": "Ordenação natural (numérica)",
+      "resultTitle": "Linhas ordenadas",
+      "outputLabel": "Texto ordenado",
+      "lineCountLabel": "Linhas",
+      "emptyTitle": "Ainda não há linhas para ordenar",
+      "emptyHint": "Cole ou digite uma lista acima e escolha Ordem crescente ou Ordem decrescente.",
+      "tooLarge": "Essa lista tem mais de 5.000 linhas ou 400.000 caracteres. Encurte-a e tente novamente.",
+      "failed": "Não foi possível concluir a ordenação. Limpe a caixa e cole as linhas novamente.",
+      "pasteUnavailable": "O acesso à área de transferência está bloqueado. Use Ctrl/Cmd + V para colar diretamente na caixa.",
+      "copyUnavailable": "O acesso à área de transferência está bloqueado. Selecione o texto e copie manualmente.",
+      "sampleText": "item10\nitem2\nmaçã\nCereja\ncereja\nitem1",
+      "page": {
+        "byline": "Ferramentas de texto · Verificado em 26 de novembro de 2026",
+        "directAnswer": "O Ordenar Linhas de Texto organiza uma lista colada em ordem crescente ou decrescente sem perder nenhuma linha. Ative a ordenação numérica para que item2 venha antes de item10, escolha se diferencia maiúsculas de minúsculas e, em seguida, copie ou baixe o texto ordenado com a contagem de linhas.",
+        "aboutTitle": "Sobre o Ordenar Linhas de Texto",
+        "contextualLink": "Se a mesma entrada aparecer duas vezes, o %%TOOL%% remove os itens duplicados antes de ordenar a lista.",
+        "whatIsTitle": "O que é uma ferramenta de ordenar linhas de texto?\n",
+        "whatIs": "Uma ferramenta de ordenar linhas de texto reorganiza as linhas de uma lista colada e mantém o texto de cada linha inalterado. É a maneira mais rápida de colocar nomes, tarefas, códigos de produto ou entradas de log em uma ordem previsível antes de colá-los em outro lugar.\n\nA ordem crescente vai do início do alfabeto até o fim; a decrescente inverte isso. A comparação usa os caracteres de cada linha, então pontuação e espaços podem afetar a posição. Uma linha em branco fica no topo na ordem crescente porque uma string vazia vem antes de qualquer caractere.\n\nA ordenação lexicográfica simples compara um caractere de cada vez, o que coloca item10 antes de item2 porque 1 vem antes de 2. A ordenação natural divide cada linha em trechos de texto e dígitos e compara os trechos de dígitos pelo valor, então item2 vem antes de item10. Isso é importante para nomes de arquivos, rótulos de versão, números de capítulo e qualquer lista que misture palavras com números.\n\nO tratamento de maiúsculas e minúsculas é a outra opção. Com Diferenciar maiúsculas de minúsculas ativado, letras maiúsculas ficam antes de minúsculas em uma comparação simples de caracteres, então Cereja e cereja podem ficar separadas. Desligue e ambas são comparadas como minúsculas, mantendo a grafia original na saída. Linhas iguais mantêm a ordem original, e todas as linhas são mantidas.\n\nA ferramenta roda no navegador e limita entradas muito grandes com um erro amigável. O painel de resultado mostra o texto ordenado e a contagem de linhas, e você pode copiar o texto ou baixá-lo como um arquivo .txt.\n",
+        "howToTitle": "Como usar a ferramenta de ordenar linhas de texto\n",
+        "howTo": "Cole uma lista na caixa de texto ou use o botão Colar integrado.\nEscolha Crescente ou Decrescente em Opções de ordenação.\nAtive Ordenação numérica (natural) quando as linhas contiverem dígitos.\nDesative Diferenciar maiúsculas de minúsculas quando quiser maiúsculas e minúsculas juntas.\nLeia o texto ordenado e a contagem de linhas, depois copie ou baixe o arquivo .txt.\n",
+        "exampleTitle": "Exemplo\n",
+        "exampleLabel": "Nomes de arquivos mistos\n",
+        "exampleInput": "item10\nitem2\napple\nCherry\ncherry\nitem1\nCrescente, ordenação natural ativada, diferenciação de maiúsculas e minúsculas desativada",
+        "exampleOutput": "apple\nCherry\ncherry\nitem1\nitem2\nitem10\nLinhas: 6",
+        "exampleNote": "A ordenação natural compara blocos de dígitos pelo valor, então item1, item2 e item10 vêm depois das palavras. Com a diferenciação de maiúsculas e minúsculas desativada, Cherry e cherry são tratados como iguais e mantêm a ordem de origem.",
+        "mistakesTitle": "Erros comuns e limites",
+        "limitsTitle": "Limites",
+        "mistakes": "Usar ordenação simples em linhas numeradas::item10 fica à frente de item2 a menos que a ordenação numérica (natural) esteja ativada.\nAssumir que maiúsculas e minúsculas são iguais::Com diferenciação de maiúsculas e minúsculas ativada, Cherry e cherry ficam separados. Desative-a para comparar as formas minúsculas.\nEsquecer uma entrada por linha::A ferramenta ordena quebras de linha, não palavras dentro de uma linha. Coloque cada valor em uma linha separada primeiro.\nEsperar que linhas em branco desapareçam::Elas vão para o topo em ordem crescente. Remova-as primeiro se precisar de uma lista sem lacunas.",
+        "limits": "Cada entrada aceita no máximo 5.000 linhas ou 400.000 caracteres.\nLinhas em branco são ordenadas como qualquer outra linha.\nA ordenação natural compara sequências de dígitos pelo comprimento e valor; não interpreta decimais nem datas.\nNão é aplicada ordenação específica de localidade, portanto letras acentuadas seguem a ordem dos caracteres.",
+        "faqTitle": "Perguntas frequentes",
+        "faqs": "Qual é a diferença entre ordenação simples e ordenação natural?::A ordenação simples compara caractere por caractere, então item10 aparece antes de item2 porque 1 vem primeiro. A ordenação natural divide as linhas em trechos de texto e números, compara os números pelo valor e coloca item2 antes de item10. Use o modo natural para nomes de arquivos, versões e títulos numerados.\nPara onde vão as linhas em branco?::Uma linha vazia vem antes de qualquer caractere, então as linhas em branco ficam no topo em ordem crescente e no final em ordem decrescente. Elas nunca são excluídas. Remova as linhas vazias do texto de origem primeiro se quiser uma lista sem lacunas.\nComo a diferenciação entre maiúsculas e minúsculas afeta o resultado?::Com a opção Diferenciar maiúsculas e minúsculas ativada, letras maiúsculas ficam antes das minúsculas, então Cherry e cherry podem ficar separadas. Desative-a e ambas as linhas são comparadas como minúsculas, mantendo a grafia original na saída. Linhas iguais mantêm a ordem de origem de qualquer forma.\nA ordenação altera o texto de uma linha?::Não. Apenas a ordem das linhas muda. Pontuação, espaçamento e maiúsculas/minúsculas permanecem exatamente como você colou, o que significa que você pode ordenar uma lista e colá-la de volta sem editar entradas individuais. A contagem de linhas também permanece a mesma.\nMinha lista é armazenada ou enviada?::Não. Ordenação, comparação e exportação são executadas dentro da aba do navegador. Suas linhas nunca são enviadas a um servidor nem salvas em uma conta, e o texto desaparece quando você atualiza ou fecha a aba. Apenas as opções escolhidas são lembradas neste dispositivo.",
+        "trustTitle": "Sobre esta ferramenta",
+        "trustBody": "Cada linha é comparada como uma string, com sequências de dígitos tratadas por comprimento e valor no modo natural. A ordenação é estável, então linhas iguais mantêm a ordem de origem; todo o processamento ocorre na aba.",
+        "searchIntents": "ordenar linhas de texto alfabeticamente\nordenar lista de linhas online\nordenação natural de números em texto\nordenador de linhas crescente ou decrescente"
+      }
+    },
+    "find-and-replace-text": {
+      "title": "Localizar e substituir texto",
+      "shortDesc": "Substitua palavras ou padrões regex com contagem de correspondências ao vivo, prévia destacada e exportação imediata.",
+      "seo": {
+        "title": "Localizar e substituir texto com prévia ao vivo",
+        "description": "Use Localizar e substituir texto para trocar palavras ou padrões regex, com controles de maiúsculas/minúsculas e palavra inteira. Visualize as correspondências ao vivo e, em seguida, copie ou faça o download do resultado."
+      },
+      "trySample": "Testar exemplo",
+      "reset": "Redefinir",
+      "privacyRibbon": "Localizar e substituir ocorrências no seu navegador. Seu texto não é enviado.",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copia o resultado",
+      "inputTitle": "Texto de origem e busca",
+      "paste": "Colar",
+      "pasteUnavailable": "O acesso à área de transferência está bloqueado. Use Ctrl/Cmd + V em vez disso.",
+      "textLabel": "Texto para editar",
+      "findLabel": "Localizar",
+      "findPlaceholder": "Palavra ou padrão",
+      "replaceLabel": "Substituir por",
+      "replacePlaceholder": "Texto de substituição",
+      "optionsTitle": "Opções de correspondência",
+      "caseSensitive": "Diferenciar maiúsculas de minúsculas",
+      "wholeWord": "Palavra inteira",
+      "regexMode": "Modo regex",
+      "matchCount": "{count, plural, one {# correspondência} other {# correspondências}}",
+      "errorTitle": "Não há nada para mostrar ainda",
+      "emptyTitle": "Adicione texto e um termo de busca",
+      "errorEmptyHint": "Digite uma palavra ou padrão em Localizar, e o resultado aparecerá aqui.",
+      "emptyHint": "Cole o texto e digite o que deseja encontrar para ver a prévia em tempo real.",
+      "noMatchesTitle": "Nenhuma correspondência encontrada",
+      "noMatchesHint": "Tente um texto de busca diferente, desative a opção palavra inteira ou ative o modo regex.",
+      "previewLabel": "Texto substituído, com alterações destacadas",
+      "truncatedHint": "A busca parou após 2.000 ocorrências. O restante do texto permanece inalterado.",
+      "errorEmptyFind": "Informe algo para buscar.",
+      "fixEmptyFind": "Digite uma palavra ou um padrão antes de executar a substituição.",
+      "errorInvalidRegex": "Esse padrão não é uma sintaxe válida de expressão regular JavaScript.",
+      "fixInvalidRegex": "Verifique colchetes não fechados, barras invertidas soltas e quantificadores, ou desative o modo regex.",
+      "errorTooLarge": "Essa entrada é muito grande para ser processada com tranquilidade.",
+      "fixTooLarge": "Encurte o texto para menos de 200.000 caracteres e tente novamente.",
+      "page": {
+        "byline": "Edição de texto · Revisado em 26 de novembro de 2026",
+        "directAnswer": "O Localizar e Substituir Texto troca uma palavra ou padrão por um novo texto em todo o conteúdo colado, com opções de diferenciação de maiúsculas e minúsculas, palavra inteira e expressão regular. Você vê a contagem de correspondências em tempo real, uma prévia destacada e pode copiar ou baixar o resultado com um clique no navegador.",
+        "aboutTitle": "Sobre o Localizar e Substituir Texto",
+        "contextualLink": "Depois de terminar a edição, %%TOOL%% pode mostrar quais caracteres aparecem com mais frequência no texto final.",
+        "whatIsTitle": "O que é o Localizar e Substituir Texto?",
+        "whatIs": "Uma ferramenta de localizar e substituir encontra todas as ocorrências de um termo de busca em um texto e escreve um novo valor no lugar dele. Esta roda no seu navegador e mostra a contagem de correspondências em tempo real antes de você copiar ou baixar o resultado.\n\nNo modo literal, o texto de busca é escapado, então um ponto, asterisco ou cifrão corresponde ao caractere digitado, em vez de uma instrução de expressão regular. No modo regex, o mesmo campo é compilado como uma expressão regular JavaScript usando as regras ECMAScript implementadas pelo seu navegador. Classes de caractere como \\d, quantificadores como +, âncoras como ^ e lookbehind, quando suportado, se comportam como em JavaScript. Modelos de substituição também seguem as regras do JavaScript: $& insere a correspondência completa, $1 insere o primeiro grupo de captura e $$ escreve um cifrão literal. O modo literal escapa cifrões para você, então valores monetários permanecem exatamente como digitados.\n\nA opção diferenciar maiúsculas e minúsculas adiciona ou remove o sinalizador i. Palavra inteira envolve a busca em limites de palavra Unicode, o que impede que cat corresponda a category, mas pode não isolar um termo que começa com um símbolo. Padrões de expressão regular são sempre globais, então todas as ocorrências são substituídas, não apenas a primeira. Um padrão que pode corresponder a texto vazio avança um caractere de cada vez, o que evita um loop infinito, mas pode produzir muitas pequenas edições.\n\nA ferramenta limita a entrada a 200.000 caracteres e para após 2.000 correspondências para manter a página responsiva. Padrões muito amplos em textos longos ainda podem demorar um instante, então restrinja-os antes de executar uma edição grande. Nada é enviado: o padrão, a substituição e o seu texto permanecem dentro desta aba.",
+        "howToTitle": "Como usar o Localizar e Substituir Texto",
+        "howTo": "Cole ou digite o texto de origem na caixa de texto.\nDigite a palavra ou padrão que deseja encontrar.\nDigite o novo texto no campo Substituir por.\nAtive ou desative diferenciação de maiúsculas e minúsculas, palavra inteira ou expressão regular conforme necessário.\nLeia a contagem de correspondências e a prévia destacada, depois copie ou faça o download do resultado.",
+        "exampleTitle": "Exemplo: substituir uma palavra sem afetar uma mais longa",
+        "exampleLabel": "Correspondência de palavra inteira",
+        "exampleInput": "Texto: O gato sentou no tapete. Outro gato por perto.\nCategoria é uma palavra diferente.\nLocalizar: gato\nSubstituir por: cachorro\nOpções: palavra inteira ativada",
+        "exampleOutput": "2 correspondências\nO cachorro sentou no tapete. Outro cachorro por perto.\nCategoria é uma palavra diferente.",
+        "exampleNote": "A correspondência de palavra inteira deixa Categoria intacta porque as letras ao redor de gato continuam além da correspondência.",
+        "featuresTitle": "O que esta ferramenta faz",
+        "features": "Texto literal ou regex::Pesquise texto simples ou ative o modo regex para padrões, classes e âncoras.\nMaiúsculas/minúsculas e palavra inteira::Ative ou desative a distinção de maiúsculas e minúsculas e a correspondência de palavra inteira para edições precisas.\nContagem de correspondências em tempo real::Cada edição atualiza o número de ocorrências e a pré-visualização com destaque.\nSintaxe JavaScript::Os padrões são compilados com as regras ECMAScript usadas pelo seu navegador.\nPrivacidade por design::Texto, padrões e substituições permanecem no seu navegador e nunca são enviados.",
+        "mistakesTitle": "Erros comuns e limites",
+        "mistakes": "Esquecer de escapar símbolos::No modo literal, os símbolos são escapados para você; no modo regex, escape você mesmo pontos, colchetes e sinais de mais.\nUsar palavra inteira com pontuação::Os limites de palavra funcionam melhor com letras e dígitos, então verifique a pré-visualização quando um termo começar com um símbolo.\nEsperar escaneamento ilimitado::A entrada é limitada a 200.000 caracteres e a ferramenta para após 2.000 ocorrências para manter a digitação responsiva.",
+        "limitsTitle": "Limites",
+        "limits": "Os padrões usam a sintaxe RegExp do JavaScript, não PCRE ou Python.\nLookbehind e grupos nomeados dependem do suporte do seu navegador.\nPadrões muito amplos em textos longos podem demorar consideravelmente mais.",
+        "faqTitle": "Perguntas frequentes",
+        "faqs": "Isso altera meu texto original?::Não. A ferramenta cria uma nova string no seu navegador e deixa o texto no campo de texto intacto. A pré-visualização destacada mostra exatamente o que seria copiado ou baixado, para que você possa comparar ambas as versões antes de colar o resultado em outro lugar.\nComo substituo um ponto ou cifrão literal?::Desative o modo regex. No modo literal, todos os caracteres especiais são escapados automaticamente, então um ponto corresponde a um ponto final e um cifrão corresponde ao símbolo de moeda. O texto de substituição também é escapado, o que significa que cifrões e barras invertidas aparecem exatamente como você digitou no resultado.\nO que significa palavra inteira aqui?::Palavra inteira adiciona limites de palavra Unicode ao redor da sua busca, então gato combina com o animal, mas não com categoria ou concatenar. Funciona bem para palavras comuns e identificadores. Um termo que começa ou termina com pontuação ainda pode aparecer dentro de strings maiores, então verifique a pré-visualização antes de copiar.\nPosso usar grupos de captura na substituição?::Sim, no modo regex. Escreva os grupos com parênteses no campo Localizar e use $1, $2 ou $& na substituição para inseri-los. A ferramenta segue as regras de token de substituição do JavaScript, e $$ escreve um cifrão literal. No modo literal, esses tokens são mantidos como texto simples.\nPor que vejo um erro de padrão inválido?::O modo regex compila sua busca com o mecanismo RegExp do JavaScript. Um colchete não fechado, uma barra invertida solta ou um quantificador sem nada antes dele falharão ao compilar. O painel mostra uma dica de correção; ajuste o padrão ou desative o modo regex para buscar os caracteres exatos.\nMeu texto é enviado para algum lugar?::Não. Busca, substituição e destaque são executados localmente nesta guia do navegador. O texto, seu padrão de busca e a substituição nunca são enviados para um servidor, e apenas suas opções de alternância são lembradas neste dispositivo para a próxima visita.",
+        "trustTitle": "Sobre esta ferramenta",
+        "trustBody": "Executa no mecanismo RegExp do JavaScript do navegador, escapa buscas literais e limita entradas muito longas. Revisado em 26 de novembro de 2026."
+      }
+    },
+    "character-frequency-counter": {
+      "title": "Contador de Frequência de Caracteres",
+      "shortDesc": "Classifique cada caractere por contagem e compartilhe, com regras de maiúsculas/minúsculas, espaços e pontuação que você controla.",
+      "seo": {
+        "title": "Contador de Frequência de Caracteres - Tabela Ordenada",
+        "description": "Use o Contador de Frequência de Caracteres para ordenar caracteres por contagem e percentual. Ignore maiúsculas e minúsculas, espaços ou pontuação e, em seguida, copie ou faça o download da tabela ordenada."
+      },
+      "trySample": "Experimentar exemplo",
+      "reset": "Redefinir",
+      "privacyRibbon": "A contagem é executada no seu navegador. Seu texto não é enviado.",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copia a tabela",
+      "inputTitle": "Texto para análise",
+      "paste": "Colar",
+      "pasteUnavailable": "O acesso à área de transferência está bloqueado. Use Ctrl/Cmd + V em vez disso.",
+      "textLabel": "Texto de entrada",
+      "optionsTitle": "Regras de contagem",
+      "ignoreCase": "Ignorar maiúsculas e minúsculas",
+      "ignoreSpaces": "Ignorar espaços",
+      "includePunctuation": "Incluir pontuação",
+      "totalCount": "{count, plural, one {# caractere} other {# caracteres}}",
+      "errorTitle": "Texto demais",
+      "errorTooLarge": "O texto informado é muito grande para ser contado.",
+      "fixTooLarge": "Encurte o texto para menos de 100.000 caracteres e tente novamente.",
+      "errorEmptyHint": "Encurte o texto e a tabela de frequência aparecerá aqui.",
+      "emptyTitle": "Adicione um texto primeiro",
+      "emptyHint": "Cole ou digite um texto e confira a tabela de caracteres ordenada aqui.",
+      "tableLabel": "Frequência de caracteres",
+      "columnCharacter": "Caractere",
+      "columnCount": "Contagem",
+      "columnShare": "Compartilhar",
+      "spaceLabel": "Espaço",
+      "tabLabel": "Tab",
+      "newlineLabel": "Quebra de linha",
+      "returnLabel": "Retorno de carro",
+      "page": {
+        "byline": "Análise de texto · Atualizado em 26 de novembro de 2026"
+      }
+    }
   },
   "search": {
     "placeholder": "Buscar",
