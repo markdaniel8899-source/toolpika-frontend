@@ -2315,6 +2315,53 @@
         "trustTitle": "Información de esta herramienta",
         "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
       }
+    },
+    "bmi-calculator": {
+      "title": "Calculadora de IMC",
+      "shortDesc": "Calcula el IMC a partir de peso y altura, ver la categoría y un rango de peso saludable en unidades métricas o imperiales.",
+      "seo": {
+        "title": "Calculadora de IMC - Categoría y Rango Saludable",
+        "description": "Usa el Calculador de IMC para obtener un índice de masa corporal y categoría a partir de peso y altura. Ver un rango de peso saludable en unidades métricas o imperiales, luego copiarlo."
+      },
+      "trySample": "Probar ejemplo",
+      "reset": "Restablecer",
+      "privacyRibbon": "Los cálculos se ejecutan en tu navegador. Tus números no se suben.",
+      "inputTitle": "Tus medidas",
+      "unitLabel": "Sistema de unidades",
+      "metric": "Métrico",
+      "imperial": "Imperial",
+      "weightKgLabel": "Peso (kg)",
+      "weightLbLabel": "Peso (lb)",
+      "heightCmLabel": "Altura (cm)",
+      "heightInLabel": "Altura (pulgadas)",
+      "errorInvalid": "Ingresa un número válido para ambos campos.",
+      "fixInvalid": "Usa dígitos y un punto decimal, luego intenta de nuevo.",
+      "errorRange": "Estas medidas están fuera del rango soportado.",
+      "fixRange": "Revisa la unidad e ingresa un peso y altura de adulto.",
+      "errorTitle": "Revisa tus números",
+      "emptyErrorHint": "Corrige los campos resaltados para ver tu IMC.",
+      "emptyTitle": "Agrega tus medidas",
+      "emptyHint": "Ingresa un peso y altura para ver tu IMC, categoría y rango de peso saludable.",
+      "bmiLabel": "Índice de masa corporal",
+      "healthyRangeLabel": "Rango de peso saludable",
+      "formulaTitle": "Cómo lo calculamos",
+      "note": "El IMC es una medida de detección, no un diagnóstico. No puede separar músculo de grasa y no está destinado a niños o embarazo.",
+      "categoryUnderweight": "Bajo peso",
+      "categoryHealthy": "Saludable",
+      "categoryOverweight": "Sobrepeso",
+      "categoryObese": "Obesidad",
+      "unitKg": "kg",
+      "unitLb": "lb",
+      "reportTitle": "Informe de IMC",
+      "reportBmi": "IMC",
+      "reportCategory": "Categoría",
+      "reportHealthy": "Rango de peso saludable",
+      "reportFormula": "Fórmula",
+      "reportNote": "El IMC es una medida de detección, no un diagnóstico.",
+      "page": {
+        "byline": "Herramientas de salud · Actualizado el 26 de noviembre de 2026",
+        "directAnswer": "El Calculador de IMC transforma tu peso y altura en un índice de masa corporal, muestra la categoría de la OMS correspondiente y estima un rango de peso saludable para esa altura. Cambia entre unidades métricas e imperiales, luego copia o descarga el informe en un paso."
+      }
     }
   },
   "search": {
