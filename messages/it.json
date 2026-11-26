@@ -1299,6 +1299,77 @@
         "trustTitle": "Informazioni su questo strumento",
         "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
       }
+    },
+    "percentage-calculator": {
+      "title": "Calcolatore di Percentuale",
+      "shortDesc": "Calcola percentuali, variazioni percentuali e valori da percentuali con facilità.",
+      "seo": {
+        "title": "Calcolatore di Percentuale Online",
+        "description": "Usa il Calcolatore di Percentuale per calcolare percentuali, aumenti e diminuzioni percentuali, e valori da percentuali. Risultati istantanei nel tuo browser."
+      },
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "privacyRibbon": "I calcoli avvengono nel tuo browser. I tuoi numeri non vengono caricati.",
+      "inputTitle": "Valori",
+      "modeLabel": "Modalità",
+      "resultLabel": "Risultato",
+      "emptyTitle": "Nessun risultato ancora",
+      "emptyHint": "Inserisci i valori per vedere il risultato della percentuale.",
+      "page": {
+        "byline": "Strumenti matematici · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il Calcolatore di Percentuale ti aiuta a calcolare percentuali, variazioni percentuali e valori da percentuali in modo rapido e semplice.",
+        "aboutTitle": "Informazioni sul Calcolatore di Percentuale",
+        "contextualLink": "Per calcoli finanziari più complessi, prova %%TOOL%%.",
+        "whatIsTitle": "Cos'è un Calcolatore di Percentuale?",
+        "whatIs": "Un calcolatore di percentuale è uno strumento che ti aiuta a calcolare percentuali, variazioni percentuali e valori derivati da percentuali. È utile per calcoli quotidiani come sconti, tasse, mance e crescita percentuale.\n\nIl calcolatore supporta tre modalità: calcolare una percentuale di un valore, calcolare la variazione percentuale tra due valori, e calcolare un valore a partire da una percentuale.\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "howToTitle": "Come usare il Calcolatore di Percentuale",
+        "howTo": "Scegli la modalità di calcolo.\nInserisci i valori richiesti.\nLeggi il risultato istantaneo.\nCopia il risultato se necessario.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Valore zero::Non puoi calcolare una percentuale di zero.\nNumeri non validi::Inserisci solo numeri validi.\nPercentuale oltre 100::Le percentuali oltre 100 sono valide ma possono non avere senso in alcuni contesti.",
+        "limitsTitle": "Limiti",
+        "limits": "I valori sono limitati a 15 cifre significative.\nI risultati sono arrotondati a 2 decimali.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Come si calcola una percentuale?::Dividi la parte per il totale e moltiplica per 100.\nCome si calcola la variazione percentuale?::Sottrai il valore originale dal nuovo, dividi per il valore originale e moltiplica per 100.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
+    },
+    "sql-formatter": {
+      "title": "SQL Formatter",
+      "shortDesc": "Formatta query SQL con indentazione e maiuscole/minuscole coerenti.",
+      "seo": {
+        "title": "SQL Formatter Online",
+        "description": "Usa il SQL Formatter per formattare query SQL con indentazione coerente, maiuscole/minuscole per parole chiave e spazi bianchi puliti."
+      },
+      "subtitle": "Query SQL pulite e formattate nel tuo browser",
+      "trySample": "Prova esempio",
+      "reset": "Reimposta",
+      "privacyRibbon": "La formattazione avviene nel tuo browser. La tua query non viene mai caricata.",
+      "shortcutHint": "Ctrl/Cmd + Shift + C copia il SQL formattato",
+      "inputTitle": "Query SQL",
+      "sqlLabel": "SQL da formattare",
+      "paste": "Incolla SQL",
+      "indentLabel": "Lunghezza indentazione",
+      "emptyTitle": "Nessun SQL da formattare",
+      "emptyHint": "Incolla una query SQL sopra e il risultato formattato apparirà qui.",
+      "page": {
+        "byline": "Strumenti di codice · Aggiornato 26 novembre 2026",
+        "directAnswer": "Il SQL Formatter trasforma query SQL grezzate in codice pulito e leggibile con indentazione coerente e maiuscole/minuscole per le parole chiave SQL.",
+        "aboutTitle": "Informazioni sul SQL Formatter",
+        "contextualLink": "Dopo aver formattato la query, esegui il backup con %%TOOL%%.",
+        "whatIsTitle": "Cos'è un SQL Formatter?",
+        "whatIs": "Un SQL Formatter è uno strumento che trasforma query SQL in un formato leggibile e coerente. Aggiunge indentazione, mette le parole chiave SQL in maiuscolo o minuscolo, e pulisce gli spazi bianchi.\n\nUna query SQL ben formattata è più facile da leggere, debuggare e mantenere. Questo strumento ti aiuta a rendere le tue query SQL più pulite e professionali.\n\nTutto avviene nel tuo browser e nessun dato viene inviato a un server.",
+        "howToTitle": "Come usare il SQL Formatter",
+        "howTo": "Incolla la tua query SQL nella casella di input.\nScegli la lunghezza di indentazione.\nScegli se mettere le parole chiave SQL in maiuscolo o minuscolo.\nLeggi il SQL formattato.\nCopia il risultato se necessario.",
+        "mistakesTitle": "Errori comuni e limiti",
+        "mistakes": "Sintassi SQL non valida::Il formatter potrebbe non gestire correttamente query con sintassi non valida.\nQuery molto lunghe::Query molto lunghe potrebbero essere lente da formattare.",
+        "limitsTitle": "Limiti",
+        "limits": "Le query sono limitate a 50.000 caratteri.\nNon tutte le funzionalità SQL avanzate sono supportate.",
+        "faqTitle": "Domande frequenti",
+        "faqs": "Cos'è SQL?::SQL (Structured Query Language) è un linguaggio per gestire database relazionali.\nPosso usare questo strumento per qualsiasi database?::Sì, funziona con la maggior parte dei dialetti SQL.\nI dati vengono caricati?::No, tutto avviene nel tuo browser.",
+        "trustTitle": "Informazioni su questo strumento",
+        "trustBody": "Costruito dal team Toolpika. Tutto avviene localmente nel tuo browser."
+      }
     }
   },
   "search": {
