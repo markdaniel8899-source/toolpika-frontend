@@ -9,6 +9,7 @@ import {
   DownloadButton,
   SegmentedControl,
   Stat,
+  ToggleSwitch,
   ToolEmpty,
   ToolPane,
   ToolShell,
@@ -78,7 +79,7 @@ export default function SqlFormatter() {
 
   const handleSample = useCallback(() => {
     setSource(SAMPLE);
-    update({ indent: 2, uppercaseKeywords: true });
+    update({ indent: 2, uppercaseKeywords: true, singleLineClauses: false });
     clearNotice();
   }, [clearNotice, update]);
 
@@ -112,17 +113,7 @@ export default function SqlFormatter() {
       input={
         <ToolPane id="sql-formatter-input-title" title={tw("sql-formatter.inputTitle")}>
           <div className="tp-tool-group tp-tool-group--flush">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 8,
-              }}
-            >
-              <label className="tp-tool-label" htmlFor="sql-formatter-source">
-                {tw("sql-formatter.sqlLabel")}
-              </label>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <div className="tp-tool-inline-actions">
                 <Button
                   type="button"
@@ -176,38 +167,6 @@ export default function SqlFormatter() {
             </>
           }
         >
-          <div className="tp-tool-group tp-tool-group--flush">
-            <p className="tp-tool-group-title">{tw("sql-formatter.formatTitle")}</p>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 12,
-                flexWrap: "wrap",
-              }}
-            >
-              <SegmentedControl<IndentChoice>
-                label={tw("sql-formatter.indentLabel")}
-                value={indentValue}
-                options={[
-                  { value: "2", label: tw("sql-formatter.indentTwo") },
-                  { value: "4", label: tw("sql-formatter.indentFour") },
-                ]}
-                onChange={(value) => update({ indent: value === "4" ? 4 : 2 })}
-              />
-              <label className="tp-tool-check">
-                <input
-                  type="checkbox"
-                  className="tp-checkbox"
-                  checked={options.uppercaseKeywords}
-                  onChange={(event) => update({ uppercaseKeywords: event.target.checked })}
-                />
-                <span>{tw("sql-formatter.uppercaseKeywords")}</span>
-              </label>
-            </div>
-          </div>
-
           {evaluation.error ? (
             <p id="sql-formatter-error" className="tp-tool-error" role="alert">
               {evaluation.error}
@@ -216,20 +175,20 @@ export default function SqlFormatter() {
 
           {evaluation.result ? (
             <div className="tp-tool-result" aria-live="polite">
-              <textarea
-                className="tp-tool-code"
-                value={output}
-                readOnly
-                spellCheck={false}
-                aria-label={tw("sql-formatter.codeLabel")}
-              />
-              <dl className="tp-tool-stats tp-tool-stats--inline">
+              <dl className="tp-tool-stats">
                 <Stat
                   label={tw("sql-formatter.statementsLabel")}
                   value={evaluation.result.stats.statements}
                 />
                 <Stat label={tw("sql-formatter.linesLabel")} value={evaluation.result.stats.lines} />
               </dl>
+              <textarea
+                className="tp-tool-code tp-tool-code--tall"
+                value={output}
+                readOnly
+                spellCheck={false}
+                aria-label={tw("sql-formatter.codeLabel")}
+              />
             </div>
           ) : evaluation.error ? null : (
             <ToolEmpty
@@ -239,6 +198,51 @@ export default function SqlFormatter() {
             />
           )}
         </ToolPane>
+      }
+      options={
+        <div>
+          <div className="tp-tool-options-head">
+            <h3>{t("options")}</h3>
+          </div>
+          <div className="tp-tool-options-grid">
+            <div className="tp-tool-group">
+              <p className="tp-tool-group-title">{tw("sql-formatter.indentLabel")}</p>
+              <SegmentedControl<IndentChoice>
+                label={tw("sql-formatter.indentLabel")}
+                value={indentValue}
+                options={[
+                  { value: "2", label: tw("sql-formatter.indentTwo") },
+                  { value: "4", label: tw("sql-formatter.indentFour") },
+                ]}
+                onChange={(value) => update({ indent: value === "4" ? 4 : 2 })}
+              />
+            </div>
+            <div className="tp-tool-group">
+              <p className="tp-tool-group-title">{tw("sql-formatter.formatTitle")}</p>
+              <label className="tp-tool-check" htmlFor="sql-formatter-uppercase">
+                <input
+                  id="sql-formatter-uppercase"
+                  type="checkbox"
+                  className="tp-checkbox"
+                  checked={options.uppercaseKeywords}
+                  onChange={(event) => update({ uppercaseKeywords: event.target.checked })}
+                />
+                <span>{tw("sql-formatter.uppercaseKeywords")}</span>
+              </label>
+              <div className="tp-tool-check">
+                <ToggleSwitch
+                  id="sql-formatter-single-line-clauses"
+                  label={tw("sql-formatter.singleLineClauses")}
+                  checked={options.singleLineClauses}
+                  onChange={() => update({ singleLineClauses: !options.singleLineClauses })}
+                />
+                <label htmlFor="sql-formatter-single-line-clauses">
+                  {tw("sql-formatter.singleLineClauses")}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       }
     />
   );

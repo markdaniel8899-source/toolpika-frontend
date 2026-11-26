@@ -128,6 +128,33 @@ export function CheckboxRow({
   );
 }
 
+/** Theme-aware switch with a visible track and knob in both themes. */
+export function ToggleSwitch({
+  id,
+  label,
+  checked,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <button
+      id={id}
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={onChange}
+      className={cn("tp-tool-switch", checked && "is-checked")}
+    >
+      <span className="tp-tool-switch-knob" aria-hidden="true" />
+    </button>
+  );
+}
+
 /** Empty output block shared by the text tools. */
 export function OutputEmpty({
   message,

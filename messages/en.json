@@ -1828,7 +1828,10 @@
         "faqs": "Does minification change the design?::No. The minifier removes characters the parser does not need, such as repeated spaces and the final semicolon in a rule. Selectors, declarations and at-rules keep their order, and quoted strings are copied unchanged. Colour compaction shortens only values that represent the same colour.\nHow is the saved percentage calculated?::It is one minus the minified character count divided by the original character count, rounded to a whole percent. The two size counters show the numbers behind it. Because the math uses characters, gzip or Brotli savings will be different and usually larger.\nWhat does compact colours do?::It shortens six-digit hex colours whose channels repeat in pairs, so #ffffff becomes #fff and #112233cc becomes #123c. It also rewrites simple rgb values with integer channels into hex. Named colours, rgba values and any colour inside a quoted string are left exactly as written.\nAre strings and comments safe?::Quoted strings are copied byte for byte, so a semicolon or brace inside content cannot break the output. Comments are removed only when Strip comments is on. Whitespace is collapsed outside strings and comments, which keeps selectors like div span distinct from divspan.\nWhy would I keep comments in minified CSS?::License notices and build markers sometimes need to ship with the file. Leaving Strip comments off keeps them while whitespace is still compacted. For production, turning it on gives the smallest output, so keep legal notices in a separate file if you need both.\nCan I copy or download the result?::Yes. Copy places the minified stylesheet on your clipboard, and Download saves the same text as a .min.css file. Both actions use the current settings, so choose the comment and colour options first. The shortcut Ctrl/Cmd plus Shift plus C also copies the result.",
         "trustTitle": "About this tool",
         "trustBody": "This minifier scans CSS with strings protected, removes only whitespace that token rules allow, and compacts colours without touching quoted values. Original size, output size and savings come from the same pass. Processing stays in your browser."
-      }
+      },
+      "sample": "/* Card styles */\n.card '{'\n  border-radius: 8px;\n  padding: 16px 20px;\n  color: #FFFFFF;\n  border-color: #1A2B3C;\n  content: \"a; b\";\n'}'\n@media (min-width: 600px) '{'\n  .card '{' padding: 24px; '}'\n'}'",
+      "removeLastSemicolon": "Drop the last semicolon in each rule",
+      "lowercaseHex": "Lowercase hex colours"
     },
     "js-minifier": {
       "title": "JS Minifier",
@@ -1880,7 +1883,10 @@
         "trustTitle": "About this tool",
         "trustBody": "The minifier tokenises source without executing it, keeps whitespace that matters for automatic semicolon insertion, and counts both sizes in UTF-8 bytes.",
         "searchIntents": "js minifier for javascript files\nremove comments and whitespace from code\nminify javascript online without running it\ndownload minified js with size savings"
-      }
+      },
+      "sample": "// A tiny greeting helper\nvar ready = true;\nvar paused = false;\ndebugger;\nif (ready === false) paused = true;\nconsole.log(ready, paused);",
+      "collapseBooleans": "Shorten true and false to !0 and !1",
+      "removeDebugger": "Remove debugger statements"
     },
     "sql-formatter": {
       "title": "SQL Formatter",
@@ -1936,7 +1942,8 @@
         "trustTitle": "About this tool",
         "trustBody": "The formatter tokenises queries locally, keeps quoted text verbatim and breaks clauses onto separate lines without checking them against a database.",
         "searchIntents": "sql formatter for queries\nbeautify sql with indentation\nonline sql formatter no upload\nuppercase sql keywords formatter"
-      }
+      },
+      "singleLineClauses": "Keep short clauses inline"
     }
   },
   "search": {
@@ -2190,6 +2197,7 @@
     "urlInvalid": "That does not look like a valid encoded URL.",
     "base64Invalid": "That does not look like valid Base64.",
     "pasteText": "Text",
+    "options": "Options",
     "stepUp": "Increase",
     "stepDown": "Decrease",
     "result": "Result",

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { ClipboardPaste, Code, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
+  CheckboxRow,
   CopyButton,
   DownloadButton,
   Stat,
@@ -22,16 +23,6 @@ import {
   minifyJavaScript,
   type MinifyOptions,
 } from "./js-minifier.logic";
-
-const SAMPLE = [
-  "// A tiny greeting helper",
-  "function greet(name) {",
-  "  const message = `Hello, ${name}!`;",
-  "  console.log(message);",
-  "}",
-  "",
-  "greet('Toolpika');",
-].join("\n");
 
 export default function JsMinifier() {
   const t = useTranslations("toolUi");
@@ -79,10 +70,10 @@ export default function JsMinifier() {
   }, [clearNotice]);
 
   const handleSample = useCallback(() => {
-    setSource(SAMPLE);
-    update({ stripComments: true, preserveSemicolons: false });
+    setSource(tw("js-minifier.sample"));
+    update(DEFAULT_MINIFY_OPTIONS);
     clearNotice();
-  }, [clearNotice, update]);
+  }, [clearNotice, tw, update]);
 
   const handleReset = useCallback(() => {
     setSource("");
@@ -114,17 +105,7 @@ export default function JsMinifier() {
       input={
         <ToolPane id="js-minifier-input-title" title={tw("js-minifier.inputTitle")}>
           <div className="tp-tool-group tp-tool-group--flush">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 8,
-              }}
-            >
-              <label className="tp-tool-label" htmlFor="js-minifier-source">
-                {tw("js-minifier.sourceLabel")}
-              </label>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <div className="tp-tool-inline-actions">
                 <Button
                   type="button"
@@ -158,28 +139,6 @@ export default function JsMinifier() {
               aria-describedby={evaluation.error ? "js-minifier-error" : undefined}
               spellCheck={false}
             />
-          </div>
-
-          <div className="tp-tool-group">
-            <p className="tp-tool-group-title">{tw("js-minifier.cleanupTitle")}</p>
-            <label className="tp-tool-check">
-              <input
-                type="checkbox"
-                className="tp-checkbox"
-                checked={options.stripComments}
-                onChange={(event) => update({ stripComments: event.target.checked })}
-              />
-              <span>{tw("js-minifier.stripComments")}</span>
-            </label>
-            <label className="tp-tool-check">
-              <input
-                type="checkbox"
-                className="tp-checkbox"
-                checked={options.preserveSemicolons}
-                onChange={(event) => update({ preserveSemicolons: event.target.checked })}
-              />
-              <span>{tw("js-minifier.preserveSemicolons")}</span>
-            </label>
           </div>
         </ToolPane>
       }
@@ -238,6 +197,39 @@ export default function JsMinifier() {
             />
           )}
         </ToolPane>
+      }
+      options={
+        <>
+          <div className="tp-tool-options-head">
+            <h3>{t("options")}</h3>
+          </div>
+          <div className="tp-tool-options-grid">
+            <CheckboxRow
+              id="js-minify-strip-comments"
+              label={tw("js-minifier.stripComments")}
+              checked={options.stripComments}
+              onChange={(stripComments) => update({ stripComments })}
+            />
+            <CheckboxRow
+              id="js-minify-preserve-semicolons"
+              label={tw("js-minifier.preserveSemicolons")}
+              checked={options.preserveSemicolons}
+              onChange={(preserveSemicolons) => update({ preserveSemicolons })}
+            />
+            <CheckboxRow
+              id="js-minify-collapse-booleans"
+              label={tw("js-minifier.collapseBooleans")}
+              checked={options.collapseBooleans}
+              onChange={(collapseBooleans) => update({ collapseBooleans })}
+            />
+            <CheckboxRow
+              id="js-minify-remove-debugger"
+              label={tw("js-minifier.removeDebugger")}
+              checked={options.removeDebugger}
+              onChange={(removeDebugger) => update({ removeDebugger })}
+            />
+          </div>
+        </>
       }
     />
   );

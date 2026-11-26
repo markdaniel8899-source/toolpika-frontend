@@ -11,6 +11,7 @@ import {
   SegmentedControl,
   Stat,
   ToolEmpty,
+  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -116,71 +117,39 @@ export default function CssFormatter() {
           id="css-format-input-title"
           title={tw("css-formatter.inputTitle")}
           hint={tw("css-formatter.inputHint")}
-        >
-          <div className="tp-tool-group">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 8,
-              }}
-            >
-              <label className="tp-tool-label" htmlFor="css-format-input">
-                {tw("css-formatter.cssLabel")}
-              </label>
-              <div className="tp-tool-inline-actions">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void handlePaste()}
-                  aria-label={tw("css-formatter.paste")}
-                >
-                  <ClipboardPaste aria-hidden="true" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleClear}
-                  aria-label={t("clear")}
-                >
-                  <X aria-hidden="true" />
-                </Button>
-              </div>
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={tw("css-formatter.paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={handleClear}
+                aria-label={t("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
             </div>
-            <textarea
-              id="css-format-input"
-              ref={inputRef}
-              className="tp-tool-editor"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder={t("startTyping")}
-              aria-label={tw("css-formatter.cssLabel")}
-              aria-describedby={evaluation.error ? "css-format-error" : undefined}
-              spellCheck={false}
-            />
-          </div>
-
-          <div className="tp-tool-group">
-            <p className="tp-tool-group-title">{tw("css-formatter.indentLabel")}</p>
-            <SegmentedControl<IndentChoice>
-              label={tw("css-formatter.indentLabel")}
-              value={options.indent}
-              options={[
-                { value: "2", label: tw("css-formatter.indentTwo") },
-                { value: "4", label: tw("css-formatter.indentFour") },
-              ]}
-              onChange={(indent) => update({ indent })}
-            />
-          </div>
-
-          <CheckboxRow
-            id="css-format-property-line"
-            label={tw("css-formatter.propertyPerLine")}
-            checked={options.propertyPerLine}
-            onChange={(propertyPerLine) => update({ propertyPerLine })}
+          }
+        >
+          <textarea
+            id="css-format-input"
+            ref={inputRef}
+            className="tp-tool-editor"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            placeholder={t("startTyping")}
+            aria-label={tw("css-formatter.cssLabel")}
+            aria-describedby={evaluation.error ? "css-format-error" : undefined}
+            spellCheck={false}
           />
         </ToolPane>
       }
@@ -212,7 +181,7 @@ export default function CssFormatter() {
 
           {evaluation.result ? (
             <div className="tp-tool-result" aria-live="polite">
-              <dl className="tp-tool-stats tp-tool-stats--inline">
+              <dl className="tp-tool-stats">
                 <Stat label={tw("css-formatter.rules")} value={evaluation.result.stats.rules} />
                 <Stat label={tw("css-formatter.properties")} value={evaluation.result.stats.properties} />
               </dl>
@@ -226,6 +195,33 @@ export default function CssFormatter() {
             />
           )}
         </ToolPane>
+      }
+      options={
+        <>
+          <div className="tp-tool-options-head">
+            <h3>{t("options")}</h3>
+          </div>
+          <div className="tp-tool-options-grid">
+            <ToolField label={tw("css-formatter.indentLabel")}>
+              <SegmentedControl<IndentChoice>
+                label={tw("css-formatter.indentLabel")}
+                value={options.indent}
+                options={[
+                  { value: "2", label: tw("css-formatter.indentTwo") },
+                  { value: "4", label: tw("css-formatter.indentFour") },
+                ]}
+                onChange={(indent) => update({ indent })}
+              />
+            </ToolField>
+
+            <CheckboxRow
+              id="css-format-property-line"
+              label={tw("css-formatter.propertyPerLine")}
+              checked={options.propertyPerLine}
+              onChange={(propertyPerLine) => update({ propertyPerLine })}
+            />
+          </div>
+        </>
       }
     />
   );

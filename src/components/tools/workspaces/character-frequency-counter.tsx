@@ -49,18 +49,9 @@ function InlineSwitch({
         aria-checked={checked}
         aria-label={label}
         onClick={onChange}
-        className={cn(
-          "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors motion-reduce:transition-none",
-          checked
-            ? "border-[var(--accent-fill)] bg-[var(--accent-fill)]"
-            : "border-[var(--border-strong)] bg-[var(--surface)]",
-        )}
+        className={cn("tp-tool-switch", checked && "is-checked")}
       >
-        <span
-          aria-hidden="true"
-          className="h-3.5 w-3.5 rounded-full bg-[var(--on-accent)] shadow-sm transition-transform motion-reduce:transition-none"
-          style={{ transform: checked ? "translateX(18px)" : "translateX(2px)" }}
-        />
+        <span className="tp-tool-switch-knob" aria-hidden="true" />
       </button>
       <label htmlFor={id} className="cursor-pointer text-xs text-[var(--text)]">
         {label}
@@ -178,25 +169,24 @@ export default function CharacterFrequencyCounter() {
           id="cfc-input-title"
           title={tw("character-frequency-counter.inputTitle")}
           actions={
-            <>
-              <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
-                <ClipboardPaste className="h-3.5 w-3.5" aria-hidden="true" />
-                {tw("character-frequency-counter.paste")}
+            <div className="tp-tool-inline-actions">
+              <Button type="button" variant="ghost" size="icon" onClick={() => void handlePaste()} aria-label={tw("character-frequency-counter.paste")}>
+                <ClipboardPaste aria-hidden="true" />
               </Button>
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => {
                   setText("");
                   resetCopy();
                 }}
                 disabled={!text}
+                aria-label={t("clear")}
               >
-                <X className="h-3.5 w-3.5" aria-hidden="true" />
-                {t("clear")}
+                <X aria-hidden="true" />
               </Button>
-            </>
+            </div>
           }
         >
           <div>

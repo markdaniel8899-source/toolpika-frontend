@@ -12,11 +12,13 @@ export const MAX_SQL_CHARS = 300_000;
 export type FormatOptions = {
   indent: 2 | 4;
   uppercaseKeywords: boolean;
+  singleLineClauses: boolean;
 };
 
 export const DEFAULT_FORMAT_OPTIONS: FormatOptions = {
   indent: 2,
   uppercaseKeywords: true,
+  singleLineClauses: false,
 };
 
 export type FormatErrorCode = "EMPTY" | "TOO_LARGE" | "UNTERMINATED";
@@ -321,12 +323,51 @@ function assemble(pieces: Piece[], indent: number): string {
   return lines.join("\n");
 }
 
+const SIMPLE_CLAUSE_MAX_TOKENS = 12;
+
+function isClauseWord(token: Token): boolean {
+  return token.kind === "word" && CLAUSE_WORDS.has(token.value.toUpperCase());
+}
+
+/**
+ * A clause is "simple" when it has no top-level list, boolean branch, CASE
+ * block or comment and stays inside a small token budget. Such clauses can be
+ * folded onto the previous line by the singleLineClauses option.
+ */
+function isShortSimpleClause(tokens: Token[], start: number): boolean {
+  let depth = 0;
+  let count = 0;
+
+  for (let index = start; index < tokens.length; index += 1) {
+    const token = tokens[index];
+    if (token.kind === "lineComment" || token.kind === "blockComment") return false;
+
+    const atTopLevel = depth === 0;
+    if (token.value === "(") depth += 1;
+    if (token.value === ")") depth = Math.max(0, depth - 1);
+
+    if (atTopLevel && index > start && (token.value === ";" || isClauseWord(token))) break;
+    if (atTopLevel && token.value === ",") return false;
+
+    if (token.kind === "word") {
+      const upper = token.value.toUpperCase();
+      if (CASE_WORDS.has(upper) || upper === "AND" || upper === "OR") return false;
+    }
+
+    count += 1;
+    if (count > SIMPLE_CLAUSE_MAX_TOKENS) return false;
+  }
+
+  return true;
+}
+
 function formatTokens(tokens: Token[], options: FormatOptions): string {
   const pieces: Piece[] = [];
   let previous: Token | null = null;
   let override: { before: Before; level: number } | null = null;
   let indentLevel = 0;
   let depth = 0;
+  let previousClauseSimple = false;
 
   const push = (text: string, before: Before, level = 0) => {
     pieces.push({ text, before, level });
@@ -343,6 +384,7 @@ function formatTokens(tokens: Token[], options: FormatOptions): string {
     if (token.kind === "lineComment") {
       push(token.value, chosen.before, indentLevel);
       override = { before: "newline", level: indentLevel };
+      previousClauseSimple = false;
       previous = token;
       continue;
     }
@@ -350,6 +392,7 @@ function formatTokens(tokens: Token[], options: FormatOptions): string {
     if (token.kind === "blockComment") {
       push(token.value, chosen.before, indentLevel);
       override = { before: "space", level: indentLevel };
+      previousClauseSimple = false;
       previous = token;
       continue;
     }
@@ -357,17 +400,27 @@ function formatTokens(tokens: Token[], options: FormatOptions): string {
     if ((upper === "GROUP" || upper === "ORDER") && tokens[index + 1]?.value.toUpperCase() === "BY") {
       const by = tokens[index + 1];
       const byDisplay = options.uppercaseKeywords ? "BY" : by.value;
-      push(`${display} ${byDisplay}`, "newline", 0);
-      indentLevel = 1;
+      const simple = isShortSimpleClause(tokens, index);
+      const inline = options.singleLineClauses && previousClauseSimple && simple;
+      push(`${display} ${byDisplay}`, inline && index > 0 ? "space" : "newline", 0);
+      if (!inline) indentLevel = 1;
+      previousClauseSimple = simple;
       previous = by;
       index += 1;
       continue;
     }
 
     if (CLAUSE_WORDS.has(upper)) {
-      push(display, "newline", 0);
-      indentLevel = 1;
-      if (LIST_HEADERS.has(upper)) override = { before: "newline", level: 1 };
+      const simple = isShortSimpleClause(tokens, index);
+      const inline = options.singleLineClauses && previousClauseSimple && simple;
+      push(display, inline && index > 0 ? "space" : "newline", 0);
+      if (!inline) {
+        indentLevel = 1;
+        if (LIST_HEADERS.has(upper) && !(options.singleLineClauses && simple)) {
+          override = { before: "newline", level: 1 };
+        }
+      }
+      previousClauseSimple = simple;
       previous = token;
       continue;
     }
@@ -403,6 +456,7 @@ function formatTokens(tokens: Token[], options: FormatOptions): string {
       push(";", "none", indentLevel);
       override = { before: "newlineBlank", level: 0 };
       indentLevel = 0;
+      previousClauseSimple = false;
       previous = token;
       continue;
     }

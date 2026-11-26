@@ -118,67 +118,43 @@ export default function HtmlFormatter() {
         <ToolPane
           id="html-formatter-input-title"
           title={tw("html-formatter.inputTitle")}
-        >
-          <div className="tp-tool-group">
-            <div className="tp-tool-pane-head">
-              <label className="tp-tool-label" htmlFor="html-formatter-input">
-                {tw("html-formatter.htmlLabel")}
-              </label>
-              <div className="tp-tool-inline-actions">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void handlePaste()}
-                  aria-label={tw("html-formatter.paste")}
-                >
-                  <ClipboardPaste aria-hidden="true" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={!input}
-                  onClick={clearInput}
-                  aria-label={t("clear")}
-                >
-                  <X aria-hidden="true" />
-                </Button>
-              </div>
+          actions={
+            <div className="tp-tool-inline-actions">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => void handlePaste()}
+                aria-label={tw("html-formatter.paste")}
+              >
+                <ClipboardPaste aria-hidden="true" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={!input}
+                onClick={clearInput}
+                aria-label={t("clear")}
+              >
+                <X aria-hidden="true" />
+              </Button>
             </div>
-            <textarea
-              id="html-formatter-input"
-              ref={inputRef}
-              className="tp-tool-code"
-              value={input}
-              onChange={(event) => {
-                setInput(event.target.value);
-                clearNotice();
-              }}
-              placeholder={t("startTyping")}
-              aria-label={tw("html-formatter.htmlLabel")}
-              aria-describedby={evaluation.error ? "html-formatter-error" : undefined}
-              spellCheck={false}
-            />
-          </div>
-
-          <ToolField label={tw("html-formatter.indentLabel")}>
-            <SegmentedControl<IndentSize>
-              label={tw("html-formatter.indentLabel")}
-              value={options.indentSize}
-              options={[
-                { value: "2", label: tw("html-formatter.indent2") },
-                { value: "4", label: tw("html-formatter.indent4") },
-              ]}
-              onChange={(indentSize) => update({ indentSize })}
-            />
-          </ToolField>
-
-          <CheckboxRow
-            id="html-formatter-escape"
-            label={tw("html-formatter.escapeLabel")}
-            checked={options.escapeMarkup}
-            onChange={(escapeMarkup) => update({ escapeMarkup })}
+          }
+        >
+          <textarea
+            id="html-formatter-input"
+            ref={inputRef}
+            className="tp-tool-code"
+            value={input}
+            onChange={(event) => {
+              setInput(event.target.value);
+              clearNotice();
+            }}
+            placeholder={t("startTyping")}
+            aria-label={tw("html-formatter.htmlLabel")}
+            aria-describedby={evaluation.error ? "html-formatter-error" : undefined}
+            spellCheck={false}
           />
         </ToolPane>
       }
@@ -239,6 +215,33 @@ export default function HtmlFormatter() {
             />
           )}
         </ToolPane>
+      }
+      options={
+        <>
+          <div className="tp-tool-options-head">
+            <h3>{t("options")}</h3>
+          </div>
+          <div className="tp-tool-options-grid">
+            <ToolField label={tw("html-formatter.indentLabel")}>
+              <SegmentedControl<IndentSize>
+                label={tw("html-formatter.indentLabel")}
+                value={options.indentSize}
+                options={[
+                  { value: "2", label: tw("html-formatter.indent2") },
+                  { value: "4", label: tw("html-formatter.indent4") },
+                ]}
+                onChange={(indentSize) => update({ indentSize })}
+              />
+            </ToolField>
+
+            <CheckboxRow
+              id="html-formatter-escape"
+              label={tw("html-formatter.escapeLabel")}
+              checked={options.escapeMarkup}
+              onChange={(escapeMarkup) => update({ escapeMarkup })}
+            />
+          </div>
+        </>
       }
     />
   );

@@ -9127,6 +9127,72 @@ textarea::-webkit-scrollbar-thumb,
   text-align: start;
 }
 
+/* Visible, theme-aware switches (light themes previously looked empty). */
+.tp-tool-switch {
+  position: relative;
+  display: inline-flex;
+  width: 38px;
+  height: 22px;
+  flex: none;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 99px;
+  background: var(--surface-raised);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+
+.tp-tool-switch:hover {
+  border-color: var(--accent);
+}
+
+.tp-tool-switch.is-checked {
+  border-color: var(--accent-fill);
+  background: var(--accent-fill);
+}
+
+.tp-tool-switch-knob {
+  width: 16px;
+  height: 16px;
+  margin-inline-start: 2px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--text) 18%, transparent);
+  transition: transform var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.tp-tool-switch.is-checked .tp-tool-switch-knob {
+  background: var(--on-accent);
+  transform: translateX(16px);
+}
+
+.tp-tool-switch:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* One compact action cluster everywhere; never overlapping labels. */
+.tp-tool-inline-actions {
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+.tp-tool-inline-actions button {
+  flex: none;
+}
+
+/* Equal-sized result stats across every tool. */
+.tp-tool-pane--result .tp-tool-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tp-tool-pane--result .tp-tool-stat {
+  width: 100%;
+  min-width: 0;
+}
+
 /* ==========================================================================
    Mobile hardening — one-line header, 16px inputs, comfortable tap targets
    and action bars that never stretch into oversized ghost buttons.

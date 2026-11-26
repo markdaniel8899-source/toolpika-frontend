@@ -12,11 +12,15 @@ export const MAX_JS_CHARS = 500_000;
 export type MinifyOptions = {
   stripComments: boolean;
   preserveSemicolons: boolean;
+  collapseBooleans: boolean;
+  removeDebugger: boolean;
 };
 
 export const DEFAULT_MINIFY_OPTIONS: MinifyOptions = {
   stripComments: true,
   preserveSemicolons: false,
+  collapseBooleans: true,
+  removeDebugger: true,
 };
 
 export type MinifyErrorCode = "EMPTY" | "TOO_LARGE" | "UNTERMINATED";
@@ -362,8 +366,65 @@ function needsInsertedSemicolon(previous: Token, current: Token): boolean {
   return previous.value === "}" && LINEBREAK_STATEMENT_STARTS.has(current.value.charAt(0));
 }
 
+/**
+ * Drop `debugger;` statements from the event stream. Only a standalone
+ * statement is removed: a property name (`obj.debugger`) or a key
+ * (`{debugger: 1}`) is left alone. Any line break that belonged to a removed
+ * statement is carried to the next event so automatic semicolon insertion
+ * still behaves the same way.
+ */
+function stripDebuggerEvents(events: Event[]): Event[] {
+  const result: Event[] = [];
+  let carriedBreak = "";
+
+  for (let index = 0; index < events.length; index += 1) {
+    const event = events[index];
+    const previous = result[result.length - 1]?.token ?? null;
+    const next = events[index + 1]?.token ?? null;
+    const isStatement =
+      event.token.kind === "word" &&
+      event.token.value === "debugger" &&
+      previous?.value !== "." &&
+      previous?.value !== "?." &&
+      next?.value !== "." &&
+      next?.value !== "?." &&
+      next?.value !== ":";
+
+    if (isStatement) {
+      if (/[\r\n]/u.test(event.spaceBefore)) carriedBreak += "\n";
+      if (next?.value === ";") {
+        index += 1;
+        if (/[\r\n]/u.test(events[index].spaceBefore)) carriedBreak += "\n";
+      }
+      continue;
+    }
+
+    result.push(carriedBreak ? { ...event, spaceBefore: carriedBreak + event.spaceBefore } : event);
+    carriedBreak = "";
+  }
+
+  return result;
+}
+
+/** True when a `true`/`false` token is a key, not a value literal. */
+function isBooleanKey(previous: Token | null, next: Token | null): boolean {
+  const previousValue = previous?.value;
+  const nextValue = next?.value;
+  return (
+    previousValue === "." ||
+    previousValue === "?." ||
+    previousValue === "get" ||
+    previousValue === "set" ||
+    nextValue === ":" ||
+    nextValue === "." ||
+    nextValue === "?." ||
+    (previousValue === "{" &&
+      (nextValue === "}" || nextValue === "," || nextValue === "("))
+  );
+}
+
 function render(tokens: Token[], options: MinifyOptions): string {
-  const events: Event[] = [];
+  let events: Event[] = [];
   let space = "";
 
   for (const token of tokens) {
@@ -380,17 +441,37 @@ function render(tokens: Token[], options: MinifyOptions): string {
     space = "";
   }
 
+  if (options.removeDebugger) {
+    events = stripDebuggerEvents(events);
+  }
+
   let output = "";
   let previous: Token | null = null;
 
   for (let index = 0; index < events.length; index += 1) {
-    const { token, spaceBefore } = events[index];
+    const { spaceBefore } = events[index];
+    let { token } = events[index];
     const next = events[index + 1]?.token ?? null;
 
     if (token.kind === "lineComment" || token.kind === "blockComment") {
       output += `${output ? " " : ""}${token.value}`;
       if (token.kind === "lineComment") output += "\n";
       continue;
+    }
+
+    // `!0` / `!1` are exactly as truthy as `true` / `false`. Only literal
+    // tokens in value position are folded; keys and member names stay put.
+    if (
+      options.collapseBooleans &&
+      token.kind === "word" &&
+      (token.value === "true" || token.value === "false") &&
+      !isBooleanKey(previous, next)
+    ) {
+      token = {
+        ...token,
+        kind: "punct",
+        value: token.value === "true" ? "!0" : "!1",
+      };
     }
 
     if (token.value === ";" && !options.preserveSemicolons && canDropSemicolon(previous, next)) {

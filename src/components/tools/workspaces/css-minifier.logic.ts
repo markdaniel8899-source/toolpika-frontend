@@ -9,11 +9,15 @@
 export type CssMinifierOptions = {
   stripComments: boolean;
   compactColors: boolean;
+  removeLastSemicolon: boolean;
+  lowercaseHex: boolean;
 };
 
 export const DEFAULT_CSS_MINIFIER_OPTIONS: CssMinifierOptions = {
   stripComments: true,
   compactColors: true,
+  removeLastSemicolon: true,
+  lowercaseHex: true,
 };
 
 export const CSS_MINIFIER_CHAR_LIMIT = 200_000;
@@ -44,12 +48,17 @@ export type CssMinifierResult = {
 
 type Piece = { text: string; protected: boolean };
 
-/** Shorten paired hex digits, or return null when the value cannot shrink. */
-function compressHex(hex: string): string | null {
+/**
+ * Shorten paired hex digits, or return null when the value cannot shrink.
+ * Pair checks are case-insensitive; the emitted digits follow `lowercase`
+ * so an uppercase source can keep its casing instead of being rewritten.
+ */
+function compressHex(hex: string, lowercase: boolean): string | null {
   const lower = hex.toLowerCase();
+  const digits = lowercase ? lower : hex;
   if (lower.length === 6) {
     if (lower[0] === lower[1] && lower[2] === lower[3] && lower[4] === lower[5]) {
-      return lower[0] + lower[2] + lower[4];
+      return digits[0] + digits[2] + digits[4];
     }
   } else if (lower.length === 8) {
     if (
@@ -58,23 +67,24 @@ function compressHex(hex: string): string | null {
       lower[4] === lower[5] &&
       lower[6] === lower[7]
     ) {
-      return lower[0] + lower[2] + lower[4] + lower[6];
+      return digits[0] + digits[2] + digits[4] + digits[6];
     }
   }
   return null;
 }
 
-function compactHexValues(text: string): string {
+function compactHexValues(text: string, lowercase: boolean): string {
   return text.replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b/gu, (match, hex: string, offset: number, full: string) => {
     const before = offset > 0 ? full[offset - 1] : "";
     if (before && /[#0-9a-zA-Z_-]/u.test(before)) return match;
-    const short = compressHex(hex);
-    return short ? `#${short}` : `#${hex.toLowerCase()}`;
+    const short = compressHex(hex, lowercase);
+    if (short) return `#${short}`;
+    return `#${lowercase ? hex.toLowerCase() : hex}`;
   });
 }
 
 /** Shorten safe colour literals in text that is known not to be a string. */
-export function compactColors(text: string): string {
+export function compactColors(text: string, lowercase = true): string {
   const withHex = text.replace(
     /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/giu,
     (match, red: string, green: string, blue: string) => {
@@ -85,7 +95,7 @@ export function compactColors(text: string): string {
       return `#${channels.map((value) => value.toString(16).padStart(2, "0")).join("")}`;
     },
   );
-  return compactHexValues(withHex);
+  return compactHexValues(withHex, lowercase);
 }
 
 /** Minify CSS text and return the output with size statistics. */
@@ -218,14 +228,23 @@ export function minifyCss(input: string, options: CssMinifierOptions): CssMinifi
   }
 
   let css = pieces
-    .map((piece) => (piece.protected || !options.compactColors ? piece.text : compactColors(piece.text)))
+    .map((piece) =>
+      piece.protected || !options.compactColors
+        ? piece.text
+        : compactColors(piece.text, options.lowercaseHex),
+    )
     .join("");
 
   css = css
-    .replace(/;\}/gu, "}")
     .replace(/;\s*$/u, "")
     .replace(/\s*!\s*important/giu, "!important")
     .trim();
+
+  // The final declaration in a rule does not need its semicolon. This is now
+  // opt-in so switching the option off visibly preserves `;}`.
+  if (options.removeLastSemicolon) {
+    css = css.replace(/;\}/gu, "}");
+  }
 
   const minifiedSize = css.length;
   const savedPercent = originalSize === 0

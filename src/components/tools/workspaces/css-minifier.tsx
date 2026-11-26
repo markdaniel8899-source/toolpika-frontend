@@ -23,17 +23,6 @@ import {
   minifyCss,
 } from "./css-minifier.logic";
 
-const SAMPLE = `/* Card styles */
-.card {
-  border-radius: 8px;
-  padding: 16px 20px;
-  color: #ffffff;
-  content: "a; b";
-}
-@media (min-width: 600px) {
-  .card { padding: 24px; }
-}`;
-
 export default function CssMinifier() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
@@ -78,10 +67,10 @@ export default function CssMinifier() {
   }, [clearNotice]);
 
   const handleSample = useCallback(() => {
-    setInput(SAMPLE);
+    setInput(tw("css-minifier.sample"));
     update(DEFAULT_CSS_MINIFIER_OPTIONS);
     clearNotice();
-  }, [clearNotice, update]);
+  }, [clearNotice, tw, update]);
 
   const handleReset = useCallback(() => {
     setInput("");
@@ -117,18 +106,8 @@ export default function CssMinifier() {
           title={tw("css-minifier.inputTitle")}
           hint={tw("css-minifier.inputHint")}
         >
-          <div className="tp-tool-group">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 8,
-              }}
-            >
-              <label className="tp-tool-label" htmlFor="css-minify-input">
-                {tw("css-minifier.cssLabel")}
-              </label>
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <div className="tp-tool-inline-actions">
                 <Button
                   type="button"
@@ -160,22 +139,6 @@ export default function CssMinifier() {
               aria-label={tw("css-minifier.cssLabel")}
               aria-describedby={evaluation.error ? "css-minify-error" : undefined}
               spellCheck={false}
-            />
-          </div>
-
-          <div className="tp-tool-group">
-            <p className="tp-tool-group-title">{tw("css-minifier.optionsTitle")}</p>
-            <CheckboxRow
-              id="css-minify-strip-comments"
-              label={tw("css-minifier.stripComments")}
-              checked={options.stripComments}
-              onChange={(stripComments) => update({ stripComments })}
-            />
-            <CheckboxRow
-              id="css-minify-compact-colors"
-              label={tw("css-minifier.compactColors")}
-              checked={options.compactColors}
-              onChange={(compactColors) => update({ compactColors })}
             />
           </div>
         </ToolPane>
@@ -226,6 +189,39 @@ export default function CssMinifier() {
             />
           )}
         </ToolPane>
+      }
+      options={
+        <>
+          <div className="tp-tool-options-head">
+            <h3>{t("options")}</h3>
+          </div>
+          <div className="tp-tool-options-grid">
+            <CheckboxRow
+              id="css-minify-strip-comments"
+              label={tw("css-minifier.stripComments")}
+              checked={options.stripComments}
+              onChange={(stripComments) => update({ stripComments })}
+            />
+            <CheckboxRow
+              id="css-minify-compact-colors"
+              label={tw("css-minifier.compactColors")}
+              checked={options.compactColors}
+              onChange={(compactColors) => update({ compactColors })}
+            />
+            <CheckboxRow
+              id="css-minify-remove-last-semicolon"
+              label={tw("css-minifier.removeLastSemicolon")}
+              checked={options.removeLastSemicolon}
+              onChange={(removeLastSemicolon) => update({ removeLastSemicolon })}
+            />
+            <CheckboxRow
+              id="css-minify-lowercase-hex"
+              label={tw("css-minifier.lowercaseHex")}
+              checked={options.lowercaseHex}
+              onChange={(lowercaseHex) => update({ lowercaseHex })}
+            />
+          </div>
+        </>
       }
     />
   );
