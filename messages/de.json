@@ -2560,7 +2560,8 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Wie wird die Keyword-Dichte berechnet?::Teilen Sie die Vorkommen eines Worts durch die Gesamtwortanzahl und multiplizieren Sie mit einhundert.\nWie werden Sätze gezählt?::Sätze werden anhand von Punkten, Ausrufezeichen und Fragezeichen gezählt.\nWird der Text hochgeladen?::Nein, alles passiert im Browser.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Entwickelt vom Toolpika-Team. Alles passiert lokal in Ihrem Browser."
+        "trustBody": "Entwickelt vom Toolpika-Team. Alles passiert lokal in Ihrem Browser.",
+        "limitsTitle": "Grenzen"
       }
     },
     "open-graph-generator": {
@@ -2627,7 +2628,8 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Was sind Open Graph Tags?::Open Graph Tags sind Meta-Elemente, die eine Seite für soziale Crawler beschreiben, die sie verwenden, um den Titel, die Zusammenfassung und das Bild zu erstellen, die angezeigt werden, wenn ein Link geteilt wird. Sie sitzen im head der Seite und verwenden property-Attribute. Dieses Tool schreibt die sechs nützlichsten Felder.\nWarum sollte og:url absolut sein?::Eine absolute URL nennt eine genaue Adresse, sodass Shares mit verschiedenen Tracking-Parametern als dieselbe Seite behandelt werden. Verwenden Sie den kanonischen Ort, den Sie besuchen möchten. Ein relativer Pfad oder eine verkürzte Umleitung gibt Crawlern weniger zuverlässige Informationen und kann die Vorschau aufteilen.\nWelche Bildgröße sollte ich verwenden?::Ein Landschaftsbild von etwa 1200 mal 630 Pixeln ist eine gängige Wahl, da es für große Karten auf mehreren Netzwerken geeignet ist. Der Crawler ruft die Datei von der öffentlichen Adresse in og:image ab. Dieses Tool lädt das Bild nicht hoch, ändert seine Größe oder überprüft es, hosten Sie es also selbst.\nBrauche ich auch Twitter Card Tags?::Sie sind ein separates Set von Tags, und twitter:card sagt X, wie der Link präsentiert werden soll. Der Zusammenfassungs-Stil zeigt ein kleines Vorschaubild, während Große-Bild-Zusammenfassung ein großes Bild verwendet. Fügen Sie ein Bild hinzu, wenn Sie den großen Stil wählen, und halten Sie es konsistent mit og:image.\nKann ich das Ergebnis kopieren oder herunterladen?::Ja. Kopieren legt den gesamten Block in Ihre Zwischenablage und Herunterladen speichert eine HTML-Datei, die Sie in jeden Seiten-Kopf einfügen können. Die Tastenkombination mit Strg/Cmd, Umschalt und C kopiert ebenfalls die aktuellen Tags. Nichts wird an einen Server gesendet.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Der Builder schreibt Open Graph-Eigenschaften mit property-Attributen und die Twitter-Karte mit einem name-Attribut. Jeder Wert wird im Browser maskiert und die Bild-URL wird genau so gelassen, wie sie übergeben wurde, damit der soziale Crawler sie abrufen kann."
+        "trustBody": "Der Builder schreibt Open Graph-Eigenschaften mit property-Attributen und die Twitter-Karte mit einem name-Attribut. Jeder Wert wird im Browser maskiert und die Bild-URL wird genau so gelassen, wie sie übergeben wurde, damit der soziale Crawler sie abrufen kann.",
+        "limitsTitle": "Grenzen"
       }
     }
   },
