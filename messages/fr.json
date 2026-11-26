@@ -475,7 +475,7 @@
         "mistakes": "Utilisation de données profondément imbriquées::Un seul niveau d'aplatissement est proposé, donc les arborescences profondes perdent leur structure.\nClés non correspondantes::Les objets avec des clés différentes créent des cellules vides au lieu d'erreurs.\nSupposition de conservation des types::Le CSV stocke du texte, donc les nombres et booléens deviennent des valeurs de feuille de calcul à l'importation.",
         "limits": "Les très grands tableaux peuvent être lents à s'afficher dans le navigateur.\nLes clés dupliquées ou manquantes sont résolues d'après le premier enregistrement.\nLes fins de ligne utilisent LF, accepté par la plupart des tableurs.",
         "faqTitle": "Foire aux questions",
-        "faqs": "Mes données JSON sont-elles envoyées sur un serveur ?::Non. Le traitement et l'export se font entièrement dans votre navigateur, vos données n'atteignent jamais un serveur.\nQue se passe-t-il si mes objets ont des clés différentes ?::Le premier objet définit l'ordre des colonnes. Les clés présentes uniquement dans les objets suivants sont ajoutées comme nouvelles colonnes, et les valeurs manquantes restent vides.\nPuis-je convertir un CSV en JSON ?::Cette page se concentre sur la conversion JSON vers CSV. Utilisez un parseur CSV dédié si vous avez besoin d'une conversion inverse stricte avec contrôle du schéma.\nComment les virgules dans les valeurs sont-elles gérées ?::Les valeurs contenant des virgules, des guillemets ou des sauts de ligne sont entourées de guillemets doubles, les guillemets internes étant doublés, conformément à la RFC 4180.",
+        "faqs": "Est-ce que cela envoie mon JSON ?::Non. L'analyse et l'exportation s'exécutent entièrement dans l'onglet de votre navigateur, donc vos données ne sont jamais envoyées à un serveur. Il n'y a pas de compte, pas d'envoi et aucune requête réseau, et effacer la page supprime votre saisie de la mémoire.\nEt si mes objets n'ont pas les mêmes clés ?::Le premier objet définit l'ordre des colonnes. Les clés qui n'apparaissent que dans les objets suivants sont ajoutées en tant que nouvelles colonnes, et les valeurs manquantes restent des cellules vides au lieu de provoquer une erreur, de sorte que votre table reste complète.\nPuis-je convertir du CSV en JSON ?::Cette page se concentre sur la conversion de JSON en CSV. Pour une conversion inverse stricte avec contrôle sur les types et le schéma, utilisez plutôt un analyseur CSV dédié. Cela offre une gestion plus fiable des valeurs entre guillemets et des en-têtes.\nComment les virgules à l'intérieur des valeurs sont-elles gérées ?::Les valeurs contenant des virgules, des guillemets ou des sauts de ligne sont entourées de guillemets doubles, et les guillemets internes sont doublés. Cela suit les conventions RFC 4180, de sorte que les tableurs lisent chaque valeur correctement, même lorsque le délimiteur apparaît à l'intérieur.",
         "trustTitle": "Confidentialité par conception",
         "trustBody": "La conversion utilise uniquement les API du navigateur. Aucun compte, envoi de données ou requête réseau n'est nécessaire, et vider la page supprime vos données."
       }
@@ -484,7 +484,7 @@
       "title": "Convertisseur Markdown vers HTML",
       "shortDesc": "Convertir le Markdown en HTML propre et sécurisé.",
       "seo": {
-        "title": "Convertisseur Markdown vers HTML - Sortie côté client sécurisée",
+        "title": "Convertisseur Markdown vers HTML - Sortie sécurisée en ligne",
         "description": "Convertissez les titres, listes, blocs de code et liens Markdown en HTML. Le balisage brut est échappé avant conversion, ainsi les scripts collés ne s'exécutent jamais."
       },
       "preview": "Aperçu",
@@ -512,7 +512,7 @@
         "mistakes": "S'attendre à toutes les variantes::Les tableaux, notes de bas de page et listes de tâches ne font pas partie de ce sous-ensemble.\nColler du HTML brut::Les balises sont échappées, elles apparaissent donc comme du texte et non comme du balisage.\nOmettre les lignes vides::Les paragraphes ont besoin d'une ligne vide entre eux pour être correctement séparés.",
         "limits": "Les images sont affichées sous forme de liens textuels plutôt que comme des ressources téléchargées.\nLes documents très longs peuvent s'afficher lentement dans le panneau d'aperçu.\nLes extensions Markdown personnalisées ne sont pas prises en charge.\\n",
         "faqTitle": "Questions fréquentes",
-        "faqs": "Est-il sûr de coller du Markdown non fiable ?::Oui. Le HTML brut est échappé avant la conversion et l'aperçu n'exécute jamais de scripts, donc le balisage collé ne peut pas s'exécuter dans la page.\nQuelle variante de Markdown est prise en charge ?::L'outil prend en charge les titres, listes, emphases, liens, citations de bloc et blocs de code délimités courants. Les extensions avancées telles que les tableaux sont intentionnellement omises.\nPuis-je télécharger le résultat ?::Oui. Le HTML peut être copié dans le presse-papiers ou enregistré en tant que fichier .html depuis le panneau de résultat.\nPourquoi mon HTML brut s'affiche-t-il en texte ?::C'est intentionnel. L'échappement empêche l'exécution de scripts et garantit une sortie générée prévisible.",
+        "faqs": "Est-il sûr de coller du Markdown non fiable ?::Oui. Le HTML brut est échappé avant la conversion, et l'aperçu n'exécute jamais de scripts. Le balisage collé est rendu en texte brut ; il ne peut donc ni s'exécuter dans la page ni modifier le résultat généré de quelque manière nuisible que ce soit.\nQuelle variante Markdown est prise en charge ?::L'outil couvre un sous-ensemble pratique de CommonMark : titres, listes, emphase, liens, blocs de citation et blocs de code délimités. Les extensions avancées telles que les tableaux, les notes de bas de page et les listes de tâches sont volontairement exclues pour garder un résultat prévisible.\nPuis-je télécharger le résultat ?::Oui. Une fois votre Markdown converti, vous pouvez copier le HTML généré dans le presse-papiers ou l'enregistrer sous forme de fichier .html depuis le panneau de résultat. Aucun compte ni serveur n'est requis pour conserver le résultat.\nPourquoi mon HTML brut s'affiche-t-il sous forme de texte ?::C'est volontaire. Échapper le HTML brut empêche les scripts de s'exécuter et rend le balisage généré prévisible. Tout ce que vous collez en HTML est traité comme du texte littéral ; il apparaît donc dans le résultat au lieu d'être interprété comme des balises.",
         "trustTitle": "Conçu pour la confidentialité",
         "trustBody": "La conversion s'effectue localement dans votre navigateur. Aucune donnée n'est envoyée, aucun compte n'est nécessaire."
       }
@@ -552,7 +552,7 @@
         "mistakes": "Mélanger les syntaxes::L'absence de # sur le hexadécimal ou de % sur les valeurs HSL provoque une erreur.\nSupposer la prise en charge de l'alpha::Le hexadécimal à 8 chiffres et le rgba ne sont pas pris en charge par ce convertisseur.\nArrondir trop tôt::L'arrondi des canaux peut décaler d'un cran la couleur lors de conversions aller-retour.",
         "limits": "Seules les couleurs sRGB sont gérées ; les espaces à large gamme ne sont pas pris en charge.\nLes couleurs CSS nommées ne sont pas analysées.\nLa transparence alpha n'est pas représentée dans les formats de sortie.",
         "faqTitle": "Foire aux questions",
-        "faqs": "Peut-on coller un hexadécimal abrégé ?::Oui. Une valeur comme #abc est développée en #aabbcc avant la conversion, elle se comporte donc comme la forme à six chiffres.\nQue se passe-t-il si un canal est hors limites ?::L'outil affiche une erreur inline au lieu de tronquer silencieusement. Les canaux RGB doivent être entre 0 et 255, la teinte entre 0 et 360, la saturation et la luminosité entre 0 et 100 %.\nLa transparence est-elle prise en charge ?::Pas encore. Les formats de sortie sont HEX, RGB et HSL sans canal alpha, les couleurs semi-transparentes doivent être gérées ailleurs.\nPourquoi les couleurs semblent-elles différentes à l'écran ?::La gestion des couleurs et les profils d'affichage peuvent modifier l'apparence perçue même quand les valeurs numériques sont identiques.",
+        "faqs": "Puis-je coller un hexadécimal abrégé ?::Oui, l'hexadécimal abrégé est accepté. Une valeur à trois chiffres comme #abc est développée en #aabbcc en dupliquant chaque chiffre avant tout calcul. Les valeurs RGB et HSL résultantes correspondent exactement à la forme à six chiffres, vous pouvez donc coller l'un ou l'autre style et copier la notation dont votre feuille de style a besoin.\nQue se passe-t-il si un canal est hors plage ?::L'outil affiche une erreur directement et refuse de convertir. Les canaux RGB doivent être compris entre 0 et 255, la teinte entre 0 et 360 degrés, et la saturation ou la luminosité entre 0 et 100 %. Rien n'est corrigé silencieusement, vous pouvez donc repérer l'erreur exacte et corriger la valeur avant de copier un résultat.\nPrend-il en charge la transparence ?::Non, la transparence n'est pas prise en charge par ce convertisseur. La sortie est limitée à HEX, RGB et HSL, aucun ne comportant de canal alpha. Les codes hexadécimaux à huit chiffres et les valeurs rgba sont en dehors des formats d'entrée pris en charge, donc les couleurs partiellement transparentes nécessitent un autre outil. Le nuancier en direct affiche toujours un résultat totalement opaque.\nPourquoi les couleurs apparaissent-elles différemment à l'écran ?::La gestion des couleurs et les profils d'affichage peuvent modifier l'apparence d'une couleur même lorsque ses canaux numériques correspondent exactement. Deux moniteurs étalonnés différemment peuvent afficher les mêmes valeurs RGB de manière différente, et les systèmes d'exploitation appliquent leurs propres réglages gamma. Considérez les chiffres comme la référence et étalonnez les écrans lorsque une correspondance visuelle précise est importante.",
         "trustTitle": "Conçu pour la confidentialité",
         "trustBody": "La conversion est un calcul purement côté client. Vos couleurs ne sont jamais envoyées à un serveur."
       }
@@ -561,7 +561,7 @@
       "title": "Convertisseur de bases numériques",
       "shortDesc": "Convertir des nombres entre binaire, octal, décimal et hexadécimal.",
       "seo": {
-        "title": "Convertisseur de bases numériques - Binaire, octal, décimal, hexadécimal",
+        "title": "Convertisseur de base numérique - Binaire vers hexadécimal en ligne",
         "description": "Convertir des nombres entiers entre les bases 2, 8, 10 et 16. Valider les chiffres par base, accepter les préfixes courants et copier chaque résultat instantanément."
       },
       "binary": "Binaire",
@@ -593,7 +593,7 @@
         "mistakes": "Utiliser les chiffres octaux huit ou neuf::Ces symboles n'existent pas en base 8.\nOmettre les lettres hexadécimales::G et au-delà ne sont pas des chiffres hexadécimaux valides.\nMélanger les préfixes::Un préfixe 0x sur une valeur décimale est traité comme de l'hexadécimal.",
         "limits": "Seuls les nombres entiers sont pris en charge ; les fractions et exposants sont rejetés.\nLes entrées extrêmement longues peuvent être lentes à formater.\nLa sortie hexadécimale négative conserve le signe moins au lieu de la forme en complément à deux.",
         "faqTitle": "Foire aux questions",
-        "faqs": "Gère-t-il les nombres négatifs ?::Oui. Le signe moins initial est conservé dans les quatre bases, donc -10 devient une valeur binaire et hexadécimale négative plutôt qu'une représentation en complément à deux.\nPourquoi obtiens-je une erreur de chiffre invalide ?::Chaque base a un ensemble de chiffres fixe. L'octal accepte 0-7 et l'hexadécimal accepte 0-9 plus A-F ; tout autre caractère ne peut pas représenter une valeur dans cette base.\nPuis-je coller une valeur préfixée ?::Oui. Les préfixes comme 0b, 0o et 0x sont reconnus sans distinction de majuscules/minuscules et sont supprimés avant la conversion.\nQuelle peut être la taille du nombre ?::L'outil utilise BigInt, donc il est limité par la mémoire disponible plutôt que par la plage des entiers sûrs de JavaScript.",
+        "faqs": "Gère-t-il les nombres négatifs ?::Oui, le signe moins initial est conservé dans les quatre bases. Saisir -10 donne une valeur binaire, octale et hexadécimale négative plutôt qu'une représentation en complément à deux. Le signe est transmis à chaque étape de conversion, vous pouvez donc passer d'une base à l'autre sans avoir à le réappliquer manuellement au résultat.\nPourquoi reçois-je une erreur de chiffre invalide ?::Chaque base n'accepte qu'un ensemble fixe de chiffres. Le binaire autorise 0 et 1, l'octal accepte de 0 à 7, le décimal utilise de 0 à 9, et l'hexadécimal ajoute les lettres de A à F. Tout autre caractère ne peut pas encoder une valeur dans cette base, alors changez la base source ou supprimez le symbole incriminé avant de convertir.\nPuis-je coller une valeur préfixée ?::Oui, les préfixes courants sont reconnus et supprimés automatiquement. Les valeurs commençant par 0b, 0o ou 0x sont lues comme binaire, octal ou hexadécimal, quelle que soit la casse. Vous pouvez aussi coller un préfixe qui entre en conflit avec la base source sélectionnée, et le préfixe l'emporte, alors vérifiez bien la base avant de copier le résultat converti.\nQuelle peut être la taille du nombre ?::Il n'y a pas de limite supérieure fixe liée à l'intervalle d'entiers sûrs de JavaScript, car l'outil utilise l'arithmétique BigInt. La taille est limitée principalement par la mémoire disponible et par la rapidité avec laquelle votre navigateur peut formater des chaînes très longues. Les entrées de plusieurs centaines de chiffres se convertissent correctement, bien que l'affichage puisse ralentir à mesure que le nombre de chiffres augmente.",
         "trustTitle": "Confidentiel par conception",
         "trustBody": "Tous les calculs s'exécutent localement. Aucune requête n'est envoyée et aucune valeur n'est stockée."
       }
@@ -636,7 +636,7 @@
         "mistakes": "Confondre secondes et millisecondes::Une valeur à treize chiffres correspond généralement à des millisecondes.\nIgnorer le fuseau horaire::La sortie UTC et locale diffère selon votre décalage.\nSupposer que toute valeur est valide::Les dates antérieures à l'époque nécessitent un horodatage négatif.",
         "limits": "Les dates JavaScript sont limitées à environ ±8,64e15 millisecondes.\nLa précision au-dessous de la milliseconde n'est pas conservée.\nLes particularités des calendriers historiques avant 1970 ne sont pas modélisées.",
         "faqTitle": "Questions fréquemment posées",
-        "faqs": "Comment savoir si ma valeur est en secondes ou en millisecondes ?::Les valeurs à treize chiffres sont presque toujours des millisecondes, tandis que les valeurs à dix chiffres sont généralement des secondes. Vous pouvez changer le sélecteur d'unité si le premier résultat semble incorrect.\nPourquoi l'heure locale diffère-t-elle de l'UTC ?::L'heure locale ajoute le décalage horaire de votre appareil et les règles d'heure d'été. L'UTC reste le même partout, elle est donc généralement plus sûre pour les journaux et les API.\nPuis-je convertir une date en horodatage ?::Oui. Choisissez le panneau de date, sélectionnez une date et une heure, et l'outil renvoie les secondes et les millisecondes pour cet instant.\nQue se passe-t-il avec les dates invalides ?::L'outil affiche une erreur intégrée au lieu de produire une date trompeuse, par exemple lorsqu'une valeur de mois ou de jour ne peut pas exister.",
+        "faqs": "Comment savoir si ma valeur est en secondes ou en millisecondes ?::Le nombre de chiffres est l'indicateur le plus rapide : les valeurs à treize chiffres sont presque toujours des millisecondes, tandis que les valeurs à dix chiffres sont généralement des secondes. Si le premier résultat donne une date inattendue, changez l'unité et convertissez à nouveau. Vous pouvez aussi coller une date connue dans l'autre panneau pour voir quelle unité reproduit votre valeur.\nPourquoi l'heure locale diffère-t-elle de l'heure UTC ?::L'heure locale ajoute le décalage horaire de votre appareil et toute règle d'heure d'été en vigueur à cette date. L'UTC est une référence fixe unique utilisée par les API et les journaux, donc le même instant peut s'afficher comme une heure différente selon l'endroit où vous vous trouvez. Les deux résultats décrivent le même moment, simplement exprimés dans des fuseaux différents.\nPuis-je convertir une date en timestamp ?::Oui, le panneau de date effectue la conversion inverse. Choisissez une date et une heure, et l'outil renvoie le timestamp Unix équivalent en secondes et en millisecondes. Vous pouvez copier l'une ou l'autre valeur dans une requête API ou une entrée de journal. Le résultat reflète le fuseau horaire de votre navigateur, car une même heure civile correspond à des instants différents selon les fuseaux.\nQue se passe-t-il avec les dates invalides ?::L'outil affiche une erreur intégrée plutôt qu'une date trompeuse. Les combinaisons impossibles, comme un mois 13 ou le 30 février, ne peuvent pas produire un instant valide, donc rien n'est reporté silencieusement vers le mois suivant. Corrigez les champs et les sorties UTC, locale et ISO se mettront à jour ensemble dès que la date sera valide.",
         "trustTitle": "Confidentialité par conception",
         "trustBody": "Les calculs de date s'exécutent dans votre navigateur. Aucun horodatage n'est transmis ni stocké."
       }
@@ -646,7 +646,7 @@
       "shortDesc": "Convertir entre unités de stockage SI et binaires.",
       "seo": {
         "title": "Convertisseur de stockage de données - KB, MB, GB et GiB",
-        "description": "Convertir les tailles de stockage entre unités décimales SI et binaires IEC, avec formatage localisé et échange en un clic."
+        "description": "Convertissez les tailles de stockage entre les unités décimales SI et binaires IEC. Comparez instantanément Ko, Mo et Go, inversez le sens de conversion et affichez des résultats adaptés à votre langue."
       },
       "system": "Système d'unités",
       "si": "SI · base 1000",
@@ -675,7 +675,7 @@
         "mistakes": "Croire que Ko équivaut à 1024 octets::C'est en fait un Kio dans le système IEC.\nMélanger les systèmes en cours de calcul::Utilisez un seul facteur pour toute la conversion.\nSaisir des tailles négatives::Les quantités de stockage ne peuvent pas être négatives.",
         "limits": "Les unités de bits et de débit binaire, comme les mégabits par seconde, ne sont pas incluses.\nLes résultats sont arrondis pour l'affichage, et non pour une comptabilité exacte.\nLes très grandes valeurs utilisent les calculs en virgule flottante et peuvent perdre en précision.",
         "faqTitle": "Questions fréquentes",
-        "faqs": "Pourquoi mon disque affiche-t-il moins d'espace que annoncé ?::Les fabricants calculent en puissances de dix, tandis que de nombreux systèmes d'exploitation comptent en puissances de deux. Un disque de 1 To représente environ 0,91 Tio, donc le chiffre affiché semble plus petit bien que rien ne manque.\nQue signifie Kio ?::Kio est le symbole IEC du kibioctet, soit 1024 octets. Ko désigne généralement le kilooctet, soit 1000 octets, dans le système SI.\nPuis-je convertir des gigabits en gigaoctets ?::Pas ici. Cet outil couvre les quantités de stockage, et non les débits ; divisez les bits par huit d'abord si vous avez besoin d'octets.\nLe résultat tient-il compte de vos paramètres régionaux ?::Oui. Le nombre affiché suit les paramètres régionaux de votre navigateur via Intl.NumberFormat, donc les séparateurs de milliers vous sont familiers.",
+        "faqs": "Pourquoi mon disque affiche-t-il moins d'espace que annoncé ?::Les fabricants et les systèmes d'exploitation ne calculent pas le stockage de la même manière, donc un même disque affiche un nombre plus petit dans les logiciels. Les constructeurs utilisent les unités décimales SI, où un téraoctet équivaut à 1 000 000 000 000 octets, tandis que de nombreux systèmes affichent des tébioctets binaires. Un disque de 1 To apparaît comme environ 0,91 TiB, bien qu'aucune capacité ne manque réellement.\nQue signifie KiB ?::KiB est le symbole IEC du kibioctet, une unité égale à 1024 octets. Le label SI KB désigne généralement le kilooctet, soit 1000 octets, donc les deux noms se ressemblent mais ne sont pas interchangeables. Choisir le bon système dans le convertisseur garde votre calcul cohérent et évite une petite erreur qui grandit avec le temps.\nPuis-je convertir des gigabits en gigaoctets ?::Non, ce convertisseur traite des quantités de stockage plutôt que des débits de transfert. Si vous avez des gigabits, divisez la valeur par huit pour obtenir des gigaoctets, puis collez ce nombre ici. Maintenir distincts les bits et les octets évite une erreur de facteur huit lorsque vous comparez des tailles de fichiers avec des vitesses réseau.\nLe résultat suit-il les paramètres régionaux de mon navigateur ?::Oui, le nombre affiché suit les paramètres régionaux de votre navigateur via Intl.NumberFormat. Les séparateurs de milliers et les virgules décimales correspondent donc à ce que vous voyez ailleurs sur votre appareil. La valeur sous-jacente ne change pas, donc copier le résultat dans un tableur ou un script conserve toute la précision de la conversion.",
         "trustTitle": "Conçu pour la confidentialité",
         "trustBody": "Les calculs sont effectués localement. Aucune valeur n'est envoyée ni conservée."
       }
@@ -684,7 +684,7 @@
       "title": "Générateur de slugs à partir de texte",
       "shortDesc": "Transformez les titres en slugs d'URL propres et sûrs.",
       "seo": {
-        "title": "Générateur de slugs à partir de texte - Slugs d'URL propres instantanément",
+        "title": "Générateur de slugs d'URL - Créez des slugs propres rapidement",
         "description": "Créez des slugs d'URL à partir de titres et d'en-têtes. Choisissez un séparateur, supprimez les accents et la ponctuation, et copiez le résultat au fur et à mesure."
       },
       "separator": "Séparateur",
@@ -714,7 +714,7 @@
         "mistakes": "Modifier les slugs après publication::Les liens existants peuvent être rompus sans redirections.\nConserver les mots vides::Les slugs très longs sont plus difficiles à lire et à partager.\nMélanger les séparateurs::Une convention par site rend les URL prévisibles.",
         "limits": "Les écritures non latines sans diacritiques sont conservées telles quelles plutôt que translittérées.\nLes emojis sont supprimés plutôt qu'encodés.\nLa longueur n'est pas tronquée automatiquement.",
         "faqTitle": "Questions fréquemment posées",
-        "faqs": "Que deviennent les lettres accentuées ?::Lorsque la suppression des accents est activée, le texte est normalisé et les diacritiques sont supprimés, donc café devient cafe. Désactivez l'option pour conserver les caractères d'origine.\nPourquoi la ponctuation a-t-elle été supprimée ?::Des caractères tels que les esperluettes, les deux-points et les points d'exclamation nécessitent soit un encodage URL, soit ajoutent du bruit. Les supprimer donne une adresse plus propre et plus stable.\nPuis-je utiliser des tirets bas au lieu de tirets ?::Oui. Choisissez le séparateur tiret bas et chaque limite de mot devient un tiret bas. Choisissez un style et utilisez-le systématiquement sur votre site.\nL'outil raccourcit-il les longs slugs ?::Non. Il conserve l'expression complète afin que vous puissiez décider quels mots sont importants. Raccourcissez le texte source si vous avez besoin d'une adresse plus courte.",
+        "faqs": "Que deviennent les lettres accentuées ?::Les lettres accentuées deviennent du texte ASCII simple lorsque l'option de suppression est activée, donc café devient cafe. Le générateur applique une normalisation Unicode avant de supprimer les diacritiques, ce qui permet de garder le mot lisible dans les URL. Désactivez l'option si vous souhaitez conserver les caractères originaux tels quels.\nPourquoi la ponctuation a-t-elle été supprimée ?::La ponctuation est supprimée car des caractères comme les esperluettes et les deux-points nécessitent soit un encodage URL, soit ajoutent du bruit à une adresse. Les supprimer laisse un slug plus propre et plus stable, plus facile à lire et à partager. Votre titre original reste inchangé ; seule la sortie générée est simplifiée.\nPuis-je utiliser des tirets bas au lieu de tirets ?::Oui, vous pouvez passer aux tirets bas à tout moment en choisissant le séparateur tiret bas. Chaque limite de mot utilise alors un tiret bas au lieu d'un tiret. Utilisez une seule convention sur l'ensemble de votre site afin que les visiteurs et les moteurs de recherche voient des adresses prévisibles et cohérentes.\nL'outil raccourcit-il les longs slugs ?::Non, le générateur conserve l'expression complète afin que vous puissiez décider quels mots sont les plus importants. Modifiez plutôt le titre source si vous avez besoin d'une adresse plus courte. Cette approche évite toute troncation surprise et vous aide à repérer les slugs trop longs avant qu'ils n'atteignent votre CMS ou votre plan de site.",
         "trustTitle": "Conçu pour la confidentialité",
         "trustBody": "La création du slug s'effectue dans votre navigateur. Aucun titre n'est enregistré ni envoyé."
       }
@@ -753,7 +753,7 @@
         "mistakes": "Utilisation des tabulations::YAML exige des espaces pour l'indentation.\nMélange des niveaux d'indentation::Les clés de même niveau doivent s'aligner exactement.\nAncres attendues::Les références et les balises personnalisées ne sont pas résolues.",
         "limits": "Les scalaires de bloc multiligne sont traités comme du texte brut.\nLes clés complexes et les clés de fusion sont en dehors du sous-ensemble.\nLes documents très volumineux peuvent s'afficher lentement dans le navigateur.",
         "faqTitle": "Questions fréquemment posées",
-        "faqs": "Pourquoi mon fichier n'a-t-il pas pu être analysé ?::La plupart des échecs proviennent des tabulations ou d'une indentation incohérente. Vérifiez que les clés de même niveau s'alignent sur la même colonne et que les valeurs imbriquées sont indentées davantage.\nLes booléens et les nombres sont-ils convertis ?::Oui. Les valeurs true, false, null et numériques non entre guillemets deviennent les types JSON correspondants, tandis que les valeurs entre guillemets restent des chaînes de caractères.\nPuis-je réutiliser les ancres et les alias ?::Non. Les ancres, les alias et les balises personnalisées sont volontairement non pris en charge afin que l'analyseur reste déterministe et sûr.\nMa configuration est-elle envoyée ?::Non. L'analyse et le formatage se déroulent entièrement dans votre navigateur, et rien n'est stocké après la fermeture de la page.",
+        "faqs": "Pourquoi mon fichier n'a-t-il pas pu être analysé ?::La plupart des échecs proviennent des tabulations ou d'une indentation incohérente dans le texte source. Vérifiez que les clés de même niveau sont alignées sur la même colonne et que les valeurs imbriquées sont décalées vers la droite. L'analyseur attend également des espaces, alors remplacez les caractères de tabulation avant de réessayer la conversion.\nLes booléens et les nombres sont-ils convertis ?::Oui, les valeurs true, false, null et numériques brutes deviennent automatiquement les types JSON correspondants. Les valeurs entre guillemets restent des chaînes, donc « true » reste du texte tandis que true devient un booléen. Cette distinction est importante lorsque vous collez le résultat dans une API qui valide les types de manière stricte.\nPuis-je réutiliser les ancres et les alias ?::Non, les ancres, les alias et les balises personnalisées sont délibérément en dehors du sous-ensemble pris en charge par cet analyseur. Maintenir une grammaire restreinte rend chaque conversion déterministe et sûre. Développez les valeurs partagées en cartes ou listes simples avant de coller, et l'outil traitera le reste normalement.\nMa configuration est-elle envoyée ?::Non, votre configuration n'est jamais envoyée ni transmise à un serveur. L'analyse et le formatage se déroulent entièrement dans l'onglet de votre navigateur, et rien n'est stocké après la fermeture de la page. Vous pouvez coller en toute sécurité des identifiants privés ou des paramètres internes dans le panneau de saisie.",
         "trustTitle": "Conçu pour la confidentialité",
         "trustBody": "L'analyseur s'exécute localement, sans accès au réseau. Votre configuration reste sur cet appareil."
       }
@@ -762,7 +762,7 @@
       "title": "Générateur de Lorem Ipsum",
       "shortDesc": "Générez des paragraphes, phrases ou mots de remplissage répétables pour vos maquettes.",
       "seo": {
-        "title": "Générateur de Lorem Ipsum pour maquettes wireframe | Toolpika",
+        "title": "Générateur de Lorem Ipsum pour maquettes wireframe",
         "description": "Générez du texte Lorem Ipsum répétable en paragraphes, phrases ou mots. Définissez le nombre et la graine, puis copiez ou téléchargez du texte de remplissage pour votre prochaine maquette."
       },
       "subtitle": "Texte de remplissage généré pour les maquettes non encore rédigées",
@@ -813,7 +813,7 @@
       "title": "Vérificateur de différences de texte",
       "shortDesc": "Comparez deux brouillons ligne par ligne ou mot par mot et voyez chaque modification.",
       "seo": {
-        "title": "Vérificateur de différences de texte avec vues ligne et mot | Toolpika",
+        "title": "Vérificateur de différences de texte avec vues par ligne et par mot",
         "description": "Comparez deux brouillons en mode ligne ou mot, voyez les lignes ajoutées, supprimées et inchangées ainsi que la similarité, puis copiez ou enregistrez le résultat brut."
       },
       "subtitle": "Modifications exactes entre deux brouillons, sans envoi de fichier",
@@ -872,7 +872,7 @@
       "title": "Générateur d'UUID",
       "shortDesc": "Générez des UUID v4 aléatoires, v7 ordonnés par temps et nil par lots de 1000 maximum.",
       "seo": {
-        "title": "Générateur d'UUID - UUID v4 et v7 en lot gratuits | Toolpika",
+        "title": "Générateur d'UUID - UUID v4 et v7 gratuits en lot",
         "description": "Le générateur d'UUID crée des identifiants en lot directement dans votre navigateur : v4, v7 horodaté ou nil. Choisissez de 1 à 1 000 valeurs, copiez tout et téléchargez une liste au format texte brut."
       },
       "subtitle": "Identifiants en lot, générés localement",
@@ -915,7 +915,7 @@
       "title": "Décodeur JWT",
       "shortDesc": "Lit les en-têtes, charges utiles et revendications JWT localement, sans vérifier la signature.",
       "seo": {
-        "title": "Décodeur JWT - Lire l'en-tête, la charge utile et les revendications | Toolpika",
+        "title": "Décodeur JWT - Lire l'en-tête, la charge utile et les revendications",
         "description": "Le décodeur JWT affiche l'en-tête, la charge utile et les revendications d'un jeton sous forme de JSON lisible dans votre navigateur. Convertissez les revendications temporelles, repérez les jetons expirés et copiez le résultat."
       },
       "subtitle": "Inspectez les jetons dans cet onglet",
@@ -940,7 +940,7 @@
       "claimAud": "Audience (aud)",
       "claimJti": "ID du jeton (jti)",
       "claimName": "Nom (nom)",
-      "claimEmail": "Email (email)",
+      "claimEmail": "E-mail (email)",
       "claimScope": "Portée (portée)",
       "expired": "Expiré",
       "valid": "Valide",
@@ -981,7 +981,7 @@
       "title": "Testeur d'expressions régulières",
       "shortDesc": "Créez une expression régulière JavaScript, activez ou désactivez les indicateurs et voyez toutes les correspondances mises en surbrillance dans votre texte.",
       "seo": {
-        "title": "Testeur Regex - Vérifiez les motifs et les indicateurs en direct | Toolpika",
+        "title": "Testeur de regex - Vérifier les motifs et les drapeaux en direct",
         "description": "Utilisez le Testeur Regex pour tester une expression régulière JavaScript sur votre texte, activez ou désactivez les indicateurs g, i, m, s et u, et copiez les correspondances avec leurs groupes et leurs décalages."
       },
       "trySample": "Essayer l'exemple",
@@ -1055,7 +1055,7 @@
       "title": "Calculateur de pourcentage",
       "shortDesc": "Cinq questions courantes sur les pourcentages, une réponse et la formule associée.",
       "seo": {
-        "title": "Calculateur de pourcentage - Cinq modes, une réponse | Toolpika",
+        "title": "Calculateur de pourcentage - Cinq modes, une réponse",
         "description": "Utilisez ce calculateur de pourcentage pour calculer un pourcentage d'un nombre, comparer deux valeurs ou appliquer une augmentation ou une réduction. Consultez la réponse et sa formule."
       },
       "trySample": "Essayer un exemple",
@@ -1112,7 +1112,7 @@
       "title": "Calculateur de proportions",
       "shortDesc": "Réduisez une paire de pixels à son rapport le plus simple, adaptez un côté et copiez la déclaration CSS.",
       "seo": {
-        "title": "Calculateur de ratio d'aspect : redimensionner selon la largeur ou la hauteur | Toolpika",
+        "title": "Calculateur de ratio d'aspect : ajuster par largeur ou hauteur",
         "description": "Simplifiez la largeur et la hauteur en un ratio simple, puis redimensionnez un côté en conservant les proportions. Prévisualisez la forme et copiez la ligne CSS aspect-ratio."
       },
       "privacyRibbon": "Les calculs de ratio s'exécutent dans votre navigateur. Vos dimensions ne sont pas envoyées.",
@@ -1173,7 +1173,7 @@
       "title": "Générateur UTM",
       "shortDesc": "Créez des URLs de campagne trackées à partir d'une adresse de base et de cinq balises UTM.",
       "seo": {
-        "title": "Générateur UTM : créez des liens de campagne trackés | Toolpika",
+        "title": "Générateur UTM : créer des liens de campagne suivis",
         "description": "Générez des URLs de campagne trackées avec cinq balises UTM. Les paramètres de requête existants sont conservés, les valeurs sont encodées automatiquement et le lien est prêt à copier."
       },
       "privacyRibbon": "La création de liens s'effectue dans votre navigateur. Aucune adresse ni balise n'est envoyée.",
@@ -1232,7 +1232,7 @@
       "title": "Générateur de hachage",
       "shortDesc": "Calculez les empreintes SHA-256, SHA-512 ou SHA-1 pour du texte et des fichiers dans votre navigateur.",
       "seo": {
-        "title": "Générateur de hachage - SHA-256 et SHA-512 | Toolpika",
+        "title": "Générateur de hachage - Somme de contrôle SHA-256 et SHA-512",
         "description": "Le générateur de hachage calcule les empreintes SHA-256, SHA-512 et SHA-1 pour du texte ou des fichiers directement dans votre navigateur. Choisissez un algorithme, puis copiez ou téléchargez le résultat."
       },
       "trySample": "Essayer un exemple",
@@ -1288,7 +1288,7 @@
       "title": "Redimensionneur d'images",
       "shortDesc": "Redimensionnez les images JPEG, PNG et WebP à des dimensions précises en pixels, sans les envoyer.",
       "seo": {
-        "title": "Redimensionneur d'images - Dimensions exactes JPEG, PNG et WebP | Toolpika",
+        "title": "Redimensionneur d'images - Dimensions exactes JPEG PNG WebP",
         "description": "Définit des dimensions en pixels exactes pour les fichiers JPEG, PNG et WebP, conserve les proportions et prévisualise le résultat avant l'enregistrement local."
       },
       "trySample": "Essayer un exemple",
@@ -1348,7 +1348,327 @@
         "trustBody": "Conçu par l'équipe Toolpika. Le résultat est généré par l'encodeur canevas du navigateur, au format et à la qualité que vous choisissez dans le panneau de résultat, sans étape d'envoi. Mis à jour le 25 novembre 2026."
       }
     },
-    "catCalculator": "Calculatrices"
+    "catCalculator": "Calculatrices",
+    "remove-duplicate-lines": {
+      "title": "Supprimer les lignes en double",
+      "shortDesc": "Conserver un exemplaire de chaque ligne d'une liste et supprimer les doublons en quelques secondes.",
+      "seo": {
+        "title": "Supprimer les lignes en double d'un texte en ligne",
+        "description": "Supprimez les lignes en double de n'importe quelle liste avec cet outil gratuit. Choisissez de garder la première ou la dernière occurrence, ignorez la casse ou les espaces, puis copiez ou téléchargez les lignes uniques."
+      },
+      "subtitle": "Une seule copie de chaque ligne, nettoyée dans votre navigateur",
+      "trySample": "Essayer l'exemple",
+      "reset": "Réinitialiser",
+      "privacyRibbon": "S'exécute dans votre navigateur. Votre texte n'est jamais envoyé.",
+      "inputTitle": "Lignes à nettoyer",
+      "inputHint": "Une entrée par ligne. Collez une liste ou tapez directement dans le champ.",
+      "textLabel": "Lignes de texte",
+      "paste": "Coller",
+      "optionsTitle": "Options de nettoyage",
+      "keepLabel": "Quelle copie garder",
+      "keepFirst": "Garder le premier",
+      "keepLast": "Garder le dernier",
+      "caseSensitive": "Respecte la casse",
+      "trimWhitespace": "Supprimer les espaces",
+      "resultTitle": "Lignes uniques",
+      "outputLabel": "Texte nettoyé",
+      "originalLines": "Lignes originales",
+      "uniqueLines": "Lignes uniques",
+      "removedLines": "Doublons supprimés",
+      "emptyTitle": "Aucune ligne à nettoyer pour l'instant",
+      "emptyHint": "Collez ou saisissez une liste ci-dessus, puis choisissez Conserver le premier ou Conserver le dernier.",
+      "tooLarge": "Cette liste contient plus de 5 000 lignes ou 400 000 caractères. Raccourcissez-la et réessayez.",
+      "failed": "Ce nettoyage n'a pas pu être effectué. Videz le champ et collez à nouveau les lignes.",
+      "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez Ctrl/Cmd + V pour coller directement dans le champ.",
+      "copyUnavailable": "L'accès au presse-papier est bloqué. Sélectionnez le texte et copiez-le manuellement.",
+      "sampleText": "pomme\nbanane\npomme\nCerise\ncerise\nbanane\n\npoire\npoire\nPomme",
+      "page": {
+        "byline": "Outils de texte · Révisé le 26 novembre 2026",
+        "directAnswer": "Supprimer les lignes en double ne garde qu'un exemplaire de chaque ligne répétée dans une liste, transformant un export désordonné en une liste propre. Choisissez la première ou la dernière occurrence, activez ou désactivez la sensibilité à la casse ou la suppression des espaces superflus, puis copiez ou téléchargez le résultat avec les comptages exacts.",
+        "aboutTitle": "À propos de Supprimer les lignes en double",
+        "contextualLink": "Une fois la liste propre, %%TOOL%% ordonne ce qui reste.",
+        "whatIsTitle": "Qu'est-ce qu'un outil de suppression des lignes en double ?",
+        "whatIs": "Un outil de suppression des lignes en double analyse une liste ligne par ligne et conserve un seul exemplaire de chaque entrée distincte. Il ne réécrit pas vos mots. Il décide simplement quelles lignes sont conservées, puis renvoie le résultat dans un ordre prévisible, afin que vous puissiez le coller dans un tableur, un formulaire, un script ou un document.\n\nLa plupart des listes proviennent de tableurs copiés, de fichiers journaux ou d'exports de formulaires, où une même valeur apparaît plusieurs fois. Supprimer les doublons à la main est long et sujet aux erreurs, surtout quand une liste contient des centaines de lignes. L'outil compare une clé pour chaque ligne, et c'est la première ou la dernière ligne portant cette clé qui est conservée. Choisir Conserver le premier préserve la position la plus ancienne, ce qui convient aux listes d'inscription. Choisir Conserver le dernier préserve l'entrée la plus récente, ce qui convient à un journal où la dernière valeur est celle qui compte.\n\nDeux options modifient ce qui est considéré comme une même ligne. L'option Casse sensible traite Apple et apple comme des entrées distinctes, ce qui est approprié pour le code, les identificateurs et les codes produits ; la désactiver les considère comme une seule et même entrée. L'option Supprimer les espaces enlève les espaces et tabulations en début et en fin de ligne, tant pour la comparaison que pour le résultat, de sorte qu'une ligne collée avec un espace superflu ne crée plus une deuxième entrée. Les lignes vides sont traitées comme de vraies lignes, donc les lignes vides répétées se réduisent à une seule.\n\nTout s'exécute dans le navigateur. Le panneau de résultat affiche le texte nettoyé, le nombre de lignes originales, le nombre de lignes uniques et le nombre de lignes supprimées. Vous pouvez copier le texte ou le télécharger au format .txt. De véritables sauts de ligne sont utilisés, donc une longue ligne qui se coupe à l'écran reste une seule ligne. Les entrées très volumineuses sont limitées par un message d'erreur clair plutôt que de geler l'onglet.",
+        "howToTitle": "Comment utiliser l'outil de suppression des lignes en double",
+        "howTo": "Collez une liste dans la zone de texte, ou utilisez le bouton Coller intégré.\nChoisissez Conserver le premier ou Conserver le dernier sous Options de nettoyage.\nActivez Casse sensible ou Supprimer les espaces selon vos données.\nLisez le texte nettoyé et les nombres de lignes originales, uniques et supprimées à droite.\nCopiez le résultat ou téléchargez-le au format .txt.",
+        "exampleTitle": "Exemple",
+        "exampleLabel": "Liste de fruits en double",
+        "exampleInput": "pomme\nbanane\npomme\nCerise\ncerise\nbanane\n\npoire\npoire\nPomme\nGarder le premier, Respect de la casse activé, Supprimer les espaces activé",
+        "exampleOutput": "pomme\nbanane\nCerise\ncerise\n\npoire\nPomme\nLignes originales : 10\nLignes uniques : 7\nDoublons supprimés : 3",
+        "exampleNote": "Pomme et pomme restent séparées car le respect de la casse est activé. La ligne vide apparaît une fois car les lignes vides sont aussi dédoublonnées.",
+        "mistakesTitle": "Erreurs courantes et limites",
+        "limitsTitle": "Limites",
+        "mistakes": "Laisser le respect de la casse activé::Pomme et pomme sont des lignes différentes lorsque l'option est activée. Désactivez-la pour les noms qui doivent être fusionnés.\nOublier les espaces::Une ligne avec un espace en fin de ligne semble unique jusqu'à ce que l'option Supprimer les espaces soit activée ; cette option nettoie aussi le résultat.\nAttendre uniquement un récapitulatif::Le résultat conserve une ligne par clé distincte, choisissez donc Garder le dernier lorsqu'une ligne plus récente doit remplacer une précédente.\nColler un paragraphe entier::L'outil découpe selon les sauts de ligne, et non les phrases. Placez une entrée par ligne avant de nettoyer la liste.",
+        "limits": "Chaque saisie accepte au maximum 5 000 lignes ou 400 000 caractères.\nLes lignes vides sont comptées et dédoublonnées comme n'importe quelle autre ligne.\nLa mise en minuscules utilise une simple correspondance, sans règles dépendantes de la langue.\nRien n'est normalisé au-delà des fins de ligne et de l'éventuelle suppression des espaces superflus.",
+        "faqTitle": "Questions fréquentes",
+        "faqs": "Quel exemplaire d'une ligne répétée est conservé ?::Les onglets Conserver le premier et Conserver le dernier décident de cela. Conserver le premier laisse la première occurrence à sa position d'origine ; Conserver le dernier déplace la ligne conservée à l'emplacement de la dernière copie. Les deux options préservent l'ordre des lignes restantes, donc le résultat reste proche de votre liste d'origine.\nLa sensibilité à la casse modifie-t-elle ce qui est considéré comme un doublon ?::Oui. Avec l'option Respect de la casse activée, Apple et apple sont deux lignes distinctes, ce qui est utile pour les codes et les identifiants. Désactivez-la et les deux sont mises en minuscules pour la comparaison uniquement ; le résultat affiche toujours l'orthographe originale de la ligne conservée.\nQue fait l'option Supprimer les espaces superflus ?::Elle supprime les espaces et tabulations en début et en fin de ligne avant la comparaison et dans le résultat nettoyé. Une ligne collée avec un espace supplémentaire ne sera plus considérée comme unique. L'espacement à l'intérieur d'une ligne reste exactement tel quel, donc les mots et les séparateurs ne sont pas modifiés.\nLes lignes vides sont-elles supprimées ?::Les lignes vides répétées se réduisent à une seule ligne vide, car une chaîne vide est comparée comme n'importe quelle autre ligne. Une seule ligne vide est conservée, ce qui vous permet de préserver une rupture visuelle entre les groupes. Utilisez un éditeur de texte si vous voulez supprimer toutes les lignes vides.\nMon texte est-il envoyé sur un serveur ?::Non. Le découpage, la comparaison et l'exportation se déroulent tous dans l'onglet de votre navigateur. Votre liste n'est jamais envoyée à un serveur, enregistrée dans un compte ou écrite dans le stockage local. Seuls les réglages des options sont mémorisés sur cet appareil ; fermez l'onglet et le texte disparaît.",
+        "trustTitle": "À propos de cet outil",
+        "trustBody": "Cet outil construit une table de clés de comparaison, puis conserve la première ou la dernière ligne pour chaque clé dans l'ordre source. Les listes allant jusqu'à 5 000 lignes s'exécutent localement ; rien ne quitte l'onglet.",
+        "searchIntents": "supprimer les lignes en double d'une liste\ndédoublonner les lignes d'un texte collé\nconserver la première ou la dernière ligne en double\nnettoyer les entrées répétées dans un fichier texte"
+      }
+    },
+    "sort-text-lines": {
+      "title": "Trier les lignes de texte",
+      "shortDesc": "Triez n'importe quelle liste par ordre alphabétique ou numérique, en conservant chaque ligne.",
+      "seo": {
+        "title": "Trier les lignes de texte par ordre alphabétique ou numérique",
+        "description": "Triez les lignes de texte par ordre croissant ou décroissant avec cet outil. Activez le tri naturel pour élément 2 et élément 10, choisissez la gestion de la casse, puis copiez ou téléchargez."
+      },
+      "subtitle": "Une liste bien rangée dans l'ordre de votre choix",
+      "trySample": "Essayer l'exemple",
+      "reset": "Réinitialiser",
+      "privacyRibbon": "S'exécute dans votre navigateur. Votre texte n'est jamais envoyé.",
+      "inputTitle": "Lignes à trier",
+      "inputHint": "Une entrée par ligne. Collez une liste ou saisissez directement.",
+      "textLabel": "Lignes de texte",
+      "paste": "Coller",
+      "optionsTitle": "Options de tri",
+      "directionLabel": "Ordre de tri",
+      "ascending": "Croissant",
+      "descending": "Décroissant",
+      "caseSensitive": "Respect de la casse",
+      "naturalSort": "Tri naturel (numérique)",
+      "resultTitle": "Lignes triées",
+      "outputLabel": "Texte trié",
+      "lineCountLabel": "Lignes",
+      "emptyTitle": "Aucune ligne à trier pour l'instant",
+      "emptyHint": "Collez ou saisissez une liste ci-dessus, puis choisissez Croissant ou Décroissant.",
+      "tooLarge": "Cette liste contient plus de 5 000 lignes ou 400 000 caractères. Raccourcissez-la et réessayez.",
+      "failed": "Ce tri n'a pas pu être effectué. Videz la zone et collez à nouveau les lignes.",
+      "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez Ctrl/Cmd + V pour coller directement dans la zone.",
+      "copyUnavailable": "L'accès au presse-papiers est bloqué. Sélectionnez le texte et copiez-le manuellement.",
+      "sampleText": "élément10\nélément2\npomme\nCerise\ncerise\nélément1",
+      "page": {
+        "byline": "Outils de texte · Vérifié le 26 novembre 2026",
+        "directAnswer": "Trier les lignes de texte trie une liste collée par ordre croissant ou décroissant sans perdre une seule ligne. Activez le tri numérique pour que élément2 vienne avant élément10, choisissez si la casse doit être prise en compte, puis copiez ou téléchargez le texte trié avec son nombre de lignes.",
+        "aboutTitle": "À propos de l'outil de tri de lignes de texte",
+        "contextualLink": "Si une même entrée apparaît deux fois, %%TOOL%% supprime les doublons avant le tri.",
+        "whatIsTitle": "Qu'est-ce qu'un outil de tri de lignes de texte ?",
+        "whatIs": "Un outil de tri de lignes de texte réorganise les lignes d'une liste collée sans modifier le texte de chaque ligne. C'est le moyen le plus rapide de classer des noms, des tâches, des codes produits ou des entrées de journal dans un ordre prévisible avant de les coller ailleurs.\n\nL'ordre croissant va du début de l'alphabet vers la fin ; l'ordre décroissant l'inverse. La comparaison utilise les caractères de chaque ligne, donc la ponctuation et les espaces peuvent influencer le placement. Une ligne vide se place en haut dans l'ordre croissant car une chaîne vide précède tout caractère.\n\nLe tri lexicographique simple compare un caractère à la fois, ce qui place item10 avant item2 car 1 précède 2. Le tri naturel divise chaque ligne en segments de texte et de chiffres et compare les segments de chiffres par valeur, donc item2 précède item10. Cela est important pour les noms de fichiers, les étiquettes de version, les numéros de chapitre et toute liste mêlant mots et chiffres.\n\nLa gestion de la casse est l'autre option. Avec la casse sensible activée, les majuscules se classent avant les minuscules dans une comparaison de caractères simple, donc Cherry et cherry peuvent être séparés. Désactivez-la et les deux sont comparés en minuscules tandis que l'orthographe originale est conservée dans le résultat. Les lignes identiques conservent leur ordre d'origine, et chaque ligne est conservée lors du tri.\n\nL'outil fonctionne dans le navigateur et plafonne les entrées très volumineuses avec un message d'erreur clair. Le panneau de résultats affiche le texte trié et le nombre de lignes, et vous pouvez copier le texte ou le télécharger au format .txt.",
+        "howToTitle": "Comment utiliser l'outil de tri de lignes de texte",
+        "howTo": "Collez une liste dans la zone de texte, ou utilisez le bouton Coller intégré.\nChoisissez Croissant ou Décroissant sous Options de tri.\nActivez le tri numérique (naturel) lorsque les lignes contiennent des chiffres.\nDésactivez la casse sensible lorsque vous voulez traiter les majuscules et les minuscules ensemble.\nLisez le texte trié et le nombre de lignes, puis copiez-le ou téléchargez-le au format .txt.",
+        "exampleTitle": "Exemple",
+        "exampleLabel": "Noms de fichiers mélangés",
+        "exampleInput": "item10\nitem2\napple\nCherry\ncherry\nitem1\nCroissant, tri naturel activé, Sensibilité à la casse désactivée",
+        "exampleOutput": "apple\nCherry\ncherry\nitem1\nitem2\nitem10\nLignes : 6",
+        "exampleNote": "Le tri naturel compare les groupes de chiffres par valeur, donc item1, item2 et item10 suivent les mots. Avec la sensibilité à la casse désactivée, Cherry et cherry sont considérés comme identiques et conservent leur ordre d'origine.",
+        "mistakesTitle": "Erreurs courantes et limites",
+        "limitsTitle": "Limites",
+        "mistakes": "Utiliser un tri simple pour des lignes numérotées::item10 passe devant item2 à moins que le tri numérique (naturel) ne soit activé.\nConfondre majuscules et minuscules::avec la casse activée, Cherry et cherry restent séparés. Désactivez-la pour comparer les formes en minuscules.\nOublier une entrée par ligne::l'outil trie les sauts de ligne, pas les mots à l'intérieur d'une ligne. Mettez chaque valeur sur sa propre ligne d'abord.\nS'attendre à ce que les lignes vides disparaissent::elles remontent en haut dans l'ordre croissant. Supprimez-les d'abord si vous voulez une liste sans trous.",
+        "limits": "Chaque entrée accepte au maximum 5 000 lignes ou 400 000 caractères.\nLes lignes vides sont triées comme n'importe quelle autre ligne.\nLe tri naturel compare les suites de chiffres par longueur et valeur ; il n'interprète pas les décimales ni les dates.\nAucun tri spécifique à une langue n'est appliqué, donc les lettres accentuées respectent l'ordre des caractères.",
+        "faqTitle": "Foire aux questions",
+        "faqs": "Quelle est la différence entre le tri simple et le tri naturel ?::Le tri simple compare les caractères un par un, donc item10 apparaît avant item2 parce que 1 vient en premier. Le tri naturel divise les lignes en parties texte et nombres, puis compare les nombres par valeur, ce qui place item2 avant item10. Utilisez le mode naturel pour les noms de fichiers, les versions et les titres numérotés.\nOù vont les lignes vides ?::Une ligne vide vient avant tout caractère, donc les lignes vides se regroupent en haut dans l'ordre croissant et en bas dans l'ordre décroissant. Elles ne sont jamais supprimées. Supprimez les lignes vides de votre texte source d'abord si vous voulez une liste sans trous.\nComment la sensibilité à la casse affecte-t-elle le résultat ?::Avec la casse activée, les majuscules sont triées avant les minuscules, donc Cherry et cherry peuvent être séparés. Désactivez-la et les deux lignes sont comparées en minuscules tandis que l'orthographe originale est conservée dans le résultat. Les lignes identiques conservent leur ordre d'origine dans les deux cas.\nLe tri modifie-t-il le texte d'une ligne ?::Non. Seul l'ordre des lignes change. La ponctuation, les espaces et la casse restent exactement tels que vous les avez collés, ce qui signifie que vous pouvez trier une liste et la coller à nouveau sans modifier les entrées individuellement. Le nombre de lignes reste le même également.\nMa liste est-elle stockée ou envoyée ?::Non. Le tri, la comparaison et l'exportation s'exécutent dans l'onglet de votre navigateur. Vos lignes ne sont jamais envoyées à un serveur ni enregistrées dans un compte, et le texte disparaît lorsque vous actualisez ou fermez l'onglet. Seules vos options choisies sont mémorisées sur cet appareil.",
+        "trustTitle": "À propos de cet outil",
+        "trustBody": "Chaque ligne est comparée comme une chaîne de caractères. En mode naturel, les séquences de chiffres sont traitées par longueur et valeur. Le tri est stable : les lignes identiques conservent leur ordre d'origine. Tout le traitement se fait dans l'onglet.",
+        "searchIntents": "trier des lignes de texte par ordre alphabétique\ntrier une liste de lignes en ligne\ntri naturel des nombres dans le texte\ntrier des lignes par ordre croissant ou décroissant"
+      }
+    },
+    "find-and-replace-text": {
+      "title": "Rechercher et remplacer du texte",
+      "shortDesc": "Remplacez des mots ou des expressions régulières avec un décompte des correspondances en direct, un aperçu surligné et une exportation instantanée.",
+      "seo": {
+        "title": "Rechercher et remplacer du texte avec aperçu en direct",
+        "description": "Utilisez Rechercher et remplacer du texte pour remplacer des mots ou des expressions régulières, avec des options de casse et de mot entier. Prévisualisez les correspondances en direct, puis copiez ou téléchargez le résultat."
+      },
+      "trySample": "Essayer l'exemple",
+      "reset": "Réinitialiser",
+      "privacyRibbon": "La recherche et le remplacement s'effectuent dans votre navigateur. Votre texte n'est pas envoyé.",
+      "shortcutHint": "Ctrl/Cmd + Maj + C copie le résultat",
+      "inputTitle": "Texte source et recherche",
+      "paste": "Coller",
+      "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez Ctrl + V ou Cmd + V à la place.",
+      "textLabel": "Texte à modifier",
+      "findLabel": "Rechercher",
+      "findPlaceholder": "Mot ou modèle",
+      "replaceLabel": "Remplacer par",
+      "replacePlaceholder": "Texte de remplacement",
+      "optionsTitle": "Options de correspondance",
+      "caseSensitive": "Respecter la casse",
+      "wholeWord": "Mot entier",
+      "regexMode": "Mode regex",
+      "matchCount": "{count, plural, one {# correspondance} other {# correspondances}}",
+      "errorTitle": "Rien à afficher pour le moment",
+      "emptyTitle": "Ajoutez du texte et un terme de recherche",
+      "errorEmptyHint": "Entrez un mot ou un modèle dans Rechercher, et le résultat apparaîtra ici.",
+      "emptyHint": "Collez du texte et saisissez ce que vous recherchez pour voir un aperçu en direct.",
+      "noMatchesTitle": "Aucune correspondance trouvée",
+      "noMatchesHint": "Essayez un autre texte de recherche, désactivez l'option « Mot entier » ou activez le mode regex.",
+      "previewLabel": "Texte remplacé, modifications surlignées",
+      "truncatedHint": "La recherche s'est arrêtée après 2 000 correspondances. Le reste du texte est inchangé.",
+      "errorEmptyFind": "Ajoutez un terme à rechercher.",
+      "fixEmptyFind": "Entrez un mot ou un motif avant d'exécuter le remplacement.",
+      "errorInvalidRegex": "Ce motif n'est pas une syntaxe d'expression régulière JavaScript valide.",
+      "fixInvalidRegex": "Vérifiez les crochets non fermés, les barres obliques inverses et quantificateurs isolés, ou désactivez le mode regex.",
+      "errorTooLarge": "Cette entrée est trop volumineuse pour être traitée.",
+      "fixTooLarge": "Raccourcissez le texte à moins de 200 000 caractères et réessayez.",
+      "page": {
+        "byline": "Édition de texte · Révisé le 26 novembre 2026",
+        "directAnswer": "Rechercher et remplacer du texte remplace un mot ou un motif par un nouveau texte dans votre texte collé, avec des options de respect de la casse, de mot entier et d'expression régulière. Vous voyez un décompte des correspondances en temps réel, un aperçu surligné et pouvez copier ou télécharger le résultat en un clic dans votre navigateur.",
+        "aboutTitle": "À propos de Rechercher et remplacer du texte",
+        "contextualLink": "Une fois l'édition terminée, %%TOOL%% peut afficher les caractères les plus fréquents dans le texte final.",
+        "whatIsTitle": "Qu'est-ce que Rechercher et remplacer du texte ?",
+        "whatIs": "Un outil de recherche et remplacement trouve chaque occurrence d'un terme dans un texte et la remplace par une nouvelle valeur. Cet outil s'exécute dans votre navigateur et affiche le nombre de correspondances en temps réel avant que vous copiez ou téléchargiez le résultat.\n\nEn mode littéral, le texte de recherche est échappé : un point, un astérisque ou un signe dollar correspond au caractère saisi plutôt qu'à une instruction regex. En mode regex, ce même champ est compilé en expression régulière JavaScript selon les règles ECMAScript implémentées par votre navigateur. Les classes de caractères telles que \\d, les quantificateurs tels que +, les ancres telles que ^ et le lookbehind, lorsqu'il est pris en charge, se comportent comme en JavaScript. Les modèles de remplacement suivent également les règles JavaScript : $& insère la correspondance complète, $1 insère le premier groupe de capture et $$ écrit un signe dollar littéral. Le mode littéral échappe les signes dollars pour vous, de sorte que les valeurs monétaires restent exactement telles que saisies.\n\nL'option « Respecter la casse » ajoute ou supprime l'indicateur i. L'option « Mot entier » entoure la recherche de limites de mots Unicode, ce qui empêche « cat » de correspondre à « category », mais peut ne pas isoler un terme commençant par un symbole. Les motifs regex sont toujours globaux : chaque occurrence est remplacée et pas seulement la première. Un motif pouvant correspondre à un texte vide avance d'un caractère à la fois, ce qui évite une boucle infinie mais peut produire un grand nombre de petites modifications.\n\nL'outil limite l'entrée à 200 000 caractères et s'arrête après 2 000 correspondances afin que la page reste réactive. Des motifs très larges sur de longs passages peuvent prendre un moment, alors restreignez-les avant d'exécuter une modification importante. Rien n'est téléversé : le motif, le remplacement et votre texte restent dans cet onglet.",
+        "howToTitle": "Comment utiliser Rechercher et remplacer",
+        "howTo": "Collez ou saisissez le texte source dans la zone de texte.\nSaisissez le mot ou le motif à rechercher.\nSaisissez le nouveau texte dans le champ Remplacer par.\nActivez ou désactivez, si besoin, la sensibilité à la casse, le mot entier ou l'expression régulière.\nConsultez le nombre de correspondances et l'aperçu surligné, puis copiez ou téléchargez le résultat.",
+        "exampleTitle": "Exemple : remplacer un mot sans toucher aux mots plus longs",
+        "exampleLabel": "Recherche de mots entiers",
+        "exampleInput": "Texte : Le chat est assis sur le tapis. Un autre chat est à proximité.\nChaton est un mot différent.\nRechercher : chat\nRemplacer par : chien\nOptions : mot entier activé",
+        "exampleOutput": "2 correspondances\nLe chien est assis sur le tapis. Un autre chien à proximité.\nCatégorie est un mot différent.",
+        "exampleNote": "La recherche de mots entiers ignore Catégorie, car les lettres autour de « cat » dépassent la correspondance.",
+        "featuresTitle": "Ce que cet outil prend en charge",
+        "features": "Texte littéral ou regex::Recherchez du texte brut ou passez en mode regex pour les motifs, classes et ancres.\nCasse et limites de mots::Activez ou désactivez la sensibilité à la casse et la recherche de mots entiers pour des modifications précises.\nNombre de correspondances en direct::Chaque modification actualise le nombre de résultats et l'aperçu surligné.\nSyntaxe JavaScript::Les motifs sont compilés selon les règles ECMAScript utilisées par votre navigateur.\nConfidentialité par conception::Le texte, les motifs et les remplacements restent dans votre navigateur et ne sont jamais envoyés.",
+        "mistakesTitle": "Erreurs courantes et limites",
+        "mistakes": "Oublier d'échapper les symboles::En mode littéral, les symboles sont échappés pour vous ; en mode regex, échappez vous-même les points, crochets et signes plus.\nUtiliser la recherche de mots entiers avec de la ponctuation::Les limites de mots fonctionnent mieux sur les lettres et les chiffres ; vérifiez l'aperçu lorsqu'un terme commence par un symbole.\nS'attendre à un scan illimité::L'entrée est limitée à 200 000 caractères et l'outil s'arrête après 2 000 correspondances pour maintenir une saisie réactive.",
+        "limitsTitle": "Limites",
+        "limits": "Les motifs utilisent la syntaxe JavaScript RegExp, et non la syntaxe PCRE ou Python.\nL'inspection arrière et les groupes nommés dépendent de la prise en charge par votre navigateur.\nLes motifs très larges sur un long texte peuvent prendre nettement plus de temps.",
+        "faqTitle": "Foire aux questions",
+        "faqs": "Est-ce que cela modifie mon texte original ?::Non. L'outil crée une nouvelle chaîne dans votre navigateur et laisse le texte dans la zone de saisie intact. L'aperçu en surbrillance montre exactement ce qui serait copié ou téléchargé, afin que vous puissiez comparer les deux versions avant de coller le résultat ailleurs.\nComment remplacer un point ou un signe dollar littéral ?::Laissez le mode regex désactivé. Le mode littéral échappe tous les caractères spéciaux pour vous, de sorte qu'un point correspond à un point et qu'un signe dollar correspond au symbole monétaire. Le texte de remplacement est également échappé, ce qui signifie que les signes dollars et les barres obliques inverses apparaissent exactement tels que vous les avez saisis dans le résultat.\nQue signifie « mot entier » ici ?::L'option mot entier ajoute des limites de mots Unicode autour de votre recherche, de sorte que « cat » correspond à l'animal mais pas à « category » ni à « concatenate ». Elle fonctionne bien pour les mots ordinaires et les identificateurs. Un terme commençant ou se terminant par une ponctuation peut néanmoins apparaître dans des chaînes plus longues, alors vérifiez l'aperçu avant de copier.\nPuis-je utiliser des groupes de capture dans le remplacement ?::Oui, en mode regex. Écrivez les groupes avec des parenthèses dans le champ de recherche, puis utilisez $1, $2 ou $& dans le remplacement pour les insérer. L'outil suit les règles de jetons de remplacement JavaScript, et $$ écrit un signe dollar littéral. Le mode littéral conserve ces jetons en tant que texte brut.\nPourquoi vois-je une erreur de motif non valide ?::Le mode regex compile votre recherche avec le moteur JavaScript RegExp. Une parenthèse non fermée, une barre oblique inverse isolée ou un quantificateur sans élément précédent empêchent la compilation. Le panneau affiche un conseil de correction ; ajustez le motif ou désactivez le mode regex pour rechercher les caractères exacts.\nMon texte est-il envoyé quelque part ?::Non. La recherche, le remplacement et la surbrillance s'exécutent tous localement dans cet onglet de navigateur. Le texte, votre motif de recherche et le remplacement ne sont jamais envoyés à un serveur, et seules vos options sont mémorisées sur cet appareil pour votre prochaine visite.",
+        "trustTitle": "À propos de cet outil",
+        "trustBody": "Fonctionne avec le moteur JavaScript RegExp du navigateur, échappe les recherches littérales et limite les entrées très longues. Révisé le 26 novembre 2026."
+      }
+    },
+    "character-frequency-counter": {
+      "title": "Compteur de fréquence des caractères",
+      "shortDesc": "Classez chaque caractère par nombre d'occurrences et pourcentage, avec les règles de casse, d'espaces et de ponctuation de votre choix.",
+      "seo": {
+        "title": "Compteur de fréquence des caractères - Tableau trié",
+        "description": "Utilisez le Compteur de fréquence des caractères pour classer les caractères par nombre d'occurrences et pourcentage. Ignorez la casse, les espaces ou la ponctuation, puis copiez ou téléchargez le tableau trié."
+      },
+      "trySample": "Essayer l'exemple",
+      "reset": "Réinitialiser",
+      "privacyRibbon": "Le comptage s'effectue dans votre navigateur. Votre texte n'est pas envoyé.",
+      "shortcutHint": "Ctrl/Cmd + Maj + C copie le tableau",
+      "inputTitle": "Texte à analyser",
+      "paste": "Coller",
+      "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez plutôt Ctrl/Cmd + V.",
+      "textLabel": "Texte d'entrée",
+      "optionsTitle": "Règles de comptage",
+      "ignoreCase": "Ignorer la casse",
+      "ignoreSpaces": "Ignorer les espaces",
+      "includePunctuation": "Inclure la ponctuation",
+      "totalCount": "{count, plural, one {# caractère} other {# caractères}}",
+      "errorTitle": "Trop de texte",
+      "errorTooLarge": "Ce texte est trop long pour être compté confortablement.",
+      "fixTooLarge": "Réduisez le texte à moins de 100 000 caractères et réessayez.",
+      "errorEmptyHint": "Raccourcissez votre texte et le tableau de fréquences apparaîtra ici.",
+      "emptyTitle": "Ajoutez d'abord du texte.",
+      "emptyHint": "Collez ou saisissez du texte, puis consultez le tableau de caractères trié ici.",
+      "tableLabel": "Fréquences des caractères",
+      "columnCharacter": "Caractère",
+      "columnCount": "Nombre",
+      "columnShare": "Part",
+      "spaceLabel": "Espace",
+      "tabLabel": "Tabulation",
+      "newlineLabel": "Saut de ligne",
+      "returnLabel": "Retour chariot",
+      "page": {
+        "byline": "Analyse de texte · Mis à jour le 26 novembre 2026",
+        "directAnswer": "Compteur de fréquence des caractères classe chaque symbole de votre texte selon sa fréquence d'apparition, avec un nombre et une part du total. Activez ou désactivez les règles de casse, d'espaces et de ponctuation, puis copiez ou téléchargez le tableau trié depuis votre navigateur en une seule étape.",
+        "aboutTitle": "À propos du Compteur de fréquence des caractères",
+        "contextualLink": "Lorsque vous repérez un caractère que vous souhaitez modifier, %%TOOL%% peut le remplacer dans l'ensemble du passage.",
+        "whatIsTitle": "Qu'est-ce qu'un compteur de fréquence des caractères ?",
+        "whatIs": "Un compteur de fréquence de caractères analyse un passage et indique combien de fois chaque caractère apparaît, généralement du plus fréquent au moins fréquent. Cet outil affiche aussi la part de chaque caractère par rapport au total, exprimée en pourcentage, afin de comparer équitablement des échantillons courts et longs.\n\nLe comptage repose sur les points de code Unicode plutôt que sur les octets bruts. Ainsi, un caractère en dehors du plan multilingue de base, comme un symbole astral, est compté une fois au lieu d'être divisé en deux moitiés de suppléant. L'option « Ignorer la casse » convertit les lettres en minuscules avant le comptage, donc A et a figurent sur une même ligne. L'option « Ignorer les espaces » saute les espaces blancs, qui sont autrement souvent l'élément le plus fréquent dans un paragraphe. La ponctuation est exclue par défaut et peut être incluse via une option ; la règle suit la catégorie de ponctuation Unicode utilisée par les moteurs JavaScript modernes.\n\nLes lignes sont triées par nombre d'occurrences, les ex aequo étant départagés par le caractère lui-même. Les pourcentages sont arrondis à une décimale, de sorte que les petits échantillons peuvent afficher un total légèrement différent de cent en raison de l'arrondi. Les émojis composés de plusieurs points de code, y compris les séquences avec jointeur, peuvent apparaître sur plusieurs lignes car chaque point de code est compté séparément.\n\nLes comptages de fréquence sont utiles pour repérer les symboles répétés, vérifier les dispositions de clavier, enseigner les statistiques de base et explorer les simples chiffrements de substitution dans un texte. Tout se passe dans votre navigateur, et votre passage n'est jamais envoyé.",
+        "howToTitle": "Comment utiliser le compteur de fréquence de caractères",
+        "howTo": "Collez ou tapez le passage que vous souhaitez analyser.\nActivez ou désactivez ignorer la casse, ignorer les espaces ou inclure la ponctuation selon vos règles.\nLisez le tableau trié avec chaque caractère, son nombre et sa part.\nCopiez le tableau ou téléchargez-le sous forme de fichier texte.",
+        "featuresTitle": "Comment fonctionne le comptage",
+        "features": "Points de code Unicode::Chaque point de code est compté une fois, donc les symboles astraux ne sont pas divisés en moitiés de substitution.\nTri par nombre::Les caractères les plus fréquents apparaissent en premier, les ex æquo étant départagés par le caractère lui-même.\nPart du total::Chaque ligne affiche un pourcentage arrondi à une décimale.\nRègles flexibles::Ignorer la casse, exclure les espaces ou inclure la ponctuation d'une seule option.\nLocal uniquement::Tout le comptage et le tri s'effectuent dans l'onglet de votre navigateur.",
+        "mistakesTitle": "Erreurs courantes et limites",
+        "mistakes": "Compter les espaces par erreur::Activez « Ignorer les espaces » quand un espace dominerait le tableau.\nConfondre majuscules et minuscules::Laissez « Ignorer la casse » activée, sauf si la casse des lettres est importante pour votre analyse.\nAttendre un comptage de mots::Cet outil compte les caractères, pas les mots ; utilisez un compteur de mots quand vous avez besoin de totaux de mots.",
+        "limitsTitle": "Limites",
+        "limits": "Un emoji composé de plusieurs points de code peut apparaître sur plusieurs lignes.\nLes entrées très longues sont limitées et affichent une erreur conviviale.\nLa conversion en minuscules suit les règles JavaScript de votre paramètre régional.",
+        "faqTitle": "Questions fréquentes",
+        "faqs": "Qu'est-ce qui compte pour un caractère ?::Chaque point de code Unicode compte pour un caractère. Les lettres et chiffres ordinaires sont simples, et les symboles astraux restent entiers au lieu d'être divisés en deux moitiés de substitution. Un emoji jointeur composé de plusieurs points de code peut encore occuper plusieurs lignes. Activez « Ignorer la casse » pour fusionner les formes majuscules et minuscules.\nPourquoi l'espace est-il en tête du tableau ?::Les espaces sont généralement le caractère le plus courant dans un texte. Activez « Ignorer les espaces » pour les retirer du décompte et faire apparaître les symboles les plus fréquents suivants. Si vous devez étudier les espacements eux-mêmes, laissez l'option désactivée et le tableau inclura une ligne d'espace libellée.\nComment les pourcentages sont-ils calculés ?::Chaque pourcentage correspond au nombre de caractères divisé par le nombre total de caractères comptés, multiplié par cent et arrondi à une décimale. En raison de l'arrondi, les parts visibles peuvent totaliser légèrement plus ou moins de cent sur des échantillons très courts.\nEst-ce que « Ignorer la casse » fusionne A et a ?::Oui. Avec « Ignorer la casse » activée, chaque lettre est convertie en minuscule avant le comptage, donc A et a partagent une seule ligne et le caractère affiché est le premier rencontré. Désactivez cette option quand la distinction est importante, par exemple pour vérifier la casse dans un titre ou un identifiant de code.\nPuis-je utiliser cet outil pour une analyse de fréquence ?::Oui. Le tri par nombre d'occurrences rend les lettres et symboles répétés faciles à repérer, ce qui est utile pour les simples cryptogrammes, les vérifications typographiques et l'enseignement des statistiques de base. Pour un travail sérieux en cryptographie, vous aurez généralement besoin des fréquences de lettres par position et des motifs de mots, ce que ce tableau de caractères uniquement ne fournit pas.\nMon texte est-il envoyé à un serveur ?::Non. Le comptage et le tri s'exécutent localement dans votre onglet de navigateur. Votre texte n'est jamais téléversé ni stocké sur un serveur, et vider la page le supprime de la mémoire. Seuls vos choix d'options sont conservés sur cet appareil afin que l'outil s'ouvre avec les mêmes règles la prochaine fois.",
+        "trustTitle": "À propos de cet outil",
+        "trustBody": "Compte les points de code Unicode, trie par fréquence et affiche la part de chaque caractère dans le total. Révisé le 26 novembre 2026."
+      }
+    },
+    "readability-score-checker": {
+      "title": "Vérificateur de score de lisibilité",
+      "shortDesc": "Estime la facilité de lecture et le niveau scolaire à partir de votre texte, avec les comptages en direct.",
+      "seo": {
+        "title": "Vérificateur de score de lisibilité : Flesch et niveau scolaire",
+        "description": "Utilisez le Vérificateur de score de lisibilité pour estimer l'indice de facilité de lecture Flesch et le niveau scolaire à partir de votre texte, avec les comptages de mots et de syllabes en direct."
+      },
+      "subtitle": "Indice de facilité de lecture Flesch et niveau scolaire, estimés en direct.",
+      "trySample": "Essayer l'exemple",
+      "reset": "Réinitialiser",
+      "privacyRibbon": "S'exécute dans votre navigateur. Rien n'est envoyé.",
+      "shortcutHint": "Ctrl/Cmd + Maj + C copie le rapport",
+      "inputTitle": "Passage",
+      "textLabel": "Texte à analyser",
+      "paste": "Coller",
+      "resultTitle": "Lisibilité",
+      "scoreLabel": "Facilité de lecture Flesch",
+      "gradeLabel": "Niveau scolaire estimé",
+      "statWords": "Mots",
+      "statSentences": "Phrases",
+      "statSyllables": "Syllabes",
+      "statAvgSentence": "Mots par phrase",
+      "statAvgSyllable": "Syllabes par mot",
+      "bandVeryEasy": "Très facile",
+      "bandEasy": "Facile",
+      "bandStandard": "Standard",
+      "bandFairlyDifficult": "Assez difficile",
+      "bandDifficult": "Difficile",
+      "bandVeryDifficult": "Très difficile",
+      "gradeUpTo8": "Jusqu'au niveau 8",
+      "grade9to12": "Du niveau 9 au niveau 12",
+      "grade13Plus": "Niveau 13 et plus",
+      "explainVeryEasy": "Entre 90 et 100. Phrases très courtes et courantes. La plupart des lecteurs le lisent sans difficulté.",
+      "explainEasy": "Entre 80 et 89. Langage simple et phrases courtes. Convient au grand public.",
+      "explainStandard": "Entre 60 et 79. Langage courant avec quelques phrases plus longues. Fréquent dans l'actualité et les guides.",
+      "explainFairlyDifficult": "Entre 50 et 59. Phrases plus longues ou mots moins courants. Certains lecteurs liront plus lentement.",
+      "explainDifficult": "Entre 30 et 49. Phrases denses et mots abstraits. Prévoyez des relectures et un niveau de lecture plus élevé.",
+      "explainVeryDifficult": "Moins de 30. Prose très dense avec de longues propositions. Les textes académiques ou techniques se situent souvent à ce niveau.",
+      "scaleHint": "Au-dessus de 80, le texte se lit facilement ; en dessous de 50, il est assez difficile. Le niveau est une estimation du système scolaire américain.",
+      "tooLarge": "Ce passage dépasse 120 000 caractères. Raccourcissez-le ou divisez-le en sections, puis réessayez.",
+      "error": "Ce passage n'a pas pu être évalué. Videz le champ et collez à nouveau le texte.",
+      "pasteUnavailable": "L'accès au presse-papiers est bloqué. Utilisez Ctrl/Cmd + V pour coller dans le champ.",
+      "copyUnavailable": "L'accès au presse-papiers est bloqué. Sélectionnez le rapport et copiez-le manuellement.",
+      "reportDisclaimer": "Estimation uniquement. Les syllabes utilisent une règle anglaise de groupes de voyelles et le comptage des phrases repose sur la ponctuation, donc les résultats peuvent différer d'un dictionnaire ou d'un test formel.",
+      "assumedSentence": "Aucune fin de phrase n'a été détectée, donc l'ensemble du passage a été traité comme une seule phrase.",
+      "emptyTitle": "Rien à évaluer pour l'instant",
+      "emptyHint": "Collez ou saisissez un texte ci-dessus : le score, le niveau et les comptages s'affichent ici à mesure que vous tapez.",
+      "page": {
+        "byline": "Outils de lecture · Révisé le 26 novembre 2026",
+        "directAnswer": "Le vérificateur de score de lisibilité estime l'indice Flesch Reading Ease et le niveau scolaire américain à partir de votre texte, à mesure que vous tapez. Consultez en direct le nombre de mots, de phrases et de syllabes, lisez une explication simple du niveau, puis copiez ou téléchargez le rapport complet au format texte.",
+        "aboutTitle": "À propos du vérificateur de score de lisibilité",
+        "contextualLink": "Quand l'estimation suggère une formulation plus simple, utilisez %%TOOL%% pour remplacer les longues phrases dans tout le brouillon.",
+        "whatIsTitle": "Qu'est-ce qu'un vérificateur de score de lisibilité ?",
+        "whatIs": "Un vérificateur de score de lisibilité transforme un passage de texte en deux chiffres : un score Flesch Reading Ease et un niveau scolaire Flesch-Kincaid. Les deux proviennent des mêmes deux ratios : le nombre moyen de mots par phrase et le nombre moyen de syllabes par mot. Vous pouvez ainsi voir si un brouillon se lit comme une courte note ou comme un article dense.\n\nFlesch Reading Ease a été publié par Rudolph Flesch dans les années 1940. La formule part de 206,835, soustrait 1,015 fois la longueur moyenne des phrases, puis soustrait 84,6 fois le nombre moyen de syllabes par mot. Un résultat proche de 100 signifie une lecture très facile ; un résultat proche de 0 signifie une lecture très difficile. De nombreux guides de langage clair recommandent un score de 60 ou plus.\n\nLe niveau scolaire Flesch-Kincaid utilise les mêmes deux ratios avec des constantes différentes : 0,39 fois la longueur des phrases, plus 11,8 fois le nombre de syllabes par mot, moins 15,59. Le résultat est une estimation du niveau scolaire américain, et non un résultat d'examen. Un niveau 8 suggère le vocabulaire et la longueur de phrase typiques des élèves de 8e année.\n\nC'est dans le comptage que les estimations varient d'un outil à l'autre. Ce vérificateur considère comme un mot chaque élément séparé par des espaces qui contient une lettre ou un chiffre. Les fins de phrase sont les points, points d'exclamation, points d'interrogation et points de suspension. Les syllabes proviennent d'une règle de groupes de voyelles : on compte les groupes de voyelles, on supprime un e muet final, et un y en début de mot compte comme une voyelle. Les noms propres, acronymes et termes techniques peuvent être comptés différemment d'un dictionnaire, donc le niveau peut varier d'un cran.\n\nUtilisez les deux chiffres comme un indicateur, et non comme un verdict. Un passage avec des phrases longues mais claires peut obtenir un score bas, tandis qu'un passage haché peut obtenir un score élevé. Testez quelques paragraphes, comparez les versions et lisez le texte à voix haute avant de publier.",
+        "howToTitle": "Comment utiliser le vérificateur de score de lisibilité",
+        "howTo": "Collez ou saisissez votre texte dans la zone Texte à analyser, ou utilisez le bouton Coller intégré.\nLe score Flesch, le badge de niveau et l'estimation scolaire se mettent à jour à mesure que vous tapez.\nLisez l'explication sous le score ainsi que les compteurs de mots, de phrases et de syllabes.\nCopiez le rapport ou téléchargez-le au format .txt pour vos notes.",
+        "useCasesTitle": "Utilisations pratiques",
+        "useCases": "Rédaction de contenu web::Vérifiez un brouillon avant la mise en ligne pour viser un niveau de lecture adapté au collège.\nEnseignement de la lecture::Comparez un texte imposé avec le niveau que votre classe est censée maîtriser.\nRevues d'accessibilité::Repérez les paragraphes denses qui fatiguent les lecteurs sur téléphone.\nVérifications de réécriture::Réécrivez un paragraphe et voyez si l'estimation s'améliore réellement.",
+        "mistakesTitle": "Erreurs courantes et limites",
+        "limitsTitle": "Limites",
+        "mistakes": "Considérer le niveau comme exact::C'est une formule appliquée à des moyennes, pas un test de lecture.\nSe fier à chaque comptage de syllabes::La règle des groupes de voyelles peut mal compter les acronymes et les noms.\nIgnorer les points d'abréviation::Une abréviation se terminant par un point peut ressembler à une fin de phrase.\nJuger un seul long mot::Un terme technique change rarement le score, c'est la proportion de tous les mots qui compte.",
+        "limits": "Les syllabes proviennent d'une heuristique anglaise basée sur les groupes de voyelles, et non d'une recherche dans un dictionnaire.\nLe score est limité entre 0 et 100, et le niveau entre 0 et 18.\nLes abréviations avec des points terminaux peuvent être comptées comme des fins de phrase.\nLes passages de plus de 120 000 caractères sont rejetés avec une erreur inline.",
+        "faqTitle": "Foire aux questions",
+        "faqs": "Que signifie un score Flesch Reading Ease de 60 ?::Soixante est le seuil habituel pour l’écriture simple dans de nombreux guides de style. Cela suggère que la longueur moyenne des phrases et des mots est accessible à un large public. Lisez le badge de niveau et la courte explication au-dessus des compteurs pour le contexte, puis comparez le score avec une version révisée plutôt que de considérer un seul nombre comme une règle.\nLe niveau scolaire correspond-il à un résultat de test scolaire ?::Non. Le niveau Flesch-Kincaid est une estimation basée sur la longueur moyenne des phrases et le nombre de syllabes par mot. Il ne dit rien sur les capacités d’une personne et ne mesure ni la difficulté du contenu ni les connaissances préalables. Utilisez-le pour comparer des brouillons et repérer les passages denses, et non pour classer un lecteur.\nPourquoi mon comptage de syllabes diffère-t-il d’un dictionnaire ?::L’outil compte les groupes de voyelles selon une règle courte et supprime le e muet final. Un mot comme business ou area peut être compté différemment d’une entrée de dictionnaire. Les noms propres, acronymes et nombres sont comptés comme une seule syllabe. C’est pourquoi le résultat est qualifié d’estimation.\nLa ponctuation affecte-t-elle le score ?::La ponctuation met fin à une phrase uniquement lorsqu’il s’agit d’un point, d’un point d’exclamation, d’un point d’interrogation ou de points de suspension. Les virgules et les deux-points ne séparent pas les phrases. Une abréviation avec un point final peut être lue comme une fin de phrase, ce qui abaisse la longueur moyenne des phrases et peut augmenter légèrement le score.\nMon texte est-il transmis ou stocké ?::Non. Le comptage, les formules et le rapport s’exécutent tous dans l’onglet de votre navigateur. Votre texte n’est jamais envoyé à un serveur et est effacé lorsque vous actualisez ou fermez la page. Seul le texte que vous avez saisi reste dans l’éditeur jusqu’à ce que vous l’effaciez, et le téléchargement du rapport enregistre un fichier texte simple localement.",
+        "trustTitle": "À propos de cet outil",
+        "trustBody": "Cet outil utilise les constantes Flesch publiées 206,835, 1,015 et 84,6, ainsi que Flesch-Kincaid 0,39, 11,8 et 15,59, entièrement dans votre navigateur."
+      }
+    },
+    "html-formatter": {
+      "title": "Formateur HTML",
+      "shortDesc": "Mise en forme du HTML avec une indentation de 2 ou 4 espaces, et copie ou téléchargement du résultat.",
+      "seo": {
+        "title": "Formateur HTML : indentation et mise en forme du HTML",
+        "description": "Utilisez le formateur HTML pour mettre en forme le HTML avec une indentation de 2 ou 4 espaces, échapper le balisage si nécessaire, et copier ou télécharger le résultat."
+      },
+      "subtitle": "Indentation HTML propre et prévisible dans votre navigateur",
+      "trySample": "Essayer l'exemple",
+      "reset": "Réinitialiser",
+      "privacyRibbon": "Le formatage s'exécute dans votre navigateur. Le balisage collé n'est jamais exécuté.",
+      "shortcutHint": "Ctrl/Cmd + Maj + C copie le HTML formaté",
+      "inputTitle": "Entrée HTML",
+      "htmlLabel": "HTML à formater",
+      "paste": "Coller",
+      "indentLabel": "Taille de l'indentation",
+      "indent2": "2 espaces",
+      "indent4": "4 espaces"
+    }
   },
   "search": {
     "placeholder": "Rechercher",

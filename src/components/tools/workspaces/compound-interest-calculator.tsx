@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Calculator } from "lucide-react";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CopyButton,
   DownloadButton,
@@ -37,7 +38,21 @@ export default function CompoundInterestCalculator() {
   const [rate, setRate] = useState("");
   const [years, setYears] = useState("");
   const [compounds, setCompounds] = useState("");
+  const [frequency, setFrequency] = useState("12");
   const { copy, reset } = useCopyFeedback();
+
+  const frequencyOptions = useMemo(
+    () => [
+      { value: "1", label: tw("compound-interest-calculator.frequencyAnnual") },
+      { value: "2", label: tw("compound-interest-calculator.frequencySemiannual") },
+      { value: "4", label: tw("compound-interest-calculator.frequencyQuarterly") },
+      { value: "12", label: tw("compound-interest-calculator.frequencyMonthly") },
+      { value: "52", label: tw("compound-interest-calculator.frequencyWeekly") },
+      { value: "365", label: tw("compound-interest-calculator.frequencyDaily") },
+      { value: "custom", label: tw("compound-interest-calculator.frequencyCustom") },
+    ],
+    [tw],
+  );
 
   const fmt = useMemo(
     () =>
@@ -124,6 +139,7 @@ export default function CompoundInterestCalculator() {
     setRate(String(DEFAULTS.annualRate));
     setYears(String(DEFAULTS.years));
     setCompounds(String(DEFAULTS.compoundsPerYear));
+    setFrequency(String(DEFAULTS.compoundsPerYear));
     reset();
   }, [reset]);
 
@@ -132,6 +148,7 @@ export default function CompoundInterestCalculator() {
     setRate("");
     setYears("");
     setCompounds("");
+    setFrequency("12");
     reset();
   }, [reset]);
 
@@ -219,6 +236,22 @@ export default function CompoundInterestCalculator() {
             </ToolField>
 
             <ToolField
+              label={tw("compound-interest-calculator.frequencyLabel")}
+              htmlFor="tp-ci-frequency"
+            >
+              <ThemedSelect
+                value={frequency}
+                ariaLabel={tw("compound-interest-calculator.frequencyLabel")}
+                options={frequencyOptions}
+                onValueChange={(next) => {
+                  setFrequency(next);
+                  if (next !== "custom") setCompounds(next);
+                  reset();
+                }}
+              />
+            </ToolField>
+
+            <ToolField
               label={tw("compound-interest-calculator.compoundsLabel")}
               htmlFor="tp-ci-compounds"
               hint={tw("compound-interest-calculator.compoundsHint")}
@@ -236,6 +269,8 @@ export default function CompoundInterestCalculator() {
                 describedBy={describedBy}
                 onValueChange={(next) => {
                   setCompounds(next);
+                  const preset = ["1", "2", "4", "12", "52", "365"].includes(next) ? next : "custom";
+                  setFrequency(preset);
                   reset();
                 }}
               />

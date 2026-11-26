@@ -2388,7 +2388,15 @@
         "faqs": "What formula does this calculator use?::It uses A = P(1 + r/n)^(nt), where P is the starting principal, r is the annual rate as a decimal, n is the number of compounding periods each year and t is the whole number of years. Interest earned is simply the final amount minus the principal. No regular deposits or withdrawals are included in the model.\nWhat does compounds per year mean?::It is how many times interest is added to the balance in one year. Annual compounding uses 1, quarterly uses 4, monthly uses 12 and daily commonly uses 365. More periods mean interest starts earning interest sooner, so the final amount rises even when the quoted annual rate stays exactly the same.\nWhy is the effective rate above the quoted rate?::The quoted rate is nominal and is divided across the compounding periods. Because each period's interest is added to the balance, the balance earns interest on earlier interest during the rest of the year. That extra growth is measured by the effective annual rate, which is always a little higher when compounding happens more than once a year.\nDoes this tool include tax or extra deposits?::No. The model covers one initial deposit with no contributions, withdrawals, tax or fees. Figures are rounded to two decimal places only when displayed, so a real bank statement may differ by small amounts because of its own rounding rules and any charges applied to the account.",
         "trustTitle": "About this tool",
         "trustBody": "Applies the standard compound interest formula and lists every year separately. Reviewed 26 November 2026."
-      }
+      },
+      "frequencyLabel": "Compounding frequency",
+      "frequencyAnnual": "Annual (1)",
+      "frequencySemiannual": "Semiannual (2)",
+      "frequencyQuarterly": "Quarterly (4)",
+      "frequencyMonthly": "Monthly (12)",
+      "frequencyWeekly": "Weekly (52)",
+      "frequencyDaily": "Daily (365)",
+      "frequencyCustom": "Custom"
     },
     "loan-emi-calculator": {
       "title": "Loan EMI Calculator",
@@ -2448,7 +2456,10 @@
         "faqs": "How is EMI calculated?::EMI is P times r times (1 + r) to the power n, divided by (1 + r) to the power n minus 1. P is the loan principal, r is the monthly decimal rate and n is the number of months. A zero rate is handled by dividing the principal evenly across the full term.\nWhy does my EMI stay the same each month?::The formula solves for a payment that clears the balance exactly by the end of the term. Each month the interest portion is calculated on the remaining balance, so it falls over time. The principal portion rises by the same amount, keeping the total payment level from the first month to the last.\nWhat is total interest?::Total interest is the EMI multiplied by the number of months, minus the amount you borrowed. It is the full cost of borrowing under a reducing balance schedule. A longer term lowers the monthly payment but usually raises total interest because the balance stays outstanding for more months.\nWhy might my bank bill differ?::Lenders usually round the EMI to whole currency units and then adjust the final instalment so the balance clears exactly. They may also add processing fees, insurance or tax, which this estimate does not include. Small differences in the rate used for calculation can change the result as well.",
         "trustTitle": "About this tool",
         "trustBody": "Uses the standard reducing balance EMI formula with a six month preview. Updated 26 November 2026."
-      }
+      },
+      "tenureUnitLabel": "Tenure unit",
+      "tenureMonths": "Months",
+      "tenureYears": "Years"
     },
     "bmi-calculator": {
       "title": "BMI Calculator",

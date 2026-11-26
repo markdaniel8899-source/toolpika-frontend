@@ -3,13 +3,11 @@
 import { useCallback, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Clock3 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   CopyButton,
   DownloadButton,
   ToolBadge,
   ToolEmpty,
-  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -21,7 +19,6 @@ import {
   type CronFieldError,
   type CronFieldKey,
   type CronFields,
-  type CronAnalysis,
   type DescriptionShape,
 } from "./cron-expression-generator.logic";
 
@@ -40,357 +37,328 @@ function makeFields(
 const SAMPLE = makeFields("0", "9", "*", "*", "1-5");
 const EMPTY_FIELDS = makeFields("*", "*", "*", "*", "*");
 
+const PRESET_DEFS = [
+  { key: "presetEveryMinute", value: makeFields("*", "*", "*", "*", "*") },
+  { key: "presetEveryFiveMinutes", value: makeFields("*/5", "*", "*", "*", "*") },
+  { key: "presetHourly", value: makeFields("0", "*", "*", "*", "*") },
+  { key: "presetDaily", value: makeFields("0", "9", "*", "*", "*") },
+  { key: "presetWeekdays", value: makeFields("0", "9", "*", "*", "1-5") },
+  { key: "presetWeekly", value: makeFields("0", "9", "*", "*", "1") },
+  { key: "presetMonthly", value: makeFields("0", "9", "1", "*", "*") },
+  { key: "presetYearly", value: makeFields("0", "9", "1", "1", "*") },
+] as const;
+
+const FIELD_META: ReadonlyArray<{
+  key: CronFieldKey;
+  labelKey: string;
+  rangeKey: string;
+  icon: string;
+  badge: string;
+}> = [
+  { key: "minute", labelKey: "fieldMinute", rangeKey: "rangeMinute", icon: "⏱️", badge: "0-59" },
+  { key: "hour", labelKey: "fieldHour", rangeKey: "rangeHour", icon: "🕘", badge: "0-23" },
+  { key: "day", labelKey: "fieldDay", rangeKey: "rangeDay", icon: "📅", badge: "1-31" },
+  { key: "month", labelKey: "fieldMonth", rangeKey: "rangeMonth", icon: "🗓️", badge: "1-12" },
+  { key: "weekday", labelKey: "fieldWeekday", rangeKey: "rangeWeekday", icon: "🔁", badge: "0-7" },
+];
+
+function sameFields(a: CronFields, b: CronFields): boolean {
+  return FIELD_META.every(({ key }) => a[key] === b[key]);
+}
+
 export default function CronExpressionGenerator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
   const locale = useLocale();
   const [fields, setFields] = useState<CronFields>(SAMPLE);
 
+  const activePreset = useMemo(
+    () => PRESET_DEFS.find((preset) => sameFields(preset.value, fields))?.key ?? null,
+    [fields],
+  );
+
   const delayedFields = useDebounced(fields);
-  const analysis = useMemo<CronAnalysis>(
-    () => analyzeCron(delayedFields),
-    [delayedFields],
-  );
-  const runs = useMemo(
-    () => (analysis.valid ? getNextRuns(analysis, new Date(), 3) : []),
-    [analysis],
-  );
+  const analysis = useMemo(() => analyzeCron(delayedFields), [delayedFields]);
 
-  const fieldViews: {
-    key: CronFieldKey;
-    label: string;
-    hint: string;
-  }[] = [
-    {
-      key: "minute",
-      label: tw("cron-expression-generator.fieldMinute"),
-      hint: tw("cron-expression-generator.rangeMinute"),
-    },
-    {
-      key: "hour",
-      label: tw("cron-expression-generator.fieldHour"),
-      hint: tw("cron-expression-generator.rangeHour"),
-    },
-    {
-      key: "day",
-      label: tw("cron-expression-generator.fieldDay"),
-      hint: tw("cron-expression-generator.rangeDay"),
-    },
-    {
-      key: "month",
-      label: tw("cron-expression-generator.fieldMonth"),
-      hint: tw("cron-expression-generator.rangeMonth"),
-    },
-    {
-      key: "weekday",
-      label: tw("cron-expression-generator.fieldWeekday"),
-      hint: tw("cron-expression-generator.rangeWeekday"),
-    },
-  ];
+  const errorText = useMemo(() => {
+    if (!analysis.errorField || !analysis.errorCode) return "";
+    const codeKey: Record<CronFieldError, string> = {
+      EMPTY: "errorEmpty",
+      INVALID_ITEM: "errorInvalidItem",
+      OUT_OF_RANGE: "errorOutOfRange",
+      REVERSED_RANGE: "errorReversedRange",
+      INVALID_STEP: "errorInvalidStep",
+      INVALID_NAME: "errorInvalidName",
+    };
+    return tw(`cron-expression-generator.errorField`, {
+      field: tw(`cron-expression-generator.${fieldLabelKey(analysis.errorField)}`),
+      reason: tw(`cron-expression-generator.${codeKey[analysis.errorCode]}`),
+    });
+  }, [analysis, tw]);
 
-  const presets: { label: string; values: CronFields }[] = [
-    {
-      label: tw("cron-expression-generator.presetEveryMinute"),
-      values: makeFields("*", "*", "*", "*", "*"),
-    },
-    {
-      label: tw("cron-expression-generator.presetEveryFiveMinutes"),
-      values: makeFields("*/5", "*", "*", "*", "*"),
-    },
-    {
-      label: tw("cron-expression-generator.presetHourly"),
-      values: makeFields("0", "*", "*", "*", "*"),
-    },
-    {
-      label: tw("cron-expression-generator.presetDaily"),
-      values: makeFields("0", "9", "*", "*", "*"),
-    },
-    {
-      label: tw("cron-expression-generator.presetWeekdays"),
-      values: makeFields("0", "9", "*", "*", "1-5"),
-    },
-    {
-      label: tw("cron-expression-generator.presetWeekly"),
-      values: makeFields("0", "9", "*", "*", "1"),
-    },
-    {
-      label: tw("cron-expression-generator.presetMonthly"),
-      values: makeFields("0", "0", "1", "*", "*"),
-    },
-    {
-      label: tw("cron-expression-generator.presetYearly"),
-      values: makeFields("0", "0", "1", "1", "*"),
-    },
-  ];
+  const description = useMemo(() => {
+    if (!analysis.valid || !analysis.description) return "";
+    return formatDescription(analysis.description, tw);
+  }, [analysis, tw]);
 
-  const errorMessages: Record<CronFieldError, string> = {
-    EMPTY: tw("cron-expression-generator.errorEmpty"),
-    INVALID_ITEM: tw("cron-expression-generator.errorInvalidItem"),
-    OUT_OF_RANGE: tw("cron-expression-generator.errorOutOfRange"),
-    REVERSED_RANGE: tw("cron-expression-generator.errorReversedRange"),
-    INVALID_STEP: tw("cron-expression-generator.errorInvalidStep"),
-    INVALID_NAME: tw("cron-expression-generator.errorInvalidName"),
-  };
+  const preview = useMemo(() => {
+    if (!analysis.valid) return [];
+    return getNextRuns(analysis, new Date(), 3);
+  }, [analysis]);
 
-  const weekdayFormatter = useMemo(
-    () => new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "UTC" }),
-    [locale],
-  );
-  const monthFormatter = useMemo(
-    () => new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC" }),
-    [locale],
-  );
-  const runFormatter = useMemo(
+  const timeFormat = useMemo(
     () =>
       new Intl.DateTimeFormat(locale, {
         weekday: "short",
-        day: "numeric",
+        year: "numeric",
         month: "short",
+        day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false,
       }),
     [locale],
   );
 
-  const explanation = useMemo(() => {
-    const plan = analysis.description;
-    if (!plan) return "";
-
-    const numbers = (values: number[]) => values.join(", ");
-    const weekdays = (values: number[]) =>
-      values
-        .map((value) => weekdayFormatter.format(new Date(Date.UTC(2024, 0, 7 + value))))
-        .join(", ");
-    const months = (values: number[]) =>
-      values
-        .map((value) => monthFormatter.format(new Date(Date.UTC(2024, value - 1, 1))))
-        .join(", ");
-    const clock = (hour: number, minute: number) =>
-      `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
-    const time = clock(plan.hours[0] ?? 0, plan.minutes[0] ?? 0);
-
-    const shapes: Record<DescriptionShape, string> = {
-      everyMinute: tw("cron-expression-generator.descEveryMinute"),
-      everyNMinutes: tw("cron-expression-generator.descEveryNMinutes", {
-        count: plan.step ?? 1,
-      }),
-      hourly: tw("cron-expression-generator.descHourly"),
-      dailyAt: tw("cron-expression-generator.descDailyAt", { time }),
-      weeklyAt: tw("cron-expression-generator.descWeeklyAt", {
-        days: weekdays(plan.weekdays),
-        time,
-      }),
-      monthlyOn: tw("cron-expression-generator.descMonthlyOn", {
-        days: numbers(plan.days),
-        time,
-      }),
-      yearlyOn: tw("cron-expression-generator.descYearlyOn", {
-        months: months(plan.months),
-        days: numbers(plan.days),
-        time,
-      }),
-      custom: tw("cron-expression-generator.descCustom", {
-        minutes: numbers(plan.minutes),
-        hours: numbers(plan.hours),
-        days: numbers(plan.days),
-        months: months(plan.months),
-        weekdays: weekdays(plan.weekdays),
-      }),
-    };
-
-    return shapes[plan.shape];
-  }, [analysis, monthFormatter, tw, weekdayFormatter]);
-
-  const resultText = useMemo(() => {
+  const reportText = useMemo(() => {
     if (!analysis.valid) return "";
     const lines = [
-      tw("cron-expression-generator.copyExpression", {
-        expression: analysis.expression,
-      }),
-      tw("cron-expression-generator.copyExplanation", { explanation }),
-      ...runs.map((run, index) =>
+      tw("cron-expression-generator.copyExpression", { expression: analysis.expression }),
+      tw("cron-expression-generator.copyExplanation", { explanation: description }),
+      "",
+      tw("cron-expression-generator.nextRunsLabel"),
+      ...preview.map((date, index) =>
         tw("cron-expression-generator.copyRun", {
           number: index + 1,
-          time: runFormatter.format(run),
+          time: timeFormat.format(date),
         }),
       ),
     ];
     return lines.join("\n");
-  }, [analysis, explanation, runFormatter, runs, tw]);
+  }, [analysis, description, preview, timeFormat, tw]);
 
-  const handleShortcutCopy = useCallback(() => {
-    if (!resultText) return;
-    void navigator.clipboard.writeText(resultText).catch(() => undefined);
-  }, [resultText]);
-  useCopyShortcut(handleShortcutCopy);
+  const handleCopy = useCallback(() => {
+    if (reportText) void navigator.clipboard.writeText(reportText).catch(() => {});
+  }, [reportText]);
+  useCopyShortcut(handleCopy);
 
-  const handleFieldChange = (key: CronFieldKey, value: string) => {
-    setFields((previous) => ({ ...previous, [key]: value }));
-  };
+  const applyPreset = useCallback((next: CronFields) => {
+    setFields(next);
+  }, []);
 
-  const errorMessage =
-    analysis.errorField && analysis.errorCode
-      ? tw("cron-expression-generator.errorField", {
-          field: fieldViews.find((view) => view.key === analysis.errorField)?.label ?? "",
-          reason: errorMessages[analysis.errorCode],
-        })
-      : "";
+  const handleSample = useCallback(() => applyPreset(SAMPLE), [applyPreset]);
+  const handleReset = useCallback(() => applyPreset(EMPTY_FIELDS), [applyPreset]);
+
+  const updateField = useCallback((key: CronFieldKey, value: string) => {
+    setFields((current) => ({ ...current, [key]: value }));
+  }, []);
 
   return (
     <ToolShell
       title={tw("cron-expression-generator.title")}
-      icon="Clock"
+      icon="Clock3"
       sampleLabel={tw("cron-expression-generator.trySample")}
       resetLabel={tw("cron-expression-generator.reset")}
       privacyLabel={tw("cron-expression-generator.privacyRibbon")}
-      onSample={() => setFields(SAMPLE)}
-      onReset={() => setFields(EMPTY_FIELDS)}
+      onSample={handleSample}
+      onReset={handleReset}
       input={
         <ToolPane
           id="tp-cron-input-title"
           title={tw("cron-expression-generator.inputTitle")}
           hint={tw("cron-expression-generator.inputHint")}
         >
-          {fieldViews.map((view) => (
-            <ToolField
-              key={view.key}
-              label={view.label}
-              htmlFor={`tp-cron-${view.key}`}
-              hint={view.hint}
-            >
-              <input
-                id={`tp-cron-${view.key}`}
-                className="tp-tool-field"
-                type="text"
-                inputMode="text"
-                dir="ltr"
-                spellCheck={false}
-                autoComplete="off"
-                value={fields[view.key]}
-                onChange={(event) => handleFieldChange(view.key, event.target.value)}
-                aria-invalid={analysis.errorField === view.key}
-                aria-describedby={
-                  analysis.errorField === view.key ? ERROR_ID : undefined
-                }
-              />
-            </ToolField>
-          ))}
-
-          <div className="tp-tool-group">
-            <p className="tp-tool-label">
-              {tw("cron-expression-generator.presetsLabel")}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {presets.map((preset) => (
-                <Button
-                  key={preset.label}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setFields(preset.values)}
-                >
-                  {preset.label}
-                </Button>
-              ))}
+          <div className="flex flex-col gap-5">
+            <div className="tp-tool-group">
+              <span className="tp-tool-label">{tw("cron-expression-generator.presetsLabel")}</span>
+              <div className="tp-cron-presets" role="group" aria-label={tw("cron-expression-generator.presetsLabel")}>
+                {PRESET_DEFS.map((preset) => (
+                  <button
+                    key={preset.key}
+                    type="button"
+                    className="tp-cron-preset"
+                    aria-pressed={activePreset === preset.key}
+                    onClick={() => applyPreset(preset.value)}
+                  >
+                    {tw(`cron-expression-generator.${preset.key}`)}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            <div className="tp-cron-fields">
+              {FIELD_META.map((meta) => {
+                const parsed = analysis.fields.find((field) => field.key === meta.key);
+                const hasError = parsed?.error !== undefined;
+                const inputId = `tp-cron-${meta.key}`;
+                return (
+                  <div key={meta.key} className="tp-cron-field-card">
+                    <div className="tp-cron-field-head">
+                      <div className="tp-cron-field-title">
+                        <span className="tp-cron-field-icon" aria-hidden="true">{meta.icon}</span>
+                        <div className="flex min-w-0 flex-col gap-0.5">
+                          <label className="tp-cron-field-name" htmlFor={inputId}>
+                            {tw(`cron-expression-generator.${meta.labelKey}`)}
+                          </label>
+                          <span className="tp-cron-field-range">
+                            {tw(`cron-expression-generator.${meta.rangeKey}`)}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="tp-cron-field-badge">{meta.badge}</span>
+                    </div>
+                    <input
+                      id={inputId}
+                      className="tp-tool-field"
+                      type="text"
+                      inputMode="text"
+                      autoComplete="off"
+                      spellCheck={false}
+                      value={fields[meta.key]}
+                      aria-invalid={hasError || undefined}
+                      aria-describedby={hasError ? ERROR_ID : undefined}
+                      onChange={(event) => updateField(meta.key, event.target.value)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {errorText ? (
+              <p id={ERROR_ID} className="tp-tool-error" role="status" aria-live="polite">
+                {errorText}
+              </p>
+            ) : null}
           </div>
         </ToolPane>
       }
       result={
         <ToolPane
           id="tp-cron-result-title"
-          title={t("result")}
+          title={tw("cron-expression-generator.validLabel")}
+          hint={tw("cron-expression-generator.nextRunsHint")}
           result
           actions={
-            <>
-              {analysis.valid ? (
-                <ToolBadge tone="success">
-                  {tw("cron-expression-generator.validLabel")}
-                </ToolBadge>
-              ) : null}
-              <CopyButton
-                text={resultText}
-                label={tw("cron-expression-generator.copyButton")}
-                copiedLabel={t("copied")}
-              />
-              <DownloadButton
-                content={resultText}
-                fileName="cron-expression.txt"
-                label={tw("cron-expression-generator.downloadExpression")}
-              />
-            </>
-          }
-        >
-          <div className="tp-tool-result" aria-live="polite">
-            {!analysis.valid ? (
+            analysis.valid ? (
               <>
-                <p id={ERROR_ID} className="tp-tool-error" role="alert">
-                  {errorMessage}
-                </p>
-                <ToolEmpty
-                  icon={<Clock3 aria-hidden="true" />}
-                  title={tw("cron-expression-generator.errorTitle")}
-                  hint={tw("cron-expression-generator.errorHint")}
+                <CopyButton
+                  text={reportText}
+                  label={t("copy")}
+                  copiedLabel={t("copied")}
+                />
+                <DownloadButton
+                  content={reportText}
+                  fileName={tw("cron-expression-generator.downloadExpression")}
+                  label={t("download")}
                 />
               </>
-            ) : (
-              <>
-                <p className="tp-tool-label">
-                  {tw("cron-expression-generator.expressionLabel")}
-                </p>
-                <output
-                  dir="ltr"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "16px 14px",
-                    border: "1px solid var(--border)",
-                    borderRadius: 12,
-                    background: "var(--surface)",
-                    color: "var(--accent)",
-                    textAlign: "center",
-                    fontFamily: "var(--font-mono, ui-monospace, monospace)",
-                    fontSize: "clamp(18px, 3.4vw, 28px)",
-                    fontWeight: 700,
-                    letterSpacing: "-0.02em",
-                    lineHeight: 1.2,
-                    overflowWrap: "anywhere",
-                  }}
-                >
-                  {analysis.expression}
-                </output>
-
-                <div className="tp-tool-group">
-                  <p className="tp-tool-label">
-                    {tw("cron-expression-generator.explanationLabel")}
-                  </p>
-                  <p className="tp-tool-hint">{explanation}</p>
+            ) : undefined
+          }
+        >
+          {analysis.valid ? (
+            <div className="tp-tool-result" aria-live="polite">
+              <div className="flex flex-col gap-1">
+                <span className="tp-tool-label">{tw("cron-expression-generator.expressionLabel")}</span>
+                <div className="tp-tool-url">
+                  <code dir="ltr">{analysis.expression}</code>
                 </div>
+              </div>
 
-                <div className="tp-tool-group">
-                  <p className="tp-tool-label">
-                    {tw("cron-expression-generator.nextRunsLabel")}
-                  </p>
-                  <p className="tp-tool-hint">
-                    {tw("cron-expression-generator.nextRunsHint")}
-                  </p>
-                  <ol className="m-0 flex list-decimal flex-col gap-1 pl-5">
-                    {runs.map((run, index) => (
-                      <li key={run.toISOString()} className="tp-tool-hint">
-                        {tw("cron-expression-generator.copyRun", {
-                          number: index + 1,
-                          time: runFormatter.format(run),
-                        })}
+              <div className="flex flex-col gap-1">
+                <span className="tp-tool-label">{tw("cron-expression-generator.explanationLabel")}</span>
+                <p className="text-[14px] leading-6 text-[var(--text)]">{description}</p>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="tp-tool-label">{tw("cron-expression-generator.nextRunsLabel")}</span>
+                {preview.length > 0 ? (
+                  <ul className="flex flex-col gap-2">
+                    {preview.map((date, index) => (
+                      <li
+                        key={date.toISOString()}
+                        className="flex items-center justify-between gap-3 rounded-[12px] border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2.5"
+                      >
+                        <span className="inline-flex items-center gap-2 text-[13px] text-[var(--text)]">
+                          <ToolBadge tone="accent">{index + 1}</ToolBadge>
+                          <span dir="ltr">{timeFormat.format(date)}</span>
+                        </span>
                       </li>
                     ))}
-                  </ol>
-                </div>
-              </>
-            )}
-          </div>
+                  </ul>
+                ) : (
+                  <p className="tp-tool-hint">{tw("cron-expression-generator.nextRunsHint")}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div aria-live="polite">
+              <ToolEmpty
+                icon={<Clock3 aria-hidden="true" />}
+                title={tw("cron-expression-generator.errorTitle")}
+                hint={tw("cron-expression-generator.errorHint")}
+              />
+            </div>
+          )}
         </ToolPane>
       }
     />
   );
+}
+
+function fieldLabelKey(key: CronFieldKey): string {
+  switch (key) {
+    case "minute":
+      return "fieldMinute";
+    case "hour":
+      return "fieldHour";
+    case "day":
+      return "fieldDay";
+    case "month":
+      return "fieldMonth";
+    case "weekday":
+      return "fieldWeekday";
+  }
+}
+
+function formatDescription(
+  desc: { shape: DescriptionShape; minutes: number[]; hours: number[]; days: number[]; months: number[]; weekdays: number[]; step?: number },
+  tw: ReturnType<typeof useTranslations<"tools">>,
+): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const time = `${pad(desc.hours[0] ?? 0)}:${pad(desc.minutes[0] ?? 0)}`;
+  const join = (values: number[]) => values.join(", ");
+  const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  switch (desc.shape) {
+    case "everyMinute":
+      return tw("cron-expression-generator.descEveryMinute");
+    case "everyNMinutes":
+      return tw("cron-expression-generator.descEveryNMinutes", { count: desc.step ?? 1 });
+    case "hourly":
+      return tw("cron-expression-generator.descHourly");
+    case "dailyAt":
+      return tw("cron-expression-generator.descDailyAt", { time });
+    case "weeklyAt":
+      return tw("cron-expression-generator.descWeeklyAt", {
+        days: desc.weekdays.map((d) => weekdayNames[d] ?? String(d)).join(", "),
+        time,
+      });
+    case "monthlyOn":
+      return tw("cron-expression-generator.descMonthlyOn", { days: join(desc.days), time });
+    case "yearlyOn":
+      return tw("cron-expression-generator.descYearlyOn", {
+        months: desc.months.map((m) => monthNames[m - 1] ?? String(m)).join(", "),
+        days: join(desc.days),
+        time,
+      });
+    case "custom":
+    default:
+      return tw("cron-expression-generator.descCustom", {
+        minutes: join(desc.minutes),
+        hours: join(desc.hours),
+        days: join(desc.days),
+        months: join(desc.months),
+        weekdays: join(desc.weekdays),
+      });
+  }
 }

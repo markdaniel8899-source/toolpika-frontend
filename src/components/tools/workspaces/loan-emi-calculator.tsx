@@ -7,6 +7,7 @@ import {
   CopyButton,
   DownloadButton,
   NumberStepper,
+  SegmentedControl,
   Stat,
   ToolEmpty,
   ToolField,
@@ -33,6 +34,7 @@ export default function LoanEmiCalculator() {
   const [principal, setPrincipal] = useState("");
   const [rate, setRate] = useState("");
   const [tenure, setTenure] = useState("");
+  const [tenureUnit, setTenureUnit] = useState<"months" | "years">("months");
   const { copy, reset } = useCopyFeedback();
 
   const fmt = useMemo(
@@ -55,12 +57,13 @@ export default function LoanEmiCalculator() {
     ) {
       return null;
     }
+    const tenureMonths = tenureUnit === "years" ? parsedTenure * 12 : parsedTenure;
     return calculateEmi({
       principal: parsedPrincipal,
       annualRate: parsedRate,
-      tenureMonths: parsedTenure,
+      tenureMonths,
     });
-  }, [principal, rate, tenure]);
+  }, [principal, rate, tenure, tenureUnit]);
 
   const allFilled =
     principal.trim().length > 0 &&
@@ -119,6 +122,7 @@ export default function LoanEmiCalculator() {
     setPrincipal(String(DEFAULTS.principal));
     setRate(String(DEFAULTS.annualRate));
     setTenure(String(DEFAULTS.tenureMonths));
+    setTenureUnit("months");
     reset();
   }, [reset]);
 
@@ -126,6 +130,7 @@ export default function LoanEmiCalculator() {
     setPrincipal("");
     setRate("");
     setTenure("");
+    setTenureUnit("months");
     reset();
   }, [reset]);
 
@@ -189,6 +194,30 @@ export default function LoanEmiCalculator() {
             />
           </ToolField>
 
+          <div className="tp-tool-group">
+            <SegmentedControl<"months" | "years">
+              label={tw("loan-emi-calculator.tenureUnitLabel")}
+              value={tenureUnit}
+              options={[
+                { value: "months", label: tw("loan-emi-calculator.tenureMonths") },
+                { value: "years", label: tw("loan-emi-calculator.tenureYears") },
+              ]}
+              onChange={(next) => {
+                if (next === tenureUnit) return;
+                const current = parseValue(tenure);
+                if (current !== null) {
+                  const converted = next === "years" ? current / 12 : current * 12;
+                  const clean = Number.isFinite(converted)
+                    ? String(Number.isInteger(converted) ? converted : Number(converted.toFixed(2)))
+                    : tenure;
+                  setTenure(clean);
+                }
+                setTenureUnit(next);
+                reset();
+              }}
+            />
+          </div>
+
           <ToolField
             label={tw("loan-emi-calculator.tenureLabel")}
             htmlFor="tp-emi-tenure"
@@ -198,8 +227,8 @@ export default function LoanEmiCalculator() {
               id="tp-emi-tenure"
               value={tenure}
               min={1}
-              max={600}
-              step={12}
+              max={tenureUnit === "years" ? 50 : 600}
+              step={tenureUnit === "years" ? 1 : 12}
               inputMode="numeric"
               ariaLabel={tw("loan-emi-calculator.tenureLabel")}
               increaseLabel={t("stepUp")}
