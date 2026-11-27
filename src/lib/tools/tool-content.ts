@@ -139,6 +139,11 @@ const WITH_FULL_CONTENT = new Set([
   "loan-emi-calculator",
   "bmi-calculator",
   "pomodoro-timer",
+  "fancy-font-generator",
+  "five-letter-word-finder",
+  "word-scramble-solver",
+  "personality-quiz",
+  "random-choice-picker",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -162,6 +167,7 @@ const WITH_SEARCH_INTENTS = new Set([
   "hmac-generator",
   "random-string-generator",
   "pomodoro-timer",
+  "five-letter-word-finder",
 ]);
 
 /**
@@ -313,6 +319,11 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "loan-emi-calculator": ["definition", "example", "steps", "facts", "mistakes", "faq"],
   "bmi-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
   "pomodoro-timer": ["definition", "useCases", "steps", "mistakes", "faq"],
+  "fancy-font-generator": ["definition", "facts", "example", "mistakes", "faq"],
+  "five-letter-word-finder": ["definition", "steps", "example", "mistakes", "faq"],
+  "word-scramble-solver": ["definition", "facts", "example", "mistakes", "faq"],
+  "personality-quiz": ["definition", "useCases", "facts", "mistakes", "faq"],
+  "random-choice-picker": ["definition", "useCases", "facts", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {

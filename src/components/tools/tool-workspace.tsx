@@ -53,6 +53,11 @@ const CompoundInterestCalculator = dynamic(() => import("./workspaces/compound-i
 const LoanEmiCalculator = dynamic(() => import("./workspaces/loan-emi-calculator"), { loading });
 const BmiCalculator = dynamic(() => import("./workspaces/bmi-calculator"), { loading });
 const PomodoroTimer = dynamic(() => import("./workspaces/pomodoro-timer"), { loading });
+const FancyFontGenerator = dynamic(() => import("./workspaces/fancy-font-generator"), { loading });
+const FiveLetterWordFinder = dynamic(() => import("./workspaces/five-letter-word-finder"), { loading });
+const WordScrambleSolver = dynamic(() => import("./workspaces/word-scramble-solver"), { loading });
+const PersonalityQuiz = dynamic(() => import("./workspaces/personality-quiz"), { loading });
+const RandomChoicePicker = dynamic(() => import("./workspaces/random-choice-picker"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -101,6 +106,11 @@ const WORKSPACES = {
   "loan-emi-calculator": LoanEmiCalculator,
   "bmi-calculator": BmiCalculator,
   "pomodoro-timer": PomodoroTimer,
+  "fancy-font-generator": FancyFontGenerator,
+  "five-letter-word-finder": FiveLetterWordFinder,
+  "word-scramble-solver": WordScrambleSolver,
+  "personality-quiz": PersonalityQuiz,
+  "random-choice-picker": RandomChoicePicker,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {
