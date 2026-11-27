@@ -77,6 +77,16 @@ const BreakEvenCalculator = dynamic(() => import("./workspaces/break-even-calcul
 const RentVsBuyCalculator = dynamic(() => import("./workspaces/rent-vs-buy-calculator"), { loading });
 const VideoSizeCalculator = dynamic(() => import("./workspaces/video-size-calculator"), { loading });
 const DateCountdownCalculator = dynamic(() => import("./workspaces/date-countdown-calculator"), { loading });
+const AgeCalculator = dynamic(() => import("./workspaces/age-calculator"), { loading });
+const SalesTaxCalculator = dynamic(() => import("./workspaces/sales-tax-calculator"), { loading });
+const SavingsGoalCalculator = dynamic(() => import("./workspaces/savings-goal-calculator"), { loading });
+const FuelCostCalculator = dynamic(() => import("./workspaces/fuel-cost-calculator"), { loading });
+const CookingConverter = dynamic(() => import("./workspaces/cooking-converter"), { loading });
+const StopwatchTimer = dynamic(() => import("./workspaces/stopwatch-timer"), { loading });
+const ElectricityBillCalculator = dynamic(() => import("./workspaces/electricity-bill-calculator"), { loading });
+const DueDateCalculator = dynamic(() => import("./workspaces/due-date-calculator"), { loading });
+const TextRepeater = dynamic(() => import("./workspaces/text-repeater"), { loading });
+const ReverseText = dynamic(() => import("./workspaces/reverse-text"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -149,6 +159,16 @@ const WORKSPACES = {
   "rent-vs-buy-calculator": RentVsBuyCalculator,
   "video-size-calculator": VideoSizeCalculator,
   "date-countdown-calculator": DateCountdownCalculator,
+  "age-calculator": AgeCalculator,
+  "sales-tax-calculator": SalesTaxCalculator,
+  "savings-goal-calculator": SavingsGoalCalculator,
+  "fuel-cost-calculator": FuelCostCalculator,
+  "cooking-converter": CookingConverter,
+  "stopwatch-timer": StopwatchTimer,
+  "electricity-bill-calculator": ElectricityBillCalculator,
+  "due-date-calculator": DueDateCalculator,
+  "text-repeater": TextRepeater,
+  "reverse-text": ReverseText,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

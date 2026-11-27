@@ -172,6 +172,16 @@ const WITH_FULL_CONTENT = new Set([
   "rent-vs-buy-calculator",
   "video-size-calculator",
   "date-countdown-calculator",
+  "age-calculator",
+  "sales-tax-calculator",
+  "savings-goal-calculator",
+  "fuel-cost-calculator",
+  "cooking-converter",
+  "stopwatch-timer",
+  "electricity-bill-calculator",
+  "due-date-calculator",
+  "text-repeater",
+  "reverse-text",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -283,6 +293,16 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "rent-vs-buy-calculator": ["definition", "facts", "example", "guidance", "faq"],
   "video-size-calculator": ["definition", "facts", "steps", "guidance", "faq"],
   "date-countdown-calculator": ["definition", "steps", "guidance", "example", "faq"],
+  "age-calculator": ["definition", "steps", "guidance", "example", "facts", "faq"],
+  "sales-tax-calculator": ["definition", "example", "steps", "guidance", "facts", "faq"],
+  "savings-goal-calculator": ["definition", "steps", "guidance", "example", "useCases", "faq"],
+  "fuel-cost-calculator": ["definition", "facts", "steps", "guidance", "example", "faq"],
+  "cooking-converter": ["definition", "example", "facts", "guidance", "useCases", "faq"],
+  "stopwatch-timer": ["definition", "useCases", "steps", "guidance", "facts", "faq"],
+  "electricity-bill-calculator": ["definition", "steps", "guidance", "example", "facts", "faq"],
+  "due-date-calculator": ["definition", "facts", "guidance", "steps", "example", "faq"],
+  "text-repeater": ["definition", "steps", "example", "guidance", "useCases", "faq"],
+  "reverse-text": ["definition", "example", "facts", "guidance", "steps", "faq"],
 };
 
 function lines(value: string): string[] {
