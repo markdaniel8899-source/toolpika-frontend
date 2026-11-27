@@ -2656,7 +2656,7 @@
       "styleCursiveScript": "Schreibschrift",
       "styleBoldScript": "Fette Schreibschrift",
       "styleFraktur": "Fraktur",
-      "styleMonospace": "Monospace",
+      "styleMonospace": "Feste Breite",
       "styleDoubleStruck": "Doppelt gestrichen",
       "styleBubble": "Blasenschrift",
       "styleSquare": "Quadratisch",
@@ -2686,7 +2686,9 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Ist stylischer Text eine echte Schriftart?::Nein, es ist einfacher Unicode-Text, der aussehend ähnliche Zeichen aus anderen Alphabeten und Symbolblöcken verwendet. Dein Gerät zeichnet diese Codepunkte mit der Schriftart dar, die es hat. Die Gestaltung bleibt beim Kopieren und Einfügen erhalten, aber du kannst Größe oder Stärke später nicht ändern, wie bei einer echten Schriftart.\nWo sollte ich diese Stile verwenden?::Nutze sie für kurze dekorative Elemente: Social-Media-Bios, Anzeigenamen, Chat-Nachrichten, Einladungsüberschriften und kreative Bildunterschriften. Sie fallen auf, ohne einen Bildeditor zu benötigen, und lassen sich sauber in die meisten Profilfelder einfügen. Längere Fließtexte, Formulare und Navigationsbeschriftungen sollten schlicht bleiben, damit sie lesbar und durchsuchbar sind.\nLesen Bildschirmleseprogramme gestylten Text vor?::Oft nicht wie beabsichtigt. Ein Bildschirmleseprogramm gibt normalerweise den exakten Codepunkt aus, sodass Blasenbuchstaben oder Fraktur als Symbolnamen vorgelesen oder ganz übersprungen werden können. Wenn die Worte wichtig sind, schreibe sie schlicht oder platziere eine schlichte Textversion daneben. Betrachte diese Stile als Dekoration, nicht als einzige Möglichkeit, eine Nachricht zu übermitteln.\nWarum sehen manche Zeichen in meiner App falsch aus?::Die App-oder Geräteschriftart enthält möglicherweise nicht den Unicode-Block, den du gewählt hast. Fette mathematische Buchstaben werden weitgehend unterstützt, während umkreiste, quadratische und Fraktur-Glyphen weniger konsistent sind. Wenn eine Zeile Kästchen oder seltsame Symbole anzeigt, probiere einen anderen Stil oder belasse den Text schlicht.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Gepflegt vom Toolpika-Team. Die vierzehn Zuordnungen und Filtergruppen oben stimmen mit dem Text auf dieser Seite überein, und jede Vorschau wird aus denselben Tabellen generiert. Aktualisiert am 27. November 2026. Kein Text verlässt deinen Browser."
+        "trustBody": "Gepflegt vom Toolpika-Team. Die vierzehn Zuordnungen und Filtergruppen oben stimmen mit dem Text auf dieser Seite überein, und jede Vorschau wird aus denselben Tabellen generiert. Aktualisiert am 27. November 2026. Kein Text verlässt deinen Browser.",
+        "guidanceTitle": "Wie funktionieren ausgefallene Schriftarten",
+        "guidance": "Der Generator für ausgefallene Schriftarten wandelt gewöhnlichen Text in 14 Unicode-Anzeigestile um, darunter Fett, Kursiv, Schreibschrift und Monospace. Jeder Stil besteht aus Unicode-Zeichen, die verschiedenen Schriftarten ähneln, ist aber keine installierbare Schriftart. Deshalb lässt sich das Ergebnis in Browsern, sozialen Apps und Messaging-Clients einfügen, die Unicode unterstützen. Wähle einen Stil, klicke ihn zum Kopieren an und füge den Text dort ein, wo er erscheinen soll. Was du siehst, ist der exakte Text, den andere Personen erhalten.\n\nVerwende diese Stile für kurze, dekorative Akzente: eine Zeile in einer Social-Media-Bio, eine Beitragsüberschrift oder ein hervorgehobenes Etikett in einem Chat. Halte Texte kurz, etwa 30 Zeichen oder weniger, denn stilisiertes Unicode ist für Screenreader und Suchen schwerer zu interpretieren und kann auf älteren Geräten ungleichmäßig dargestellt werden. Für lange Passagen, barrierekritischen Text oder alles, was du zuverlässig durchsuchen musst, verwende stattdessen echte Schriftformatierung in deinem Design- oder Dokumentenprogramm."
       }
     },
     "five-letter-word-finder": {
@@ -2735,7 +2737,9 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Wie gehe ich ein Rätsel schrittweise an, Hinweis für Hinweis?::Beginne mit den Positionen, von denen du sicher bist, und fülle die nummerierten Felder aus. Füge Buchstaben, die vorkommen müssen, zu „Enthalten“ hinzu, und verschiebe bestätigt fehlende Buchstaben nach „Ausgeschlossen“. Behalte die Trefferanzahl nach jeder Änderung im Auge. Das Beispielbrett zeigt diesen Weg, von einer breiten Liste bis zu einem einzelnen Wort.\nVerwendet dies ein vollständiges Scrabble- oder Wordle-Wörterbuch?::Nein. Es filtert ein kuratiertes Paket gängiger englischer Fünfbuchstabenwörter, das auf der Seite gespeichert ist. Turnier- und Rätselwörterbücher akzeptieren mehr Einträge, einschließlich seltener oder gebeugter Formen. Wenn dein Hinweissatz hier keine Treffer liefert, kann eine gültige Antwort dennoch außerhalb dieser Liste existieren.\nWas passiert, wenn ein Buchstabe sowohl enthalten als auch ausgeschlossen ist?::Kein Wort kann beide Regeln erfüllen, daher sinkt die Trefferanzahl auf null. Entscheide, welcher Hinweis zuverlässig ist, entferne den widersprüchlichen Buchstaben aus einem der Felder, und die Liste baut sich sofort neu auf. Der Filter rät nie, welchen Hinweis du meintest.\nWird etwas an einen Server gesendet?::Es wird nichts gesendet. Die Wortliste, der Hinweisfilter und die Kopierfunktion laufen alle in diesem Browser-Tab. Es gibt kein Konto, keinen Upload und keinen gespeicherten Verlauf, sodass dein Rätsel und deine Versuche auf deinem Gerät bleiben.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Filtert eine gebündelte Liste gängiger fünfbuchstabiger Wörter anhand von fünf Positionsfeldern, enthaltenen und ausgeschlossenen Buchstaben und kopiert einen Treffer bei Antippen. Rein clientseitige Logik, kein Wörterbuch-Download, kein Netzwerk und keine gespeicherten Versuche. Aktualisiert am 27. November 2026."
+        "trustBody": "Filtert eine gebündelte Liste gängiger fünfbuchstabiger Wörter anhand von fünf Positionsfeldern, enthaltenen und ausgeschlossenen Buchstaben und kopiert einen Treffer bei Antippen. Rein clientseitige Logik, kein Wörterbuch-Download, kein Netzwerk und keine gespeicherten Versuche. Aktualisiert am 27. November 2026.",
+        "guidanceTitle": "So findest du Wörter mit fünf Buchstaben",
+        "guidance": "Der 5-Buchstaben-Wortfinder durchsucht ein integriertes Wörterbuch nach Wörtern, die zu den von dir eingegebenen Hinweisen passen. Trage die bekannten Buchstaben in die Felder ein und markiere dann Buchstaben, die vorkommen müssen oder nicht vorkommen dürfen. Jedes Ergebnis erfüllt alle deine Filter gleichzeitig: Ein richtiger Buchstabe schränkt die Liste ein, ein falscher Filter kann gültige Antworten entfernen. Betrachte die Ausgabe als mögliche Antworten, nicht als Definitionen, und nutze die Trefferanzahl als Hinweis, ob deine Einschränkungen zu streng oder genau richtig sind.\n\nEin guter Ansatz ist, weit zu beginnen und schrittweise einzuschränken. Angenommen, bei einem Fünf-Buchstaben-Rätsel weißt du, dass der zweite Buchstabe A ist und dass T irgendwo vorkommt, aber nicht an vierter Stelle. Gib diese beiden Einschränkungen ein und durchsuche die Ergebnisse nach gängigen Wörtern, bevor du weitere hinzufügst. Sinkt die Liste auf etwa unter fünf Kandidaten, nutze einen Versuch, um mehrere neue Buchstaben auf einmal zu testen, statt bereits bestätigte Buchstaben zu wiederholen, sodass jeder Zug möglichst viele neue Informationen liefert."
       }
     },
     "word-scramble-solver": {
@@ -2787,7 +2791,9 @@
         "faqTitle": "Häufig gestellte Fragen",
         "faqs": "Wie entscheidet der Solver, welche Wörter passen?::Er vergleicht die Buchstabenanzahl, nicht die Schreibreihenfolge. Dein Buchstabensalat wird zu einem Buchstabenvorrat, und ein Wort passt nur, wenn es nie mehr von einem Buchstaben verlangt, als dieser Vorrat enthält. Bei „nelist“ passt „listen“, „stone“ passt nicht, weil „stone“ ein o benötigt, das nicht vorhanden ist.\nWas ist ein vollständiges Anagramm?::Ein vollständiges Anagramm verwendet jeden durcheinandergewürfelten Buchstaben genau einmal. Bei „nelist“ sind „listen“, „silent“, „enlist“, „inlets“ und „tinsel“ vollständige Anagramme, weil jedes alle sechs Buchstaben neu anordnet. Kürzere Treffer wie „tile“ werden ebenfalls angezeigt, erscheinen aber unter den vollständigen Ergebnissen. Alles läuft lokal.\nWarum fehlen manche häufigen Wörter?::Weil das Wörterbuch eine kuratierte Offline-Liste häufiger englischer Wörter ist, kein vollständiges Lexikon. Eigennamen, Slang, Abkürzungen, seltene Begriffe und viele gebeugte Formen sind ausgeschlossen, damit die Ergebnisse nützlich und das Tool schnell bleiben. Fehlt ein Wort, ist es einfach nicht in diesem Paket enthalten.\nSendet das Tool meine Buchstaben irgendwohin?::Nein. Abgleich, Mischen und Kopieren geschehen allesamt in deinem Browser-Tab, und keine Buchstaben werden hochgeladen, gespeichert oder analysiert. Die Wortliste ist in die Seite eingebunden, sodass beim Lösen eines Buchstabensalats keine Netzwerk-Anfrage erfolgt. Deine Eingabe verschwindet, wenn du sie löschst oder die Seite verlässt.",
         "trustTitle": "Über dieses Tool",
-        "trustBody": "Erstellt vom Toolpika-Team, um Buchstabensuppe lesbar zu machen. Der Abgleich nutzt eine mitgelieferte Wortliste und einfache Buchstabenzählungen, wobei nichts an einen Server gesendet wird. Zuletzt aktualisiert am 27. November 2026."
+        "trustBody": "Erstellt vom Toolpika-Team, um Buchstabensuppe lesbar zu machen. Der Abgleich nutzt eine mitgelieferte Wortliste und einfache Buchstabenzählungen, wobei nichts an einen Server gesendet wird. Zuletzt aktualisiert am 27. November 2026.",
+        "guidanceTitle": "So löst du ein Wortdurcheinander",
+        "guidance": "Der Wortdurcheinander- & Anagramm-Löser ordnet die Buchstaben, die du eingibst, in echte Wörter um. Gib die durcheinandergebrachten Buchstaben ein und wähle optional eine Mindest- oder Höchstwortlänge. Das Tool listet dann Wörter aus dem Wörterbuch auf, die genau aus deinen Buchstaben bestehen – jeder Buchstabe wird nur einmal verwendet. Kürzere Ergebnisse eignen sich für Lückespiele, längere nutzen mehr deiner Spielsteine. Lies jeden Eintrag als einen gültigen Zug, den du mit genau diesen Buchstaben machen könntest, nicht als Übersetzung oder Definition.\n\nBei einem Spiel mit sieben Buchstaben stellst du den Längenfilter am besten auf vier, um schnelle, gängige Züge anzuzeigen, und erhöhst ihn dann auf sechs oder sieben, wenn du mehr Steine in einem Zug verwenden möchtest. Enthalten deine Buchstaben eine häufige Endung wie ING oder ED, versuche dir diese Endung gedanklich festzulegen, während du die Liste durchgehst, da Anagramme sich oft um vertraute Suffixe gruppieren. Liefert eine Suche nur sehr wenige Wörter, wurde meist ein Buchstabe doppelt eingegeben oder ein Spielstein vergessen."
       }
     },
     "personality-quiz": {
@@ -2866,7 +2872,95 @@
       "craftspersonTagline": "Sie legen Wert auf die letzten zehn Prozent.\n",
       "craftspersonStrengthOne": "Feine Details\n",
       "craftspersonStrengthTwo": "Hohe Ansprüche\n",
-      "craftspersonStrengthThree": "Tiefe Konzentration\n"
+      "craftspersonStrengthThree": "Tiefe Konzentration\n",
+      "craftspersonCollaboration": "Du setzt Qualitätsmaßstäbe durch dein Beispiel, nicht durch Worte. Man vertraut dir den Teil an, der echte Sorgfalt erfordert.",
+      "craftspersonFocusOne": "Setz dir einen Stopp, bevor du feilst.",
+      "craftspersonFocusTwo": "Arbeitsstände früher teilen",
+      "navigatorName": "Der Navigator",
+      "navigatorTagline": "Du liest die Stimmung und die Lage auf einmal.",
+      "navigatorStrengthOne": "Kontext sammeln",
+      "navigatorStrengthTwo": "Risikogespür",
+      "navigatorStrengthThree": "Klare Richtung",
+      "navigatorCollaboration": "Du hilfst der Gruppe, frühzeitig zu erkennen, was auf sie zukommt, und verbindest Menschen, die miteinander sprechen sollten. Stille Klarheit ist deine Gabe.",
+      "navigatorFocusOne": "Entscheide mit den Informationen, die du hast.",
+      "navigatorFocusTwo": "Sprich die Unsicherheit aus.",
+      "page": {
+        "byline": "Von Toolpika · Getestet am 27. November 2026",
+        "directAnswer": "Ein Persönlichkeits- und Arbeitsstil-Quiz fragt dich in acht Szenarien, welche Antwort am besten zu dir passt. Dein Antwortmuster weist auf einen von vier Archetypen hin – mit Stärken, einem Zusammenarbeitsstil und Fokustipps, die du kopieren und teilen kannst.",
+        "aboutTitle": "Über das Persönlichkeits- und Arbeitsstil-Quiz",
+        "contextualLink": "Wenn sich die Gruppe nicht einigen kann, welchen Eisbrecher sie als Nächstes ausprobieren soll, entscheidet %%TOOL%% das mit einem Klick.",
+        "whatIsTitle": "Was ist ein Quiz zum Arbeitsstil?",
+        "whatIs": "Ein Persönlichkeits- und Arbeitsstil-Quiz ist eine kurze, spielerische Sammlung von Szenarien, die deine Antworten einem von vier Archetypen zuordnet: Der Architekt, Der Katalysator, Der Handwerker und Der Navigator. Jeder Archetyp beschreibt eine vertraute Arbeitsweise statt einer festen Identität, und die Karte, die du erhältst, soll ein Gespräch anregen, nicht dich definieren.\n\nDas Quiz funktioniert durch Musterabgleich. Es gibt acht Karten, jede mit drei möglichen Antworten. Jede Antwort gibt einen kleinen Punktwert für einen oder zwei Archetypen. Nach der achten Karte werden die Punkte addiert und der höchste wird zu deinem Ergebnis. Da dieselbe Antwort immer denselben Punktwert hat, führt das Wiederholen derselben acht Entscheidungen immer zu derselben Karte. Wenn zwei Archetypen gleichauf sind, entscheidet eine feste Anzeigereihenfolge über den Sieger, sodass das Ergebnis vorhersagbar bleibt.\n\nDie vier Archetypen decken ergänzende Stärken ab. Der Architekt mag Struktur, wiederverwendbare Systeme und einen Plan, dem Menschen folgen können. Der Katalysator arbeitet schnell, hebt die Gruppenenergie und verwandelt eine festgefahrene Entscheidung in Handlung. Der Handwerker legt Wert auf die letzten zehn Prozent und hebt die Qualität durch sorgfältige, gründliche Arbeit. Der Navigator erfasst den Kontext, erkennt Risiken früh und hilft einem Team, seine Richtung zu finden. Die meisten Menschen sehen ein bisschen von sich in mehr als einem, und das ist der Sinn: Die Karte ist ein Anstoß zur Reflexion und zum Vergleich, wie Teamkollegen gerne arbeiten.\n\nEs ist wichtig, ehrlich über die Grenzen zu sein. Dies ist ein leichtgewichtiges Tool zur Selbstreflexion, das lokal in deinem Browser läuft und für Spaß, Team-Eisbrecher und zwanglose Gespräche gedacht ist. Nichts wird hochgeladen und kein Profil gespeichert. Es ist kein klinisches Instrument, keine psychologische Bewertung und kein Vorhersagemodell für Verhalten. Betrachte das Ergebnis als Gesprächsanstoß und gehe gerne zurück, um eine Antwort jederzeit zu ändern.",
+        "featuresTitle": "Was du bekommst",
+        "features": "Acht Szenariokarten::Eine kurze Arbeitssituation nach der anderen, mit drei großen Antwortkarten.\nVier Archetypen::Der Architekt, Der Katalysator, Der Handwerker und Der Navigator.\nDeterministische Bewertung::Feste Punktwerte bedeuten, dass dieselben Antworten immer dieselbe Karte ergeben.\nVoll rückgängig machbar::Zurück, um eine frühere Antwort zu ändern, oder Neustart für einen neuen Stapel.\nTeilbares Ergebnis::Kopiere die Archetypenkarte mit Stärken, Zusammenarbeitsstil und Fokus-Tipps.\nStandardmäßig privat::Jede Antwort bleibt in deinem Browser-Tab und wird niemals hochgeladen.",
+        "useCasesTitle": "Wo es funktioniert",
+        "useCases": "Team-Eisbrecher::Gib einem Remote-Team vor einem Workshop einen kurzen, leichten Impuls.\nOnboarding-Gespräche::Hilf neuen Teammitgliedern zu beschreiben, wie sie am liebsten arbeiten.\nRetro-Einstiege::Vergleiche Arbeitsweisen vor einem Projektrückblick.\nEigene Reflexion::Nimm wahr, welche Antworten du instinktiv wählst, ohne lange nachzudenken.",
+        "mistakesTitle": "Häufige Fehler und Grenzen",
+        "mistakes": "Als Diagnose behandeln::Die Karte ist spielerische Selbstreflexion, keine psychologische Einschätzung.\nAuf Autopilot antworten::Das Ergebnis richtet sich nach deinen Antworten, also halte inne und wähle ehrlich.\nEine Karte als feststehend lesen::Die meisten Menschen erkennen sich in mehreren Archetypen wieder.\nOhne Kontext teilen::Sag, dass es nur zum Spaß ist, wenn du das Ergebnis mit einem Team teilst.",
+        "limitsTitle": "Einschränkungen",
+        "limits": "Das Set enthält acht Fragen mit je drei Antwortmöglichkeiten und kein Freitextfeld.\nDie Punktwerte sind fest in der Seite hinterlegt. Bei Gleichstand entscheidet eine feste Anzeigereihenfolge.\nDa keine Antworten gespeichert werden, startet das Verlassen der Seite ein neues Quiz.",
+        "faqTitle": "Häufig gestellte Fragen",
+        "faqs": "Wie entscheidet das Quiz über meinen Archetypen?::Jede der acht Antworten vergibt Punkte an einen oder zwei der vier Archetypen. Die höchste Punktzahl gewinnt. Die Bewertung ist im Code der Seite festgelegt, sodass dieselben acht Entscheidungen immer dieselbe Karte ergeben. Bei Gleichstand entscheidet eine feste Anzeigereihenfolge, was das Ergebnis vorhersagbar macht.\nKann ich eine Antwort ändern, nachdem ich fertig bin?::Ja. Nutze Zurück auf der Ergebnis-Karte, um zur letzten Frage zurückzukehren, oder Neustart, um alle Antworten zu löschen. Eine geänderte Antwort aktualisiert jeden späteren Punktestand, sodass die endgültige Karte immer deine aktuellen Entscheidungen widerspiegelt. Zwischen den Besuchen wird nichts gespeichert.\nIst das ein echter Persönlichkeitstest?::Nein. Es ist ein einfaches Tool zur Selbstreflexion, das lokal im Browser läuft und zum Spaß oder als Eisbrecher gedacht ist – keine klinische oder psychologische Bewertung. Die vier Archetypen sind spielerische Beschreibungen von Arbeitsstilen, keine Diagnosen, und das Ergebnis soll ein Gespräch anregen, statt jemanden einzuordnen.\nWas kann ich mit meinem Ergebnis machen?::Du kannst die Archetypen-Karte kopieren und in einen Team-Chat, eine Onboarding-Notiz oder einen Eisbrecher-Thread einfügen. Sie eignet sich gut als kurzer Anstoß, um darüber zu sprechen, wie Menschen gerne planen, handeln, ausarbeiten und ein Projekt gemeinsam voranbringen.",
+        "trustTitle": "Über dieses Tool",
+        "trustBody": "Erstellt vom Toolpika-Team. Die acht Szenarien, vier Archetypen und Punktwerte sind im Code der Seite festgelegt, sodass wiederholte Antworten immer dieselbe Karte ergeben. Alles läuft in deinem Browser und nichts wird hochgeladen. Geprüft am 27. November 2026.",
+        "guidanceTitle": "Was dein Arbeitsstil-Ergebnis bedeutet",
+        "guidance": "Der Persönlichkeits- und Arbeitsstil-Quiz bittet dich, acht kurze Karten zu beantworten, und zeigt dir dann einen Arbeitsstil-Archetypen mit einer teilbaren Ergebnis-Karte. Jede Entscheidung fließt mit einem bestimmten Gewicht in einen der Archetypen ein. Die endgültige Bezeichnung beschreibt, wie du Aufgaben, Entscheidungen und Teamarbeit typischerweise angehst. Lies das Ergebnis als praktische Zusammenfassung deiner Präferenzen, nicht als formale psychologische Bewertung oder festes Etikett. Die Karte ist zum Speichern oder Teilen gedacht, sodass du sie später wieder aufrufen kannst.\n\nNutze den Archetypen als Gesprächsanstoß bei der Arbeit. Zum Beispiel vor einem Projektstart mit einem Team von fünf Personen: Jeder teilt sein Ergebnis und nennt eine damit verbundene Stärke, etwa tiefe Konzentration oder schnelles Brainstorming. Das gibt der Gruppe eine gemeinsame Sprache für die Aufgabenverteilung, ohne jemanden in eine Schublade zu stecken. Wenn dein Ergebnis nur teilweise zutrifft, sieh es als Anlass, über die wichtigsten Entscheidungen nachzudenken – nicht als Urteil darüber, wie du arbeiten musst."
+      }
+    },
+    "random-choice-picker": {
+      "title": "Zufällige Auswahl & Namenauswahl",
+      "shortDesc": "Einen fairen Gewinner aus jeder Liste mit Namen oder Optionen ziehen – mit Voreinstellungen, Ausscheidung und schnellem Kopieren.",
+      "seo": {
+        "title": "Zufallsauswahl für Listen und Namen",
+        "description": "Wähle zufällig einen Eintrag aus einer Liste mit Namen oder Ideen. Gib Einträge ein oder füge sie ein, schalte die Ausscheidung um, und kopiere dann den Gewinner oder ziehe erneut – direkt im Browser."
+      },
+      "subtitle": "Ein fairer Gewinner aus deiner Liste – mit einem Klick",
+      "trySample": "Beispiel ausprobieren",
+      "presetTitle": "Mit einer Voreinstellung starten",
+      "presetLunchSpots": "Mittagsorte",
+      "presetTeamTurn": "Team-Runde",
+      "presetYesOrNo": "Ja oder Nein",
+      "presetWeekendActivity": "Wochenendaktivität",
+      "presetLunchSpotsItems": "Ramen-Bar\nTaco-Truck\nSalatcafé\nPizzeria\nSushi-Theke\nBurger-Lokal",
+      "presetTeamTurnItems": "Alex\nBlair\nCasey\nDevon\nEmery\nFinley",
+      "presetYesOrNoItems": "Ja\nNein",
+      "presetWeekendActivityItems": "Wanderung\nFilmabend\nBrettspiele\nStrandtag\nWochenmarkt\nKaffeerunde",
+      "choicesTitle": "Deine Auswahl",
+      "countUnit": "Optionen",
+      "remainingUnit": "übrig",
+      "entryLabel": "Optionen hinzufügen",
+      "entryPlaceholder": "Gib eine Option ein oder füge eine Liste ein, einen Eintrag pro Zeile",
+      "pasteButton": "Liste einfügen",
+      "addButton": "Zur Liste hinzufügen",
+      "pasteUnavailable": "Der Zugriff auf die Zwischenablage ist blockiert. Drücke Strg/Cmd + V, um direkt in das Feld einzufügen.",
+      "randomUnavailable": "Dieser Browser kann keine sichere Zufallsgenerierung bereitstellen. Versuche es mit einem modernen Browser über HTTPS.",
+      "copyUnavailable": "Der Zugriff auf die Zwischenablage wurde blockiert. Wähle das Ergebnis aus und kopiere es manuell.",
+      "alreadyAdded": "Dieser Eintrag ist bereits in der Liste.",
+      "listFull": "Diese Liste ist voll bei 200 Einträgen. Entferne ein paar Einträge, um weitere hinzuzufügen.",
+      "emptyTitle": "Noch keine Optionen",
+      "emptyHint": "Füge ein paar Optionen hinzu, füge eine Liste ein oder starte mit einer Voreinstellung oben.",
+      "remove": "Entfernen",
+      "pickedLabel": "ausgewählt",
+      "stageTitle": "Die Auswahl",
+      "eliminateLabel": "Gewinner nach der Auswahl entfernen",
+      "eliminateHint": "Jeder Gewinner wird entfernt, sodass dieselbe Auswahl nicht zweimal vorkommen kann.",
+      "pickButton": "Zufällig auswählen",
+      "rolling": "Wird ausgewählt...",
+      "winnerTitle": "Ausgewählter Gewinner",
+      "copyWinner": "Gewinner kopieren",
+      "pickAgain": "Noch einmal auswählen",
+      "allEliminatedTitle": "Alle Optionen wurden ausgewählt",
+      "allEliminatedHint": "Füge weitere Optionen hinzu oder lösche die Ausscheidungen, um erneut auszuwählen.",
+      "clearEliminations": "Ausscheidungen löschen",
+      "recentTitle": "Letzte Auswahlen",
+      "noRecent": "Noch keine Auswahlen. Deine letzten Gewinner werden hier angezeigt.",
+      "sampleText": "Ramen-Bar\nTaco-Truck\nSalat-Café\nFilmabend\nBrettspiele\nWanderung",
+      "page": {
+        "byline": "Redaktion · Geprüft am 27. November 2026",
+        "directAnswer": "Der Zufallsgenerator zieht einen Gewinner aus einer Liste, die du eintippst oder einfügst – ein Eintrag pro Zeile. Starte mit einem voreingestellten Chip, aktiviere die Eliminierung, damit ein Gewinner nicht wiederholt wird, und kopiere dann das Ergebnis oder ziehe erneut mit einem Klick.",
+        "aboutTitle": "Über den Zufallsgenerator",
+        "contextualLink": "Brauchst du ein anderes Zufallsergebnis? %%TOOL%% erstellt starke, unvorhersehbare Passwörter in deinem Browser."
+      }
     }
   },
   "search": {
