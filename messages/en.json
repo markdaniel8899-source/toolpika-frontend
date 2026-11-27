@@ -4123,6 +4123,7 @@
       "heroLabel": "Exact age",
       "unitYearShort": "yr",
       "unitMonthShort": "mo",
+      "unitWeekShort": "wk",
       "unitDayShort": "d",
       "unitYears": "years",
       "unitMonths": "months",
