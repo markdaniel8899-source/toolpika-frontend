@@ -17,8 +17,8 @@ export const DEFICIT_MODES: readonly DeficitMode[] = ["deficit", "surplus"];
 
 /** Ranges that keep the timeline meaningful for adults. */
 export const LIMITS = {
-  weight: [30, 300],
-  dailyKcal: [0, 2000],
+  weight: [10, 500],
+  dailyKcal: [0, 10000],
 } as const;
 
 /** Weekly change in kilograms used to sort a plan into a pacing band. */

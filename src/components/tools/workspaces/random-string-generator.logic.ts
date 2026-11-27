@@ -15,8 +15,8 @@ export type RandomStringOptions = {
 };
 
 export const LIMITS = {
-  length: { min: 4, max: 128 },
-  count: { min: 1, max: 100 },
+  length: { min: 1, max: 512 },
+  count: { min: 1, max: 1000 },
 } as const;
 
 export const DEFAULT_OPTIONS: RandomStringOptions = {

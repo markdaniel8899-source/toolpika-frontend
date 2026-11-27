@@ -184,7 +184,7 @@ export default function RecipeScalerCalculator() {
                 id="tp-recipe-original"
                 value={baseServings}
                 min={1}
-                max={100}
+                max={1000}
                 step={1}
                 inputMode="numeric"
                 ariaLabel={tw("recipe-scaler-calculator.originalServingsLabel")}
@@ -203,7 +203,7 @@ export default function RecipeScalerCalculator() {
                 id="tp-recipe-desired"
                 value={desiredServings}
                 min={1}
-                max={200}
+                max={2000}
                 step={1}
                 inputMode="numeric"
                 ariaLabel={tw("recipe-scaler-calculator.desiredServingsLabel")}

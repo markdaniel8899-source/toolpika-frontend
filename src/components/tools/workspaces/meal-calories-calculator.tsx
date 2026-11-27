@@ -355,7 +355,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-kcal"
                   value={customKcal}
                   min={0}
-                  max={5000}
+                  max={50000}
                   step={10}
                   ariaLabel={tw("meal-calories-calculator.customKcalLabel")}
                   increaseLabel={t("stepUp")}
@@ -368,7 +368,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-protein"
                   value={customProtein}
                   min={0}
-                  max={500}
+                  max={5000}
                   step={0.5}
                   inputMode="decimal"
                   ariaLabel={tw("meal-calories-calculator.customProteinLabel")}
@@ -382,7 +382,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-carbs"
                   value={customCarbs}
                   min={0}
-                  max={500}
+                  max={5000}
                   step={0.5}
                   inputMode="decimal"
                   ariaLabel={tw("meal-calories-calculator.customCarbsLabel")}
@@ -396,7 +396,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-fat"
                   value={customFat}
                   min={0}
-                  max={500}
+                  max={5000}
                   step={0.5}
                   inputMode="decimal"
                   ariaLabel={tw("meal-calories-calculator.customFatLabel")}
@@ -410,7 +410,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-fiber"
                   value={customFiber}
                   min={0}
-                  max={500}
+                  max={5000}
                   step={0.5}
                   inputMode="decimal"
                   ariaLabel={tw("meal-calories-calculator.customFiberLabel")}
@@ -424,7 +424,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-sugar"
                   value={customSugar}
                   min={0}
-                  max={500}
+                  max={5000}
                   step={0.5}
                   inputMode="decimal"
                   ariaLabel={tw("meal-calories-calculator.customSugarLabel")}
@@ -438,7 +438,7 @@ export default function MealCaloriesCalculator() {
                   id="tp-meal-custom-sodium"
                   value={customSodium}
                   min={0}
-                  max={10000}
+                  max={100000}
                   step={10}
                   ariaLabel={tw("meal-calories-calculator.customSodiumLabel")}
                   increaseLabel={t("stepUp")}
@@ -472,7 +472,7 @@ export default function MealCaloriesCalculator() {
                         className="w-[88px]"
                         value={String(item.quantity)}
                         min={0}
-                        max={99}
+                        max={999}
                         step={0.5}
                         inputMode="decimal"
                         ariaLabel={tw("meal-calories-calculator.quantityLabel", { item: item.name })}

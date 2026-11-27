@@ -34,8 +34,8 @@ export const ASSUMPTIONS = {
   rentGrowthRate: 0.03,
 } as const;
 
-export const MAX_YEARS = 40;
-export const MAX_RATE = 25;
+export const MAX_YEARS = 60;
+export const MAX_RATE = 50;
 
 export const DEFAULT_RENT_VS_BUY_INPUT: RentVsBuyInput = {
   monthlyRent: 1800,

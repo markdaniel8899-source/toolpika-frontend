@@ -6,7 +6,7 @@
  * words between three and twelve letters, with proper nouns excluded.
  */
 
-export const MAX_SCRAMBLE_LETTERS = 12;
+export const MAX_SCRAMBLE_LETTERS = 20;
 export const MIN_WORD_LENGTH = 3;
 export const MAX_RESULTS_PER_GROUP = 36;
 export const MAX_RESULTS_TOTAL = 120;

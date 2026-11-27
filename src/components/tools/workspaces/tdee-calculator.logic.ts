@@ -37,9 +37,9 @@ export const ENERGY_STEP = 500;
 
 /** Adult inputs that keep the equation meaningful. */
 const LIMITS = {
-  age: [16, 100],
-  height: [120, 220],
-  weight: [30, 300],
+  age: [10, 120],
+  height: [80, 250],
+  weight: [10, 500],
 } as const;
 
 export interface TdeeInput {

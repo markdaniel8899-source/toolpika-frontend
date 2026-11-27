@@ -20,7 +20,7 @@ export const ACTIVITY_ADJUSTMENTS: Record<Activity, number> = {
   high: 0.2,
 };
 
-const WEIGHT_LIMITS = [30, 300] as const;
+const WEIGHT_LIMITS = [10, 500] as const;
 
 export interface ProteinInput {
   weight: number;

@@ -6,7 +6,7 @@ export const DEFAULTS: { readingWpm: number; speakingWpm: number } = {
 };
 
 /** Cap oversized pastes so a very large document cannot stall the main thread. */
-export const MAX_TEXT_LENGTH = 100000;
+export const MAX_TEXT_LENGTH = 1000000;
 
 export type ReadingErrorCode = "INVALID_WPM" | "TOO_LARGE";
 

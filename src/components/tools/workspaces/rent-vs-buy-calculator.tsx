@@ -226,7 +226,7 @@ export default function RentVsBuyCalculator() {
                 id="tp-rent-buy-rate"
                 value={annualRate}
                 min={0}
-                max={25}
+                max={50}
                 step={0.25}
                 inputMode="decimal"
                 ariaLabel={tw("rent-vs-buy-calculator.rateLabel")}
@@ -246,7 +246,7 @@ export default function RentVsBuyCalculator() {
                 id="tp-rent-buy-years"
                 value={years}
                 min={1}
-                max={40}
+                max={60}
                 step={1}
                 ariaLabel={tw("rent-vs-buy-calculator.yearsLabel")}
                 increaseLabel={t("stepUp")}

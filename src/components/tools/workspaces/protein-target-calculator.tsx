@@ -180,7 +180,7 @@ export default function ProteinTargetCalculator() {
               id="tp-protein-weight"
               value={weight}
               min={30}
-              max={300}
+              max={500}
               step={0.5}
               inputMode="decimal"
               ariaLabel={tw("protein-target-calculator.weightLabel")}

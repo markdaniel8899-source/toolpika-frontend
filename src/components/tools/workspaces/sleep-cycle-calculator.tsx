@@ -202,7 +202,7 @@ export default function SleepCycleCalculator() {
               id="tp-sleep-buffer"
               value={String(buffer)}
               min={0}
-              max={60}
+              max={180}
               step={5}
               inputMode="numeric"
               ariaLabel={tw("sleep-cycle-calculator.bufferLabel")}

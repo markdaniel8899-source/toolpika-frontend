@@ -26,9 +26,9 @@ export const OVERHEAD_FACTOR = 1.02;
 export const MB_PER_GB = 1000;
 export const GB_PER_TB = 1000;
 
-export const MAX_DURATION_MINUTES = 10080;
-export const MAX_BITRATE_MBPS = 1000;
-export const MAX_DATA_RATE = 10000;
+export const MAX_DURATION_MINUTES = 100000;
+export const MAX_BITRATE_MBPS = 10000;
+export const MAX_DATA_RATE = 100000;
 
 export type StorageCapacityId = "gb1" | "gb64" | "gb256" | "tb1";
 

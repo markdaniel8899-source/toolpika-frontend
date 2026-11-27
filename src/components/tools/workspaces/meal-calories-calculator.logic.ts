@@ -96,12 +96,12 @@ export interface MealResult {
   error?: { code: MealErrorCode };
 }
 
-const MAX_ITEMS = 30;
-const MAX_SERVINGS = 99;
-const MAX_KCAL = 5000;
-const MAX_MACRO = 500;
-const MAX_SODIUM = 10000;
-const MAX_RESULTS = 8;
+const MAX_ITEMS = 100;
+const MAX_SERVINGS = 999;
+const MAX_KCAL = 50000;
+const MAX_MACRO = 5000;
+const MAX_SODIUM = 100000;
+const MAX_RESULTS = 20;
 
 function emptyMacros(): Macros {
   return { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0, sugar: 0, sodium: 0 };

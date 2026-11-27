@@ -29,7 +29,7 @@ export interface EmiResult {
   error?: EmiError;
 }
 
-export const MAX_TENURE_MONTHS = 600;
+export const MAX_TENURE_MONTHS = 1200;
 export const PREVIEW_MONTHS = 6;
 
 export const DEFAULTS: EmiInput = {

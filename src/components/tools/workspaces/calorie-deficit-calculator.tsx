@@ -209,7 +209,7 @@ export default function CalorieDeficitCalculator() {
                 id="tp-deficit-current"
                 value={currentWeight}
                 min={30}
-                max={300}
+                max={500}
                 step={0.5}
                 inputMode="decimal"
                 ariaLabel={tw("calorie-deficit-calculator.currentWeightLabel")}
@@ -228,7 +228,7 @@ export default function CalorieDeficitCalculator() {
                 id="tp-deficit-target"
                 value={targetWeight}
                 min={30}
-                max={300}
+                max={500}
                 step={0.5}
                 inputMode="decimal"
                 ariaLabel={tw("calorie-deficit-calculator.targetWeightLabel")}
@@ -261,7 +261,7 @@ export default function CalorieDeficitCalculator() {
               id="tp-deficit-daily"
               value={dailyKcal}
               min={0}
-              max={2000}
+              max={10000}
               step={50}
               inputMode="numeric"
               ariaLabel={tw("calorie-deficit-calculator.dailyLabel")}

@@ -29,7 +29,7 @@ export interface SplitResult {
 
 /** Preset rates shown as quick choices. Custom is handled by the UI. */
 export const TIP_PRESETS = [0, 15, 18, 20] as const;
-export const MAX_PEOPLE = 100;
+export const MAX_PEOPLE = 1000;
 
 export const DEFAULTS: SplitInput = {
   bill: 84.5,

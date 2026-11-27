@@ -28,8 +28,8 @@ export interface CompoundResult {
   error?: CompoundError;
 }
 
-export const MAX_YEARS = 100;
-export const MAX_COMPOUNDS_PER_YEAR = 365;
+export const MAX_YEARS = 200;
+export const MAX_COMPOUNDS_PER_YEAR = 1000;
 
 export const DEFAULTS: CompoundInput = {
   principal: 10000,

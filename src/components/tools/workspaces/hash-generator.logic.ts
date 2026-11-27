@@ -13,7 +13,7 @@ export type HashErrorCode =
   | "fileTooLarge"
   | "failed";
 
-export const MAX_TEXT_CHARS = 100000;
+export const MAX_TEXT_CHARS = 1000000;
 export const MAX_FILE_BYTES = 20 * 1024 * 1024;
 
 export const DIGEST_BITS: Record<HashAlgorithm, number> = {

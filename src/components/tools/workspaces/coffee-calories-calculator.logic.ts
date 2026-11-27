@@ -133,7 +133,7 @@ const SYRUP_PER_PUMP: Macros = { kcal: 20, protein: 0, carbs: 5, fat: 0 };
 const SUGAR_PER_TSP: Macros = { kcal: 16, protein: 0, carbs: 4, fat: 0 };
 const CREAM_DOLLOP: Macros = { kcal: 60, protein: 1, carbs: 1, fat: 6 };
 
-const MAX_ADDITIONS = 10;
+const MAX_ADDITIONS = 100;
 
 function emptyMacros(): Macros {
   return { kcal: 0, protein: 0, carbs: 0, fat: 0 };

@@ -212,7 +212,7 @@ export default function TdeeCalculator() {
                 id="tp-tdee-age"
                 value={age}
                 min={16}
-                max={100}
+                max={120}
                 step={1}
                 inputMode="numeric"
                 ariaLabel={tw("tdee-calculator.ageLabel")}
@@ -231,7 +231,7 @@ export default function TdeeCalculator() {
                 id="tp-tdee-height"
                 value={height}
                 min={120}
-                max={220}
+                max={250}
                 step={1}
                 inputMode="numeric"
                 ariaLabel={tw("tdee-calculator.heightLabel")}
@@ -250,7 +250,7 @@ export default function TdeeCalculator() {
                 id="tp-tdee-weight"
                 value={weight}
                 min={30}
-                max={300}
+                max={500}
                 step={0.5}
                 inputMode="decimal"
                 ariaLabel={tw("tdee-calculator.weightLabel")}

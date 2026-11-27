@@ -249,7 +249,7 @@ export default function CoffeeCaloriesCalculator() {
                 id="tp-coffee-syrup"
                 value={syrup}
                 min={0}
-                max={10}
+                max={100}
                 step={1}
                 ariaLabel={tw("coffee-calories-calculator.syrupLabel")}
                 increaseLabel={t("stepUp")}
@@ -265,7 +265,7 @@ export default function CoffeeCaloriesCalculator() {
                 id="tp-coffee-sugar"
                 value={sugar}
                 min={0}
-                max={10}
+                max={100}
                 step={1}
                 ariaLabel={tw("coffee-calories-calculator.sugarLabel")}
                 increaseLabel={t("stepUp")}

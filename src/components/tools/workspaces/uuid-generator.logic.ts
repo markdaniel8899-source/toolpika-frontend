@@ -14,7 +14,7 @@ export type UuidOptions = {
 };
 
 export const UUID_MIN_COUNT = 1;
-export const UUID_MAX_COUNT = 1000;
+export const UUID_MAX_COUNT = 10000;
 export const NIL_UUID = "00000000-0000-0000-0000-000000000000";
 
 export const DEFAULT_UUID_OPTIONS: UuidOptions = {

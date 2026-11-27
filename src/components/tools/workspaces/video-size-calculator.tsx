@@ -230,7 +230,7 @@ export default function VideoSizeCalculator() {
               id="tp-video-duration"
               value={duration}
               min={1}
-              max={10080}
+              max={100000}
               step={1}
               inputMode="decimal"
               ariaLabel={tw("video-size-calculator.durationLabel")}
@@ -271,7 +271,7 @@ export default function VideoSizeCalculator() {
                   id="tp-video-bitrate"
                   value={bitrate}
                   min={0.1}
-                  max={1000}
+                  max={100000}
                   step={0.5}
                   inputMode="decimal"
                   ariaLabel={tw("video-size-calculator.bitrateLabel")}

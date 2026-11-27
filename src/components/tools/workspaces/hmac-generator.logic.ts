@@ -10,7 +10,7 @@ export type HmacAlgorithm = "SHA-1" | "SHA-256" | "SHA-512";
 export type HmacErrorCode = "unsupported" | "insecure" | "tooLarge" | "failed";
 
 /** Keep large inputs out of the main thread's signing step. */
-export const MAX_TEXT_CHARS = 100000;
+export const MAX_TEXT_CHARS = 1000000;
 
 export const DIGEST_BITS: Record<HmacAlgorithm, number> = {
   "SHA-1": 160,
