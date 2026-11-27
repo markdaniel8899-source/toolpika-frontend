@@ -26,10 +26,7 @@ export function AllToolsBrowser({
   const visible = (() => {
     if (active === "all") return tools;
     if (active === "popular") return tools.slice(0, 8);
-    if (active === "new") {
-      const flagged = tools.filter((tool) => tool.isNew);
-      return flagged.length > 0 ? flagged : tools.slice(-4).reverse();
-    }
+    if (active === "new") return tools.filter((tool) => tool.isNew);
     return tools.filter((tool) => tool.category === active);
   })();
 

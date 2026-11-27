@@ -561,7 +561,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "five-letter-word-finder",
@@ -573,7 +572,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "word-scramble-solver",
@@ -585,7 +583,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "personality-quiz",
@@ -597,7 +594,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "random-choice-picker",
@@ -609,7 +605,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
 ];
 
@@ -659,8 +654,7 @@ export function getLiveTools() {
 
 /** The curated set shown by the New page and the all-tools New filter. */
 export function getNewTools() {
-  const flagged = getLiveTools().filter((tool) => tool.isNew);
-  return flagged.length > 0 ? flagged : getLiveTools().slice(-4).reverse();
+  return getLiveTools().filter((tool) => tool.isNew);
 }
 
 export function getToolsByCategory(category: ToolCategory) {
