@@ -1459,7 +1459,7 @@
       "failed": "No se pudo ordenar la lista. Borra el cuadro y pega las líneas de nuevo.",
       "pasteUnavailable": "El acceso al portapapeles está bloqueado. Usa Ctrl/Cmd + V para pegar directamente en el campo.",
       "copyUnavailable": "El acceso al portapapeles está bloqueado. Selecciona el texto y cópialo manualmente.",
-      "sampleText": "item10\nitem2\napple\nCherry\ncherry\nitem1",
+      "sampleText": "elemento10\nelemento2\nmanzana\nCereza\ncereza\nelemento1",
       "page": {
         "byline": "Herramientas de texto · Revisado el 26 de noviembre de 2026",
         "directAnswer": "Ordenar líneas de texto organiza una lista pegada en orden ascendente o descendente sin perder ni una sola fila. Activa el orden numérico para que item2 vaya antes que item10, elige si distingue mayúsculas y minúsculas y, luego, copia o descarga el texto ordenado con su número de líneas.",
@@ -2026,7 +2026,15 @@
         "faqs": "¿Qué significan los cinco campos?::Son minuto, hora, día del mes, mes y día de la semana, en ese orden. El minuto va de 0 a 59, la hora de 0 a 23, el día de 1 a 31, el mes de 1 a 12 y el día de la semana de 0 a 7. Cero y siete significan ambos domingo.\n¿Puedo usar nombres como MON o JAN?::Sí. Los nombres de tres letras funcionan en los campos mes y día de la semana, y no distinguen mayúsculas de minúsculas. La expresión canónica los reescribe como números, lo que mantiene el resultado legible para herramientas que no aceptan nombres. Los nombres se rechazan en los campos minuto, hora y día porque no tienen sentido allí.\n¿Por qué mi trabajo todavía se ejecuta muchas veces un día laborable?::Si un campo aún contiene un asterisco, no impone restricción en esa parte del programa. Un valor de día de la semana por sí solo no limita la hora ni el minuto, por lo que el trabajo puede ejecutarse repetidamente ese día. Configura también los campos hora y minuto, o usa uno de los ajustes preestablecidos.\n¿Hasta dónde mira la vista previa de las próximas ejecuciones?::Escanea minuto a minuto durante un año a partir del momento en que se calcula. Esto cubre programas anuales, pero una fecha como el 29 de febrero puede mostrar menos de tres resultados en un año sin ese día. Las horas provienen del reloj de tu dispositivo, verifica la zona horaria del servidor por separado.\n¿Se guarda mi programa en algún lado?::No. Los cinco campos solo viven en esta pestaña del navegador. No se envía nada a un servidor, no hay inicio de sesión, y las acciones de copiar y descargar leen la expresión desde la página. Cerrar la pestaña borra lo que escribiste.",
         "trustTitle": "Sobre esta herramienta",
         "trustBody": "Analiza cinco campos según los rangos por campo, los reescribe en una expresión canónica y muestra tres ejecuciones dentro de un año. Todo se ejecuta localmente en tu navegador. Actualizado el 26 de noviembre de 2026."
-      }
+      },
+      "timezoneLabel": "Zona horaria de vista previa",
+      "timezoneLocal": "Local",
+      "timezoneUtc": "UTC",
+      "operatorsLabel": "Operadores",
+      "operatorAny": "cualquier valor",
+      "operatorList": "lista",
+      "operatorRange": "rango",
+      "operatorStep": "paso"
     },
     "hmac-generator": {
       "title": "Generador HMAC",
@@ -2052,8 +2060,8 @@
       "secretPlaceholder": "Escribe tu clave secreta",
       "paste": "Pegar",
       "uppercaseLabel": "Digest en mayúsculas",
-      "bits": "Bits",
-      "bytes": "Bytes",
+      "bits": "bits",
+      "bytes": "bytes",
       "computing": "Calculando HMAC…",
       "emptyTitle": "Aún no hay HMAC",
       "emptyHint": "Escribe un mensaje y una clave secreta para ver el resumen con clave aquí.",
@@ -2063,7 +2071,7 @@
       "errorInsecure": "Web Crypto necesita una página segura. Abre esta herramienta en HTTPS o en localhost, luego intenta de nuevo.",
       "errorTooLarge": "Esta entrada tiene más de 100.000 caracteres. Acorta el mensaje o el secreto y vuelve a intentarlo.",
       "errorFailed": "No se pudo calcular el HMAC. Revisa tu entrada o recarga la página.",
-      "sampleMessage": "The quick brown fox jumps over the lazy dog",
+      "sampleMessage": "El veloz murciélago hindú comía feliz cardillo y kiwi",
       "sampleSecret": "toolpika-demo-secret",
       "page": {
         "byline": "Herramientas de seguridad · Revisado el 26 de noviembre de 2026",
@@ -2076,7 +2084,15 @@
         "howToTitle": "Cómo usar el Generador HMAC",
         "howTo": "Escribe o pega un mensaje en el cuadro de mensaje.\nIntroduce una clave secreta en el campo secreto.\nElige SHA-1, SHA-256 o SHA-512 en el control segmentado.\nActiva Resumen en mayúsculas cerca del resultado si necesitas caracteres hexadecimales en mayúsculas.\nCopia la etiqueta o descárgala como un archivo .txt.",
         "featuresTitle": "Lo que hace este Generador HMAC",
-        "features": "Tres opciones de hash::Firma con SHA-1, SHA-256 o SHA-512 desde la API Web Crypto.\nEtiquetas con clave en tiempo real::El resumen se actualiza tras una pausa breve y las solicitudes obsoletas se descartan.\nInterruptor de mayúsculas::Activa hexadecimal en mayúsculas cerca del resultado sin recalcular la etiqueta.\nTamaños exactos::Ve la longitud de la etiqueta en bits y bytes para el algoritmo seleccionado.\nPrivado por diseño::El mensaje y el secreto permanecen en la pestaña del navegador y nunca se suben."
+        "features": "Tres opciones de hash::Firma con SHA-1, SHA-256 o SHA-512 desde la API Web Crypto.\nEtiquetas con clave en tiempo real::El resumen se actualiza tras una pausa breve y las solicitudes obsoletas se descartan.\nInterruptor de mayúsculas::Activa hexadecimal en mayúsculas cerca del resultado sin recalcular la etiqueta.\nTamaños exactos::Ve la longitud de la etiqueta en bits y bytes para el algoritmo seleccionado.\nPrivado por diseño::El mensaje y el secreto permanecen en la pestaña del navegador y nunca se suben.",
+        "mistakesTitle": "Errores comunes y límites",
+        "limitsTitle": "Límites",
+        "mistakes": "Usar una clave secreta corta::Una clave fácil de adivinar facilita la falsificación de etiquetas. Use un valor largo y aleatorio guardado solo en sistemas de confianza.\nElegir SHA-1 para trabajos nuevos::Los ataques de colisión conocidos lo hacen inadecuado para firmas. Elija SHA-256 o SHA-512.\nConfundir HMAC con cifrado::Una etiqueta prueba autenticidad, no secreto. El mensaje sigue siendo legible.\nComparar etiquetas con una comprobación de cadena normal::En un servidor, use una comparación en tiempo constante para evitar ataques de temporización.",
+        "limits": "Cada campo está limitado a 100,000 caracteres para que la firma siga siendo ágil.\nWeb Crypto requiere HTTPS o localhost; las páginas HTTP sin cifrado no pueden calcular HMAC.\nSe requieren tanto un mensaje como una clave secreta antes de mostrar una etiqueta.\nEsta herramienta solo calcula etiquetas. No verifica firmas ni almacena claves secretas.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Se sube mi mensaje o clave secreta a algún sitio?::No. Ambos valores los lee la API de Web Crypto dentro de la pestaña del navegador, y no se envía nada a un servidor, ni se registra ni se almacena. Al cerrar la página se descartan. Use una página de confianza cuando trabaje con claves secretas de producción reales.\n¿Cuál es la diferencia entre un hash y un HMAC?::Un hash simple acepta una entrada y cualquiera puede recalcularlo. Un HMAC también toma una clave secreta, por lo que solo quien conoce esa clave puede generar la misma etiqueta. Eso lo hace adecuado para autenticar mensajes, no solo para detectar cambios accidentales.\n¿Qué algoritmo debo elegir?::SHA-256 es una buena opción predeterminada y genera una etiqueta de 64 caracteres. SHA-512 produce una etiqueta más larga de 128 caracteres cuando un protocolo lo solicita. SHA-1 solo está disponible para sistemas heredados, porque investigadores han demostrado ataques prácticos de colisión contra él.\n¿Por qué no hay resultado cuando un campo está vacío?::Un HMAC sin mensaje o sin una clave real tiene poco valor práctico, por lo que la herramienta deja el panel de resultados vacío hasta que ambos campos contengan texto. Agregue un mensaje y una clave secreta, y el resumen aparece tras una breve pausa.\n¿Puedo poner el resumen en mayúsculas?::Sí. El interruptor Mayúsculas está junto al resultado y solo cambia cómo se muestra y copia la etiqueta hexadecimal. No modifica los bytes subyacentes, por lo que las formas en mayúsculas y minúsculas de la misma etiqueta son equivalentes.\n¿Funciona en todos los navegadores?::Necesita un contexto seguro, es decir, HTTPS o localhost, porque la API subtle de Web Crypto está oculta en páginas HTTP normales. Chrome, Firefox, Safari y Edge actuales admiten HMAC con los tres algoritmos SHA que se indican aquí.",
+        "trustTitle": "Acerca de esta herramienta",
+        "trustBody": "Desarrollado por el equipo de Toolpika. Se genera mediante la Web Crypto API del navegador, con HMAC RFC 2104 y SHA-1, SHA-256 o SHA-512. Última actualización: 26 de noviembre de 2026."
       }
     },
     "meta-tag-generator": {
@@ -2098,10 +2114,10 @@
       "canonicalLabel": "URL canonica",
       "canonicalPlaceholder": "https://ejemplo.com/zapatillas",
       "robotsLabel": "Directiva robots",
-      "robotsIndexFollow": "index, follow",
-      "robotsNoindexFollow": "noindex, follow",
-      "robotsIndexNofollow": "index, nofollow",
-      "robotsNoindexNofollow": "noindex, nofollow",
+      "robotsIndexFollow": "indexar, seguir",
+      "robotsNoindexFollow": "no indexar, seguir",
+      "robotsIndexNofollow": "indexar, no seguir",
+      "robotsNoindexNofollow": "no indexar, no seguir",
       "themeLabel": "Color de tema",
       "themePlaceholder": "#0f172a",
       "themeHint": "Usa un valor hexadecimal para el color del navegador en navegadores móviles compatibles.",
@@ -2131,7 +2147,15 @@
         "exampleOutput": "<title>Zapatillas | Nortevento</title>\n<meta name=\"description\" content=\"Zapatillas ligeras con devoluciones gratuitas y una prueba de 30 días.\">\n<link rel=\"canonical\" href=\"https://ejemplo.com/zapatillas\">\n<meta name=\"robots\" content=\"index, follow\">\n<meta name=\"theme-color\" content=\"#0f172a\">",
         "exampleNote": "El color tema se muestra solo en los navegadores móviles que admiten la etiqueta meta theme-color.",
         "featuresTitle": "Lo que verifica la herramienta",
-        "features": "Escapar HTML::Cada valor se escapa para producir HTML seguro y válido.\nActualización en vivo::El bloque head se actualiza mientras escribes, sin recargar la página.\nCampos vacíos omitidos::Solo aparecen los campos que completas en el fragmento generado.\nCopia y descarga::Copia las etiquetas o descárgalas como un archivo .html.\nSolo local::Todo se ejecuta en tu navegador, no se envían datos a un servidor."
+        "features": "Escapar HTML::Cada valor se escapa para producir HTML seguro y válido.\nActualización en vivo::El bloque head se actualiza mientras escribes, sin recargar la página.\nCampos vacíos omitidos::Solo aparecen los campos que completas en el fragmento generado.\nCopia y descarga::Copia las etiquetas o descárgalas como un archivo .html.\nSolo local::Todo se ejecuta en tu navegador, no se envían datos a un servidor.",
+        "mistakesTitle": "Errores comunes y límites",
+        "limitsTitle": "Límites",
+        "mistakes": "Tratar la descripción como combustible para el posicionamiento::Los motores de búsqueda pueden reescribir la descripción en los resultados, así que escríbela para los lectores, no para la densidad de palabras clave.\nOlvidar la URL canónica::Las páginas duplicadas con parámetros de seguimiento necesitan una dirección preferida para consolidar las señales.\nUsar noindex por error::Una directiva noindex elimina una página de los resultados de búsqueda; elige indexar y seguir para páginas normales.\nPegar comillas sin formato::Las comillas sin escapar pueden cerrar un atributo antes de tiempo. El generador las escapa por ti.",
+        "limits": "La herramienta escribe solo los cinco campos mostrados en el encabezado; no valida las políticas de los motores de búsqueda.\nLos títulos y las descripciones largos no se truncan, así que comprueba cómo los muestran los motores de búsqueda.\nEl color del tema se escribe tal como se ingresa; usa un valor hexadecimal para un soporte confiable del navegador.\nLas URL canónicas no se obtienen ni se comprueban si tienen redirecciones.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Qué metaetiquetas crea esta herramienta?::Crea un elemento title, una metaetiqueta de descripción, un enlace canónico, una metaetiqueta de robots y una metaetiqueta de color del tema. Los campos dejados en blanco se omiten, excepto robots, que siempre usa la directiva seleccionada. Las etiquetas se emiten en ese orden.\n¿Mejora una meta descripción el posicionamiento?::Los motores de búsqueda pueden usar la descripción como texto del fragmento, pero no es una señal directa de posicionamiento y puede ser reemplazada por texto de la página. Escribe un resumen claro para los lectores y mantenlo lo suficientemente corto para que se muestre. Esta herramienta no lo trunca por ti.\n¿Cuándo debo usar un enlace canónico?::Usa un enlace canónico cuando una página se pueda alcanzar en varias direcciones, por ejemplo con parámetros de seguimiento, opciones de ordenación o una barra final. El enlace nombra la URL preferida para que los motores de búsqueda puedan consolidar las señales duplicadas. Pega la dirección limpia en el campo canónico.\n¿Qué cambia la selección de robots?::Escribe una metaetiqueta de robots con una de cuatro directivas: indexar y seguir, no indexar y seguir, indexar y no seguir, o no indexar y no seguir. Indexar determina si la página puede aparecer en los resultados, mientras que seguir determina si los rastreadores siguen sus enlaces.\n¿Puedo copiar o descargar las etiquetas generadas?::Sí. El botón Copiar coloca todo el bloque en el portapapeles y el botón Descargar lo guarda como un archivo HTML. Ambos usan los campos actuales, y el atajo con Control o Comando, Mayús y C también copia las etiquetas.",
+        "trustTitle": "Acerca de esta herramienta",
+        "trustBody": "Las metaetiquetas se ensamblan como texto plano en el navegador. Cada valor se escapa antes de insertarse en un elemento o atributo, y la dirección canónica se escribe como un elemento de enlace en lugar de una metaetiqueta. No se sube, almacena ni envía ningún texto a ningún sitio."
       }
     },
     "compound-interest-calculator": {
@@ -2207,7 +2231,8 @@
       "defaultsNote": "Los valores iniciales son ejemplos que puedes cambiar, no una recomendación.",
       "formulaTitle": "Cómo lo calculamos",
       "formula": "A = P(1 + r/n)^(nt)",
-      "formulaHint": "P es el monto inicial, r es la tasa anual como decimal, n es el número de capitalizaciones por año y t es el número de años. El interés ganado es A menos P."
+      "formulaHint": "P es el monto inicial, r es la tasa anual como decimal, n es el número de capitalizaciones por año y t es el número de años. El interés ganado es A menos P.",
+      "columnInterest": "Interés"
     },
     "loan-emi-calculator": {
       "title": "Calculadora de Cuota de Préstamo",
@@ -2314,7 +2339,25 @@
         "faqs": "¿Cómo se calcula la densidad de palabras clave?::Divide el número de apariciones de una palabra por el total de palabras y multiplica por cien.\n¿Cómo se cuentan las frases?::Las oraciones se cuentan según el punto final, signo de exclamación y signo de interrogación.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
         "trustTitle": "Información de esta herramienta",
         "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
-      }
+      },
+      "ignoreCase": "Ignorar mayúsculas y minúsculas",
+      "excludeStopwords": "Excluir palabras vacías",
+      "clipboardUnavailable": "El acceso al portapapeles está bloqueado. Usa el teclado para copiar en su lugar.",
+      "errorTooLarge": "Ese texto es demasiado extenso para contarlo cómodamente.",
+      "fixTooLarge": "Acórtalo a menos de 100.000 caracteres e inténtalo de nuevo.",
+      "errorTitle": "Demasiado texto",
+      "errorEmptyHint": "Acorta el texto y la tabla de palabras aparecerá aquí.",
+      "columnWord": "Palabra",
+      "columnCount": "Conteo",
+      "columnShare": "Porcentaje",
+      "tableLabel": "Frecuencias de palabras",
+      "totalWords": "{count, plural, one {# palabra contada} other {# palabras contadas}}",
+      "uniqueWords": "Palabras únicas",
+      "topHint": "Mostrando las {count} palabras principales",
+      "reportTitle": "Informe de densidad de palabras clave",
+      "reportTotal": "Total de palabras",
+      "reportUnique": "Palabras únicas",
+      "reportTop": "Las {count} palabras más frecuentes"
     },
     "bmi-calculator": {
       "title": "Calculadora de IMC",
@@ -2360,8 +2403,31 @@
       "reportNote": "El IMC es una medida de detección, no un diagnóstico.",
       "page": {
         "byline": "Herramientas de salud · Actualizado el 26 de noviembre de 2026",
-        "directAnswer": "El Calculador de IMC transforma tu peso y altura en un índice de masa corporal, muestra la categoría de la OMS correspondiente y estima un rango de peso saludable para esa altura. Cambia entre unidades métricas e imperiales, luego copia o descarga el informe en un paso."
-      }
+        "directAnswer": "El Calculador de IMC transforma tu peso y altura en un índice de masa corporal, muestra la categoría de la OMS correspondiente y estima un rango de peso saludable para esa altura. Cambia entre unidades métricas e imperiales, luego copia o descarga el informe en un paso.",
+        "aboutTitle": "Acerca de la calculadora de IMC",
+        "contextualLink": "Una vez que tengas tus datos de salud a la vista, %%TOOL%% puede comprobar qué palabras aparecen con más frecuencia en tus notas.",
+        "whatIsTitle": "¿Qué es una calculadora de IMC?",
+        "whatIs": "El índice de masa corporal, o IMC, es una relación entre peso y altura que se usa como medida rápida de detección en adultos. En unidades métricas, la fórmula es el peso en kilogramos dividido por la altura en metros al cuadrado. En unidades imperiales, es el peso en libras dividido por la altura en pulgadas al cuadrado, multiplicado luego por el factor de conversión 703. Un IMC de 22,9 puede corresponder a 70 kilogramos y una altura de 1,75 metros.\n\nLa Organización Mundial de la Salud agrupa los resultados de adultos en cuatro rangos. Por debajo de 18,5 hay bajo peso; de 18,5 a menos de 25, peso saludable; de 25 a menos de 30, sobrepeso; y 30 o más, obesidad. Estos son puntos de corte a nivel poblacional, no un diagnóstico para una persona en particular. Esta herramienta también calcula el rango de peso que situaría tu altura dentro del rango saludable, usando 18,5 y 25 como límites, para que puedas ver los números detrás de la guía.\n\nEl IMC tiene límites claros. No distingue entre músculo y grasa, por lo que atletas y personas con mucha masa muscular pueden clasificarse como con sobrepeso a pesar de tener poca grasa corporal. No está validado para niños, adolescentes ni embarazo, donde se usan percentiles basados en la edad u otras medidas clínicas. La distribución de la grasa corporal y otros factores de riesgo también importan. Considera el resultado como punto de partida para conversar con un profesional de la salud, no como consejo médico. Todos los cálculos se realizan en tu navegador y tus datos no se suben.",
+        "howToTitle": "Cómo usar la calculadora de IMC",
+        "howTo": "Elige unidades métricas o imperiales con el control segmentado.\nIntroduce tu peso en kilogramos o libras.\nIntroduce tu altura en centímetros o pulgadas.\nLee el valor de IMC, la etiqueta de categoría y el rango de peso saludable.\nCopia el informe o descárgalo como archivo de texto.",
+        "featuresTitle": "Cómo funciona esta calculadora",
+        "features": "Ambos sistemas de unidades::El sistema métrico usa kilogramos y centímetros; el imperial usa libras y pulgadas con el factor de conversión 703.\nCategorías de la OMS::La etiqueta sigue los puntos de corte estándar para adultos de 18,5, 25 y 30.\nRango de peso saludable::La herramienta muestra el rango de peso que se ajusta al rango saludable para tu altura.\nFórmula mostrada::Cada resultado incluye el cálculo para que puedas verificar el número tú mismo.\nPrivado por diseño::Todos los cálculos se realizan en tu navegador y no se sube nada.",
+        "mistakesTitle": "Errores comunes y límites",
+        "mistakes": "Usar la unidad incorrecta::Cambia la unidad antes de escribir, porque kilogramos y libras requieren fórmulas diferentes.\nIntroducir la altura en pies::La altura en sistema imperial se toma en pulgadas, así que convierte pies y pulgadas a un solo valor en pulgadas primero.\nTratar el IMC como un diagnóstico::La categoría es un intervalo de detección, no un veredicto médico sobre la grasa corporal o la salud.\nIgnorar el rango::Un solo valor de IMC oculta cuánto cambio de peso te movería a otra categoría.",
+        "limitsTitle": "Límites",
+        "limits": "Los resultados están destinados solo a adultos.\nLos atletas y las personas muy musculosas pueden clasificarse incorrectamente.\nLos niños, adolescentes y personas embarazadas necesitan medidas diferentes.\nEl rango saludable usa IMC de 18,5 a 25 como límites y se redondea a un decimal.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Cómo se calcula el IMC?::En unidades métricas, divide el peso en kilogramos entre la altura en metros al cuadrado. En unidades imperiales, divide el peso en libras entre la altura en pulgadas al cuadrado y multiplica por 703. La calculadora muestra la fórmula exacta que utilizó debajo del resultado, para que puedas verificar el número sin confiar en una caja negra.\n¿Qué significa mi categoría de IMC?::La categoría sitúa tu número en una banda estándar para adultos. Por debajo de 18,5 es bajo peso, de 18,5 a 25 es saludable, de 25 a 30 es sobrepeso, y 30 o más es obesidad. Estas bandas describen poblaciones y no diagnostican a una persona, así que consulta a un profesional de la salud si tienes inquietudes.\n¿Por qué el rango de peso saludable es un intervalo?::Una altura puede corresponder a muchos pesos saludables porque el IMC es una proporción. La herramienta calcula el peso para IMC 18,5 y para IMC 25 según tu altura, y luego muestra ese intervalo en la unidad que elijas. Es una guía, no una meta, y las necesidades individuales varían.\n¿El IMC mide la grasa corporal?::No. El IMC solo usa peso y altura, por lo que no puede distinguir entre músculo, hueso y grasa. Una persona musculosa puede tener un IMC alto con poca grasa corporal, mientras que un adulto mayor puede tener un IMC saludable con mucha grasa corporal. Se necesitan otras medidas para obtener una imagen más completa.\n¿Puedo usarlo para un niño?::No. Los puntos de corte del IMC aquí son para adultos. Los niños y adolescentes necesitan tablas de percentiles basadas en la edad y el sexo, porque la composición corporal cambia durante el crecimiento. El embarazo también requiere orientación diferente. Para cualquier persona en esos grupos, pregunta a un clínico qué medida es apropiada.",
+        "trustTitle": "Acerca de esta herramienta",
+        "trustBody": "Aplica las fórmulas de IMC métricas e imperiales con los puntos de corte de la OMS para adultos y un rango de peso saludable. Revisado el 26 de noviembre de 2026."
+      },
+      "showHealthyRange": "Mostrar rango de peso saludable",
+      "weightHint": "Tu peso en la unidad seleccionada, introducido como un número.",
+      "heightHint": "Tu altura en la unidad seleccionada, introducida como un solo número.",
+      "displayOptionsTitle": "Opciones de visualización",
+      "defaultsNote": "Los valores iniciales son ejemplos que puedes cambiar, no un objetivo.",
+      "formulaRuleMetric": "IMC = kg / m²",
+      "formulaRuleImperial": "IMC = 703 × lb / in²"
     },
     "pomodoro-timer": {
       "title": "Temporizador Pomodoro",
@@ -2408,8 +2474,17 @@
         "faqTitle": "Preguntas frecuentes",
         "faqs": "¿Cuáles son las longitudes de Pomodoro estándar?::El patrón habitual es 25 minutos de enfoque, una pausa corta de cinco minutos después de cada ronda, y una pausa larga de 15 minutos después de cuatro rondas. Estos valores se cargan como el ejemplo. Puedes cambiarlos, pero la regla de la pausa larga después de cuatro rondas se mantiene fija.\n¿El temporizador reproduce sonido?::No. Esta herramienta nunca reproduce audio y nunca pide permiso de micrófono o notificación. Cuando una fase termina recibes un aviso escrito breve en la barra de herramientas, y la siguiente fase comienza con su propio conteo regresivo y etiqueta.\n¿Qué ocurre cuando pauso?::Pausa fija los segundos restantes donde están. Presiona Iniciar de nuevo y el conteo regresivo continúa desde ese punto en lugar de comenzar de nuevo. Reiniciar restablece la fase a enfoque, borra el contador de rondas y restaura la duración completa de trabajo.\n¿Por qué se muestra la pausa larga como cuatro rondas lejana?::El contador sigue las rondas de trabajo completadas hacia la pausa larga. Después de una pausa larga el conteo continúa con el siguiente grupo de cuatro, por lo que el número mostrado es siempre las rondas restantes en el grupo actual.\n¿Se guarda mi progreso?::No. Todo vive en esta pestaña del navegador y nada se envía a un servidor. Cerrar o recargar la página borra el conteo regresivo y el conteo de rondas, trata el temporizador como una herramienta de sesión y no como un registro a largo plazo.",
         "trustTitle": "Información de esta herramienta",
-        "trustBody": "Ejecuta el ciclo completo de enfoque y pausa localmente con un intervalo de un segundo que se limpia al desmontar. Sin audio, sin red y sin historial guardado. Actualizado el 26 de noviembre de 2026."
-      }
+        "trustBody": "Ejecuta el ciclo completo de enfoque y pausa localmente con un intervalo de un segundo que se limpia al desmontar. Sin audio, sin red y sin historial guardado. Actualizado el 26 de noviembre de 2026.",
+        "searchIntents": "temporizador pomodoro online con descansos\ntemporizador de 25 minutos de concentración y 5 minutos de descanso\ndescanso largo después de cuatro pomodoros\ntemporizador pomodoro con contador de rondas\ntemporizador de concentración sin cuenta",
+        "whatIs": "Un temporizador Pomodoro es un reloj sencillo para el bloqueo de tiempo: alterna un intervalo de trabajo fijo con un descanso corto y, después de varias rondas, inserta un descanso más largo.\n\nEl método toma su nombre de la palabra italiana para tomate, usada para el temporizador de cocina que Francesco Cirillo supuestamente usó a finales de los años 1980. El patrón habitual es 25 minutos de concentración, cinco minutos de descanso y un descanso de 15 minutos después de cuatro rondas. Un intervalo de trabajo completado se llama a menudo Pomodoro.\n\nEl objetivo del método no son los números. Un bloque fijo hace que una tarea grande sea más abordable, y el descanso es un punto de parada real, no una vaga pausa. Mantener las mismas duraciones durante una sesión también facilita estimar cuántos bloques necesita una tarea.\n\nEsta herramienta coloca esas tres duraciones en el panel de entrada como ajustadores de minutos integrados. Pulsa Iniciar para ejecutar la cuenta atrás, Pausa para congelarla y Reiniciar para volver a la primera ronda. Una ronda de trabajo suma uno al contador de rondas y pasa a un descanso corto. Cada cuarta ronda de trabajo pasa al descanso largo en su lugar. Un aviso escrito breve marca cada cambio de fase.\n\nTodo ocurre en esta pestaña del navegador. El temporizador usa un intervalo de un segundo que se limpia cuando la herramienta se desmonta, no reproduce sonido, no solicita permisos y no envía datos a ningún sitio.",
+        "howToTitle": "Cómo usar el temporizador Pomodoro",
+        "howTo": "Ajusta la duración del trabajo, el descanso corto y el descanso largo con los ajustadores integrados.\nPulsa Iniciar para comenzar la cuenta atrás de concentración.\nPulsa Pausa si necesitas detenerte, y luego Iniciar de nuevo para reanudar desde el mismo segundo.\nObserva cómo sube el contador de rondas cuando termina una sesión de trabajo y comienza un descanso.\nUsa Reiniciar para volver a la primera ronda y a la duración completa de trabajo.",
+        "useCasesTitle": "Cuándo usar el temporizador Pomodoro",
+        "useCases": "Sesiones de estudio::Mantén un bloque de concentración de 25 minutos antes de un descanso de cinco minutos.\nTrabajo de escritura::Termina una sección de un borrador antes de que termine la cuenta atrás.\nRevisiones de código::Dale a cada revisión un bloque fijo para que la cola siga avanzando.\nDescansos en equipo::Permite que un grupo tome el mismo descanso corto después de cuatro rondas.",
+        "mistakesTitle": "Errores comunes y límites",
+        "limitsTitle": "Límites"
+      },
+      "autoStartNext": "Iniciar la siguiente fase automáticamente"
     },
     "random-string-generator": {
       "title": "Generador de Cadenas Aleatorias",
@@ -2448,10 +2523,24 @@
         "faqTitle": "Preguntas frecuentes",
         "faqs": "¿Qué es una cadena aleatoria?::Una cadena aleatoria es una secuencia de caracteres elegidos aleatoriamente.\n¿Para qué sirve?::Sirve para generar contraseñas, claves API, identificadores y más.\n¿Se cargan los datos?::No, todo ocurre en el navegador.",
         "trustTitle": "Información de esta herramienta",
-        "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador."
+        "trustBody": "Construido por el equipo de Toolpika. Todo ocurre localmente en tu navegador.",
+        "searchIntents": "generador de cadenas aleatorias con letras, dígitos y símbolos\nvalores aleatorios seguros desde crypto.getRandomValues\ngenerador por lotes de cadenas aleatorias con longitud personalizada\nexcluir caracteres de apariencia similar de las cadenas aleatorias",
+        "limitsTitle": "Límites"
       },
       "lowerLabel": "Letras minúsculas",
-      "upperLabel": "Letras mayúsculas"
+      "upperLabel": "Letras mayúsculas",
+      "privacyLabel": "Las cadenas se generan en tu navegador con crypto.getRandomValues.",
+      "settingsTitle": "Opciones de generación",
+      "settingsHint": "Define la longitud y el tamaño del lote, y luego elige qué caracteres incluir.",
+      "charsetsTitle": "Conjuntos de caracteres",
+      "lookAlikeHint": "Omita caracteres como i, l, 1, o, O y 0 que son fáciles de confundir.",
+      "errorNoCharset": "Seleccione al menos un conjunto de caracteres antes de generar.",
+      "errorUnsupported": "Este navegador no proporciona crypto.getRandomValues. Pruebe con un navegador actualizado.",
+      "errorInvalidRange": "Elija una longitud entre 4 y 128 y un número de lotes entre 1 y 100.",
+      "errorFailed": "No se pudieron generar esas cadenas. Revise las opciones e inténtelo de nuevo.",
+      "outputLabel": "Cadenas generadas",
+      "batchLabel": "Cadenas",
+      "totalLabel": "Total de caracteres"
     },
     "open-graph-generator": {
       "title": "Generador de Cadenas Aleatorias",
@@ -2472,8 +2561,53 @@
         "directAnswer": "El Generador de Cadenas Aleatorias crea cadenas aleatorias con letras, cifras y símbolos con Web Crypto. Establece longitud y conteo de lote, excluye caracteres similares si es necesario, luego copia o descarga las cadenas.",
         "aboutTitle": "Acerca del Generador de Cadenas Aleatorias",
         "contextualLink": "Si necesitas una clave secreta, usa %%TOOL%%.",
-        "whatIsTitle": "¿Qué es un Generador de Cadenas Aleatorias?"
-      }
+        "whatIsTitle": "¿Qué es un Generador de Cadenas Aleatorias?",
+        "whatIs": "Un generador de Open Graph crea las metaetiquetas que indican a las redes sociales y aplicaciones de mensajería qué mostrar cuando alguien comparte un enlace. Esta herramienta escribe seis campos: og:title, og:description, og:url, og:type, og:image y twitter:card. El resultado es un bloque HTML sencillo para el encabezado de una página, generado localmente a partir de lo que escribes.\n\nOpen Graph se creó en Facebook y ahora lo leen muchos rastreadores. Los valores og:title y og:description proporcionan el titular y el resumen. El valor og:url debe ser la dirección canónica de la página, para que los compartidos con diferentes cadenas de consulta se agrupen en una sola vista previa. El valor og:type describe el contenido; website y article son las opciones más comunes, y también se admiten product y profile.\n\nog:image apunta a una imagen que la red debe descargar. Usa una URL absoluta y accesible públicamente en lugar de una ruta relativa, porque un rastreador no conoce la raíz de tu sitio. Una imagen horizontal de aproximadamente 1200 por 630 píxeles funciona bien en la mayoría de los feeds, y cada red puede recortar o almacenar en caché el resultado. Esta herramienta no sube ni prueba la imagen.\n\nLas etiquetas de Twitter Card son un espacio de nombres independiente, y esta herramienta escribe twitter:card con la opción summary o summary_large_image, además de app y player para casos especiales. Una tarjeta de imagen grande requiere og:image, así que proporciona una imagen cuando elijas ese estilo. Cada valor se escapa antes de insertarse en un atributo, lo que evita que comillas y el carácter & rompan el marcado. El bloque se actualiza mientras escribes y se puede copiar o descargar como un archivo HTML.",
+        "exampleTitle": "Ejemplo: un artículo de blog",
+        "exampleLabel": "Campos completados",
+        "exampleInput": "Título: Cómo entrenar para tu primer medio maratón\nDescripción: Un plan sencillo de ocho semanas para principiantes en medio maratón.\nURL: https://example.com/blog/half-marathon-plan\nTipo: article\nImagen: https://example.com/img/half-marathon.png\nTarjeta: summary_large_image",
+        "exampleNote": "La imagen debe ser una dirección absoluta, lo que necesita un rastreador de redes sociales para obtener la imagen de vista previa.",
+        "featuresTitle": "Lo que escribe el generador",
+        "features": "Seis campos::Título, descripción, URL, tipo, imagen y estilo de tarjeta se convierten en etiquetas Open Graph y Twitter Card.\nAtributos correctos::Los valores de Open Graph usan el atributo property, mientras que twitter:card usa el atributo name.\nValores seguros::Las comillas, el símbolo & y los signos de menor y mayor se escapan antes de insertarse en un atributo.\nBloque en vivo::El fragmento se actualiza mientras escribes y se puede copiar o guardar como open-graph-tags.html.\nSin cargas::Cada etiqueta se ensambla en tu navegador a partir de los valores que introduces.",
+        "mistakesTitle": "Errores comunes y límites",
+        "limitsTitle": "Límites",
+        "mistakes": "Usar una ruta de imagen relativa::Los rastreadores no pueden resolver una ruta desde la raíz de tu sitio, así que dale a og:image una dirección pública completa.\nDejar la URL como un enlace acortado::El valor de og:url debe ser la dirección canónica final, no un redireccionamiento que hayas publicado.\nEsperar una vista previa en vivo aquí::La herramienta escribe etiquetas pero no las recupera; las redes sociales almacenan en caché las vistas previas, así que borra su caché después de editar.\nIgnorar los requisitos de la tarjeta::Una tarjeta summary_large_image necesita una imagen, así que completa og:image cuando elijas ese estilo.",
+        "limits": "La herramienta solo escribe etiquetas; no valida las dimensiones ni la disponibilidad de las imágenes.\nLas redes sociales almacenan en caché las vistas previas y pueden ignorar los cambios hasta que se actualice su caché.\nAlgunas plataformas añaden sus propios campos además de los seis que se muestran aquí.\nLos valores de entrada se escapan, pero no se reescriben ni se acortan de otro modo.",
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": "¿Qué son las etiquetas Open Graph?::Las etiquetas Open Graph son elementos meta que describen una página para los rastreadores de redes sociales, que las usan para crear el título, el resumen y la imagen que se muestran al compartir un enlace. Se ubican en el encabezado de la página y usan atributos property. Esta herramienta escribe los seis campos más útiles.\n¿Por qué debe ser absoluta la URL de og:url?::Una URL absoluta indica una dirección exacta, por lo que los compartidos con diferentes parámetros de rastreo se tratan como la misma página. Usa la ubicación canónica que quieras que las personas visiten. Una ruta relativa o un redireccionamiento acortado brinda a los rastreadores información menos fiable y puede dividir la vista previa.\n¿Qué tamaño de imagen debo usar?::Una imagen horizontal de aproximadamente 1200 por 630 píxeles es una opción común porque se adapta a las tarjetas grandes en varias redes. El rastreador descarga el archivo desde la dirección pública de og:image. Esta herramienta no sube, cambia el tamaño ni verifica la imagen, así que aloja la imagen tú mismo.\n¿Necesito también etiquetas de Twitter Card?::Son un conjunto de etiquetas independiente, y twitter:card le indica a X cómo presentar el enlace. El estilo de resumen muestra una miniatura pequeña, mientras que summary_large_image usa una imagen amplia. Incluye una imagen cuando elijas el estilo grande y manténla coherente con og:image.\n¿Puedo copiar o descargar el resultado?::Sí. Copiar coloca todo el bloque en el portapapeles, y Descargar lo guarda como un archivo HTML que puedes pegar en el encabezado de cualquier página. El atajo con Control o Comando, Mayús y C también copia las etiquetas actuales. Nada se envía a un servidor.",
+        "trustTitle": "Acerca de esta herramienta",
+        "trustBody": "El generador escribe las propiedades Open Graph con atributos property y la tarjeta de Twitter con un atributo name. Cada valor se escapa en el navegador, y la URL de la imagen se deja exactamente como se proporcionó para que el rastreador de redes sociales la obtenga."
+      },
+      "inputHint": "Rellena los campos de abajo. Los campos de texto vacíos se omiten en las etiquetas generadas.",
+      "titleLabel": "og:title",
+      "titlePlaceholder": "Cómo entrenar para tu primera media maratón",
+      "descriptionLabel": "og:description",
+      "descriptionPlaceholder": "Un resumen breve que aparece debajo del título en la vista previa al compartir.",
+      "urlLabel": "URL de Open Graph",
+      "urlPlaceholder": "https://example.com/blog/plan-medio-maraton",
+      "typeLabel": "Tipo de Open Graph",
+      "typeWebsite": "Sitio web",
+      "typeArticle": "Artículo",
+      "typeProduct": "Producto",
+      "typeProfile": "perfil",
+      "typeHint": "Sitio web y artículo se adaptan a la mayoría de las páginas; producto y perfil también están disponibles.",
+      "imageLabel": "Imagen og:image",
+      "imageHint": "Usa una dirección pública absoluta, ya que los rastreadores no pueden resolver rutas relativas.",
+      "imagePlaceholder": "https://example.com/img/media-maratón.png",
+      "cardLabel": "Tarjeta twitter:card",
+      "cardSummary": "Resumen",
+      "cardSummaryLarge": "Resumen con imagen grande",
+      "cardApp": "App",
+      "cardPlayer": "Reproductor",
+      "cardHint": "Una tarjeta con imagen grande requiere una imagen, así que completa og:image al seleccionarla.",
+      "resultHint": "El bloque de etiquetas se actualiza mientras escribes. Copia el bloque o descarga el archivo HTML.",
+      "tagCountLabel": "Etiquetas",
+      "fileName": "etiquetas-open-graph.html",
+      "clipboardUnavailable": "El acceso al portapapeles está bloqueado. Selecciona las etiquetas y cópialas manualmente.",
+      "sampleTitle": "Cómo entrenar para tu primer medio maratón",
+      "sampleDescription": "Un plan sencillo de ocho semanas para principiantes en medio maratón.",
+      "sampleUrl": "https://example.com/blog/plan-de-media-maratón",
+      "sampleImage": "https://example.com/img/media-maratón.png"
     }
   },
   "search": {

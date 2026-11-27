@@ -7,9 +7,18 @@ import { SearchBar } from "@/components/tools/search-bar";
 import { ToolCard } from "@/components/tools/tool-card";
 import { HeroDemo } from "@/components/hero/HeroDemo";
 import { PillCta } from "@/components/ui/pill-cta";
-import { categories, getLiveTools, getPopularTools, categoryKey } from "@/lib/tools/registry";
+import {
+  categories,
+  getLiveTools,
+  getPopularTools,
+  categoryKey,
+  toolTitleKey,
+} from "@/lib/tools/registry";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildToolListSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = {
   params: Promise<{ locale: string }>;
@@ -19,11 +28,25 @@ export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
   const tTools = await getTranslations({ locale, namespace: "tools" });
+  const tMeta = await getTranslations({ locale, namespace: "meta" });
   const tools = getLiveTools();
   const featuredTools = getPopularTools(4);
+  const siteUrl = getSiteUrl();
+  const schemas = buildToolListSchemas({
+    locale,
+    siteUrl,
+    path: "/",
+    name: tMeta("title"),
+    description: tMeta("description"),
+    items: featuredTools.map((tool) => ({
+      name: tTools(toolTitleKey(tool)),
+      url: `${siteUrl}/${locale}/tools/${tool.slug}`,
+    })),
+  });
 
   return (
     <main>
+      <JsonLdScripts schemas={schemas} />
       {/* Hero */}
       <section className="tp-container tp-hero">
         <div className="tp-hero-copy">

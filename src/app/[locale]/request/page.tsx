@@ -5,6 +5,9 @@ import { ShieldCheck, Sparkles, MessageSquare } from "lucide-react";
 import RequestForm from "./form";
 import { SecondaryPage } from "@/components/layout/secondary-page";
 import { Reveal } from "@/components/ui/reveal";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildWebPageSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = {
   params: Promise<{ locale: string }>;
@@ -16,7 +19,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "request" });
   return {
-    title: `${t("title")} | Toolpika`,
+    title: t("title"),
     description: t("description"),
     alternates: localizedAlternates(locale, "/request"),
   };
@@ -25,6 +28,13 @@ export async function generateMetadata({
 export default async function RequestPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "request" });
+  const schemas = buildWebPageSchemas({
+    locale,
+    siteUrl: getSiteUrl(),
+    path: "/request",
+    name: t("title"),
+    description: t("description"),
+  });
 
   const labels = {
     eyebrow: t("eyebrow"),
@@ -45,6 +55,7 @@ export default async function RequestPage({ params }: LocalePageProps) {
   // Mirrors the Contact page's two-column rhythm and container width.
   return (
     <SecondaryPage wide>
+      <JsonLdScripts schemas={schemas} />
       <div className="tp-request-grid">
         <Reveal className="tp-request-copy">
           <p className="tp-atlas-eyebrow">{labels.eyebrow}</p>

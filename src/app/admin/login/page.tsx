@@ -3,7 +3,7 @@ import { AdminLoginForm } from "@/components/admin/admin-login-form";
 import { adminMessages } from "@/lib/admin/messages";
 
 export const metadata = {
-  title: adminMessages.meta.title,
+  title: { absolute: adminMessages.meta.title },
 };
 
 export default function AdminLoginPage() {

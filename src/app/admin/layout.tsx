@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { inter } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme-script";
+import { adminMessages } from "@/lib/admin/messages";
 import "@/app/globals.css";
 
 export const viewport = {
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
     default: "Toolpika Admin",
     template: "%s | Toolpika Admin",
   },
+  description: adminMessages.meta.description,
   robots: {
     index: false,
     follow: false,

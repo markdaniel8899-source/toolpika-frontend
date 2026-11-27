@@ -13,6 +13,12 @@ export function serializeJsonLd(schema: JsonLd): string {
   return JSON.stringify(schema).replace(/</g, "\\u003c");
 }
 
+/** Absolute, locale-prefixed URL for a page path. */
+function localizedUrl(siteUrl: string, locale: string, path: string): string {
+  const normalized = path === "/" ? "" : `/${path.replace(/^\/+|\/+$/gu, "")}`;
+  return `${siteUrl}/${locale}${normalized}`;
+}
+
 /** Site-wide Organization + WebSite entities, emitted once per locale layout. */
 export function buildSiteSchemas({
   locale,
@@ -33,6 +39,13 @@ export function buildSiteSchemas({
       logo: `${siteUrl}/favicon.svg`,
       // This profile is already linked publicly in the site footer.
       sameAs: ["https://github.com/toolpika"],
+      // Same details rendered on the public /contact page.
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "hafizmzain786@gmail.com",
+        telephone: "+923074477250",
+      },
     },
     {
       "@context": "https://schema.org",
@@ -103,6 +116,98 @@ export function buildCategorySchemas({
           item: categoryUrl,
         },
       ],
+    },
+  ];
+}
+
+interface PageSchemaInput {
+  locale: string;
+  siteUrl: string;
+  path: string;
+  name: string;
+  description: string;
+}
+
+/** Generic WebPage entity for static pages that have no richer schema. */
+export function buildWebPageSchemas({
+  locale,
+  siteUrl,
+  path,
+  name,
+  description,
+}: PageSchemaInput): JsonLd[] {
+  const url = localizedUrl(siteUrl, locale, path);
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${url}#webpage`,
+      url,
+      name,
+      description,
+      inLanguage: locale,
+      isPartOf: { "@id": `${siteUrl}/#website` },
+    },
+  ];
+}
+
+/** Tool listing pages: the visible grid as a CollectionPage + ItemList. */
+export function buildToolListSchemas({
+  locale,
+  siteUrl,
+  path,
+  name,
+  description,
+  items,
+}: PageSchemaInput & {
+  items: Array<{ name: string; url: string }>;
+}): JsonLd[] {
+  const url = localizedUrl(siteUrl, locale, path);
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${url}#collection`,
+      url,
+      name,
+      description,
+      inLanguage: locale,
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: items.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          url: item.url,
+        })),
+      },
+    },
+  ];
+}
+
+/** Contact page linked to the site-wide Organization contact point. */
+export function buildContactPageSchemas({
+  locale,
+  siteUrl,
+  name,
+  description,
+}: Omit<PageSchemaInput, "path">): JsonLd[] {
+  const url = localizedUrl(siteUrl, locale, "/contact");
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "@id": `${url}#webpage`,
+      url,
+      name,
+      description,
+      inLanguage: locale,
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      about: { "@id": `${siteUrl}/#organization` },
     },
   ];
 }

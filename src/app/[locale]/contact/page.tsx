@@ -6,6 +6,9 @@ import { Link } from "@/i18n/navigation";
 import { SecondaryPage } from "@/components/layout/secondary-page";
 import { Reveal } from "@/components/ui/reveal";
 import { ContactForm } from "./form";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildContactPageSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -22,9 +25,16 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function ContactPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact" });
+  const schemas = buildContactPageSchemas({
+    locale,
+    siteUrl: getSiteUrl(),
+    name: t("title"),
+    description: t("description"),
+  });
 
   return (
     <SecondaryPage wide>
+      <JsonLdScripts schemas={schemas} />
       <Reveal>
         <p className="tp-atlas-eyebrow">{t("eyebrow")}</p>
         <h1 className="tp-atlas-title">{t("titlePrefix")} <span className="soft">{t("titleAccent")}</span></h1>

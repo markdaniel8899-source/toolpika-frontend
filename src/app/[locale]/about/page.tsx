@@ -6,6 +6,9 @@ import { Link } from "@/i18n/navigation";
 import { SecondaryPage } from "@/components/layout/secondary-page";
 import { PillCta } from "@/components/ui/pill-cta";
 import { Reveal } from "@/components/ui/reveal";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildWebPageSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -22,6 +25,13 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function AboutPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about" });
+  const schemas = buildWebPageSchemas({
+    locale,
+    siteUrl: getSiteUrl(),
+    path: "/about",
+    name: t("title"),
+    description: t("description"),
+  });
 
   const perks = [
     { icon: ShieldCheck, title: t("privacyTitle"), body: t("privacyBody") },
@@ -31,6 +41,7 @@ export default async function AboutPage({ params }: LocalePageProps) {
 
   return (
     <SecondaryPage wide>
+      <JsonLdScripts schemas={schemas} />
       <Reveal>
         <p className="tp-atlas-eyebrow">{t("eyebrow")}</p>
         <h1 className="tp-atlas-title">{t("headingPrefix")} <span className="soft">Toolpika</span></h1>

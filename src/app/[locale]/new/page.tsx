@@ -3,7 +3,10 @@ import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ToolCard } from "@/components/tools/tool-card";
-import { getNewTools } from "@/lib/tools/registry";
+import { getNewTools, toolTitleKey } from "@/lib/tools/registry";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildToolListSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = {
   params: Promise<{ locale: string }>;
@@ -26,9 +29,23 @@ export default async function NewToolsPage({ params }: LocalePageProps) {
   const t = await getTranslations({ locale, namespace: "new" });
   const nav = await getTranslations({ locale, namespace: "nav" });
   const tools = getNewTools();
+  const tTools = await getTranslations({ locale, namespace: "tools" });
+  const siteUrl = getSiteUrl();
+  const schemas = buildToolListSchemas({
+    locale,
+    siteUrl,
+    path: "/new",
+    name: t("title"),
+    description: t("description"),
+    items: tools.map((tool) => ({
+      name: tTools(toolTitleKey(tool)),
+      url: `${siteUrl}/${locale}/tools/${tool.slug}`,
+    })),
+  });
 
   return (
     <main className="tp-container" style={{ paddingBottom: 64 }}>
+      <JsonLdScripts schemas={schemas} />
       <section className="tp-page-hero">
         <div className="tp-page-hero-grid">
           <div className="tp-page-title">

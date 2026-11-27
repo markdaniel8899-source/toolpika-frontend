@@ -3,6 +3,9 @@ import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { ToolCard } from "@/components/tools/tool-card";
 import { categories, getToolsByCategory, categoryKey } from "@/lib/tools/registry";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildToolListSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -22,9 +25,22 @@ export default async function CategoriesPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const category = await getTranslations({ locale, namespace: "category" });
   const tTools = await getTranslations({ locale, namespace: "tools" });
+  const siteUrl = getSiteUrl();
+  const schemas = buildToolListSchemas({
+    locale,
+    siteUrl,
+    path: "/categories",
+    name: category("allTitle"),
+    description: category("allDescription"),
+    items: categories.map((item) => ({
+      name: tTools(categoryKey(item.slug)),
+      url: `${siteUrl}/${locale}/category/${item.slug}`,
+    })),
+  });
 
   return (
     <main className="tp-container" style={{ paddingBottom: 64 }}>
+      <JsonLdScripts schemas={schemas} />
       <section className="tp-page-hero">
         <div className="tp-page-hero-grid">
           <div className="tp-page-title">

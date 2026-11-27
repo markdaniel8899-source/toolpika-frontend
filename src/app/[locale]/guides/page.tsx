@@ -3,6 +3,9 @@ import { localizedAlternates } from "@/lib/seo/alternates";
 import { getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { JsonLdScripts } from "@/components/seo/json-ld";
+import { buildWebPageSchemas } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site-url";
 
 type LocalePageProps = { params: Promise<{ locale: string }> };
 
@@ -19,9 +22,17 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function GuidesPage({ params }: LocalePageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "guides" });
+  const schemas = buildWebPageSchemas({
+    locale,
+    siteUrl: getSiteUrl(),
+    path: "/guides",
+    name: t("title"),
+    description: t("description"),
+  });
 
   return (
     <main className="tp-container" style={{ paddingBottom: 64 }}>
+      <JsonLdScripts schemas={schemas} />
       <section className="tp-page-hero">
         <div className="tp-page-hero-grid">
           <div className="tp-page-title">
