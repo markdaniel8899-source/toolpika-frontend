@@ -1926,9 +1926,26 @@ html.theme-transition .tp-tool-arrow {
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
+.tp-search-option > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .tp-search-option > span:first-child > span:last-child {
+  min-width: 0;
+  overflow: hidden;
   font-size: 14px;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-search-option > span:last-child {
+  flex: none;
+  max-width: 42%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tp-search-option:hover,
@@ -2320,6 +2337,14 @@ html.theme-transition .tp-tool-arrow {
     box-shadow var(--dur-fast) var(--ease-out);
 }
 
+/* Long option labels shrink into an ellipsis instead of pushing the chevron out. */
+.tp-select-trigger > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .tp-select-trigger:hover:not(:focus-visible) {
   border-color: var(--accent);
 }
@@ -2685,7 +2710,7 @@ html.theme-transition .tp-tool-arrow {
 }
 
 .tp-workspace-pane + .tp-workspace-pane {
-  border-left: 1px solid var(--border);
+  border-inline-start: 1px solid var(--border);
 }
 
 /* Form controls fill the pane; buttons and hint rows keep their own styling. */
@@ -3469,9 +3494,11 @@ html.theme-transition .tp-tool-arrow {
     padding: 11px 20px;
   }
 
-  .tp-workspace-output {
-    border-top: 1px solid var(--border);
-    border-left: 0;
+  /* Match the sibling selector's specificity so the divider is removed in
+     the stacked layout (and works in RTL too). */
+  .tp-workspace .tp-workspace-output {
+    border-block-start: 1px solid var(--border);
+    border-inline-start: 0;
   }
 
   .tp-mobile-panel {
@@ -7884,6 +7911,7 @@ html:lang(hi) .tp-tool-hero-accent {
 
 /* Let the title/subtitle column shrink so long names never overflow the bar. */
 .tp-tool-identity-text {
+  flex: 1 1 auto;
   min-inline-size: 0;
 }
 
@@ -7906,6 +7934,7 @@ html:lang(hi) .tp-tool-hero-accent {
 }
 
 .tp-tool-name {
+  display: block;
   overflow: hidden;
   color: var(--text);
   font-size: 14px;
@@ -7963,12 +7992,17 @@ html:lang(hi) .tp-tool-hero-accent {
   margin-block-end: 14px;
 }
 
+.tp-tool-pane-title {
+  min-inline-size: 0;
+}
+
 .tp-tool-pane-title h3 {
   margin: 0;
   color: var(--text);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
 }
 
 .tp-tool-pane-hint {
@@ -8376,6 +8410,11 @@ html:lang(hi) .tp-tool-hero-accent {
   color: var(--danger);
 }
 
+/* ToolShell renders notices directly under the bar; keep them inset. */
+.tp-tool > .tp-tool-notice {
+  margin: 12px 22px 0;
+}
+
 .tp-tool-result {
   animation: tp-tool-enter var(--dur-slow) var(--ease-out) both;
 }
@@ -8631,6 +8670,10 @@ html:lang(hi) .tp-tool-hero-accent {
   .tp-tool-ribbon {
     padding-inline: 18px;
   }
+
+  .tp-tool > .tp-tool-notice {
+    margin-inline: 18px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -8808,7 +8851,7 @@ input[type="number"] {
 .tp-stepper input {
   width: 100%;
   min-height: 42px;
-  padding-inline-end: 40px;
+  padding-inline-end: 60px;
   border: 1px solid var(--border);
   border-radius: var(--radius-control);
   background: var(--background);
@@ -8829,14 +8872,15 @@ input[type="number"] {
   inset-inline-end: 5px;
   inset-block-start: 50%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 2px;
   transform: translateY(-50%);
 }
 
 .tp-stepper-controls button {
   display: grid;
   width: 24px;
-  height: 17px;
+  height: 24px;
   place-items: center;
   border: 0;
   border-radius: 5px;
@@ -8982,7 +9026,7 @@ input[type="number"] {
 .tp-stepper input {
   padding-block: 9px;
   padding-inline-start: 12px;
-  padding-inline-end: 40px;
+  padding-inline-end: 60px;
 }
 
 /* A single column of settings with one action underneath. */
@@ -9017,7 +9061,7 @@ input[type="number"] {
 }
 
 .tp-lorem-count-row .tp-stepper {
-  width: 110px;
+  width: 132px;
   flex: none;
 }
 
@@ -9257,6 +9301,15 @@ textarea::-webkit-scrollbar-thumb,
 /* Compact 2x2 option layouts for small checkbox groups. */
 .tp-tool-options-grid--two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* These modifiers are defined after the main mobile block, so restate the
+   narrow layout here — otherwise the later base rule wins the cascade. */
+@media (max-width: 640px) {
+  .tp-tool-options-grid--single,
+  .tp-tool-options-grid--two {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* Result output grows into the stretched pane instead of leaving a blank gap. */
@@ -9714,11 +9767,12 @@ textarea::-webkit-scrollbar-thumb,
 
   .tp-stepper input {
     min-height: 48px;
+    padding-inline-end: 72px;
   }
 
   .tp-stepper-controls button {
-    width: 34px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
   }
 }
 
@@ -9903,15 +9957,15 @@ textarea::-webkit-scrollbar-thumb,
 }
 
 .tp-tool-pane--result .tp-tool-stat dd {
-  font-family: inherit;
-  font-size: 14px;
+  font-family: inherit !important;
+  font-size: 14px !important;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.35;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  white-space: normal;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  white-space: normal !important;
 }
 
 .tp-tool-pane--result .tp-tool-stat dt {
@@ -10323,6 +10377,14 @@ select.tp-tool-select,
 
 @media (max-width: 560px) {
   .tp-tool-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Result panes keep their 2x2 stats on normal phones; only the narrowest
+   screens stack them so long values never get squeezed into a sliver. */
+@media (max-width: 360px) {
+  .tp-tool-pane--result .tp-tool-stats {
     grid-template-columns: minmax(0, 1fr);
   }
 }

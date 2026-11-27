@@ -205,11 +205,11 @@ export default function AgeCalculator() {
                 <Stat label={tw("age-calculator.totalDaysLabel")} value={`${nf.format(value.totalDays)} ${tw("age-calculator.unitDays")}`} />
                 <Stat
                   label={tw("age-calculator.wholeWeeksLabel")}
-                  value={`${nf.format(value.weeks)} ${tw("age-calculator.unitWeeks")} + ${nf.format(value.weekDays)} ${tw("age-calculator.unitDays")}`}
+                  value={`${nf.format(value.weeks)} ${tw("age-calculator.unitWeekShort")} ${nf.format(value.weekDays)} ${tw("age-calculator.unitDayShort")}`}
                 />
                 <Stat
                   label={tw("age-calculator.calendarMonthsLabel")}
-                  value={`${nf.format(value.calendarMonths)} ${tw("age-calculator.unitMonths")} + ${nf.format(value.monthDays)} ${tw("age-calculator.unitDays")}`}
+                  value={`${nf.format(value.calendarMonths)} ${tw("age-calculator.unitMonthShort")} ${nf.format(value.monthDays)} ${tw("age-calculator.unitDayShort")}`}
                 />
                 <Stat
                   label={tw("age-calculator.nextBirthdayDaysLabel")}
