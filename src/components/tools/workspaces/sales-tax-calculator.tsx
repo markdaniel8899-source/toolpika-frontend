@@ -5,6 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { Receipt } from "lucide-react";
 import {
   CopyButton,
+  CurrencyPicker,
+  HeroValue,
   NumberStepper,
   SegmentedControl,
   Stat,
@@ -12,7 +14,6 @@ import {
   ToolField,
   ToolPane,
   ToolShell,
-  selectClassName,
   useCopyShortcut,
 } from "@/components/tools/workspace-ui";
 import {
@@ -91,18 +92,6 @@ export default function SalesTaxCalculator() {
   const percent = useMemo(
     () => new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }),
     [locale],
-  );
-
-  const currencyOptions = useMemo(
-    () => [
-      { value: "USD", label: tw("sales-tax-calculator.currencyUsd") },
-      { value: "EUR", label: tw("sales-tax-calculator.currencyEur") },
-      { value: "GBP", label: tw("sales-tax-calculator.currencyGbp") },
-      { value: "CAD", label: tw("sales-tax-calculator.currencyCad") },
-      { value: "AUD", label: tw("sales-tax-calculator.currencyAud") },
-      { value: "INR", label: tw("sales-tax-calculator.currencyInr") },
-    ],
-    [tw],
   );
 
   const reportText = useMemo(() => {
@@ -275,24 +264,12 @@ export default function SalesTaxCalculator() {
               />
             </ToolField>
 
-            <ToolField
+            <CurrencyPicker
+              id="tp-tax-currency"
               label={tw("sales-tax-calculator.currencyLabel")}
-              htmlFor="tp-tax-currency"
-            >
-              <select
-                id="tp-tax-currency"
-                className={selectClassName}
-                value={currency}
-                aria-label={tw("sales-tax-calculator.currencyLabel")}
-                onChange={(event) => setCurrency(event.target.value as CurrencyCode)}
-              >
-                {currencyOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </ToolField>
+              value={currency}
+              onChange={(next) => setCurrency(next as CurrencyCode)}
+            />
           </div>
 
           {errorText ? (
@@ -330,12 +307,11 @@ export default function SalesTaxCalculator() {
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">{tw("sales-tax-calculator.totalLabel")}</span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {money.format(value.total)}
-                </output>
-              </div>
+              <HeroValue
+                label={tw("sales-tax-calculator.totalLabel")}
+                value={money.format(value.total)}
+                note={`${tw("sales-tax-calculator.rateLabel")}: ${percent.format(value.rate)}%`}
+              />
 
               <dl className="tp-tool-stats">
                 <Stat
@@ -362,23 +338,17 @@ export default function SalesTaxCalculator() {
                     {tw("sales-tax-calculator.perUnitTitle")}
                   </span>
                   <div className="tp-tool-list">
-                    <div className="tp-tool-row">
+                    <div className="tp-tool-row tp-tool-row-plain">
                       <span>{tw("sales-tax-calculator.perUnitNetLabel")}</span>
-                      <span className="tp-tool-pill" dir="ltr">
-                        {money.format(value.perUnitNet)}
-                      </span>
+                      <span className="tp-tool-value" dir="ltr">{money.format(value.perUnitNet)}</span>
                     </div>
-                    <div className="tp-tool-row">
+                    <div className="tp-tool-row tp-tool-row-plain">
                       <span>{tw("sales-tax-calculator.perUnitTaxLabel")}</span>
-                      <span className="tp-tool-pill" dir="ltr">
-                        {money.format(value.perUnitTax)}
-                      </span>
+                      <span className="tp-tool-value" dir="ltr">{money.format(value.perUnitTax)}</span>
                     </div>
-                    <div className="tp-tool-row">
+                    <div className="tp-tool-row tp-tool-row-plain">
                       <span>{tw("sales-tax-calculator.perUnitTotalLabel")}</span>
-                      <span className="tp-tool-pill" dir="ltr">
-                        {money.format(value.perUnitTotal)}
-                      </span>
+                      <span className="tp-tool-value" dir="ltr">{money.format(value.perUnitTotal)}</span>
                     </div>
                   </div>
                 </div>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CopyButton,
+  HeroValue,
   NumberStepper,
   Stat,
   ToolEmpty,
@@ -304,14 +305,11 @@ export default function CookingConverter() {
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">
-                  {tw("cooking-converter.resultLabel")}
-                </span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {heroText}
-                </output>
-              </div>
+              <HeroValue
+                label={tw("cooking-converter.resultLabel")}
+                value={heroText}
+                note={`${tw("cooking-converter.ingredientLabel")}: ${ingredientLabels[value.ingredient]}`}
+              />
 
               <dl className="tp-tool-stats">
                 <Stat
@@ -329,11 +327,9 @@ export default function CookingConverter() {
               </dl>
 
               <div className="tp-tool-list">
-                <div className="tp-tool-row">
+                <div className="tp-tool-row tp-tool-row-plain">
                   <span>{tw("cooking-converter.referenceLabel")}</span>
-                  <span className="tp-tool-pill" dir="ltr">
-                    {referenceText}
-                  </span>
+                  <span className="tp-tool-value" dir="ltr">{referenceText}</span>
                 </div>
               </div>
 

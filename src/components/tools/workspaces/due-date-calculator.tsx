@@ -5,11 +5,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { CalendarDays } from "lucide-react";
 import {
   CopyButton,
+  DatePartsPicker,
+  HeroValue,
   SegmentedControl,
   Stat,
   ToolBadge,
   ToolEmpty,
-  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -28,10 +29,7 @@ import {
 const ERROR_ID = "due-date-calculator-error";
 
 function toDateString(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 export default function DueDateCalculator() {
@@ -47,7 +45,6 @@ export default function DueDateCalculator() {
   const [reference, setReference] = useState("");
   const [asOf, setAsOf] = useState("");
 
-  // "Today" is filled after hydration so server and client markup agree.
   useEffect(() => {
     const frame = requestAnimationFrame(() => setAsOf(toDateString(new Date())));
     return () => cancelAnimationFrame(frame);
@@ -66,13 +63,7 @@ export default function DueDateCalculator() {
     [locale],
   );
   const dateFmt = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale, {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        timeZone: "UTC",
-      }),
+    () => new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }),
     [locale],
   );
   const formatDate = useCallback(
@@ -91,16 +82,6 @@ export default function DueDateCalculator() {
           : "";
   const describedBy = errorText ? ERROR_ID : undefined;
   const ready = Boolean(value && !errorText);
-
-  const methodLabel = useCallback(
-    (method: DueDateMethod) =>
-      method === "lmp"
-        ? tw("due-date-calculator.methodLmp")
-        : method === "conception"
-          ? tw("due-date-calculator.methodConception")
-          : tw("due-date-calculator.methodIvf"),
-    [tw],
-  );
 
   const milestoneLabels = useMemo<Record<MilestoneKey, string>>(
     () => ({
@@ -127,6 +108,16 @@ export default function DueDateCalculator() {
     if (value.trimester === "third") return "warning" as const;
     return "danger" as const;
   }, [value]);
+
+  const methodLabel = useCallback(
+    (method: DueDateMethod) =>
+      method === "lmp"
+        ? tw("due-date-calculator.methodLmp")
+        : method === "conception"
+          ? tw("due-date-calculator.methodConception")
+          : tw("due-date-calculator.methodIvf"),
+    [tw],
+  );
 
   const reportText = useMemo(() => {
     if (!ready || !value) return "";
@@ -161,7 +152,6 @@ export default function DueDateCalculator() {
     setReference("2026-01-01");
     setAsOf(toDateString(new Date()));
   };
-
   const handleReset = () => {
     resetOptions();
     setReference("");
@@ -183,51 +173,41 @@ export default function DueDateCalculator() {
           title={tw("due-date-calculator.inputTitle")}
           hint={tw("due-date-calculator.inputHint")}
         >
-          <div className="tp-tool-group tp-tool-group--flush">
-            <SegmentedControl<DueDateMethod>
-              label={tw("due-date-calculator.methodLabel")}
-              value={options.method}
-              options={[
-                { value: "lmp", label: tw("due-date-calculator.methodLmp") },
-                { value: "conception", label: tw("due-date-calculator.methodConception") },
-                { value: "ivf", label: tw("due-date-calculator.methodIvf") },
-              ]}
-              onChange={(next) => update({ method: next })}
-            />
-          </div>
+          <SegmentedControl<DueDateMethod>
+            label={tw("due-date-calculator.methodLabel")}
+            value={options.method}
+            options={[
+              { value: "lmp", label: tw("due-date-calculator.methodLmp") },
+              { value: "conception", label: tw("due-date-calculator.methodConception") },
+              { value: "ivf", label: tw("due-date-calculator.methodIvf") },
+            ]}
+            onChange={(next) => update({ method: next })}
+          />
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ToolField
-              label={tw("due-date-calculator.referenceLabel")}
-              htmlFor="tp-due-date-reference"
-              hint={tw("due-date-calculator.referenceHint")}
-            >
-              <input
-                id="tp-due-date-reference"
-                type="date"
-                className="tp-field-input"
-                value={reference}
-                aria-label={tw("due-date-calculator.referenceLabel")}
-                aria-describedby={describedBy}
-                onChange={(event) => setReference(event.target.value)}
-              />
-            </ToolField>
-            <ToolField
-              label={tw("due-date-calculator.asOfLabel")}
-              htmlFor="tp-due-date-as-of"
-              hint={tw("due-date-calculator.asOfHint")}
-            >
-              <input
-                id="tp-due-date-as-of"
-                type="date"
-                className="tp-field-input"
-                value={asOf}
-                aria-label={tw("due-date-calculator.asOfLabel")}
-                aria-describedby={describedBy}
-                onChange={(event) => setAsOf(event.target.value)}
-              />
-            </ToolField>
-          </div>
+          <DatePartsPicker
+            id="tp-due-date-reference"
+            label={`${tw("due-date-calculator.referenceLabel")} (${methodLabel(options.method)})`}
+            value={reference}
+            onChange={setReference}
+            locale={locale}
+            hint={tw("due-date-calculator.referenceHint")}
+            ariaDescribedBy={describedBy}
+            minYear={2000}
+            maxYear={2100}
+          />
+          <DatePartsPicker
+            id="tp-due-date-as-of"
+            label={tw("due-date-calculator.asOfLabel")}
+            value={asOf}
+            onChange={setAsOf}
+            locale={locale}
+            hint={tw("due-date-calculator.asOfHint")}
+            ariaDescribedBy={describedBy}
+            todayLabel={t("today")}
+            onToday={() => setAsOf(toDateString(new Date()))}
+            minYear={2000}
+            maxYear={2100}
+          />
 
           {options.method === "ivf" ? (
             <div className="tp-tool-group tp-tool-group--flush">
@@ -241,9 +221,7 @@ export default function DueDateCalculator() {
                 ]}
                 onChange={(next) => update({ transferDay: next })}
               />
-              <p className="tp-tool-hint">
-                {tw("due-date-calculator.transferDayHint")}
-              </p>
+              <p className="tp-tool-hint">{tw("due-date-calculator.transferDayHint")}</p>
             </div>
           ) : null}
 
@@ -259,40 +237,23 @@ export default function DueDateCalculator() {
           id="tp-due-date-result-title"
           title={t("result")}
           result
-          actions={
-            <CopyButton
-              text={reportText}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
-          }
+          actions={<CopyButton text={reportText} label={t("copy")} copiedLabel={t("copied")} />}
         >
           {!ready || !value ? (
             <div aria-live="polite">
               <ToolEmpty
                 icon={<CalendarDays aria-hidden="true" />}
-                title={
-                  errorText
-                    ? tw("due-date-calculator.errorTitle")
-                    : tw("due-date-calculator.emptyTitle")
-                }
-                hint={
-                  errorText
-                    ? tw("due-date-calculator.emptyErrorHint")
-                    : tw("due-date-calculator.emptyHint")
-                }
+                title={errorText ? tw("due-date-calculator.errorTitle") : tw("due-date-calculator.emptyTitle")}
+                hint={errorText ? tw("due-date-calculator.emptyErrorHint") : tw("due-date-calculator.emptyHint")}
               />
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">
-                  {tw("due-date-calculator.heroLabel")}
-                </span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {formatDate(value.dueDate)}
-                </output>
-              </div>
+              <HeroValue
+                label={tw("due-date-calculator.heroLabel")}
+                value={formatDate(value.dueDate)}
+                note={`${tw("due-date-calculator.methodLabel")}: ${methodLabel(input.method)}`}
+              />
 
               <dl className="tp-tool-stats">
                 <Stat
@@ -309,24 +270,18 @@ export default function DueDateCalculator() {
                 />
               </dl>
 
-              <div className="flex flex-col gap-2">
-                <span className="tp-tool-group-title">
-                  {tw("due-date-calculator.trimesterLabel")}
-                </span>
+              <div className="tp-tool-group tp-tool-group--flush">
+                <span className="tp-tool-group-title">{tw("due-date-calculator.trimesterLabel")}</span>
                 <ToolBadge tone={trimesterTone}>{trimesterLabel}</ToolBadge>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <span className="tp-tool-group-title">
-                  {tw("due-date-calculator.milestoneTitle")}
-                </span>
+              <div className="tp-tool-group tp-tool-group--flush">
+                <span className="tp-tool-group-title">{tw("due-date-calculator.milestoneTitle")}</span>
                 <div className="tp-tool-list">
                   {value.milestones.map((milestone) => (
-                    <div className="tp-tool-row" key={milestone.key}>
+                    <div className="tp-tool-row tp-tool-row-plain" key={milestone.key}>
                       <span>{milestoneLabels[milestone.key]}</span>
-                      <span className="tp-tool-pill" dir="ltr">
-                        {formatDate(milestone.date)}
-                      </span>
+                      <span className="tp-tool-value" dir="ltr">{formatDate(milestone.date)}</span>
                     </div>
                   ))}
                 </div>

@@ -42,15 +42,12 @@ export default function StopwatchTimer() {
     () => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }),
     [locale],
   );
-
   const value = useMemo<StopwatchValue>(
     () => ({ elapsedMs, laps, ...lapHighlights(laps) }),
     [elapsedMs, laps],
   );
 
-  useEffect(() => {
-    runningRef.current = running;
-  }, [running]);
+  useEffect(() => { runningRef.current = running; }, [running]);
 
   useEffect(() => {
     if (!running) return;
@@ -71,6 +68,7 @@ export default function StopwatchTimer() {
   }, []);
 
   const pause = useCallback(() => {
+    if (!runningRef.current) return;
     const next = baseRef.current + (performance.now() - startRef.current);
     elapsedRef.current = next;
     setElapsedMs(next);
@@ -108,12 +106,7 @@ export default function StopwatchTimer() {
     const handler = (event: KeyboardEvent) => {
       if (event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
       const target = event.target as HTMLElement | null;
-      if (
-        target?.isContentEditable ||
-        (target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
-      ) {
-        return;
-      }
+      if (target?.isContentEditable || (target && ["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(target.tagName))) return;
       if (event.code === "Space" || event.key === " ") {
         event.preventDefault();
         toggle();
@@ -129,19 +122,18 @@ export default function StopwatchTimer() {
   }, [toggle, recordLap]);
 
   const reportText = useMemo(
-    () =>
-      formatLapsReport(
-        value,
-        {
-          title: tw("stopwatch-timer.reportTitle"),
-          elapsed: tw("stopwatch-timer.reportElapsed"),
-          lap: tw("stopwatch-timer.lapWord"),
-          split: tw("stopwatch-timer.splitLabel"),
-          fastest: tw("stopwatch-timer.fastestLabel"),
-          slowest: tw("stopwatch-timer.slowestLabel"),
-        },
-        (number) => nf.format(number),
-      ),
+    () => formatLapsReport(
+      value,
+      {
+        title: tw("stopwatch-timer.reportTitle"),
+        elapsed: tw("stopwatch-timer.reportElapsed"),
+        lap: tw("stopwatch-timer.lapWord"),
+        split: tw("stopwatch-timer.splitLabel"),
+        fastest: tw("stopwatch-timer.fastestLabel"),
+        slowest: tw("stopwatch-timer.slowestLabel"),
+      },
+      (number) => nf.format(number),
+    ),
     [value, tw, nf],
   );
 
@@ -177,22 +169,22 @@ export default function StopwatchTimer() {
           title={tw("stopwatch-timer.inputTitle")}
           hint={tw("stopwatch-timer.inputHint")}
         >
+          <div className="tp-clock-display">
+            <ToolBadge tone={running ? "success" : "neutral"}>
+              {running ? tw("stopwatch-timer.statusRunning") : tw("stopwatch-timer.statusPaused")}
+            </ToolBadge>
+            <output dir="ltr" aria-live="off" aria-label={`${tw("stopwatch-timer.elapsedLabel")} ${formatElapsed(value.elapsedMs)}`}>
+              {formatElapsed(value.elapsedMs)}
+            </output>
+          </div>
+
           <div className="tp-tool-group tp-tool-group--flush">
-            <p className="tp-tool-group-title">{tw("stopwatch-timer.controlsTitle")}</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="tp-clock-actions">
               <Button type="button" onClick={toggle}>
                 {running ? tw("stopwatch-timer.pause") : tw("stopwatch-timer.start")}
               </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                disabled={!running}
-                onClick={recordLap}
-              >
+              <Button type="button" variant="secondary" onClick={recordLap} disabled={!running}>
                 {tw("stopwatch-timer.lap")}
-              </Button>
-              <Button type="button" variant="secondary" onClick={resetClock}>
-                {tw("stopwatch-timer.resetTimer")}
               </Button>
             </div>
             <p className="tp-tool-hint">{tw("stopwatch-timer.keyboardHint")}</p>
@@ -207,103 +199,38 @@ export default function StopwatchTimer() {
           result
           actions={
             <div className="flex flex-wrap items-center gap-2">
-              <CopyButton
-                text={reportText}
-                label={tw("stopwatch-timer.copyLaps")}
-                copiedLabel={t("copied")}
-              />
-              <DownloadButton
-                content={reportText}
-                fileName={tw("stopwatch-timer.fileName")}
-                label={tw("stopwatch-timer.downloadLaps")}
-              />
+              <CopyButton text={reportText} label={tw("stopwatch-timer.copyLaps")} copiedLabel={t("copied")} />
+              <DownloadButton content={reportText} fileName={tw("stopwatch-timer.fileName")} label={tw("stopwatch-timer.downloadLaps")} />
             </div>
           }
         >
           <div className="tp-tool-result" aria-live="polite">
-            <div className="flex items-center justify-between gap-2">
-              <ToolBadge tone={running ? "success" : "neutral"}>
-                {running
-                  ? tw("stopwatch-timer.statusRunning")
-                  : tw("stopwatch-timer.statusPaused")}
-              </ToolBadge>
-              <span className="tp-tool-label">{tw("stopwatch-timer.elapsedLabel")}</span>
-            </div>
-
-            <output
-              dir="ltr"
-              aria-live="off"
-              aria-label={`${tw("stopwatch-timer.elapsedLabel")} ${formatElapsed(value.elapsedMs)}`}
-              className="tp-tool-pill"
-            >
-              {formatElapsed(value.elapsedMs)}
-            </output>
-
             <dl className="tp-tool-stats">
-              <Stat
-                label={tw("stopwatch-timer.lapCountLabel")}
-                value={nf.format(laps.length)}
-              />
-              <Stat
-                label={tw("stopwatch-timer.fastestLabel")}
-                value={
-                  value.fastestIndex === null
-                    ? tw("stopwatch-timer.noneLabel")
-                    : `${tw("stopwatch-timer.lapWord")} ${nf.format(value.fastestIndex + 1)} (${formatElapsed(laps[value.fastestIndex].lapMs)})`
-                }
-              />
-              <Stat
-                label={tw("stopwatch-timer.slowestLabel")}
-                value={
-                  value.slowestIndex === null
-                    ? tw("stopwatch-timer.noneLabel")
-                    : `${tw("stopwatch-timer.lapWord")} ${nf.format(value.slowestIndex + 1)} (${formatElapsed(laps[value.slowestIndex].lapMs)})`
-                }
-              />
+              <Stat label={tw("stopwatch-timer.lapCountLabel")} value={nf.format(laps.length)} />
+              <Stat label={tw("stopwatch-timer.fastestLabel")} value={value.fastestIndex === null ? tw("stopwatch-timer.noneLabel") : `${tw("stopwatch-timer.lapWord")} ${nf.format(value.fastestIndex + 1)} (${formatElapsed(laps[value.fastestIndex].lapMs)})`} />
+              <Stat label={tw("stopwatch-timer.slowestLabel")} value={value.slowestIndex === null ? tw("stopwatch-timer.noneLabel") : `${tw("stopwatch-timer.lapWord")} ${nf.format(value.slowestIndex + 1)} (${formatElapsed(laps[value.slowestIndex].lapMs)})`} />
             </dl>
 
             {laps.length === 0 ? (
-              <ToolEmpty
-                icon={<TimerIcon aria-hidden="true" />}
-                title={tw("stopwatch-timer.emptyTitle")}
-                hint={tw("stopwatch-timer.emptyHint")}
-              />
+              <ToolEmpty icon={<TimerIcon aria-hidden="true" />} title={tw("stopwatch-timer.emptyTitle")} hint={tw("stopwatch-timer.emptyHint")} />
             ) : (
-              <div className="flex flex-col gap-2">
-                <span className="tp-tool-group-title">
-                  {tw("stopwatch-timer.lapsTitle")}
-                </span>
-                <div className="tp-tool-list">
+              <div className="tp-tool-group tp-tool-group--flush">
+                <span className="tp-tool-group-title">{tw("stopwatch-timer.lapsTitle")}</span>
+                <div className="tp-lap-table">
+                  <div className="tp-lap-head">
+                    <span>{tw("stopwatch-timer.lapWord")}</span>
+                    <span>{tw("stopwatch-timer.elapsedLabel")}</span>
+                    <span>{tw("stopwatch-timer.splitLabel")}</span>
+                  </div>
                   {laps.map((lap, index) => (
-                    <div className="tp-tool-row" key={index}>
-                      <div className="flex w-full items-center justify-between gap-2">
-                        <span>
-                          {tw("stopwatch-timer.lapNumber", {
-                            number: nf.format(index + 1),
-                          })}
-                        </span>
-                        <span className="tp-tool-pill" dir="ltr">
-                          {formatElapsed(lap.lapMs)}
-                        </span>
-                      </div>
-                      <div className="flex w-full items-center justify-between gap-2">
-                        <span className="tp-tool-hint">
-                          {tw("stopwatch-timer.splitLabel")}
-                        </span>
-                        <span className="tp-tool-hint" dir="ltr">
-                          {formatElapsed(lap.splitMs)}
-                        </span>
-                      </div>
-                      {index === value.fastestIndex ? (
-                        <ToolBadge tone="success">
-                          {tw("stopwatch-timer.fastestLabel")}
-                        </ToolBadge>
-                      ) : null}
-                      {index === value.slowestIndex ? (
-                        <ToolBadge tone="warning">
-                          {tw("stopwatch-timer.slowestLabel")}
-                        </ToolBadge>
-                      ) : null}
+                    <div
+                      className="tp-lap-row"
+                      key={index}
+                      data-highlight={index === value.fastestIndex ? "fastest" : index === value.slowestIndex ? "slowest" : undefined}
+                    >
+                      <span>{nf.format(index + 1)}</span>
+                      <span dir="ltr">{formatElapsed(lap.lapMs)}</span>
+                      <span dir="ltr">{formatElapsed(lap.splitMs)}</span>
                     </div>
                   ))}
                 </div>

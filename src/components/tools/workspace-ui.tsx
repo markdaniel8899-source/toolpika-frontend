@@ -6,6 +6,7 @@ import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, Download, RotateCcw }
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import { tokenizeCode, type CodeLanguage } from "@/lib/tools/code-highlight";
+import { filterCurrencies, findCurrency } from "@/lib/tools/currencies";
 import { cn } from "@/lib/utils";
 
 /** A single labelled number in the result pane. */
@@ -322,6 +323,235 @@ export function ToolBadge({
   tone?: "neutral" | "success" | "warning" | "danger" | "accent";
 }) {
   return <span className="tp-tool-badge" data-tone={tone}>{children}</span>;
+}
+
+/** Large, calm primary result card. One hero value per tool pane. */
+export function HeroValue({
+  label,
+  value,
+  note,
+}: {
+  label: string;
+  value: string;
+  note?: string;
+}) {
+  return (
+    <div className="tp-hero-value">
+      <span className="tp-tool-label">{label}</span>
+      <output dir="ltr" className="tp-hero-value-text">{value}</output>
+      {note ? <span className="tp-hero-value-note">{note}</span> : null}
+    </div>
+  );
+}
+
+function isoParts(value: string): { year: number; month: number; day: number } | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/u.exec(value.trim());
+  if (!match) return null;
+  return { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) };
+}
+
+/**
+ * Day, month and year selects in that reading order. A month change clamps the
+ * day to the last valid date, and the optional Today action keeps a reference
+ * date on the current day without a native date input.
+ */
+export function DatePartsPicker({
+  id,
+  label,
+  value,
+  onChange,
+  locale,
+  hint,
+  ariaDescribedBy,
+  minYear = 1900,
+  maxYear = 2100,
+  todayLabel,
+  onToday,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  locale: string;
+  hint?: string;
+  ariaDescribedBy?: string;
+  minYear?: number;
+  maxYear?: number;
+  todayLabel?: string;
+  onToday?: () => void;
+}) {
+  const t = useTranslations("toolUi");
+  const parts = isoParts(value);
+  const monthFormatter = useMemo(
+    () => new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC" }),
+    [locale],
+  );
+  const months = useMemo(
+    () => Array.from({ length: 12 }, (_, index) => ({
+      value: index + 1,
+      label: monthFormatter.format(new Date(Date.UTC(2024, index, 1))),
+    })),
+    [monthFormatter],
+  );
+  const years = useMemo(
+    () => Array.from({ length: maxYear - minYear + 1 }, (_, index) => maxYear - index),
+    [minYear, maxYear],
+  );
+
+  const update = (patch: Partial<{ year: number; month: number; day: number }>) => {
+    const year = patch.year ?? parts?.year ?? 0;
+    const month = patch.month ?? parts?.month ?? 0;
+    const day = patch.day ?? parts?.day ?? 0;
+    if (!year || !month || !day) {
+      onChange("");
+      return;
+    }
+    const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    onChange(
+      `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(Math.min(day, lastDay)).padStart(2, "0")}`,
+    );
+  };
+
+  return (
+    <div className="tp-tool-group tp-tool-group--flush">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="tp-tool-group-title">{label}</span>
+        {todayLabel && onToday ? (
+          <button type="button" className="tp-date-today" onClick={onToday}>
+            {todayLabel}
+          </button>
+        ) : null}
+      </div>
+      <div className="tp-date-parts">
+        <label className="tp-date-part" htmlFor={`${id}-day`}>
+          <span>{t("day")}</span>
+          <select
+            id={`${id}-day`}
+            value={parts?.day ?? ""}
+            aria-label={`${label} ${t("day")}`}
+            aria-describedby={ariaDescribedBy}
+            onChange={(event) => update({ day: Number(event.target.value) })}
+          >
+            <option value="">{t("dayPlaceholder")}</option>
+            {Array.from({ length: 31 }, (_, index) => index + 1).map((day) => (
+              <option key={day} value={day}>{day}</option>
+            ))}
+          </select>
+        </label>
+        <label className="tp-date-part" htmlFor={`${id}-month`}>
+          <span>{t("month")}</span>
+          <select
+            id={`${id}-month`}
+            value={parts?.month ?? ""}
+            aria-label={`${label} ${t("month")}`}
+            aria-describedby={ariaDescribedBy}
+            onChange={(event) => update({ month: Number(event.target.value) })}
+          >
+            <option value="">{t("monthPlaceholder")}</option>
+            {months.map((month) => (
+              <option key={month.value} value={month.value}>{month.label}</option>
+            ))}
+          </select>
+        </label>
+        <label className="tp-date-part" htmlFor={`${id}-year`}>
+          <span>{t("year")}</span>
+          <select
+            id={`${id}-year`}
+            value={parts?.year ?? ""}
+            aria-label={`${label} ${t("year")}`}
+            aria-describedby={ariaDescribedBy}
+            onChange={(event) => update({ year: Number(event.target.value) })}
+          >
+            <option value="">{t("yearPlaceholder")}</option>
+            {years.map((year) => <option key={year} value={year}>{year}</option>)}
+          </select>
+        </label>
+      </div>
+      {hint ? <p className="tp-tool-hint">{hint}</p> : null}
+    </div>
+  );
+}
+
+/** Searchable currency combobox. Typing a letter filters code and name. */
+export function CurrencyPicker({
+  id,
+  label,
+  value,
+  onChange,
+  hint,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (code: string) => void;
+  hint?: string;
+}) {
+  const t = useTranslations("toolUi");
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const rootRef = useRef<HTMLDivElement>(null);
+  const selected = findCurrency(value);
+  const options = useMemo(() => filterCurrencies(query), [query]);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
+  }, [open]);
+
+  return (
+    <div className="tp-tool-group tp-tool-group--flush tp-currency" ref={rootRef}>
+      <span className="tp-tool-group-title">{label}</span>
+      <input
+        id={id}
+        type="text"
+        className="tp-currency-input"
+        role="combobox"
+        aria-expanded={open}
+        aria-controls={`${id}-list`}
+        aria-label={label}
+        aria-autocomplete="list"
+        autoComplete="off"
+        value={open ? query : `${selected.code} · ${selected.name}`}
+        placeholder={t("currencySearchPlaceholder")}
+        onFocus={() => { setQuery(""); setOpen(true); }}
+        onChange={(event) => { setQuery(event.target.value); setOpen(true); }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setOpen(false);
+          if (event.key === "Enter" && options.length > 0) {
+            event.preventDefault();
+            onChange(options[0].code);
+            setOpen(false);
+          }
+        }}
+      />
+      {open ? (
+        <div className="tp-currency-list" id={`${id}-list`} role="listbox" aria-label={t("currencySearchLabel")}>
+          {options.length === 0 ? (
+            <p className="tp-tool-hint" style={{ padding: "8px 9px", margin: 0 }}>
+              {t("currencyNoResults")}
+            </p>
+          ) : options.map((option) => (
+            <button
+              key={option.code}
+              type="button"
+              role="option"
+              aria-selected={option.code === value}
+              className="tp-currency-option"
+              onClick={() => { onChange(option.code); setOpen(false); }}
+            >
+              <span className="tp-currency-code">{option.code}</span>
+              <span className="tp-currency-hint">{option.name}</span>
+            </button>
+          ))}
+        </div>
+      ) : null}
+      {hint ? <p className="tp-tool-hint">{hint}</p> : null}
+    </div>
+  );
 }
 
 /** Accessible 2-4 choice segmented control with arrow-key navigation. */

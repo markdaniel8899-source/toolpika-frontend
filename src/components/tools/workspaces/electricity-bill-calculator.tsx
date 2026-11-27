@@ -3,8 +3,11 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   CopyButton,
+  CurrencyPicker,
+  HeroValue,
   NumberStepper,
   SegmentedControl,
   Stat,
@@ -12,7 +15,6 @@ import {
   ToolField,
   ToolPane,
   ToolShell,
-  selectClassName,
   useCopyShortcut,
   usePersistedOptions,
 } from "@/components/tools/workspace-ui";
@@ -28,12 +30,12 @@ import {
 } from "./electricity-bill-calculator.logic";
 
 const ERROR_ID = "electricity-bill-calculator-error";
-const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "INR"] as const;
 const SAMPLE: ApplianceInput[] = [
   { id: "sample-heater", name: "Heater", power: "2000", hours: "4", days: "" },
   { id: "sample-laptop", name: "Laptop", power: "100", hours: "6", days: "" },
   { id: "sample-fridge", name: "Refrigerator", power: "150", hours: "24", days: "" },
 ];
+const EMPTY_DRAFT: ApplianceInput = { id: "draft", name: "", power: "", hours: "", days: "" };
 
 export default function ElectricityBillCalculator() {
   const t = useTranslations("toolUi");
@@ -44,23 +46,15 @@ export default function ElectricityBillCalculator() {
   const { options, update, reset: resetOptions } = usePersistedOptions<{
     wattageUnit: WattageUnit;
     currency: string;
-  }>("toolpika:electricity-bill-calculator", {
-    wattageUnit: "W",
-    currency: "USD",
-  });
+  }>("toolpika:electricity-bill-calculator", { wattageUnit: "W", currency: "USD" });
 
   const [rows, setRows] = useState<ApplianceInput[]>([]);
+  const [draft, setDraft] = useState<ApplianceInput>({ ...EMPTY_DRAFT });
   const [daysPerMonth, setDaysPerMonth] = useState(DEFAULT_DAYS_PER_MONTH);
   const [rate, setRate] = useState("");
 
   const input = useMemo<ElectricityBillInput>(
-    () => ({
-      appliances: rows,
-      wattageUnit: options.wattageUnit,
-      daysPerMonth,
-      rate,
-      currency: options.currency,
-    }),
+    () => ({ appliances: rows, wattageUnit: options.wattageUnit, daysPerMonth, rate, currency: options.currency }),
     [rows, options.wattageUnit, options.currency, daysPerMonth, rate],
   );
   const calculation = useMemo(() => calculateElectricityBill(input), [input]);
@@ -71,11 +65,7 @@ export default function ElectricityBillCalculator() {
     [locale],
   );
   const moneyFmt = useMemo(
-    () =>
-      new Intl.NumberFormat(locale, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }),
+    () => new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
     [locale],
   );
   const money = useCallback(
@@ -87,9 +77,7 @@ export default function ElectricityBillCalculator() {
   const errorText =
     errorCode === "NO_APPLIANCES"
       ? `${tw("electricity-bill-calculator.errorEmpty")} ${tw("electricity-bill-calculator.fixEmpty")}`
-      : errorCode === "MISSING_POWER" ||
-          errorCode === "MISSING_HOURS" ||
-          errorCode === "MISSING_RATE"
+      : errorCode === "MISSING_POWER" || errorCode === "MISSING_HOURS" || errorCode === "MISSING_RATE"
         ? `${tw("electricity-bill-calculator.errorMissing")} ${tw("electricity-bill-calculator.fixMissing")}`
         : errorCode === "INVALID_POWER"
           ? `${tw("electricity-bill-calculator.errorPower")} ${tw("electricity-bill-calculator.fixPower")}`
@@ -128,33 +116,28 @@ export default function ElectricityBillCalculator() {
   }, [reportText]);
   useCopyShortcut(handleCopyShortcut);
 
-  const updateRow = (id: string, patch: Partial<ApplianceInput>) => {
-    setRows((previous) =>
-      previous.map((row) => (row.id === id ? { ...row, ...patch } : row)),
-    );
+  const updateDraft = (patch: Partial<ApplianceInput>) => {
+    setDraft((previous) => ({ ...previous, ...patch }));
   };
-
-  const addRow = () => {
-    if (rows.length >= MAX_APPLIANCES) return;
-    setRows((previous) => [
-      ...previous,
-      { id: `row-${nextId.current++}`, name: "", power: "", hours: "", days: "" },
-    ]);
+  const addDraft = () => {
+    if (rows.length >= MAX_APPLIANCES || !draft.name.trim()) return;
+    setRows((previous) => [...previous, { ...draft, id: `row-${nextId.current++}` }]);
+    setDraft({ ...EMPTY_DRAFT });
   };
-
   const removeRow = (id: string) => {
     setRows((previous) => previous.filter((row) => row.id !== id));
   };
 
   const handleSample = () => {
     setRows(SAMPLE.map((row) => ({ ...row })));
+    setDraft({ ...EMPTY_DRAFT });
     setDaysPerMonth(DEFAULT_DAYS_PER_MONTH);
     setRate("0.25");
     update({ wattageUnit: "W", currency: "USD" });
   };
-
   const handleReset = () => {
     setRows([]);
+    setDraft({ ...EMPTY_DRAFT });
     setDaysPerMonth(DEFAULT_DAYS_PER_MONTH);
     setRate("");
     resetOptions();
@@ -176,9 +159,7 @@ export default function ElectricityBillCalculator() {
           hint={tw("electricity-bill-calculator.inputHint")}
         >
           <div className="tp-tool-group tp-tool-group--flush">
-            <p className="tp-tool-group-title">
-              {tw("electricity-bill-calculator.settingsTitle")}
-            </p>
+            <span className="tp-tool-group-title">{tw("electricity-bill-calculator.settingsTitle")}</span>
             <SegmentedControl<WattageUnit>
               label={tw("electricity-bill-calculator.wattageLabel")}
               value={options.wattageUnit}
@@ -189,169 +170,70 @@ export default function ElectricityBillCalculator() {
               onChange={(next) => update({ wattageUnit: next })}
             />
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <ToolField
-                label={tw("electricity-bill-calculator.daysMonthLabel")}
-                htmlFor="tp-electricity-days"
-                hint={tw("electricity-bill-calculator.daysMonthHint")}
-              >
-                <NumberStepper
-                  id="tp-electricity-days"
-                  value={daysPerMonth}
-                  min={1}
-                  max={31}
-                  step={1}
-                  ariaLabel={tw("electricity-bill-calculator.daysMonthLabel")}
-                  increaseLabel={t("stepUp")}
-                  decreaseLabel={t("stepDown")}
-                  describedBy={describedBy}
-                  onValueChange={setDaysPerMonth}
-                />
+              <ToolField label={tw("electricity-bill-calculator.daysMonthLabel")} htmlFor="tp-electricity-days" hint={tw("electricity-bill-calculator.daysMonthHint")}>
+                <NumberStepper id="tp-electricity-days" value={daysPerMonth} min={1} max={31} step={1} ariaLabel={tw("electricity-bill-calculator.daysMonthLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setDaysPerMonth} />
               </ToolField>
-              <ToolField
-                label={tw("electricity-bill-calculator.rateLabel")}
-                htmlFor="tp-electricity-rate"
-                hint={tw("electricity-bill-calculator.rateHint")}
-              >
-                <NumberStepper
-                  id="tp-electricity-rate"
-                  value={rate}
-                  min={0}
-                  step={0.01}
-                  inputMode="decimal"
-                  ariaLabel={tw("electricity-bill-calculator.rateLabel")}
-                  increaseLabel={t("stepUp")}
-                  decreaseLabel={t("stepDown")}
-                  describedBy={describedBy}
-                  onValueChange={setRate}
-                />
-              </ToolField>
-              <ToolField
-                label={tw("electricity-bill-calculator.currencyLabel")}
-                htmlFor="tp-electricity-currency"
-              >
-                <select
-                  id="tp-electricity-currency"
-                  className={selectClassName}
-                  value={options.currency}
-                  aria-label={tw("electricity-bill-calculator.currencyLabel")}
-                  aria-describedby={describedBy}
-                  onChange={(event) => update({ currency: event.target.value })}
-                >
-                  {CURRENCIES.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
+              <ToolField label={tw("electricity-bill-calculator.rateLabel")} htmlFor="tp-electricity-rate" hint={tw("electricity-bill-calculator.rateHint")}>
+                <NumberStepper id="tp-electricity-rate" value={rate} min={0} step={0.01} inputMode="decimal" ariaLabel={tw("electricity-bill-calculator.rateLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setRate} />
               </ToolField>
             </div>
+            <CurrencyPicker
+              id="tp-electricity-currency"
+              label={tw("electricity-bill-calculator.currencyLabel")}
+              value={options.currency}
+              onChange={(next) => update({ currency: next })}
+            />
           </div>
 
           <div className="tp-tool-group tp-tool-group--flush">
-            <div className="flex items-center justify-between gap-2">
-              <p className="tp-tool-group-title">
-                {tw("electricity-bill-calculator.applianceListTitle")}
-              </p>
-              <button
-                type="button"
-                onClick={addRow}
-                disabled={rows.length >= MAX_APPLIANCES}
-              >
-                {tw("electricity-bill-calculator.addAppliance")}
-              </button>
-            </div>
-            <p className="tp-tool-hint">
-              {tw("electricity-bill-calculator.maxHint")}
-            </p>
+            <span className="tp-tool-group-title">{tw("electricity-bill-calculator.applianceListTitle")}</span>
+            <p className="tp-tool-hint">{tw("electricity-bill-calculator.maxHint")}</p>
           </div>
 
-          {rows.map((row, index) => (
-            <div className="tp-tool-group tp-tool-group--flush" key={row.id}>
-              <div className="flex items-center justify-between gap-2">
-                <p className="tp-tool-group-title">
-                  {row.name.trim() ||
-                    `${tw("electricity-bill-calculator.applianceDefault")} ${index + 1}`}
-                </p>
-                <button type="button" onClick={() => removeRow(row.id)}>
-                  {tw("electricity-bill-calculator.removeAppliance")}
-                </button>
-              </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <ToolField
-                  label={tw("electricity-bill-calculator.nameLabel")}
-                  htmlFor={`tp-electricity-name-${row.id}`}
-                >
-                  <input
-                    id={`tp-electricity-name-${row.id}`}
-                    type="text"
-                    className="tp-field-input"
-                    value={row.name}
-                    aria-label={tw("electricity-bill-calculator.nameLabel")}
-                    onChange={(event) => updateRow(row.id, { name: event.target.value })}
-                  />
-                </ToolField>
-                <ToolField
-                  label={tw("electricity-bill-calculator.powerLabel")}
-                  htmlFor={`tp-electricity-power-${row.id}`}
-                >
-                  <NumberStepper
-                    id={`tp-electricity-power-${row.id}`}
-                    value={row.power}
-                    min={0}
-                    step={1}
-                    inputMode="decimal"
-                    ariaLabel={tw("electricity-bill-calculator.powerLabel")}
-                    increaseLabel={t("stepUp")}
-                    decreaseLabel={t("stepDown")}
-                    describedBy={describedBy}
-                    onValueChange={(next) => updateRow(row.id, { power: next })}
-                  />
-                </ToolField>
-                <ToolField
-                  label={tw("electricity-bill-calculator.hoursLabel")}
-                  htmlFor={`tp-electricity-hours-${row.id}`}
-                >
-                  <NumberStepper
-                    id={`tp-electricity-hours-${row.id}`}
-                    value={row.hours}
-                    min={0}
-                    max={24}
-                    step={0.5}
-                    inputMode="decimal"
-                    ariaLabel={tw("electricity-bill-calculator.hoursLabel")}
-                    increaseLabel={t("stepUp")}
-                    decreaseLabel={t("stepDown")}
-                    describedBy={describedBy}
-                    onValueChange={(next) => updateRow(row.id, { hours: next })}
-                  />
-                </ToolField>
-                <ToolField
-                  label={tw("electricity-bill-calculator.daysOverrideLabel")}
-                  htmlFor={`tp-electricity-row-days-${row.id}`}
-                  hint={tw("electricity-bill-calculator.daysOverrideHint")}
-                >
-                  <NumberStepper
-                    id={`tp-electricity-row-days-${row.id}`}
-                    value={row.days}
-                    min={1}
-                    max={31}
-                    step={1}
-                    ariaLabel={tw("electricity-bill-calculator.daysOverrideLabel")}
-                    increaseLabel={t("stepUp")}
-                    decreaseLabel={t("stepDown")}
-                    describedBy={describedBy}
-                    onValueChange={(next) => updateRow(row.id, { days: next })}
-                  />
-                </ToolField>
-              </div>
+          <div className="tp-appliance-draft">
+            <span className="tp-tool-group-title">{tw("electricity-bill-calculator.newApplianceTitle")}</span>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <ToolField label={tw("electricity-bill-calculator.nameLabel")} htmlFor="tp-electricity-draft-name">
+                <input
+                  id="tp-electricity-draft-name"
+                  type="text"
+                  className="tp-field-input"
+                  value={draft.name}
+                  aria-label={tw("electricity-bill-calculator.nameLabel")}
+                  onChange={(event) => updateDraft({ name: event.target.value })}
+                />
+              </ToolField>
+              <ToolField label={tw("electricity-bill-calculator.powerLabel")} htmlFor="tp-electricity-draft-power">
+                <NumberStepper id="tp-electricity-draft-power" value={draft.power} min={0} step={100} inputMode="decimal" ariaLabel={tw("electricity-bill-calculator.powerLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} onValueChange={(next) => updateDraft({ power: next })} />
+              </ToolField>
+              <ToolField label={tw("electricity-bill-calculator.hoursLabel")} htmlFor="tp-electricity-draft-hours">
+                <NumberStepper id="tp-electricity-draft-hours" value={draft.hours} min={0} max={24} step={0.5} inputMode="decimal" ariaLabel={tw("electricity-bill-calculator.hoursLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} onValueChange={(next) => updateDraft({ hours: next })} />
+              </ToolField>
+              <ToolField label={tw("electricity-bill-calculator.daysOverrideLabel")} htmlFor="tp-electricity-draft-days" hint={tw("electricity-bill-calculator.daysOverrideHint")}>
+                <NumberStepper id="tp-electricity-draft-days" value={draft.days} min={1} max={31} step={1} ariaLabel={tw("electricity-bill-calculator.daysOverrideLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} onValueChange={(next) => updateDraft({ days: next })} />
+              </ToolField>
             </div>
-          ))}
+            <Button type="button" className="tp-appliance-add" onClick={addDraft} disabled={rows.length >= MAX_APPLIANCES || !draft.name.trim()}>
+              {tw("electricity-bill-calculator.addAppliance")}
+            </Button>
+          </div>
 
-          {errorText ? (
-            <p id={ERROR_ID} className="tp-tool-error" role="alert">
-              {errorText}
-            </p>
-          ) : null}
+          {rows.length === 0 ? (
+            <p className="tp-tool-hint">{tw("electricity-bill-calculator.emptyListHint")}</p>
+          ) : (
+            <div className="tp-tool-list">
+              {rows.map((row) => (
+                <div className="tp-appliance-row" key={row.id}>
+                  <strong>{row.name || tw("electricity-bill-calculator.applianceDefault")}</strong>
+                  <button type="button" className="tp-appliance-remove" onClick={() => removeRow(row.id)}>
+                    {tw("electricity-bill-calculator.removeAppliance")}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {errorText ? <p id={ERROR_ID} className="tp-tool-error" role="alert">{errorText}</p> : null}
         </ToolPane>
       }
       result={
@@ -359,72 +241,38 @@ export default function ElectricityBillCalculator() {
           id="tp-electricity-result-title"
           title={t("result")}
           result
-          actions={
-            <CopyButton
-              text={reportText}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
-          }
+          actions={<CopyButton text={reportText} label={t("copy")} copiedLabel={t("copied")} />}
         >
           {!ready || !value ? (
             <div aria-live="polite">
               <ToolEmpty
                 icon={<Zap aria-hidden="true" />}
-                title={
-                  errorText
-                    ? tw("electricity-bill-calculator.errorTitle")
-                    : tw("electricity-bill-calculator.emptyTitle")
-                }
-                hint={
-                  errorText
-                    ? tw("electricity-bill-calculator.emptyErrorHint")
-                    : tw("electricity-bill-calculator.emptyHint")
-                }
+                title={errorText ? tw("electricity-bill-calculator.errorTitle") : tw("electricity-bill-calculator.emptyTitle")}
+                hint={errorText ? tw("electricity-bill-calculator.emptyErrorHint") : tw("electricity-bill-calculator.emptyHint")}
               />
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">
-                  {tw("electricity-bill-calculator.heroLabel")}
-                </span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {money(value.monthlyCost)}
-                </output>
-              </div>
+              <HeroValue
+                label={tw("electricity-bill-calculator.heroLabel")}
+                value={money(value.monthlyCost)}
+                note={`${tw("electricity-bill-calculator.daysMonthLabel")}: ${daysPerMonth}`}
+              />
 
               <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("electricity-bill-calculator.dailyKwhLabel")}
-                  value={`${numberFmt.format(value.dailyKwh)} ${tw("electricity-bill-calculator.unitKwh")}`}
-                />
-                <Stat
-                  label={tw("electricity-bill-calculator.monthlyKwhLabel")}
-                  value={`${numberFmt.format(value.monthlyKwh)} ${tw("electricity-bill-calculator.unitKwh")}`}
-                />
-                <Stat
-                  label={tw("electricity-bill-calculator.yearlyKwhLabel")}
-                  value={`${numberFmt.format(value.yearlyKwh)} ${tw("electricity-bill-calculator.unitKwh")}`}
-                />
-                <Stat
-                  label={tw("electricity-bill-calculator.yearlyCostLabel")}
-                  value={money(value.yearlyCost)}
-                />
+                <Stat label={tw("electricity-bill-calculator.dailyKwhLabel")} value={`${numberFmt.format(value.dailyKwh)} ${tw("electricity-bill-calculator.unitKwh")}`} />
+                <Stat label={tw("electricity-bill-calculator.monthlyKwhLabel")} value={`${numberFmt.format(value.monthlyKwh)} ${tw("electricity-bill-calculator.unitKwh")}`} />
+                <Stat label={tw("electricity-bill-calculator.yearlyKwhLabel")} value={`${numberFmt.format(value.yearlyKwh)} ${tw("electricity-bill-calculator.unitKwh")}`} />
+                <Stat label={tw("electricity-bill-calculator.yearlyCostLabel")} value={money(value.yearlyCost)} />
               </dl>
 
-              <div className="flex flex-col gap-2">
-                <span className="tp-tool-group-title">
-                  {tw("electricity-bill-calculator.breakdownTitle")}
-                </span>
+              <div className="tp-tool-group tp-tool-group--flush">
+                <span className="tp-tool-group-title">{tw("electricity-bill-calculator.breakdownTitle")}</span>
                 <div className="tp-tool-list">
                   {value.appliances.map((item) => (
-                    <div className="tp-tool-row" key={item.id}>
-                      <span>
-                        {item.name ||
-                          tw("electricity-bill-calculator.applianceDefault")}
-                      </span>
-                      <span className="tp-tool-pill" dir="ltr">
+                    <div className="tp-tool-row tp-tool-row-plain" key={item.id}>
+                      <span>{item.name || tw("electricity-bill-calculator.applianceDefault")}</span>
+                      <span className="tp-tool-value" dir="ltr">
                         {`${numberFmt.format(item.monthlyKwh)} ${tw("electricity-bill-calculator.unitKwh")} / ${money(item.monthlyCost)}`}
                       </span>
                     </div>

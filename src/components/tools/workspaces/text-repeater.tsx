@@ -8,6 +8,7 @@ import {
   CheckboxRow,
   CopyButton,
   DownloadButton,
+  HeroValue,
   NumberStepper,
   SegmentedControl,
   Stat,
@@ -23,7 +24,6 @@ import {
   MAX_REPEATS,
   MIN_REPEATS,
   type Separator,
-  type TextRepeaterErrorCode,
 } from "./text-repeater.logic";
 
 const ERROR_ID = "tp-text-repeater-error";
@@ -52,15 +52,14 @@ export default function TextRepeater() {
   const calculation = useMemo(() => calculateTextRepeater(input), [input]);
   const value = calculation.value;
 
-  const errorCode: TextRepeaterErrorCode | undefined = calculation.error?.code;
   const errorText =
-    errorCode === "EMPTY_TEXT"
+    calculation.error?.code === "EMPTY_TEXT"
       ? `${tw("text-repeater.errorEmpty")} ${tw("text-repeater.fixEmpty")}`
-      : errorCode === "INVALID_COUNT"
+      : calculation.error?.code === "INVALID_COUNT"
         ? `${tw("text-repeater.errorCountInvalid")} ${tw("text-repeater.fixCount")}`
-        : errorCode === "COUNT_OUT_OF_RANGE"
+        : calculation.error?.code === "COUNT_OUT_OF_RANGE"
           ? `${tw("text-repeater.errorCountRange")} ${tw("text-repeater.fixCountRange")}`
-          : errorCode === "EMPTY_DELIMITER"
+          : calculation.error?.code === "EMPTY_DELIMITER"
             ? `${tw("text-repeater.errorDelimiter")} ${tw("text-repeater.fixDelimiter")}`
             : "";
   const describedBy = errorText ? ERROR_ID : undefined;
@@ -82,7 +81,6 @@ export default function TextRepeater() {
     setCount("5");
     setCustomDelimiter("");
   };
-
   const handleReset = () => {
     resetOptions();
     setText("");
@@ -100,21 +98,13 @@ export default function TextRepeater() {
       onSample={handleSample}
       onReset={handleReset}
       input={
-        <ToolPane
-          id="tp-text-repeater-input-title"
-          title={tw("text-repeater.inputTitle")}
-          hint={tw("text-repeater.inputHint")}
-        >
-          <ToolField
-            label={tw("text-repeater.textLabel")}
-            htmlFor="tp-text-repeater-text"
-            hint={tw("text-repeater.textHint")}
-          >
+        <ToolPane id="tp-text-repeater-input-title" title={tw("text-repeater.inputTitle")} hint={tw("text-repeater.inputHint")}>
+          <ToolField label={tw("text-repeater.textLabel")} htmlFor="tp-text-repeater-text" hint={tw("text-repeater.textHint")}>
             <textarea
               id="tp-text-repeater-text"
-              className="tp-field-input"
+              className="tp-field-input tp-tool-editor"
               value={text}
-              rows={3}
+              rows={4}
               placeholder={tw("text-repeater.textPlaceholder")}
               aria-describedby={describedBy}
               onChange={(event) => setText(event.target.value)}
@@ -122,59 +112,28 @@ export default function TextRepeater() {
             />
           </ToolField>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ToolField
-              label={tw("text-repeater.countLabel")}
-              htmlFor="tp-text-repeater-count"
-              hint={tw("text-repeater.countHint")}
-            >
-              <NumberStepper
-                id="tp-text-repeater-count"
-                value={count}
-                min={MIN_REPEATS}
-                max={MAX_REPEATS}
-                ariaLabel={tw("text-repeater.countLabel")}
-                increaseLabel={t("stepUp")}
-                decreaseLabel={t("stepDown")}
-                describedBy={describedBy}
-                onValueChange={setCount}
-              />
-            </ToolField>
-
-            <ToolField
-              label={tw("text-repeater.customLabel")}
-              htmlFor="tp-text-repeater-delimiter"
-              hint={tw("text-repeater.customHint")}
-            >
-              <input
-                id="tp-text-repeater-delimiter"
-                type="text"
-                className="tp-field-input"
-                value={customDelimiter}
-                placeholder={tw("text-repeater.customPlaceholder")}
-                aria-describedby={describedBy}
-                onChange={(event) => setCustomDelimiter(event.target.value)}
-                spellCheck={false}
-                autoComplete="off"
-              />
-            </ToolField>
-          </div>
-
           <div className="tp-tool-group tp-tool-group--flush">
-            <p className="tp-tool-group-title">{tw("text-repeater.quickLabel")}</p>
+            <span className="tp-tool-group-title">{tw("text-repeater.quickLabel")}</span>
             <div className="flex flex-wrap gap-2">
               {QUICK_COUNTS.map((quick) => (
-                <Button
-                  key={quick}
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setCount(String(quick))}
-                >
+                <Button key={quick} type="button" size="sm" variant={count === String(quick) ? "default" : "secondary"} onClick={() => setCount(String(quick))}>
                   {nf.format(quick)}
                 </Button>
               ))}
             </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <ToolField label={tw("text-repeater.countLabel")} htmlFor="tp-text-repeater-count" hint={tw("text-repeater.countHint")}>
+                <NumberStepper id="tp-text-repeater-count" value={count} min={MIN_REPEATS} max={MAX_REPEATS} ariaLabel={tw("text-repeater.countLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setCount} />
+              </ToolField>
+              {separator === "custom" ? (
+                <ToolField label={tw("text-repeater.customLabel")} htmlFor="tp-text-repeater-delimiter" hint={tw("text-repeater.customHint")}>
+                  <input id="tp-text-repeater-delimiter" type="text" className="tp-field-input" value={customDelimiter} placeholder={tw("text-repeater.customPlaceholder")} aria-describedby={describedBy} onChange={(event) => setCustomDelimiter(event.target.value)} spellCheck={false} autoComplete="off" />
+                </ToolField>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="tp-tool-group tp-tool-group--flush">
             <SegmentedControl<Separator>
               label={tw("text-repeater.separatorLabel")}
               value={separator}
@@ -186,20 +145,11 @@ export default function TextRepeater() {
               ]}
               onChange={(next) => update({ separator: next })}
             />
-            <CheckboxRow
-              id="tp-text-repeater-number"
-              label={tw("text-repeater.numberLinesLabel")}
-              checked={numberLines}
-              onChange={(checked) => update({ numberLines: checked })}
-            />
+            <CheckboxRow id="tp-text-repeater-number" label={tw("text-repeater.numberLinesLabel")} checked={numberLines} onChange={(checked) => update({ numberLines: checked })} />
             <p className="tp-tool-hint">{tw("text-repeater.numberLinesHint")}</p>
           </div>
 
-          {errorText ? (
-            <p id={ERROR_ID} className="tp-tool-error" role="alert">
-              {errorText}
-            </p>
-          ) : null}
+          {errorText ? <p id={ERROR_ID} className="tp-tool-error" role="alert">{errorText}</p> : null}
         </ToolPane>
       }
       result={
@@ -209,65 +159,27 @@ export default function TextRepeater() {
           result
           actions={
             <>
-              <CopyButton
-                text={ready && value ? value.output : ""}
-                label={t("copy")}
-                copiedLabel={t("copied")}
-              />
-              <DownloadButton
-                content={ready && value ? value.output : null}
-                fileName={tw("text-repeater.downloadFileName")}
-                label={tw("text-repeater.downloadLabel")}
-              />
+              <CopyButton text={ready && value ? value.output : ""} label={t("copy")} copiedLabel={t("copied")} />
+              <DownloadButton content={ready && value ? value.output : null} fileName={tw("text-repeater.downloadFileName")} label={tw("text-repeater.downloadLabel")} />
             </>
           }
         >
           {!ready || !value ? (
             <div aria-live="polite">
-              <ToolEmpty
-                icon={<Repeat2 aria-hidden="true" />}
-                title={
-                  errorText
-                    ? tw("text-repeater.errorTitle")
-                    : tw("text-repeater.emptyTitle")
-                }
-                hint={
-                  errorText
-                    ? tw("text-repeater.errorHint")
-                    : tw("text-repeater.emptyHint")
-                }
-              />
+              <ToolEmpty icon={<Repeat2 aria-hidden="true" />} title={errorText ? tw("text-repeater.errorTitle") : tw("text-repeater.emptyTitle")} hint={errorText ? tw("text-repeater.errorHint") : tw("text-repeater.emptyHint")} />
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">{tw("text-repeater.heroLabel")}</span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {nf.format(value.repeats)} {tw("text-repeater.copiesLabel")}
-                </output>
-              </div>
-
+              <HeroValue label={tw("text-repeater.heroLabel")} value={`${nf.format(value.repeats)} ${tw("text-repeater.copiesLabel")}`} note={`${tw("text-repeater.outputCharactersLabel")}: ${nf.format(value.outputCharacters)}`} />
               <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("text-repeater.inputCharactersLabel")}
-                  value={nf.format(value.inputCharacters)}
-                />
-                <Stat
-                  label={tw("text-repeater.inputLinesLabel")}
-                  value={nf.format(value.inputLines)}
-                />
-                <Stat
-                  label={tw("text-repeater.outputCharactersLabel")}
-                  value={nf.format(value.outputCharacters)}
-                />
+                <Stat label={tw("text-repeater.inputCharactersLabel")} value={nf.format(value.inputCharacters)} />
+                <Stat label={tw("text-repeater.inputLinesLabel")} value={nf.format(value.inputLines)} />
+                <Stat label={tw("text-repeater.outputCharactersLabel")} value={nf.format(value.outputCharacters)} />
                 <Stat label={t("lines")} value={nf.format(value.outputLines)} />
               </dl>
-
-              <div className="flex flex-col gap-1">
+              <div className="tp-tool-group tp-tool-group--flush">
                 <span className="tp-tool-label">{tw("text-repeater.previewLabel")}</span>
-                <div className="tp-tool-url whitespace-pre-line">
-                  <code dir="ltr">{value.output}</code>
-                </div>
+                <div className="tp-tool-code whitespace-pre-line"><code dir="ltr">{value.output}</code></div>
               </div>
             </div>
           )}

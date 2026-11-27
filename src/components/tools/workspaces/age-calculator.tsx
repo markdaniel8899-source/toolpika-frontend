@@ -5,9 +5,10 @@ import { useLocale, useTranslations } from "next-intl";
 import { Cake } from "lucide-react";
 import {
   CopyButton,
+  DatePartsPicker,
+  HeroValue,
   Stat,
   ToolEmpty,
-  ToolField,
   ToolPane,
   ToolShell,
   useCopyShortcut,
@@ -20,11 +21,7 @@ import {
 } from "./age-calculator.logic";
 
 const ERROR_ID = "tp-age-error";
-
-const SAMPLE = {
-  birth: "1990-06-15",
-  asOf: "2026-11-27",
-};
+const SAMPLE = { birth: "1990-06-15", asOf: "2026-11-27" };
 
 export default function AgeCalculator() {
   const t = useTranslations("toolUi");
@@ -34,7 +31,6 @@ export default function AgeCalculator() {
   const [birth, setBirth] = useState("");
   const [asOf, setAsOf] = useState("");
 
-  // "Today" is filled after hydration so server and client markup agree.
   useEffect(() => {
     const frame = requestAnimationFrame(() => setAsOf(toDateString(new Date())));
     return () => cancelAnimationFrame(frame);
@@ -64,7 +60,10 @@ export default function AgeCalculator() {
     () => new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "UTC" }),
     [locale],
   );
-
+  const dateFormat = useMemo(
+    () => new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }),
+    [locale],
+  );
   const weekdayOf = useCallback(
     (iso: string) => {
       const [year, month, day] = iso.split("-").map(Number);
@@ -75,14 +74,18 @@ export default function AgeCalculator() {
     },
     [weekdayFormat],
   );
+  const formatDate = useCallback(
+    (iso: string) => dateFormat.format(new Date(`${iso}T00:00:00Z`)),
+    [dateFormat],
+  );
 
   const heroText = useMemo(() => {
     if (!value) return "";
     return [
-      `${nf.format(value.years)} ${tw("age-calculator.unitYearShort")}`,
-      `${nf.format(value.months)} ${tw("age-calculator.unitMonthShort")}`,
-      `${nf.format(value.days)} ${tw("age-calculator.unitDayShort")}`,
-    ].join(" ");
+      `${nf.format(value.years)} ${tw("age-calculator.unitYears")}`,
+      `${nf.format(value.months)} ${tw("age-calculator.unitMonths")}`,
+      `${nf.format(value.days)} ${tw("age-calculator.unitDays")}`,
+    ].join(", ");
   }, [value, nf, tw]);
 
   const reportText = useMemo(() => {
@@ -125,7 +128,6 @@ export default function AgeCalculator() {
     setBirth(SAMPLE.birth);
     setAsOf(SAMPLE.asOf);
   };
-
   const handleReset = () => {
     setBirth("");
     setAsOf(toDateString(new Date()));
@@ -146,40 +148,28 @@ export default function AgeCalculator() {
           title={tw("age-calculator.inputTitle")}
           hint={tw("age-calculator.inputHint")}
         >
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ToolField
-              label={tw("age-calculator.birthLabel")}
-              htmlFor="tp-age-birth"
-              hint={tw("age-calculator.birthHint")}
-            >
-              <input
-                id="tp-age-birth"
-                type="date"
-                className="tp-field-input"
-                value={birth}
-                aria-label={tw("age-calculator.birthLabel")}
-                aria-describedby={describedBy}
-                onChange={(event) => setBirth(event.target.value)}
-              />
-            </ToolField>
-
-            <ToolField
-              label={tw("age-calculator.asOfLabel")}
-              htmlFor="tp-age-as-of"
-              hint={tw("age-calculator.asOfHint")}
-            >
-              <input
-                id="tp-age-as-of"
-                type="date"
-                className="tp-field-input"
-                value={asOf}
-                aria-label={tw("age-calculator.asOfLabel")}
-                aria-describedby={describedBy}
-                onChange={(event) => setAsOf(event.target.value)}
-              />
-            </ToolField>
-          </div>
-
+          <DatePartsPicker
+            id="tp-age-birth"
+            label={tw("age-calculator.birthLabel")}
+            value={birth}
+            onChange={setBirth}
+            locale={locale}
+            hint={tw("age-calculator.birthHint")}
+            ariaDescribedBy={describedBy}
+            minYear={1900}
+          />
+          <DatePartsPicker
+            id="tp-age-as-of"
+            label={tw("age-calculator.asOfLabel")}
+            value={asOf}
+            onChange={setAsOf}
+            locale={locale}
+            hint={tw("age-calculator.asOfHint")}
+            ariaDescribedBy={describedBy}
+            todayLabel={t("today")}
+            onToday={() => setAsOf(toDateString(new Date()))}
+            minYear={1900}
+          />
           {errorText ? (
             <p id={ERROR_ID} className="tp-tool-error" role="alert">
               {errorText}
@@ -193,40 +183,26 @@ export default function AgeCalculator() {
           title={t("result")}
           hint={tw("age-calculator.resultHint")}
           result
-          actions={
-            <CopyButton
-              text={reportText}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
-          }
+          actions={<CopyButton text={reportText} label={t("copy")} copiedLabel={t("copied")} />}
         >
           {!ready || !value ? (
             <div aria-live="polite">
               <ToolEmpty
                 icon={<Cake aria-hidden="true" />}
-                title={
-                  errorText
-                    ? tw("age-calculator.errorTitle")
-                    : tw("age-calculator.emptyTitle")
-                }
+                title={errorText ? tw("age-calculator.errorTitle") : tw("age-calculator.emptyTitle")}
                 hint={errorText || tw("age-calculator.emptyHint")}
               />
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">{tw("age-calculator.heroLabel")}</span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {heroText}
-                </output>
-              </div>
+              <HeroValue
+                label={tw("age-calculator.heroLabel")}
+                value={heroText}
+                note={`${tw("age-calculator.birthLabel")}: ${birth}`}
+              />
 
               <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("age-calculator.totalDaysLabel")}
-                  value={`${nf.format(value.totalDays)} ${tw("age-calculator.unitDays")}`}
-                />
+                <Stat label={tw("age-calculator.totalDaysLabel")} value={`${nf.format(value.totalDays)} ${tw("age-calculator.unitDays")}`} />
                 <Stat
                   label={tw("age-calculator.wholeWeeksLabel")}
                   value={`${nf.format(value.weeks)} ${tw("age-calculator.unitWeeks")} + ${nf.format(value.weekDays)} ${tw("age-calculator.unitDays")}`}
@@ -242,23 +218,17 @@ export default function AgeCalculator() {
               </dl>
 
               <div className="tp-tool-list">
-                <div className="tp-tool-row">
+                <div className="tp-tool-row tp-tool-row-plain">
                   <span>{tw("age-calculator.birthWeekdayLabel")}</span>
-                  <span className="tp-tool-pill" dir="ltr">
-                    {weekdayOf(birth)}
-                  </span>
+                  <span className="tp-tool-value" dir="ltr">{weekdayOf(birth)}</span>
                 </div>
-                <div className="tp-tool-row">
+                <div className="tp-tool-row tp-tool-row-plain">
                   <span>{tw("age-calculator.nextBirthdayLabel")}</span>
-                  <span className="tp-tool-pill" dir="ltr">
-                    {value.nextBirthday}
-                  </span>
+                  <span className="tp-tool-value" dir="ltr">{formatDate(value.nextBirthday)}</span>
                 </div>
-                <div className="tp-tool-row">
+                <div className="tp-tool-row tp-tool-row-plain">
                   <span>{tw("age-calculator.nextBirthdayWeekdayLabel")}</span>
-                  <span className="tp-tool-pill" dir="ltr">
-                    {weekdayOf(value.nextBirthday)}
-                  </span>
+                  <span className="tp-tool-value" dir="ltr">{weekdayOf(value.nextBirthday)}</span>
                 </div>
               </div>
 

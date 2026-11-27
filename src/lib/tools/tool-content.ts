@@ -206,6 +206,16 @@ const WITH_SEARCH_INTENTS = new Set([
   "random-string-generator",
   "pomodoro-timer",
   "five-letter-word-finder",
+  "age-calculator",
+  "sales-tax-calculator",
+  "savings-goal-calculator",
+  "fuel-cost-calculator",
+  "cooking-converter",
+  "stopwatch-timer",
+  "electricity-bill-calculator",
+  "due-date-calculator",
+  "text-repeater",
+  "reverse-text",
 ]);
 
 /**

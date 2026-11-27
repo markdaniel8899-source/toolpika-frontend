@@ -10218,3 +10218,317 @@ textarea::-webkit-scrollbar-thumb,
 .tp-tool-pane--result .tp-tool-stat dt {
   font-size: 10px;
 }
+
+/* --------------------------------------------------------------------------
+ * Daily-life tool refinements: calm, high-contrast result hierarchy.
+ * -------------------------------------------------------------------------- */
+
+.tp-hero-value {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent-wash), var(--accent-soft));
+  box-shadow: var(--card-shadow);
+}
+
+.tp-hero-value .tp-tool-label {
+  color: color-mix(in srgb, var(--accent) 70%, var(--muted));
+}
+
+.tp-hero-value-text {
+  display: block;
+  min-width: 0;
+  color: var(--accent);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.tp-hero-value-note {
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.tp-tool-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tp-tool-stat {
+  min-width: 0;
+}
+
+.tp-tool-stat dd {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.tp-tool-value {
+  min-width: 0;
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  text-align: end;
+}
+
+.tp-tool-row-plain {
+  align-items: flex-start;
+}
+
+.tp-tool-row-plain > span:first-child {
+  font-family: inherit;
+  font-size: 12.5px;
+}
+
+/* Day / month / year date entry */
+.tp-date-parts {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.tp-date-part {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.tp-date-part > span {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tp-date-part select {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.tp-date-part select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.tp-date-today {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 650;
+}
+
+.tp-date-today:hover {
+  text-decoration: underline;
+}
+
+/* Searchable currency picker */
+.tp-currency {
+  position: relative;
+  min-width: 0;
+}
+
+.tp-currency-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.tp-currency-list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  max-height: 210px;
+  overflow: auto;
+  padding: 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.tp-currency-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12.5px;
+  text-align: start;
+}
+
+.tp-currency-option:hover,
+.tp-currency-option[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tp-currency-code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-weight: 700;
+}
+
+.tp-currency-hint {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* One appliance editor plus a clean saved list */
+.tp-appliance-draft {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  background: var(--accent-wash);
+}
+
+.tp-appliance-add {
+  align-self: flex-start;
+}
+
+.tp-appliance-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.tp-appliance-row strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tp-appliance-row .tp-tool-value {
+  text-align: end;
+}
+
+.tp-appliance-remove {
+  padding: 2px 6px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 11.5px;
+}
+
+.tp-appliance-remove:hover {
+  color: var(--danger, #c0392b);
+  text-decoration: underline;
+}
+
+/* Stopwatch laps as a compact three-column table */
+.tp-lap-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tp-lap-head,
+.tp-lap-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.tp-lap-head {
+  padding: 0 10px 4px;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tp-lap-row {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  font-size: 12.5px;
+}
+
+.tp-lap-row[data-highlight="fastest"] {
+  border-color: color-mix(in srgb, var(--success, #2f9e44) 45%, var(--border));
+  background: color-mix(in srgb, var(--success, #2f9e44) 6%, var(--surface));
+}
+
+.tp-lap-row[data-highlight="slowest"] {
+  border-color: color-mix(in srgb, var(--warning, #e8941a) 45%, var(--border));
+  background: color-mix(in srgb, var(--warning, #e8941a) 6%, var(--surface));
+}
+
+.tp-lap-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tp-clock-display {
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--accent-wash);
+  text-align: center;
+}
+
+.tp-clock-display output {
+  display: block;
+  color: var(--accent);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: clamp(30px, 7vw, 46px);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-clock-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+@media (max-width: 560px) {
+  .tp-tool-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

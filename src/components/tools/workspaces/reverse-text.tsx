@@ -6,6 +6,7 @@ import { ArrowDownUp } from "lucide-react";
 import {
   CheckboxRow,
   CopyButton,
+  HeroValue,
   SegmentedControl,
   Stat,
   ToolEmpty,
@@ -15,11 +16,7 @@ import {
   useCopyShortcut,
   usePersistedOptions,
 } from "@/components/tools/workspace-ui";
-import {
-  calculateReverseText,
-  type ReverseMode,
-  type ReverseTextResult,
-} from "./reverse-text.logic";
+import { calculateReverseText, type ReverseMode } from "./reverse-text.logic";
 
 const ERROR_ID = "tp-reverse-text-error";
 
@@ -32,25 +29,15 @@ export default function ReverseText() {
     mode: ReverseMode;
     trimWhitespace: boolean;
     preserveCase: boolean;
-  }>("toolpika:reverse-text", {
-    mode: "characters",
-    trimWhitespace: false,
-    preserveCase: false,
-  });
+  }>("toolpika:reverse-text", { mode: "characters", trimWhitespace: false, preserveCase: false });
   const mode = options.mode;
-  const trimWhitespace = options.trimWhitespace;
-  const preserveCase = options.preserveCase;
 
   const [text, setText] = useState("");
-
   const input = useMemo(
-    () => ({ text, mode, trimWhitespace, preserveCase }),
-    [text, mode, trimWhitespace, preserveCase],
+    () => ({ text, mode, trimWhitespace: options.trimWhitespace, preserveCase: options.preserveCase }),
+    [text, mode, options.trimWhitespace, options.preserveCase],
   );
-  const calculation: ReverseTextResult = useMemo(
-    () => calculateReverseText(input),
-    [input],
-  );
+  const calculation = useMemo(() => calculateReverseText(input), [input]);
   const value = calculation.value;
 
   const errorText = calculation.error
@@ -63,7 +50,6 @@ export default function ReverseText() {
     () => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }),
     [locale],
   );
-
   const modeLabel =
     mode === "characters"
       ? tw("reverse-text.modeCharacters")
@@ -72,6 +58,7 @@ export default function ReverseText() {
         : mode === "lines"
           ? tw("reverse-text.modeLines")
           : tw("reverse-text.modeLetters");
+  const outputPreview = value ? value.output.split("\n")[0].slice(0, 64) : "";
 
   const handleCopyShortcut = useCallback(() => {
     if (value?.output) void navigator.clipboard.writeText(value.output).catch(() => {});
@@ -82,7 +69,6 @@ export default function ReverseText() {
     update({ mode: "words", trimWhitespace: false, preserveCase: false });
     setText(tw("reverse-text.sampleText"));
   };
-
   const handleReset = () => {
     resetOptions();
     setText("");
@@ -98,19 +84,11 @@ export default function ReverseText() {
       onSample={handleSample}
       onReset={handleReset}
       input={
-        <ToolPane
-          id="tp-reverse-text-input-title"
-          title={tw("reverse-text.inputTitle")}
-          hint={tw("reverse-text.inputHint")}
-        >
-          <ToolField
-            label={tw("reverse-text.textLabel")}
-            htmlFor="tp-reverse-text-text"
-            hint={tw("reverse-text.textHint")}
-          >
+        <ToolPane id="tp-reverse-text-input-title" title={tw("reverse-text.inputTitle")} hint={tw("reverse-text.inputHint")}>
+          <ToolField label={tw("reverse-text.textLabel")} htmlFor="tp-reverse-text-text" hint={tw("reverse-text.textHint")}>
             <textarea
               id="tp-reverse-text-text"
-              className="tp-field-input"
+              className="tp-field-input tp-tool-editor"
               value={text}
               rows={5}
               placeholder={tw("reverse-text.textPlaceholder")}
@@ -132,27 +110,13 @@ export default function ReverseText() {
               ]}
               onChange={(next) => update({ mode: next })}
             />
-            <CheckboxRow
-              id="tp-reverse-text-trim"
-              label={tw("reverse-text.trimLabel")}
-              checked={trimWhitespace}
-              onChange={(checked) => update({ trimWhitespace: checked })}
-            />
+            <CheckboxRow id="tp-reverse-text-trim" label={tw("reverse-text.trimLabel")} checked={options.trimWhitespace} onChange={(checked) => update({ trimWhitespace: checked })} />
             <p className="tp-tool-hint">{tw("reverse-text.trimHint")}</p>
-            <CheckboxRow
-              id="tp-reverse-text-case"
-              label={tw("reverse-text.preserveCaseLabel")}
-              checked={preserveCase}
-              onChange={(checked) => update({ preserveCase: checked })}
-            />
+            <CheckboxRow id="tp-reverse-text-case" label={tw("reverse-text.preserveCaseLabel")} checked={options.preserveCase} onChange={(checked) => update({ preserveCase: checked })} />
             <p className="tp-tool-hint">{tw("reverse-text.preserveCaseHint")}</p>
           </div>
 
-          {errorText ? (
-            <p id={ERROR_ID} className="tp-tool-error" role="alert">
-              {errorText}
-            </p>
-          ) : null}
+          {errorText ? <p id={ERROR_ID} className="tp-tool-error" role="alert">{errorText}</p> : null}
         </ToolPane>
       }
       result={
@@ -160,59 +124,23 @@ export default function ReverseText() {
           id="tp-reverse-text-result-title"
           title={t("result")}
           result
-          actions={
-            <CopyButton
-              text={ready && value ? value.output : ""}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
-          }
+          actions={<CopyButton text={ready && value ? value.output : ""} label={t("copy")} copiedLabel={t("copied")} />}
         >
           {!ready || !value ? (
             <div aria-live="polite">
-              <ToolEmpty
-                icon={<ArrowDownUp aria-hidden="true" />}
-                title={
-                  errorText
-                    ? tw("reverse-text.errorTitle")
-                    : tw("reverse-text.emptyTitle")
-                }
-                hint={
-                  errorText
-                    ? tw("reverse-text.errorHint")
-                    : tw("reverse-text.emptyHint")
-                }
-              />
+              <ToolEmpty icon={<ArrowDownUp aria-hidden="true" />} title={errorText ? tw("reverse-text.errorTitle") : tw("reverse-text.emptyTitle")} hint={errorText ? tw("reverse-text.errorHint") : tw("reverse-text.emptyHint")} />
             </div>
           ) : (
             <div className="tp-tool-result" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">{tw("reverse-text.heroLabel")}</span>
-                <output dir="ltr" className="tp-tool-pill">
-                  {modeLabel}
-                </output>
-              </div>
-
+              <HeroValue label={tw("reverse-text.heroLabel")} value={outputPreview} note={modeLabel} />
               <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("reverse-text.charactersLabel")}
-                  value={nf.format(value.characters)}
-                />
-                <Stat
-                  label={tw("reverse-text.wordsLabel")}
-                  value={nf.format(value.words)}
-                />
-                <Stat
-                  label={tw("reverse-text.outputCharactersLabel")}
-                  value={nf.format(value.outputCharacters)}
-                />
+                <Stat label={tw("reverse-text.charactersLabel")} value={nf.format(value.characters)} />
+                <Stat label={tw("reverse-text.wordsLabel")} value={nf.format(value.words)} />
+                <Stat label={tw("reverse-text.outputCharactersLabel")} value={nf.format(value.outputCharacters)} />
               </dl>
-
-              <div className="flex flex-col gap-1">
+              <div className="tp-tool-group tp-tool-group--flush">
                 <span className="tp-tool-label">{tw("reverse-text.previewLabel")}</span>
-                <div className="tp-tool-url whitespace-pre-line">
-                  <code dir="ltr">{value.output}</code>
-                </div>
+                <div className="tp-tool-code whitespace-pre-line"><code dir="ltr">{value.output}</code></div>
               </div>
             </div>
           )}
