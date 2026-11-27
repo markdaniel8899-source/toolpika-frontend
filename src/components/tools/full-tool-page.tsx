@@ -120,6 +120,16 @@ export function FullToolPage({
       );
     }
 
+    if (section.kind === "guidance") {
+      return (
+        <div className="tp-doc-copy">
+          {section.paragraphs.map((paragraph) => (
+            <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+          ))}
+        </div>
+      );
+    }
+
     if (section.kind === "example") {
       return (
         <>

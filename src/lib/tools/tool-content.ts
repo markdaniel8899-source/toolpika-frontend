@@ -10,6 +10,7 @@ import type { Translate } from "@/lib/tools/translate";
 export type ContentSectionKind =
   | "definition"
   | "steps"
+  | "guidance"
   | "example"
   | "facts"
   | "useCases"
@@ -36,6 +37,12 @@ export type ContentSection =
       paragraphs: string[];
     }
   | { kind: "steps"; id: string; title: string; items: string[] }
+  | {
+      kind: "guidance";
+      id: string;
+      title: string;
+      paragraphs: string[];
+    }
   | {
       kind: "example";
       id: string;
@@ -72,6 +79,8 @@ export interface ToolPageContent {
   whatIsParagraphs: string[];
   howToTitle: string;
   howToSteps: string[];
+  guidanceTitle: string;
+  guidanceParagraphs: string[];
   exampleTitle: string;
   exampleLabel: string;
   exampleInput: string;
@@ -204,110 +213,22 @@ const DEFAULT_PLAN: ContentSectionKind[] = [
 ];
 
 const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
-  "word-counter": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "case-converter": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "image-compressor": [
-    "definition",
-    "steps",
-    "facts",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "json-formatter": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
+  "word-counter": ["definition", "steps", "example", "facts", "useCases", "mistakes", "faq"],
+  "case-converter": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
+  "image-compressor": ["definition", "steps", "facts", "useCases", "mistakes", "faq"],
+  "json-formatter": ["definition", "steps", "example", "facts", "mistakes", "faq"],
   "unit-converter": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
   "password-generator": ["definition", "steps", "facts", "mistakes", "faq"],
   "url-encoder": ["definition", "steps", "example", "mistakes", "faq"],
   "base64-encoder": ["definition", "steps", "example", "mistakes", "faq"],
-  // "features" in the template maps to the "facts" module in this codebase.
-  "json-to-csv": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "markdown-to-html": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "color-converter": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
-  "number-base-converter": [
-    "definition",
-    "steps",
-    "example",
-    "mistakes",
-    "faq",
-  ],
-  "timestamp-converter": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "data-storage-converter": [
-    "definition",
-    "steps",
-    "example",
-    "mistakes",
-    "faq",
-  ],
-  "slug-generator": [
-    "definition",
-    "steps",
-    "example",
-    "useCases",
-    "mistakes",
-    "faq",
-  ],
-  "yaml-to-json": [
-    "definition",
-    "steps",
-    "example",
-    "facts",
-    "mistakes",
-    "faq",
-  ],
-  // Each plan follows the task: reference first where standards matter,
-  // worked example first where the output shape matters, and no filler
-  // modules where the tool simply has nothing useful to say in them.
+  "json-to-csv": ["definition", "steps", "example", "facts", "useCases", "mistakes", "faq"],
+  "markdown-to-html": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
+  "color-converter": ["definition", "steps", "example", "facts", "mistakes", "faq"],
+  "number-base-converter": ["definition", "steps", "example", "mistakes", "faq"],
+  "timestamp-converter": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
+  "data-storage-converter": ["definition", "steps", "example", "mistakes", "faq"],
+  "slug-generator": ["definition", "steps", "example", "useCases", "mistakes", "faq"],
+  "yaml-to-json": ["definition", "steps", "example", "facts", "mistakes", "faq"],
   "lorem-ipsum-generator": ["definition", "steps", "example", "mistakes", "faq"],
   "text-diff-checker": ["definition", "example", "steps", "mistakes", "faq"],
   "uuid-generator": ["definition", "facts", "steps", "mistakes", "faq"],
@@ -338,30 +259,30 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "loan-emi-calculator": ["definition", "example", "steps", "facts", "mistakes", "faq"],
   "bmi-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
   "pomodoro-timer": ["definition", "useCases", "steps", "mistakes", "faq"],
-  "fancy-font-generator": ["definition", "facts", "example", "mistakes", "faq"],
-  "five-letter-word-finder": ["definition", "steps", "example", "mistakes", "faq"],
-  "word-scramble-solver": ["definition", "facts", "example", "mistakes", "faq"],
-  "personality-quiz": ["definition", "useCases", "facts", "mistakes", "faq"],
-  "random-choice-picker": ["definition", "useCases", "facts", "mistakes", "faq"],
-  "coffee-calories-calculator": ["definition", "example", "facts", "mistakes", "faq"],
-  "meal-calories-calculator": ["definition", "steps", "example", "mistakes", "faq"],
-  "water-intake-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
-  "sleep-cycle-calculator": ["definition", "example", "steps", "mistakes", "faq"],
-  "tdee-calculator": ["definition", "facts", "steps", "mistakes", "faq"],
-  "protein-target-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
-  "tip-bill-split-calculator": ["definition", "steps", "example", "mistakes", "faq"],
-  "discount-calculator": ["definition", "example", "steps", "mistakes", "faq"],
-  "profit-margin-calculator": ["definition", "facts", "example", "mistakes", "faq"],
-  "reading-time-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
-  "calorie-deficit-calculator": ["definition", "steps", "example", "mistakes", "faq"],
-  "drink-calories-calculator": ["definition", "facts", "steps", "mistakes", "faq"],
-  "walking-calories-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
-  "recipe-scaler-calculator": ["definition", "example", "steps", "mistakes", "faq"],
-  "freelance-rate-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
-  "break-even-calculator": ["definition", "example", "facts", "mistakes", "faq"],
-  "rent-vs-buy-calculator": ["definition", "facts", "example", "mistakes", "faq"],
-  "video-size-calculator": ["definition", "facts", "steps", "mistakes", "faq"],
-  "date-countdown-calculator": ["definition", "steps", "example", "mistakes", "faq"],
+  "fancy-font-generator": ["definition", "facts", "example", "guidance", "faq"],
+  "five-letter-word-finder": ["definition", "steps", "guidance", "example", "faq"],
+  "word-scramble-solver": ["definition", "facts", "example", "guidance", "faq"],
+  "personality-quiz": ["definition", "useCases", "facts", "guidance", "faq"],
+  "random-choice-picker": ["definition", "useCases", "facts", "guidance", "faq"],
+  "coffee-calories-calculator": ["definition", "example", "guidance", "facts", "faq"],
+  "meal-calories-calculator": ["definition", "steps", "guidance", "example", "faq"],
+  "water-intake-calculator": ["definition", "steps", "guidance", "facts", "faq"],
+  "sleep-cycle-calculator": ["definition", "example", "steps", "guidance", "faq"],
+  "tdee-calculator": ["definition", "facts", "steps", "guidance", "faq"],
+  "protein-target-calculator": ["definition", "steps", "guidance", "facts", "faq"],
+  "tip-bill-split-calculator": ["definition", "steps", "guidance", "example", "faq"],
+  "discount-calculator": ["definition", "example", "steps", "guidance", "faq"],
+  "profit-margin-calculator": ["definition", "facts", "example", "guidance", "faq"],
+  "reading-time-calculator": ["definition", "steps", "guidance", "facts", "faq"],
+  "calorie-deficit-calculator": ["definition", "steps", "guidance", "example", "faq"],
+  "drink-calories-calculator": ["definition", "facts", "steps", "guidance", "faq"],
+  "walking-calories-calculator": ["definition", "steps", "guidance", "facts", "faq"],
+  "recipe-scaler-calculator": ["definition", "example", "steps", "guidance", "faq"],
+  "freelance-rate-calculator": ["definition", "steps", "guidance", "facts", "faq"],
+  "break-even-calculator": ["definition", "example", "guidance", "facts", "faq"],
+  "rent-vs-buy-calculator": ["definition", "facts", "example", "guidance", "faq"],
+  "video-size-calculator": ["definition", "facts", "steps", "guidance", "faq"],
+  "date-countdown-calculator": ["definition", "steps", "guidance", "example", "faq"],
 };
 
 function lines(value: string): string[] {
@@ -399,6 +320,12 @@ function buildSections(
       id: "how-to",
       title: content.howToTitle,
       items: content.howToSteps,
+    }),
+    guidance: () => ({
+      kind: "guidance",
+      id: "putting-it-to-work",
+      title: content.guidanceTitle,
+      paragraphs: content.guidanceParagraphs,
     }),
     example: () => ({
       kind: "example",
@@ -485,6 +412,9 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
     whatIsParagraphs: t(k("whatIs")).split(/\n\s*\n/u).map((p) => p.trim()).filter(Boolean),
     howToTitle: moduleText("steps", "howToTitle"),
     howToSteps: lines(moduleText("steps", "howTo")),
+    guidanceTitle: moduleText("guidance", "guidanceTitle"),
+    guidanceParagraphs: moduleText("guidance", "guidance")
+      .split(/\n\s*\n/u).map((p) => p.trim()).filter(Boolean),
     exampleTitle: moduleText("example", "exampleTitle"),
     exampleLabel: moduleText("example", "exampleLabel"),
     exampleInput: needs("example") ? rawText(k("exampleInput")) : "",
@@ -494,10 +424,10 @@ export function getToolPageContent(t: Translate, slug: string): ToolPageContent 
     features: pairs(moduleText("facts", "features")),
     useCasesTitle: moduleText("useCases", "useCasesTitle"),
     useCases: pairs(moduleText("useCases", "useCases")),
-    mistakesTitle: t(k("mistakesTitle")),
-    mistakes: pairs(t(k("mistakes"))),
-    limitsTitle: t(k("limitsTitle")),
-    limits: lines(t(k("limits"))),
+    mistakesTitle: moduleText("mistakes", "mistakesTitle"),
+    mistakes: pairs(moduleText("mistakes", "mistakes")),
+    limitsTitle: moduleText("mistakes", "limitsTitle"),
+    limits: lines(moduleText("mistakes", "limits")),
     faqTitle: t(k("faqTitle")),
     faqs: qa(t(k("faqs"))),
     trustTitle: t(k("trustTitle")),
