@@ -178,7 +178,6 @@ export default function TipBillSplitCalculator() {
           <ToolField
             label={tw("tip-bill-split-calculator.billLabel")}
             htmlFor="tp-tip-bill"
-            hint={tw("tip-bill-split-calculator.billHint")}
           >
             <NumberStepper
               id="tp-tip-bill"
@@ -320,7 +319,6 @@ export default function TipBillSplitCalculator() {
         <ToolPane
           id="tp-tip-split-result-title"
           title={t("result")}
-          hint={tw("tip-bill-split-calculator.resultHint")}
           result
           actions={
             <CopyButton
@@ -399,19 +397,11 @@ export default function TipBillSplitCalculator() {
                 />
               </dl>
 
-              <div className="flex flex-col gap-1">
-                <span className="tp-tool-label">
-                  {tw("tip-bill-split-calculator.formulaTitle")}
-                </span>
-                <div className="tp-tool-url">
-                  <code dir="ltr">{tw("tip-bill-split-calculator.formula")}</code>
-                </div>
-                {result.rounded ? (
-                  <p className="tp-tool-hint">
-                    {tw("tip-bill-split-calculator.roundedNote")}
-                  </p>
-                ) : null}
-              </div>
+              {result.rounded ? (
+                <p className="tp-tool-hint">
+                  {tw("tip-bill-split-calculator.roundedNote")}
+                </p>
+              ) : null}
             </div>
           )}
         </ToolPane>

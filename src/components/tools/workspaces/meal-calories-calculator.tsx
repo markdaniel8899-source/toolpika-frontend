@@ -21,6 +21,7 @@ import {
   macroShares,
   QUICK_FOOD_IDS,
   validateMeal,
+  type Food,
   type FoodId,
   type Macros,
   type MealEntry,
@@ -80,12 +81,18 @@ export default function MealCaloriesCalculator() {
   const [customProtein, setCustomProtein] = useState("0");
   const [customCarbs, setCustomCarbs] = useState("0");
   const [customFat, setCustomFat] = useState("0");
+  const [customFiber, setCustomFiber] = useState("0");
+  const [customSugar, setCustomSugar] = useState("0");
+  const [customSodium, setCustomSodium] = useState("0");
   const [customError, setCustomError] = useState<MealErrorCode | null>(null);
 
   const formatter = useMemo(
     () => new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }),
     [locale],
   );
+
+  const unitGram = tw("meal-calories-calculator.unitGram");
+  const unitMg = tw("meal-calories-calculator.unitMg");
 
   const foodLabels = useMemo<Record<FoodId, string>>(() => ({
     apple: tw("meal-calories-calculator.foodApple"),
@@ -104,6 +111,34 @@ export default function MealCaloriesCalculator() {
     cheddar: tw("meal-calories-calculator.foodCheddar"),
     tofu: tw("meal-calories-calculator.foodTofu"),
     lentils: tw("meal-calories-calculator.foodLentils"),
+    orange: tw("meal-calories-calculator.foodOrange"),
+    strawberries: tw("meal-calories-calculator.foodStrawberries"),
+    blueberries: tw("meal-calories-calculator.foodBlueberries"),
+    grapes: tw("meal-calories-calculator.foodGrapes"),
+    carrot: tw("meal-calories-calculator.foodCarrot"),
+    spinach: tw("meal-calories-calculator.foodSpinach"),
+    sweetPotato: tw("meal-calories-calculator.foodSweetPotato"),
+    potato: tw("meal-calories-calculator.foodPotato"),
+    oatmeal: tw("meal-calories-calculator.foodOatmeal"),
+    brownRice: tw("meal-calories-calculator.foodBrownRice"),
+    quinoa: tw("meal-calories-calculator.foodQuinoa"),
+    wholeWheatPasta: tw("meal-calories-calculator.foodWholeWheatPasta"),
+    blackBeans: tw("meal-calories-calculator.foodBlackBeans"),
+    chickpeas: tw("meal-calories-calculator.foodChickpeas"),
+    peanutButter: tw("meal-calories-calculator.foodPeanutButter"),
+    walnuts: tw("meal-calories-calculator.foodWalnuts"),
+    cottageCheese: tw("meal-calories-calculator.foodCottageCheese"),
+    mozzarella: tw("meal-calories-calculator.foodMozzarella"),
+    beef: tw("meal-calories-calculator.foodBeef"),
+    turkey: tw("meal-calories-calculator.foodTurkey"),
+    tuna: tw("meal-calories-calculator.foodTuna"),
+    shrimp: tw("meal-calories-calculator.foodShrimp"),
+    plainYogurt: tw("meal-calories-calculator.foodPlainYogurt"),
+    honey: tw("meal-calories-calculator.foodHoney"),
+    oliveOil: tw("meal-calories-calculator.foodOliveOil"),
+    darkChocolate: tw("meal-calories-calculator.foodDarkChocolate"),
+    popcorn: tw("meal-calories-calculator.foodPopcorn"),
+    orangeJuice: tw("meal-calories-calculator.foodOrangeJuice"),
   }), [tw]);
 
   const matches = useMemo(() => filterFoods(query, foodLabels), [query, foodLabels]);
@@ -114,16 +149,10 @@ export default function MealCaloriesCalculator() {
 
   const errorText = (code: MealErrorCode | undefined): string => {
     if (!code) return "";
-    if (code === "EMPTY_NAME") {
-      return `${tw("meal-calories-calculator.errorEmptyName")} ${tw("meal-calories-calculator.fixEmptyName")}`;
-    }
-    if (code === "TOO_MANY_ITEMS") {
-      return `${tw("meal-calories-calculator.errorTooMany")} ${tw("meal-calories-calculator.fixTooMany")}`;
-    }
-    if (code === "INVALID_NUMBER") {
-      return `${tw("meal-calories-calculator.errorInvalid")} ${tw("meal-calories-calculator.fixInvalid")}`;
-    }
-    return `${tw("meal-calories-calculator.errorRange")} ${tw("meal-calories-calculator.fixRange")}`;
+    if (code === "EMPTY_NAME") return tw("meal-calories-calculator.errorEmptyName");
+    if (code === "TOO_MANY_ITEMS") return tw("meal-calories-calculator.errorTooMany");
+    if (code === "INVALID_NUMBER") return tw("meal-calories-calculator.errorInvalid");
+    return tw("meal-calories-calculator.errorRange");
   };
 
   const ready = hasItems && !result.error;
@@ -136,25 +165,34 @@ export default function MealCaloriesCalculator() {
       protein: tw("meal-calories-calculator.proteinLabel"),
       carbs: tw("meal-calories-calculator.carbsLabel"),
       fat: tw("meal-calories-calculator.fatLabel"),
+      fiber: tw("meal-calories-calculator.fiberLabel"),
+      sugar: tw("meal-calories-calculator.sugarLabel"),
+      sodium: tw("meal-calories-calculator.sodiumLabel"),
       times: tw("meal-calories-calculator.times"),
       unit: tw("meal-calories-calculator.unitKcal"),
+      unitGram: tw("meal-calories-calculator.unitGram"),
+      unitMg: tw("meal-calories-calculator.unitMg"),
       note: tw("meal-calories-calculator.reportNote"),
     });
   }, [ready, result, tw]);
 
+  const makeFoodEntry = (food: Food): MealEntry => ({
+    key: `food:${nextKey.current++}`,
+    name: foodLabels[food.id],
+    kcal: food.kcal,
+    protein: food.protein,
+    carbs: food.carbs,
+    fat: food.fat,
+    fiber: food.fiber,
+    sugar: food.sugar,
+    sodium: food.sodium,
+    quantity: 1,
+  });
+
   const addFood = (id: FoodId) => {
     const food = FOODS.find((row) => row.id === id);
     if (!food) return;
-    const key = `food:${nextKey.current++}`;
-    setItems((previous) => [...previous, {
-      key,
-      name: foodLabels[id],
-      kcal: food.kcal,
-      protein: food.protein,
-      carbs: food.carbs,
-      fat: food.fat,
-      quantity: 1,
-    }]);
+    setItems((previous) => [...previous, makeFoodEntry(food)]);
   };
 
   const clearCustom = () => {
@@ -163,6 +201,9 @@ export default function MealCaloriesCalculator() {
     setCustomProtein("0");
     setCustomCarbs("0");
     setCustomFat("0");
+    setCustomFiber("0");
+    setCustomSugar("0");
+    setCustomSodium("0");
     setCustomError(null);
   };
 
@@ -174,6 +215,9 @@ export default function MealCaloriesCalculator() {
       protein: parseCount(customProtein),
       carbs: parseCount(customCarbs),
       fat: parseCount(customFat),
+      fiber: parseCount(customFiber),
+      sugar: parseCount(customSugar),
+      sodium: parseCount(customSodium),
       quantity: 1,
     };
     const problem = validateMeal([candidate]);
@@ -194,12 +238,11 @@ export default function MealCaloriesCalculator() {
   const handleSample = () => {
     setQuery("");
     clearCustom();
-    const key = () => `sample:${nextKey.current++}`;
-    setItems([
-      { key: key(), name: foodLabels.chickenBreast, kcal: 165, protein: 31, carbs: 0, fat: 3.6, quantity: 1 },
-      { key: key(), name: foodLabels.whiteRice, kcal: 206, protein: 4.3, carbs: 45, fat: 0.4, quantity: 1 },
-      { key: key(), name: foodLabels.broccoli, kcal: 55, protein: 3.7, carbs: 11, fat: 0.6, quantity: 1 },
-    ]);
+    const sampleIds: FoodId[] = ["chickenBreast", "whiteRice", "broccoli"];
+    setItems(sampleIds
+      .map((id) => FOODS.find((row) => row.id === id))
+      .filter((food): food is Food => food !== undefined)
+      .map(makeFoodEntry));
   };
 
   const handleClear = () => {
@@ -221,12 +264,10 @@ export default function MealCaloriesCalculator() {
         <ToolPane
           id="tp-meal-input-title"
           title={tw("meal-calories-calculator.inputTitle")}
-          hint={tw("meal-calories-calculator.inputHint")}
         >
           <ToolField
             label={tw("meal-calories-calculator.searchLabel")}
             htmlFor="tp-meal-search"
-            hint={tw("meal-calories-calculator.searchHint")}
           >
             <input
               id="tp-meal-search"
@@ -283,7 +324,7 @@ export default function MealCaloriesCalculator() {
                 ))}
               </div>
             ) : (
-              <p className="tp-tool-hint">{tw("meal-calories-calculator.searchEmpty")}</p>
+              <p className="tp-tool-hint">{tw("meal-calories-calculator.searchEmptyShort")}</p>
             )}
           </div>
 
@@ -364,8 +405,48 @@ export default function MealCaloriesCalculator() {
                   onValueChange={(next) => { setCustomFat(next); setCustomError(null); }}
                 />
               </ToolField>
+              <ToolField label={tw("meal-calories-calculator.customFiberLabel")} htmlFor="tp-meal-custom-fiber">
+                <NumberStepper
+                  id="tp-meal-custom-fiber"
+                  value={customFiber}
+                  min={0}
+                  max={500}
+                  step={0.5}
+                  inputMode="decimal"
+                  ariaLabel={tw("meal-calories-calculator.customFiberLabel")}
+                  increaseLabel={t("stepUp")}
+                  decreaseLabel={t("stepDown")}
+                  onValueChange={(next) => { setCustomFiber(next); setCustomError(null); }}
+                />
+              </ToolField>
+              <ToolField label={tw("meal-calories-calculator.customSugarLabel")} htmlFor="tp-meal-custom-sugar">
+                <NumberStepper
+                  id="tp-meal-custom-sugar"
+                  value={customSugar}
+                  min={0}
+                  max={500}
+                  step={0.5}
+                  inputMode="decimal"
+                  ariaLabel={tw("meal-calories-calculator.customSugarLabel")}
+                  increaseLabel={t("stepUp")}
+                  decreaseLabel={t("stepDown")}
+                  onValueChange={(next) => { setCustomSugar(next); setCustomError(null); }}
+                />
+              </ToolField>
+              <ToolField label={tw("meal-calories-calculator.customSodiumLabel")} htmlFor="tp-meal-custom-sodium">
+                <NumberStepper
+                  id="tp-meal-custom-sodium"
+                  value={customSodium}
+                  min={0}
+                  max={10000}
+                  step={10}
+                  ariaLabel={tw("meal-calories-calculator.customSodiumLabel")}
+                  increaseLabel={t("stepUp")}
+                  decreaseLabel={t("stepDown")}
+                  onValueChange={(next) => { setCustomSodium(next); setCustomError(null); }}
+                />
+              </ToolField>
             </div>
-            <p className="tp-tool-hint">{tw("meal-calories-calculator.customHint")}</p>
             <Button type="button" size="sm" variant="secondary" onClick={addCustom}>
               {tw("meal-calories-calculator.customAdd")}
             </Button>
@@ -416,7 +497,7 @@ export default function MealCaloriesCalculator() {
                 ))}
               </div>
             ) : (
-              <p className="tp-tool-hint">{tw("meal-calories-calculator.mealEmpty")}</p>
+              <p className="tp-tool-hint">{tw("meal-calories-calculator.mealEmptyShort")}</p>
             )}
           </div>
         </ToolPane>
@@ -425,12 +506,11 @@ export default function MealCaloriesCalculator() {
         <ToolPane
           id="tp-meal-result-title"
           title={t("result")}
-          hint={tw("meal-calories-calculator.resultHint")}
           result
           actions={
             <CopyButton
               text={reportText}
-              label={t("copy")}
+              label={tw("meal-calories-calculator.copySummary")}
               copiedLabel={t("copied")}
             />
           }
@@ -444,7 +524,7 @@ export default function MealCaloriesCalculator() {
                     ? tw("meal-calories-calculator.errorTitle")
                     : tw("meal-calories-calculator.emptyTitle")
                 }
-                hint={result.error ? errorText(result.error.code) : tw("meal-calories-calculator.emptyHint")}
+                hint={result.error ? errorText(result.error.code) : tw("meal-calories-calculator.emptyHintShort")}
               />
             </div>
           ) : (
@@ -457,21 +537,6 @@ export default function MealCaloriesCalculator() {
                   {`${formatter.format(Math.round(macros.kcal))} ${tw("meal-calories-calculator.unitKcal")}`}
                 </output>
               </div>
-
-              <dl className="tp-tool-stats">
-                <Stat
-                  label={tw("meal-calories-calculator.proteinLabel")}
-                  value={`${formatter.format(macros.protein)} g`}
-                />
-                <Stat
-                  label={tw("meal-calories-calculator.carbsLabel")}
-                  value={`${formatter.format(macros.carbs)} g`}
-                />
-                <Stat
-                  label={tw("meal-calories-calculator.fatLabel")}
-                  value={`${formatter.format(macros.fat)} g`}
-                />
-              </dl>
 
               <div className="flex flex-col gap-2">
                 <span className="tp-tool-group-title">
@@ -497,10 +562,22 @@ export default function MealCaloriesCalculator() {
                     formatter={formatter}
                   />
                 </div>
-                <p className="tp-tool-hint">
-                  {tw("meal-calories-calculator.macroHint")}
-                </p>
               </div>
+
+              <dl className="tp-tool-stats">
+                <Stat
+                  label={tw("meal-calories-calculator.fiberLabel")}
+                  value={`${formatter.format(macros.fiber)} ${unitGram}`}
+                />
+                <Stat
+                  label={tw("meal-calories-calculator.sugarLabel")}
+                  value={`${formatter.format(macros.sugar)} ${unitGram}`}
+                />
+                <Stat
+                  label={tw("meal-calories-calculator.sodiumLabel")}
+                  value={`${formatter.format(macros.sodium)} ${unitMg}`}
+                />
+              </dl>
 
               <div className="flex flex-col gap-2">
                 <span className="tp-tool-group-title">

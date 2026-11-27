@@ -10198,3 +10198,23 @@ textarea::-webkit-scrollbar-thumb,
     transform: none !important;
   }
 }
+
+/* Calculator result cards stay readable even with long unit labels. */
+.tp-tool-pane--result .tp-tool-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tp-tool-pane--result .tp-tool-stat {
+  min-width: 0;
+  padding: 10px 11px;
+}
+
+.tp-tool-pane--result .tp-tool-stat dd {
+  font-size: 15px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.tp-tool-pane--result .tp-tool-stat dt {
+  font-size: 10px;
+}

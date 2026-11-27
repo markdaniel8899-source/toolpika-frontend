@@ -175,7 +175,6 @@ export default function WaterIntakeCalculator() {
         <ToolPane
           id="tp-water-input-title"
           title={tw("water-intake-calculator.inputTitle")}
-          hint={tw("water-intake-calculator.inputHint")}
           actions={
             <Button
               type="button"
@@ -204,7 +203,6 @@ export default function WaterIntakeCalculator() {
           <ToolField
             label={weightLabel}
             htmlFor="tp-water-weight"
-            hint={tw("water-intake-calculator.weightHint")}
           >
             <NumberStepper
               id="tp-water-weight"
@@ -305,18 +303,6 @@ export default function WaterIntakeCalculator() {
 
               <dl className="tp-tool-stats">
                 <Stat
-                  label={tw("water-intake-calculator.baseLabel")}
-                  value={`${formatter.format(calculation.baseMl)} ${tw("water-intake-calculator.unitMl")}`}
-                />
-                <Stat
-                  label={tw("water-intake-calculator.adjustedLabel")}
-                  value={`${formatter.format(calculation.adjustedMl)} ${tw("water-intake-calculator.unitMl")}`}
-                />
-                <Stat
-                  label={tw("water-intake-calculator.boostLabel")}
-                  value={`${formatter.format(calculation.boostMl)} ${tw("water-intake-calculator.unitMl")}`}
-                />
-                <Stat
                   label={tw("water-intake-calculator.glassesLabel")}
                   value={formatter.format(calculation.glasses)}
                 />
@@ -325,8 +311,6 @@ export default function WaterIntakeCalculator() {
                   value={formatter.format(calculation.bottles)}
                 />
               </dl>
-
-              <p className="tp-tool-hint">{tw("water-intake-calculator.note")}</p>
             </div>
           )}
         </ToolPane>

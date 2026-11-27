@@ -150,7 +150,6 @@ export default function SleepCycleCalculator() {
         <ToolPane
           id="tp-sleep-input-title"
           title={tw("sleep-cycle-calculator.inputTitle")}
-          hint={tw("sleep-cycle-calculator.inputHint")}
           actions={
             <Button
               type="button"
@@ -177,13 +176,12 @@ export default function SleepCycleCalculator() {
           </div>
 
           <ToolField
-            label={tw("sleep-cycle-calculator.timeLabel")}
-            htmlFor="tp-sleep-time"
-            hint={
+            label={
               mode === "bedtime"
-                ? tw("sleep-cycle-calculator.timeHintBedtime")
-                : tw("sleep-cycle-calculator.timeHintWake")
+                ? tw("sleep-cycle-calculator.timeBedtimeLabel")
+                : tw("sleep-cycle-calculator.timeWakeLabel")
             }
+            htmlFor="tp-sleep-time"
           >
             <input
               id="tp-sleep-time"
@@ -199,7 +197,6 @@ export default function SleepCycleCalculator() {
           <ToolField
             label={tw("sleep-cycle-calculator.bufferLabel")}
             htmlFor="tp-sleep-buffer"
-            hint={tw("sleep-cycle-calculator.bufferHint")}
           >
             <NumberStepper
               id="tp-sleep-buffer"
@@ -262,16 +259,18 @@ export default function SleepCycleCalculator() {
               </div>
 
               <dl className="tp-tool-stats">
-                {calculation.options.map((option) => (
-                  <Stat
-                    key={option.cycles}
-                    label={`${option.cycles} ${tw("sleep-cycle-calculator.cyclesWord")}`}
-                    value={formatTime(option.minutes)}
-                  />
-                ))}
+                {calculation.options
+                  .filter((option) => option.cycles === 4 || option.cycles === 5 || option.cycles === 6)
+                  .map((option) => (
+                    <Stat
+                      key={option.cycles}
+                      label={`${option.cycles} ${tw("sleep-cycle-calculator.cyclesWord")}`}
+                      value={formatTime(option.minutes)}
+                    />
+                  ))}
               </dl>
 
-              <p className="tp-tool-hint">{tw("sleep-cycle-calculator.note")}</p>
+              <p className="tp-tool-hint">{tw("sleep-cycle-calculator.noteShort")}</p>
             </div>
           )}
         </ToolPane>

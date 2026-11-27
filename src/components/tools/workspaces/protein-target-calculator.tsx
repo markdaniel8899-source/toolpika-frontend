@@ -207,10 +207,7 @@ export default function ProteinTargetCalculator() {
               options={activityOptions}
               onChange={(next) => update({ activity: next })}
             />
-            <p className="tp-tool-hint">{tw("protein-target-calculator.activityHint")}</p>
           </div>
-
-          <p className="tp-tool-hint">{tw("protein-target-calculator.rangeNote")}</p>
 
           {errorText ? (
             <p id={ERROR_ID} className="tp-tool-error" role="alert">
@@ -282,10 +279,7 @@ export default function ProteinTargetCalculator() {
                 <div className="tp-tool-url whitespace-pre-line">
                   <code dir="ltr">{calculation.formula}</code>
                 </div>
-                <p className="tp-tool-hint">{tw("protein-target-calculator.formulaHint")}</p>
               </div>
-
-              <p className="tp-tool-hint">{tw("protein-target-calculator.footnote")}</p>
             </div>
           )}
         </ToolPane>
