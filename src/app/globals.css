@@ -9903,9 +9903,13 @@ textarea::-webkit-scrollbar-thumb,
 }
 
 .tp-tool-pane--result .tp-tool-stat dd {
-  font-size: 15px;
-  line-height: 1.35;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.3;
   overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .tp-tool-pane--result .tp-tool-stat dt {
@@ -9958,8 +9962,10 @@ textarea::-webkit-scrollbar-thumb,
 }
 
 .tp-tool-stat dd {
-  font-size: 15px;
+  font-size: 14px;
+  letter-spacing: -0.01em;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .tp-tool-value {
@@ -10006,18 +10012,37 @@ textarea::-webkit-scrollbar-thumb,
 .tp-date-part select {
   width: 100%;
   min-width: 0;
-  height: 38px;
-  padding: 0 8px;
+  height: 40px;
+  padding: 0 30px 0 11px;
+  appearance: none;
+  -webkit-appearance: none;
   border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface);
+  border-radius: 10px;
+  background-color: var(--surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235b4bff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 14px 14px;
+  box-shadow: var(--card-shadow);
   color: var(--text);
+  cursor: pointer;
   font-size: 13px;
+  line-height: 1.3;
+}
+
+.tp-date-part select:hover {
+  border-color: var(--border-strong);
 }
 
 .tp-date-part select:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tp-date-part select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a697ff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
 }
 
 .tp-date-today {
@@ -10042,6 +10067,11 @@ textarea::-webkit-scrollbar-thumb,
   min-width: 0;
 }
 
+.tp-currency-control {
+  position: relative;
+  min-width: 0;
+}
+
 .tp-currency-input {
   width: 100%;
   height: 38px;
@@ -10056,16 +10086,37 @@ textarea::-webkit-scrollbar-thumb,
 .tp-currency-list {
   position: absolute;
   z-index: 20;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   right: 0;
   left: 0;
   max-height: 210px;
-  overflow: auto;
+  overflow-y: auto;
   padding: 5px;
   border: 1px solid var(--border-strong);
   border-radius: 10px;
   background: var(--surface);
   box-shadow: var(--shadow-md);
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--surface-2);
+}
+
+.tp-currency-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tp-currency-list::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.tp-currency-list::-webkit-scrollbar-thumb {
+  border: 2px solid var(--surface-2);
+  border-radius: 8px;
+  background: var(--accent);
+}
+
+.tp-currency-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
 }
 
 .tp-currency-option {

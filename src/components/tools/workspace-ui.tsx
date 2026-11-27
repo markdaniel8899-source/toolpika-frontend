@@ -382,6 +382,19 @@ export function DatePartsPicker({
 }) {
   const t = useTranslations("toolUi");
   const parts = isoParts(value);
+  // Keep partial selections visible without an effect: a local draft is used
+  // only while it belongs to the current parent value. A sample or reset
+  // changes that value, so the draft is replaced by the new complete date.
+  const [local, setLocal] = useState<{
+    source: string;
+    draft: { year: string; month: string; day: string };
+  } | null>(null);
+  const draft = local && local.source === value
+    ? local.draft
+    : parts
+      ? { year: String(parts.year), month: String(parts.month), day: String(parts.day) }
+      : { year: "", month: "", day: "" };
+
   const monthFormatter = useMemo(
     () => new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC" }),
     [locale],
@@ -398,18 +411,18 @@ export function DatePartsPicker({
     [minYear, maxYear],
   );
 
-  const update = (patch: Partial<{ year: number; month: number; day: number }>) => {
-    const year = patch.year ?? parts?.year ?? 0;
-    const month = patch.month ?? parts?.month ?? 0;
-    const day = patch.day ?? parts?.day ?? 0;
-    if (!year || !month || !day) {
-      onChange("");
-      return;
+  const update = (patch: Partial<{ year: string; month: string; day: string }>) => {
+    const next = { ...draft, ...patch };
+    const year = Number(next.year);
+    const month = Number(next.month);
+    const day = Number(next.day);
+    let emitted = "";
+    if (next.year && next.month && next.day && year && month && day) {
+      const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+      emitted = `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(Math.min(day, lastDay)).padStart(2, "0")}`;
     }
-    const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-    onChange(
-      `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(Math.min(day, lastDay)).padStart(2, "0")}`,
-    );
+    setLocal({ source: emitted, draft: next });
+    onChange(emitted);
   };
 
   return (
@@ -427,10 +440,10 @@ export function DatePartsPicker({
           <span>{t("day")}</span>
           <select
             id={`${id}-day`}
-            value={parts?.day ?? ""}
+            value={draft.day}
             aria-label={`${label} ${t("day")}`}
             aria-describedby={ariaDescribedBy}
-            onChange={(event) => update({ day: Number(event.target.value) })}
+            onChange={(event) => update({ day: event.target.value })}
           >
             <option value="">{t("dayPlaceholder")}</option>
             {Array.from({ length: 31 }, (_, index) => index + 1).map((day) => (
@@ -442,10 +455,10 @@ export function DatePartsPicker({
           <span>{t("month")}</span>
           <select
             id={`${id}-month`}
-            value={parts?.month ?? ""}
+            value={draft.month}
             aria-label={`${label} ${t("month")}`}
             aria-describedby={ariaDescribedBy}
-            onChange={(event) => update({ month: Number(event.target.value) })}
+            onChange={(event) => update({ month: event.target.value })}
           >
             <option value="">{t("monthPlaceholder")}</option>
             {months.map((month) => (
@@ -457,10 +470,10 @@ export function DatePartsPicker({
           <span>{t("year")}</span>
           <select
             id={`${id}-year`}
-            value={parts?.year ?? ""}
+            value={draft.year}
             aria-label={`${label} ${t("year")}`}
             aria-describedby={ariaDescribedBy}
-            onChange={(event) => update({ year: Number(event.target.value) })}
+            onChange={(event) => update({ year: event.target.value })}
           >
             <option value="">{t("yearPlaceholder")}</option>
             {years.map((year) => <option key={year} value={year}>{year}</option>)}
@@ -505,50 +518,52 @@ export function CurrencyPicker({
   return (
     <div className="tp-tool-group tp-tool-group--flush tp-currency" ref={rootRef}>
       <span className="tp-tool-group-title">{label}</span>
-      <input
-        id={id}
-        type="text"
-        className="tp-currency-input"
-        role="combobox"
-        aria-expanded={open}
-        aria-controls={`${id}-list`}
-        aria-label={label}
-        aria-autocomplete="list"
-        autoComplete="off"
-        value={open ? query : `${selected.code} · ${selected.name}`}
-        placeholder={t("currencySearchPlaceholder")}
-        onFocus={() => { setQuery(""); setOpen(true); }}
-        onChange={(event) => { setQuery(event.target.value); setOpen(true); }}
-        onKeyDown={(event) => {
-          if (event.key === "Escape") setOpen(false);
-          if (event.key === "Enter" && options.length > 0) {
-            event.preventDefault();
-            onChange(options[0].code);
-            setOpen(false);
-          }
-        }}
-      />
-      {open ? (
-        <div className="tp-currency-list" id={`${id}-list`} role="listbox" aria-label={t("currencySearchLabel")}>
-          {options.length === 0 ? (
-            <p className="tp-tool-hint" style={{ padding: "8px 9px", margin: 0 }}>
-              {t("currencyNoResults")}
-            </p>
-          ) : options.map((option) => (
-            <button
-              key={option.code}
-              type="button"
-              role="option"
-              aria-selected={option.code === value}
-              className="tp-currency-option"
-              onClick={() => { onChange(option.code); setOpen(false); }}
-            >
-              <span className="tp-currency-code">{option.code}</span>
-              <span className="tp-currency-hint">{option.name}</span>
-            </button>
-          ))}
-        </div>
-      ) : null}
+      <div className="tp-currency-control">
+        <input
+          id={id}
+          type="text"
+          className="tp-currency-input"
+          role="combobox"
+          aria-expanded={open}
+          aria-controls={`${id}-list`}
+          aria-label={label}
+          aria-autocomplete="list"
+          autoComplete="off"
+          value={open ? query : `${selected.code} · ${selected.name}`}
+          placeholder={t("currencySearchPlaceholder")}
+          onFocus={() => { setQuery(""); setOpen(true); }}
+          onChange={(event) => { setQuery(event.target.value); setOpen(true); }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setOpen(false);
+            if (event.key === "Enter" && options.length > 0) {
+              event.preventDefault();
+              onChange(options[0].code);
+              setOpen(false);
+            }
+          }}
+        />
+        {open ? (
+          <div className="tp-currency-list" id={`${id}-list`} role="listbox" aria-label={t("currencySearchLabel")}>
+            {options.length === 0 ? (
+              <p className="tp-tool-hint" style={{ padding: "8px 9px", margin: 0 }}>
+                {t("currencyNoResults")}
+              </p>
+            ) : options.map((option) => (
+              <button
+                key={option.code}
+                type="button"
+                role="option"
+                aria-selected={option.code === value}
+                className="tp-currency-option"
+                onClick={() => { onChange(option.code); setOpen(false); }}
+              >
+                <span className="tp-currency-code">{option.code}</span>
+                <span className="tp-currency-hint">{option.name}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
       {hint ? <p className="tp-tool-hint">{hint}</p> : null}
     </div>
   );

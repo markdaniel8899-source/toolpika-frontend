@@ -154,35 +154,35 @@ export default function FuelCostCalculator() {
       onReset={handleReset}
       input={
         <ToolPane id="tp-fuel-cost-input-title" title={tw("fuel-cost-calculator.inputTitle")} hint={tw("fuel-cost-calculator.inputHint")}>
-          <div className="tp-tool-group tp-tool-group--flush">
-            <span className="tp-tool-group-title">{tw("fuel-cost-calculator.tripSection")}</span>
-            <SegmentedControl<DistanceUnit> label={tw("fuel-cost-calculator.distanceUnitLabel")} value={distanceUnit} options={distanceOptions} onChange={setDistanceUnit} />
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <ToolField label={tw("fuel-cost-calculator.distanceLabel")} htmlFor="tp-fuel-distance" hint={tw("fuel-cost-calculator.distanceHint")}>
-                <NumberStepper id="tp-fuel-distance" value={distance} min={0} step={10} inputMode="decimal" ariaLabel={tw("fuel-cost-calculator.distanceLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setDistance} />
-              </ToolField>
-              <ToolField label={tw("fuel-cost-calculator.splitLabel")} htmlFor="tp-fuel-split" hint={tw("fuel-cost-calculator.splitHint")}>
-                <NumberStepper id="tp-fuel-split" value={split} min={1} step={1} inputMode="numeric" ariaLabel={tw("fuel-cost-calculator.splitLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setSplit} />
-              </ToolField>
-            </div>
-            <CheckboxRow id="tp-fuel-round-trip" label={tw("fuel-cost-calculator.roundTripLabel")} checked={roundTrip} onChange={setRoundTrip} />
-            <p className="tp-tool-hint">{tw("fuel-cost-calculator.roundTripHint")}</p>
-          </div>
-
-          <div className="tp-tool-group tp-tool-group--flush">
-            <span className="tp-tool-group-title">{tw("fuel-cost-calculator.vehicleSection")}</span>
-            <SegmentedControl<EfficiencyUnit> label={tw("fuel-cost-calculator.efficiencyUnitLabel")} value={efficiencyUnit} options={efficiencyOptions} onChange={setEfficiencyUnit} />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <ToolField label={tw("fuel-cost-calculator.distanceLabel")} htmlFor="tp-fuel-distance" hint={tw("fuel-cost-calculator.distanceHint")}>
+              <NumberStepper id="tp-fuel-distance" value={distance} min={0} step={10} inputMode="decimal" ariaLabel={tw("fuel-cost-calculator.distanceLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setDistance} />
+            </ToolField>
             <ToolField label={tw("fuel-cost-calculator.efficiencyLabel")} htmlFor="tp-fuel-efficiency" hint={tw("fuel-cost-calculator.efficiencyHint")}>
               <NumberStepper id="tp-fuel-efficiency" value={efficiency} min={0} step={0.5} inputMode="decimal" ariaLabel={tw("fuel-cost-calculator.efficiencyLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setEfficiency} />
             </ToolField>
+            <ToolField label={tw("fuel-cost-calculator.priceLabel")} htmlFor="tp-fuel-price" hint={`${tw("fuel-cost-calculator.priceHint")} ${priceUnitLabel}`}>
+              <NumberStepper id="tp-fuel-price" value={price} min={0} step={0.05} inputMode="decimal" ariaLabel={`${tw("fuel-cost-calculator.priceLabel")} ${priceUnitLabel}`} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setPrice} />
+            </ToolField>
+            <ToolField label={tw("fuel-cost-calculator.splitLabel")} htmlFor="tp-fuel-split" hint={tw("fuel-cost-calculator.splitHint")}>
+              <NumberStepper id="tp-fuel-split" value={split} min={1} step={1} inputMode="numeric" ariaLabel={tw("fuel-cost-calculator.splitLabel")} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setSplit} />
+            </ToolField>
+          </div>
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <p className="tp-tool-group-title">{tw("fuel-cost-calculator.distanceLabel")}</p>
+            <SegmentedControl<DistanceUnit> label={tw("fuel-cost-calculator.distanceUnitLabel")} value={distanceUnit} options={distanceOptions} onChange={setDistanceUnit} />
+          </div>
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <p className="tp-tool-group-title">{tw("fuel-cost-calculator.efficiencyUnitLabel")}</p>
+            <SegmentedControl<EfficiencyUnit> label={tw("fuel-cost-calculator.efficiencyUnitLabel")} value={efficiencyUnit} options={efficiencyOptions} onChange={setEfficiencyUnit} />
             <p className="tp-tool-hint">{tw("fuel-cost-calculator.efficiencyUnitHint")}</p>
           </div>
 
           <div className="tp-tool-group tp-tool-group--flush">
-            <span className="tp-tool-group-title">{tw("fuel-cost-calculator.costSection")}</span>
-            <ToolField label={tw("fuel-cost-calculator.priceLabel")} htmlFor="tp-fuel-price" hint={`${tw("fuel-cost-calculator.priceHint")} ${priceUnitLabel}`}>
-              <NumberStepper id="tp-fuel-price" value={price} min={0} step={0.05} inputMode="decimal" ariaLabel={`${tw("fuel-cost-calculator.priceLabel")} ${priceUnitLabel}`} increaseLabel={t("stepUp")} decreaseLabel={t("stepDown")} describedBy={describedBy} onValueChange={setPrice} />
-            </ToolField>
+            <CheckboxRow id="tp-fuel-round-trip" label={tw("fuel-cost-calculator.roundTripLabel")} checked={roundTrip} onChange={setRoundTrip} />
+            <p className="tp-tool-hint">{tw("fuel-cost-calculator.roundTripHint")}</p>
           </div>
 
           {errorText ? <p id={ERROR_ID} className="tp-tool-error" role="alert">{errorText}</p> : null}
