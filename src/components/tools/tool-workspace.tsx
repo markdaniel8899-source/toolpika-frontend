@@ -58,6 +58,16 @@ const FiveLetterWordFinder = dynamic(() => import("./workspaces/five-letter-word
 const WordScrambleSolver = dynamic(() => import("./workspaces/word-scramble-solver"), { loading });
 const PersonalityQuiz = dynamic(() => import("./workspaces/personality-quiz"), { loading });
 const RandomChoicePicker = dynamic(() => import("./workspaces/random-choice-picker"), { loading });
+const CoffeeCaloriesCalculator = dynamic(() => import("./workspaces/coffee-calories-calculator"), { loading });
+const MealCaloriesCalculator = dynamic(() => import("./workspaces/meal-calories-calculator"), { loading });
+const WaterIntakeCalculator = dynamic(() => import("./workspaces/water-intake-calculator"), { loading });
+const SleepCycleCalculator = dynamic(() => import("./workspaces/sleep-cycle-calculator"), { loading });
+const TdeeCalculator = dynamic(() => import("./workspaces/tdee-calculator"), { loading });
+const ProteinTargetCalculator = dynamic(() => import("./workspaces/protein-target-calculator"), { loading });
+const TipBillSplitCalculator = dynamic(() => import("./workspaces/tip-bill-split-calculator"), { loading });
+const DiscountCalculator = dynamic(() => import("./workspaces/discount-calculator"), { loading });
+const ProfitMarginCalculator = dynamic(() => import("./workspaces/profit-margin-calculator"), { loading });
+const ReadingTimeCalculator = dynamic(() => import("./workspaces/reading-time-calculator"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -111,6 +121,16 @@ const WORKSPACES = {
   "word-scramble-solver": WordScrambleSolver,
   "personality-quiz": PersonalityQuiz,
   "random-choice-picker": RandomChoicePicker,
+  "coffee-calories-calculator": CoffeeCaloriesCalculator,
+  "meal-calories-calculator": MealCaloriesCalculator,
+  "water-intake-calculator": WaterIntakeCalculator,
+  "sleep-cycle-calculator": SleepCycleCalculator,
+  "tdee-calculator": TdeeCalculator,
+  "protein-target-calculator": ProteinTargetCalculator,
+  "tip-bill-split-calculator": TipBillSplitCalculator,
+  "discount-calculator": DiscountCalculator,
+  "profit-margin-calculator": ProfitMarginCalculator,
+  "reading-time-calculator": ReadingTimeCalculator,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

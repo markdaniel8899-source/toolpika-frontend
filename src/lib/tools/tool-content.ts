@@ -144,6 +144,16 @@ const WITH_FULL_CONTENT = new Set([
   "word-scramble-solver",
   "personality-quiz",
   "random-choice-picker",
+  "coffee-calories-calculator",
+  "meal-calories-calculator",
+  "water-intake-calculator",
+  "sleep-cycle-calculator",
+  "tdee-calculator",
+  "protein-target-calculator",
+  "tip-bill-split-calculator",
+  "discount-calculator",
+  "profit-margin-calculator",
+  "reading-time-calculator",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -324,6 +334,16 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "word-scramble-solver": ["definition", "facts", "example", "mistakes", "faq"],
   "personality-quiz": ["definition", "useCases", "facts", "mistakes", "faq"],
   "random-choice-picker": ["definition", "useCases", "facts", "mistakes", "faq"],
+  "coffee-calories-calculator": ["definition", "example", "facts", "mistakes", "faq"],
+  "meal-calories-calculator": ["definition", "steps", "example", "mistakes", "faq"],
+  "water-intake-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "sleep-cycle-calculator": ["definition", "example", "steps", "mistakes", "faq"],
+  "tdee-calculator": ["definition", "facts", "steps", "mistakes", "faq"],
+  "protein-target-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "tip-bill-split-calculator": ["definition", "steps", "example", "mistakes", "faq"],
+  "discount-calculator": ["definition", "example", "steps", "mistakes", "faq"],
+  "profit-margin-calculator": ["definition", "facts", "example", "mistakes", "faq"],
+  "reading-time-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {
