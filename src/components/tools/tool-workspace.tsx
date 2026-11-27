@@ -68,6 +68,15 @@ const TipBillSplitCalculator = dynamic(() => import("./workspaces/tip-bill-split
 const DiscountCalculator = dynamic(() => import("./workspaces/discount-calculator"), { loading });
 const ProfitMarginCalculator = dynamic(() => import("./workspaces/profit-margin-calculator"), { loading });
 const ReadingTimeCalculator = dynamic(() => import("./workspaces/reading-time-calculator"), { loading });
+const CalorieDeficitCalculator = dynamic(() => import("./workspaces/calorie-deficit-calculator"), { loading });
+const DrinkCaloriesCalculator = dynamic(() => import("./workspaces/drink-calories-calculator"), { loading });
+const WalkingCaloriesCalculator = dynamic(() => import("./workspaces/walking-calories-calculator"), { loading });
+const RecipeScalerCalculator = dynamic(() => import("./workspaces/recipe-scaler-calculator"), { loading });
+const FreelanceRateCalculator = dynamic(() => import("./workspaces/freelance-rate-calculator"), { loading });
+const BreakEvenCalculator = dynamic(() => import("./workspaces/break-even-calculator"), { loading });
+const RentVsBuyCalculator = dynamic(() => import("./workspaces/rent-vs-buy-calculator"), { loading });
+const VideoSizeCalculator = dynamic(() => import("./workspaces/video-size-calculator"), { loading });
+const DateCountdownCalculator = dynamic(() => import("./workspaces/date-countdown-calculator"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -131,6 +140,15 @@ const WORKSPACES = {
   "discount-calculator": DiscountCalculator,
   "profit-margin-calculator": ProfitMarginCalculator,
   "reading-time-calculator": ReadingTimeCalculator,
+  "calorie-deficit-calculator": CalorieDeficitCalculator,
+  "drink-calories-calculator": DrinkCaloriesCalculator,
+  "walking-calories-calculator": WalkingCaloriesCalculator,
+  "recipe-scaler-calculator": RecipeScalerCalculator,
+  "freelance-rate-calculator": FreelanceRateCalculator,
+  "break-even-calculator": BreakEvenCalculator,
+  "rent-vs-buy-calculator": RentVsBuyCalculator,
+  "video-size-calculator": VideoSizeCalculator,
+  "date-countdown-calculator": DateCountdownCalculator,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

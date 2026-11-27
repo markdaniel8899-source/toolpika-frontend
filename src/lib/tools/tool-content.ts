@@ -154,6 +154,15 @@ const WITH_FULL_CONTENT = new Set([
   "discount-calculator",
   "profit-margin-calculator",
   "reading-time-calculator",
+  "calorie-deficit-calculator",
+  "drink-calories-calculator",
+  "walking-calories-calculator",
+  "recipe-scaler-calculator",
+  "freelance-rate-calculator",
+  "break-even-calculator",
+  "rent-vs-buy-calculator",
+  "video-size-calculator",
+  "date-countdown-calculator",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -344,6 +353,15 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "discount-calculator": ["definition", "example", "steps", "mistakes", "faq"],
   "profit-margin-calculator": ["definition", "facts", "example", "mistakes", "faq"],
   "reading-time-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "calorie-deficit-calculator": ["definition", "steps", "example", "mistakes", "faq"],
+  "drink-calories-calculator": ["definition", "facts", "steps", "mistakes", "faq"],
+  "walking-calories-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "recipe-scaler-calculator": ["definition", "example", "steps", "mistakes", "faq"],
+  "freelance-rate-calculator": ["definition", "steps", "facts", "mistakes", "faq"],
+  "break-even-calculator": ["definition", "example", "facts", "mistakes", "faq"],
+  "rent-vs-buy-calculator": ["definition", "facts", "example", "mistakes", "faq"],
+  "video-size-calculator": ["definition", "facts", "steps", "mistakes", "faq"],
+  "date-countdown-calculator": ["definition", "steps", "example", "mistakes", "faq"],
 };
 
 function lines(value: string): string[] {
