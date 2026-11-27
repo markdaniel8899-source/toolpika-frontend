@@ -404,7 +404,7 @@ async function main() {
     for (const [path, value] of Object.entries(sourceFlat)) {
       if (typeof value !== "string") continue;
       if (!matchesPrefix(path, options.prefixes)) continue;
-      if (!options.force && SKIP_KEYS.has(path)) continue;
+      if (!options.force && (SKIP_KEYS.has(path) || /^tools\..*\.page\.example(Input|Output)$/u.test(path))) continue;
       if (!options.force && SKIP_VALUES.has(value) && targetFlat[path] !== undefined) continue;
 
       const sourceHash = hashValue(value);
