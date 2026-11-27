@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   CopyButton,
   DownloadButton,
+  HeroValue,
   Stat,
   ToolBadge,
   ToolEmpty,
@@ -205,6 +206,11 @@ export default function StopwatchTimer() {
           }
         >
           <div className="tp-tool-result" aria-live="polite">
+            <HeroValue
+              label={tw("stopwatch-timer.elapsedLabel")}
+              value={formatElapsed(value.elapsedMs)}
+              note={`${tw("stopwatch-timer.lapCountLabel")}: ${nf.format(laps.length)}`}
+            />
             <dl className="tp-tool-stats">
               <Stat label={tw("stopwatch-timer.lapCountLabel")} value={nf.format(laps.length)} />
               <Stat label={tw("stopwatch-timer.fastestLabel")} value={value.fastestIndex === null ? tw("stopwatch-timer.noneLabel") : `${tw("stopwatch-timer.lapWord")} ${nf.format(value.fastestIndex + 1)} (${formatElapsed(laps[value.fastestIndex].lapMs)})`} />

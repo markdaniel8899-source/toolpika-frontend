@@ -9920,6 +9920,25 @@ textarea::-webkit-scrollbar-thumb,
  * Daily-life tool refinements: calm, high-contrast result hierarchy.
  * -------------------------------------------------------------------------- */
 
+/* Upgrade the primary result of older tools that still use an output pill. */
+.tp-tool-result output.tp-tool-pill {
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent-wash), var(--accent-soft));
+  box-shadow: var(--card-shadow);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: clamp(21px, 4vw, 30px);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .tp-hero-value {
   display: flex;
   flex-direction: column;
