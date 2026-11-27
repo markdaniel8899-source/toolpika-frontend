@@ -61,14 +61,16 @@ export function ThemedSelect({
       const menu = menuRef.current;
       if (!trigger || !menu) return;
       const rect = trigger.getBoundingClientRect();
-      const menuRect = menu.getBoundingClientRect();
       // Always open downward; the menu scrolls internally instead of flipping
       // over the field and covering the controls above it.
       const top = rect.bottom + 6;
+      // Match the language menu card width and clamp against it, so the menu
+      // never spills past the viewport edge or stretches with the trigger.
+      const width = Math.min(240, window.innerWidth - 24);
       setPosition({
         top,
-        left: Math.max(8, Math.min(rect.left, window.innerWidth - menuRect.width - 8)),
-        width: rect.width,
+        left: Math.max(8, Math.min(rect.left, window.innerWidth - width - 8)),
+        width,
       });
     };
     place();
@@ -147,7 +149,7 @@ export function ThemedSelect({
                 top: position.top,
                 left: position.left,
                 right: "auto",
-                width: Math.max(position.width, 180),
+                width: position.width,
               }}
             >
               {options.map((option, index) => (

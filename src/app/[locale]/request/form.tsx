@@ -176,6 +176,7 @@ export default function RequestForm({ labels }: RequestFormProps) {
             className="tp-field-input"
             value={form.email}
             onChange={handleChange("email")}
+            autoComplete="email"
             placeholder={labels.emailPlaceholder}
             aria-label={`${labels.emailLabel} (optional)`}
           />

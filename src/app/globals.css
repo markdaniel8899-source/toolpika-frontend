@@ -622,6 +622,13 @@ html.theme-transition .tp-tool-arrow {
   font-weight: 600;
 }
 
+.tp-dropdown-option > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .tp-dropdown-option .tp-icon {
   flex: none;
   color: var(--accent);
@@ -8781,6 +8788,14 @@ html:lang(hi) .tp-tool-hero-accent {
   pointer-events: auto;
   transform: none;
   transform-origin: top left;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 50%, transparent) transparent;
+}
+
+/* ThemedSelect wraps each option in a div, so the sibling gap from
+   .tp-dropdown-option + .tp-dropdown-option does not apply here. */
+.tp-select-portal-menu > div + div {
+  margin-block-start: 4px;
 }
 
 .tp-select-trigger {
@@ -8801,15 +8816,21 @@ html:lang(hi) .tp-tool-hero-accent {
   color: var(--text-muted);
 }
 
+/* Tool select menus reuse the header language menu's card treatment from
+   .tp-dropdown-menu; only the alignment differs. */
 .tp-tool-pane .tp-dropdown-menu {
   inset-inline-start: 0;
   inset-inline-end: auto;
   transform-origin: top left;
-  width: 100%;
-  min-width: 180px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: 0 14px 34px color-mix(in srgb, var(--text) 14%, transparent);
+  width: min(240px, calc(100vw - 24px));
+  min-width: 0;
+  max-height: 320px;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 72%, var(--border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 96%, var(--surface-soft));
+  box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.28), var(--shadow-md);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 50%, transparent) transparent;
 }
 
 /* Focus: soft blurred glow only, never a hard solid ring around the field. */
@@ -8957,6 +8978,26 @@ input[type="number"] {
 .tp-locale-menu::-webkit-scrollbar-button:vertical:end,
 .tp-locale-menu::-webkit-scrollbar-button:horizontal:start,
 .tp-locale-menu::-webkit-scrollbar-button:horizontal:end {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Same quiet scrollbar for tool select menus as the language menu. */
+.tp-tool-pane .tp-dropdown-menu::-webkit-scrollbar,
+.tp-select-portal-menu::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+
+.tp-tool-pane .tp-dropdown-menu::-webkit-scrollbar-thumb,
+.tp-select-portal-menu::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--text-muted) 50%, transparent);
+}
+
+.tp-tool-pane .tp-dropdown-menu::-webkit-scrollbar-button,
+.tp-select-portal-menu::-webkit-scrollbar-button {
   display: none;
   width: 0;
   height: 0;
@@ -9966,6 +10007,25 @@ textarea::-webkit-scrollbar-thumb,
   overflow-wrap: anywhere !important;
   word-break: break-word !important;
   white-space: normal !important;
+}
+
+/* `Stat` uses .tp-stat (not .tp-tool-stat), so it needs the same shrinking
+   and wrapping rules or long values leak outside the result card. */
+.tp-tool-pane--result .tp-tool-stats > .tp-stat {
+  min-inline-size: 0;
+  block-size: 100%;
+}
+
+.tp-tool-pane--result .tp-tool-stats .tp-stat-label {
+  overflow-wrap: anywhere;
+}
+
+.tp-tool-pane--result .tp-tool-stats .tp-stat-value {
+  font-size: clamp(14px, 3.4vw, 20px);
+  line-height: 1.3;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .tp-tool-pane--result .tp-tool-stat dt {

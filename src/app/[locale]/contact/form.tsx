@@ -48,12 +48,13 @@ export function ContactForm({ copy }: { copy: ContactCopy }) {
   return (
     <form className="tp-atlas-card" onSubmit={handleSubmit} noValidate>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <input className="tp-atlas-input" name="name" placeholder={copy.name} required />
-        <input className="tp-atlas-input" name="email" type="email" placeholder={copy.email} required />
+        <input className="tp-atlas-input" name="name" aria-label={copy.name} autoComplete="name" placeholder={copy.name} required />
+        <input className="tp-atlas-input" name="email" type="email" aria-label={copy.email} autoComplete="email" placeholder={copy.email} required />
         <textarea
           className="tp-atlas-input"
           name="message"
           rows={7}
+          aria-label={copy.message}
           placeholder={copy.message}
           style={{ minHeight: 180, resize: "none" }}
           required

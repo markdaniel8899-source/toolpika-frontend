@@ -238,7 +238,7 @@ export function ToolShell({
       </div>
 
       {notice ? (
-        <p className="tp-tool-notice" data-tone={noticeTone} role="status" aria-live="polite" style={{ margin: "12px 22px 0" }}>
+        <p className="tp-tool-notice" data-tone={noticeTone} role="status" aria-live="polite">
           <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
           {notice}
         </p>

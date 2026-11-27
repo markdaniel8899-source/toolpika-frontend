@@ -148,7 +148,7 @@ export default function CaseConverter() {
       }
       output={
         <div className="flex flex-col gap-4" aria-live="polite">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2 min-[460px]:grid-cols-2">
             {transforms.map((transform) => (
               <Button
                 key={transform.id}
