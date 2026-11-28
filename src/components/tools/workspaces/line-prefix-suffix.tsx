@@ -115,6 +115,11 @@ export default function LinePrefixSuffix() {
           </span>
         </div>
         <ToolBadge tone="accent">{tw("line-prefix-suffix.liveBadge")}</ToolBadge>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("line-prefix-suffix.trySample")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -234,9 +239,6 @@ export default function LinePrefixSuffix() {
               <p className="tp-tool-hint">{tw("line-prefix-suffix.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("line-prefix-suffix.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

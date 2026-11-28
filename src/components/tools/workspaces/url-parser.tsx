@@ -137,6 +137,17 @@ export default function UrlParser() {
           <span>{tw("url-parser.statParams")}</span>
           <strong dir="ltr">{parts.params.length}</strong>
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={loadSample}>
+            {tw("url-parser.sampleAction")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
+            {tw("url-parser.pasteAction")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
+            {t("clear")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-tool-group tp-tool-group--flush">
@@ -144,17 +155,6 @@ export default function UrlParser() {
           <label htmlFor="url-parser-source" className="tp-tool-group-title">
             {tw("url-parser.urlLabel")}
           </label>
-          <div className="flex items-center gap-1">
-            <Button type="button" variant="ghost" size="sm" onClick={loadSample}>
-              {tw("url-parser.sampleAction")}
-            </Button>
-            <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>
-              {tw("url-parser.pasteAction")}
-            </Button>
-            <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
-              {t("clear")}
-            </Button>
-          </div>
         </div>
         <input
           id="url-parser-source"
@@ -237,11 +237,10 @@ export default function UrlParser() {
             </label>
           </div>
 
-          <p className="tp-tool-hint">{tw("url-parser.paramHint")}</p>
         </section>
 
         <section
-          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-auto lg:col-span-6"
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-6"
           aria-labelledby="url-parser-param-title"
         >
           <div className="tp-industrial-bar">

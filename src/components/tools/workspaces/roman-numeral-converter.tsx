@@ -149,6 +149,11 @@ export default function RomanNumeralConverter() {
           </span>
         </div>
         <ToolBadge tone="accent">{tw("roman-numeral-converter.heroNote")}</ToolBadge>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("roman-numeral-converter.trySample")}
+          </Button>
+        </div>
       </div>
 
       {errorText ? (
@@ -170,9 +175,6 @@ export default function RomanNumeralConverter() {
               <p className="tp-tool-hint">{tw("roman-numeral-converter.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("roman-numeral-converter.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
                 {t("clear")}
               </Button>

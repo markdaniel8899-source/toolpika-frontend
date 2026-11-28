@@ -104,6 +104,11 @@ export default function PpiCalculator() {
           </span>
         </div>
         <ToolBadge tone="accent">{tw("ppi-calculator.heroLabel")}</ToolBadge>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("ppi-calculator.trySample")}
+          </Button>
+        </div>
       </div>
 
       {errorText ? (
@@ -126,9 +131,6 @@ export default function PpiCalculator() {
               <p className="tp-tool-hint">{tw("ppi-calculator.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("ppi-calculator.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
                 {t("clear")}
               </Button>

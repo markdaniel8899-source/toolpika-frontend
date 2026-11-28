@@ -76,7 +76,15 @@ export default function PasswordStrengthChecker() {
             <span className="tp-tool-subtitle">{tw("password-strength-checker.shortDesc")}</span>
           </span>
         </div>
-        <ToolBadge tone={BAND_TONES[result.band]}>{tw(BAND_LABEL_KEYS[result.band])}</ToolBadge>
+        <div className="ml-auto flex items-center gap-1.5">
+          <ToolBadge tone={BAND_TONES[result.band]}>{tw(BAND_LABEL_KEYS[result.band])}</ToolBadge>
+          <Button type="button" size="sm" onClick={handleSample}>
+            {tw("password-strength-checker.generateExample")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+            {t("clear")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-industrial grid grid-cols-1 gap-4">
@@ -87,14 +95,6 @@ export default function PasswordStrengthChecker() {
                 {tw("password-strength-checker.inputTitle")}
               </h3>
               <p className="tp-tool-hint">{tw("password-strength-checker.inputHint")}</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("password-strength-checker.generateExample")}
-              </Button>
-              <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-                {t("clear")}
-              </Button>
             </div>
           </div>
 

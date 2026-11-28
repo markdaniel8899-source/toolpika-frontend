@@ -186,6 +186,11 @@ export default function XmlToJson() {
             {tw("xml-to-json.uploadXml")}
           </Button>
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("xml-to-json.trySample")}
+          </Button>
+        </div>
       </div>
 
       {(hasError || uploadError) ? (
@@ -208,9 +213,6 @@ export default function XmlToJson() {
               <p className="tp-tool-hint">{tw("xml-to-json.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("xml-to-json.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
                 {t("clear")}
               </Button>

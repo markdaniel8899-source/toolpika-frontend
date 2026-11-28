@@ -143,6 +143,11 @@ export default function CssGradientGenerator() {
           <span aria-hidden="true">•</span>
           <span dir="ltr">{clampAngle(options.angle)}°</span>
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("css-gradient-generator.trySample")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -158,9 +163,6 @@ export default function CssGradientGenerator() {
               <p className="tp-tool-hint">{tw("css-gradient-generator.resultHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("css-gradient-generator.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

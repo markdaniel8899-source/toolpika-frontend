@@ -134,6 +134,11 @@ export default function FancyTextGenerator() {
         <ToolBadge tone="accent">
           {tw("fancy-text-generator.styleCountBadge", { count: result.variants.length || 16 })}
         </ToolBadge>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("fancy-text-generator.trySample")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -149,9 +154,6 @@ export default function FancyTextGenerator() {
               <p className="tp-tool-hint">{tw("fancy-text-generator.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("fancy-text-generator.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

@@ -98,6 +98,11 @@ export default function HtmlEntityEncoder() {
             onChange={(style) => update({ style })}
           />
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("html-entity-encoder.trySample")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -113,9 +118,6 @@ export default function HtmlEntityEncoder() {
               <p className="tp-tool-hint">{tw("html-entity-encoder.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("html-entity-encoder.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
                 {t("clear")}
               </Button>

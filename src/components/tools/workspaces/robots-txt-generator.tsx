@@ -140,6 +140,11 @@ export default function RobotsTxtGenerator() {
           <span>{tw("robots-txt-generator.directiveCountLabel")}</span>
           <strong dir="ltr">{directiveCount}</strong>
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("robots-txt-generator.trySample")}
+          </Button>
+        </div>
       </div>
 
       {message ? (
@@ -162,9 +167,6 @@ export default function RobotsTxtGenerator() {
               <p className="tp-tool-hint">{tw("robots-txt-generator.rulesHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("robots-txt-generator.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

@@ -310,7 +310,6 @@ export default function ImageCropper() {
   );
 
   const chooseAspect = (value: AspectPreset) => {
-    setShape("rectangle");
     if (!loaded) {
       setPreset(value);
       return;
@@ -319,21 +318,7 @@ export default function ImageCropper() {
     const next = cropForPreset(box, size, value);
     setPreset(value);
     setBox(next);
-    void renderCrop(next, format, quality, "rectangle");
-  };
-
-  const chooseCircle = () => {
-    if (!loaded) {
-      setPreset("1:1");
-      setShape("circle");
-      return;
-    }
-    const size: SourceSize = { width: loaded.width, height: loaded.height };
-    const next = cropForPreset(box, size, "1:1");
-    setPreset("1:1");
-    setShape("circle");
-    setBox(next);
-    void renderCrop(next, format, quality, "circle");
+    void renderCrop(next, format, quality, shape);
   };
 
   const handleSample = async () => {
@@ -388,15 +373,14 @@ export default function ImageCropper() {
 
   const percent = loaded ? cropBoxPercent(box, { width: loaded.width, height: loaded.height }) : null;
   const downloadName = `${loaded ? parseFileName(loaded.name).base || tw("image-cropper.defaultFileName") : tw("image-cropper.defaultFileName")}-crop.${extensionForFormat(format)}`;
-  const activePill = shape === "circle" ? "circle" : preset;
+  const activePill = preset;
 
-  const aspectPills: { value: AspectPreset | "circle"; label: string }[] = [
+  const aspectPills: { value: AspectPreset; label: string }[] = [
     { value: "free", label: tw("image-cropper.presetFree") },
     { value: "1:1", label: tw("image-cropper.presetSquare") },
     { value: "4:3", label: tw("image-cropper.presetFourThree") },
     { value: "16:9", label: tw("image-cropper.presetSixteenNine") },
     { value: "3:4", label: tw("image-cropper.presetThreeFour") },
-    { value: "circle", label: tw("image-cropper.shapeCircle") },
   ];
 
   const formatOptions = [
@@ -614,10 +598,7 @@ export default function ImageCropper() {
                   variant={activePill === pill.value ? "default" : "secondary"}
                   className="rounded-full"
                   aria-pressed={activePill === pill.value}
-                  onClick={() => {
-                    if (pill.value === "circle") chooseCircle();
-                    else chooseAspect(pill.value);
-                  }}
+                  onClick={() => chooseAspect(pill.value)}
                 >
                   {pill.label}
                 </Button>

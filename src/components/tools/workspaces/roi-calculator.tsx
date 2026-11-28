@@ -123,6 +123,11 @@ export default function RoiCalculator() {
         <ToolBadge tone={positive ? "success" : "danger"}>
           {positive ? tw("roi-calculator.gainBadge") : tw("roi-calculator.lossBadge")}
         </ToolBadge>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("roi-calculator.trySample")}
+          </Button>
+        </div>
       </div>
 
       <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -138,9 +143,6 @@ export default function RoiCalculator() {
               <p className="tp-tool-hint">{tw("roi-calculator.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("roi-calculator.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

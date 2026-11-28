@@ -73,12 +73,14 @@ export default function JsonToTypeScript() {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button type="button" size="sm" onClick={handleSample}>
-            {tw("json-to-typescript.trySample")}
-          </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
-            {t("clear")}
-          </Button>
+          <div className="ml-auto flex items-center gap-1">
+            <Button type="button" size="sm" onClick={handleSample}>
+              {tw("json-to-typescript.trySample")}
+            </Button>
+            <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
+              {t("clear")}
+            </Button>
+          </div>
           <label
             htmlFor="ts-root-name"
             className="flex items-center gap-2 text-xs font-medium text-[var(--text)]"

@@ -10638,12 +10638,8 @@ details[open] > summary::after {
   word-break: break-word;
 }
 
-@media (min-width: 1024px) {
-  .tp-industrial {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    align-items: start;
-  }
-}
+/* The 12-column grid comes from Tailwind's lg:grid-cols-12 utility on each
+   workspace. Tools that use tp-industrial without that utility stay stacked. */
 
 /* Crop frame resize handles */
 .tp-crop-handle {

@@ -97,6 +97,11 @@ export default function ChmodCalculator() {
           <span>{tw("chmod-calculator.numericLabel")}</span>
           <strong dir="ltr">{numeric}</strong>
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("chmod-calculator.trySample")}
+          </Button>
+        </div>
       </div>
 
       {errorText ? (
@@ -125,9 +130,6 @@ export default function ChmodCalculator() {
               <p className="tp-tool-hint">{tw("chmod-calculator.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("chmod-calculator.trySample")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

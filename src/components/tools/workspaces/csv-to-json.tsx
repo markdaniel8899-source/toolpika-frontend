@@ -181,6 +181,11 @@ export default function CsvToJson() {
             {tw("csv-to-json.uploadCsv")}
           </Button>
         </div>
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={loadSample}>
+            {tw("csv-to-json.sampleAction")}
+          </Button>
+        </div>
       </div>
 
       {errorText ? (
@@ -203,9 +208,6 @@ export default function CsvToJson() {
               <p className="tp-tool-hint">{tw("csv-to-json.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={loadSample}>
-                {tw("csv-to-json.sampleAction")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={clearAll}>
                 {t("clear")}
               </Button>

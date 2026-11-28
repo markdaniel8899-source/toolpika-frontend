@@ -208,6 +208,11 @@ export default function AesTextEncryptor() {
           ]}
           onChange={handleModeChange}
         />
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("aes-text-encryptor.sampleAction")}
+          </Button>
+        </div>
       </div>
 
       {errorText ? (
@@ -230,9 +235,6 @@ export default function AesTextEncryptor() {
               <p className="tp-tool-hint">{tw("aes-text-encryptor.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("aes-text-encryptor.sampleAction")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>

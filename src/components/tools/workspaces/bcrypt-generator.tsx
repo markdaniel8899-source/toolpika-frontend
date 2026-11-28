@@ -294,6 +294,11 @@ export default function BcryptGenerator() {
           ]}
           onChange={handleModeChange}
         />
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+            {tw("bcrypt-generator.sampleAction")}
+          </Button>
+        </div>
       </div>
 
       <p className="tp-tool-notice" data-tone="warning" role="status" aria-live="polite">
@@ -321,9 +326,6 @@ export default function BcryptGenerator() {
               <p className="tp-tool-hint">{tw("bcrypt-generator.inputHint")}</p>
             </div>
             <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("bcrypt-generator.sampleAction")}
-              </Button>
               <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
                 {t("clear")}
               </Button>
