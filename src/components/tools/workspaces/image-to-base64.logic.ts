@@ -52,7 +52,8 @@ export function htmlSnippet(dataUrl: string, alt: string): string {
  * payload is ignored so wrapped snippets can be pasted back in.
  */
 export function parseDataUrl(value: string): ParsedDataUrl | null {
-  const match = /^data:(image\/[a-z0-9.+-]+);base64,([a-z0-9+/=\s]+)$/iu.exec(value.trim());
+  // Accept a bare Data URL or one pasted from a CSS / HTML snippet.
+  const match = /data:(image\/[a-z0-9.+-]+);base64,([a-z0-9+/=\s]+)/iu.exec(value);
   if (!match) return null;
   const base64 = match[2].replace(/\s/gu, "");
   if (base64.length === 0 || base64.length % 4 !== 0) return null;

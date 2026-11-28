@@ -56,7 +56,7 @@ interface DecodedImage {
 }
 
 type CropErrorCode = "unsupported" | "tooLarge" | "decodeFailed" | "canvasLimit" | "renderFailed";
-type CropShape = "rectangle" | "circle" | "rounded" | "square";
+type CropShape = "rectangle" | "circle" | "rounded" | "square" | "pill" | "triangle";
 
 async function decodeSource(file: File, url: string): Promise<DecodedImage> {
   if (typeof globalThis.createImageBitmap === "function") {
@@ -104,6 +104,7 @@ export default function ImageCropper() {
   const [quality, setQuality] = useState(0.9);
   const [shape, setShape] = useState<CropShape>("rectangle");
   const [output, setOutput] = useState<OutputImage | null>(null);
+  const [variations, setVariations] = useState<Partial<Record<ImageFormat, Blob>>>({});
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [errorCode, setErrorCode] = useState<CropErrorCode | null>(null);
@@ -175,7 +176,8 @@ export default function ImageCropper() {
           return;
         }
 
-        if (nextShape === "circle" || nextShape === "rounded") {
+        const clipped = nextShape !== "rectangle" && nextShape !== "square";
+        if (clipped) {
           context.save();
           context.beginPath();
           if (nextShape === "circle") {
@@ -186,8 +188,15 @@ export default function ImageCropper() {
               0,
               Math.PI * 2,
             );
+          } else if (nextShape === "triangle") {
+            context.moveTo(size.width / 2, 0);
+            context.lineTo(size.width, size.height);
+            context.lineTo(0, size.height);
+            context.closePath();
           } else {
-            const radius = Math.min(size.width, size.height) * 0.16;
+            const radius = nextShape === "pill"
+              ? Math.min(size.width, size.height) / 2
+              : Math.min(size.width, size.height) * 0.16;
             context.moveTo(radius, 0);
             context.lineTo(size.width - radius, 0);
             context.quadraticCurveTo(size.width, 0, size.width, radius);
@@ -216,17 +225,23 @@ export default function ImageCropper() {
           size.width,
           size.height,
         );
-        if (nextShape === "circle" || nextShape === "rounded") context.restore();
+        if (clipped) context.restore();
 
-        const blob = await new Promise<Blob | null>((resolve) => {
-          canvas.toBlob(resolve, nextFormat, nextQuality);
-        });
+        const encoded: Partial<Record<ImageFormat, Blob>> = {};
+        for (const candidate of ["image/png", "image/jpeg", "image/webp"] as ImageFormat[]) {
+          const encodedBlob = await new Promise<Blob | null>((resolve) => {
+            canvas.toBlob(resolve, candidate, candidate === "image/png" ? undefined : nextQuality);
+          });
+          if (encodedBlob) encoded[candidate] = encodedBlob;
+        }
         if (requestId !== renderIdRef.current) return;
+        const blob = encoded[nextFormat] ?? encoded["image/png"];
         if (!blob) {
           setErrorCode("renderFailed");
           setBusy(false);
           return;
         }
+        setVariations(encoded);
 
         const url = URL.createObjectURL(blob);
         if (outputUrlRef.current) URL.revokeObjectURL(outputUrlRef.current);
@@ -353,6 +368,7 @@ export default function ImageCropper() {
     setQuality(0.9);
     setShape("rectangle");
     setOutput(null);
+    setVariations({});
     setErrorCode(null);
     setDragging(false);
     releaseSource();
@@ -510,7 +526,7 @@ export default function ImageCropper() {
                       height: `${percent.height}%`,
                       background: "color-mix(in srgb, var(--accent) 12%, transparent)",
                       boxShadow: "0 0 0 9999px color-mix(in srgb, var(--text) 22%, transparent)",
-                      borderRadius: shape === "circle" ? "50%" : shape === "rounded" ? "16%" : "4px",
+                      borderRadius: shape === "circle" ? "50%" : shape === "pill" ? "999px" : shape === "rounded" ? "16%" : shape === "triangle" ? "0" : "4px",
                       touchAction: "none",
                     }}
                   >
@@ -675,6 +691,8 @@ export default function ImageCropper() {
                     { value: "square", label: tw("image-cropper.shapeSquare") },
                     { value: "circle", label: tw("image-cropper.shapeCircle") },
                     { value: "rounded", label: tw("image-cropper.shapeRounded") },
+                    { value: "pill", label: tw("image-cropper.shapePill") },
+                    { value: "triangle", label: tw("image-cropper.shapeTriangle") },
                   ]}
                   onChange={(next) => {
                     setShape(next);
@@ -736,6 +754,25 @@ export default function ImageCropper() {
             variant="default"
             className="tp-full-button"
           />
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <span className="tp-tool-group-title">{tw("image-cropper.downloadVariations")}</span>
+            <div className="flex flex-wrap gap-2">
+              {(["image/png", "image/jpeg", "image/webp"] as ImageFormat[]).map((candidate) => (
+                <DownloadButton
+                  key={candidate}
+                  content={variations[candidate] ?? null}
+                  fileName={`${downloadName.replace(/\.[^.]+$/u, "")}.${extensionForFormat(candidate)}`}
+                  label={candidate === "image/png"
+                    ? tw("image-cropper.formatPng")
+                    : candidate === "image/jpeg"
+                      ? tw("image-cropper.formatJpeg")
+                      : tw("image-cropper.formatWebp")}
+                  variant="default"
+                />
+              ))}
+            </div>
+          </div>
         </section>
       </div>
 

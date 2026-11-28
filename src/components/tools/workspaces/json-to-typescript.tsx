@@ -229,13 +229,14 @@ export default function JsonToTypeScript() {
                       : tw("json-to-typescript.kindScalar")}
                 </span>
               </div>
-              <div
-                className="tp-output-viewer"
-                role="region"
+              <textarea
+                className="tp-tool-editor tp-output-viewer"
+                value={result.code}
+                readOnly
+                spellCheck={false}
+                dir="ltr"
                 aria-label={t("result")}
-              >
-                <code dir="ltr">{result.code}</code>
-              </div>
+              />
             </div>
           ) : (
             <div aria-live="polite">

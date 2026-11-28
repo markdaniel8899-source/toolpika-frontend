@@ -133,44 +133,12 @@ export default function SvgOptimizer() {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
-          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={t("options")}>
-            <Button
-              type="button"
-              size="sm"
-              variant={options.removeComments ? "default" : "secondary"}
-              aria-pressed={options.removeComments}
-              onClick={() => update({ removeComments: !options.removeComments })}
-            >
-              {tw("svg-optimizer.removeComments")}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={options.removeMetadata ? "default" : "secondary"}
-              aria-pressed={options.removeMetadata}
-              onClick={() => update({ removeMetadata: !options.removeMetadata })}
-            >
-              {tw("svg-optimizer.removeMetadata")}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={options.collapseWhitespace ? "default" : "secondary"}
-              aria-pressed={options.collapseWhitespace}
-              onClick={() => update({ collapseWhitespace: !options.collapseWhitespace })}
-            >
-              {tw("svg-optimizer.collapseWhitespace")}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={options.jsxAttributes ? "default" : "secondary"}
-              aria-pressed={options.jsxAttributes}
-              onClick={() => update({ jsxAttributes: !options.jsxAttributes })}
-            >
-              {tw("svg-optimizer.jsxAttributes")}
-            </Button>
-          </div>
+          <Button type="button" size="sm" onClick={handleSample}>
+            {tw("svg-optimizer.trySample")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
+            {t("clear")}
+          </Button>
           {result ? (
             <div className="tp-meta-pill" aria-live="polite">
               <span>{tw("svg-optimizer.beforeLabel")}</span>
@@ -211,14 +179,13 @@ export default function SvgOptimizer() {
               </h3>
               <p className="tp-tool-hint">{tw("svg-optimizer.inputHint")}</p>
             </div>
-            <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
-                {tw("svg-optimizer.trySample")}
-              </Button>
-              <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
-                {t("clear")}
-              </Button>
-            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={t("options")}>
+            <Button type="button" size="sm" variant={options.removeComments ? "default" : "secondary"} aria-pressed={options.removeComments} onClick={() => update({ removeComments: !options.removeComments })}>{tw("svg-optimizer.removeComments")}</Button>
+            <Button type="button" size="sm" variant={options.removeMetadata ? "default" : "secondary"} aria-pressed={options.removeMetadata} onClick={() => update({ removeMetadata: !options.removeMetadata })}>{tw("svg-optimizer.removeMetadata")}</Button>
+            <Button type="button" size="sm" variant={options.collapseWhitespace ? "default" : "secondary"} aria-pressed={options.collapseWhitespace} onClick={() => update({ collapseWhitespace: !options.collapseWhitespace })}>{tw("svg-optimizer.collapseWhitespace")}</Button>
+            <Button type="button" size="sm" variant={options.jsxAttributes ? "default" : "secondary"} aria-pressed={options.jsxAttributes} onClick={() => update({ jsxAttributes: !options.jsxAttributes })}>{tw("svg-optimizer.jsxAttributes")}</Button>
           </div>
 
           <div className="tp-tool-drop" data-dragging={dragging ? "true" : undefined} {...dropHandlers}>
