@@ -39,7 +39,7 @@ const OG_LOCALES: Record<string, string> = {
 const CURATED_RELATED: Record<string, string[]> = {
   "word-counter": ["text-diff-checker","case-converter","lorem-ipsum-generator","markdown-to-html","url-encoder","five-letter-word-finder","reading-time-calculator","text-repeater","reverse-text"],
   "case-converter": ["slug-generator","word-counter","markdown-to-html","json-formatter","fancy-font-generator","text-repeater","reverse-text"],
-  "image-compressor": ["image-resizer","base64-encoder","color-converter","percentage-calculator","aspect-ratio-calculator","video-size-calculator"],
+  "image-compressor": ["image-resizer","base64-encoder","color-converter","percentage-calculator","aspect-ratio-calculator","video-size-calculator","image-format-converter"],
   "json-formatter": ["json-to-csv","yaml-to-json","case-converter","regex-tester","base64-encoder","timestamp-converter"],
   "unit-converter": ["percentage-calculator","number-base-converter","data-storage-converter","color-converter","fuel-cost-calculator","cooking-converter","electricity-bill-calculator"],
   "password-generator": ["hash-generator","jwt-decoder","uuid-generator","personality-quiz","random-choice-picker"],
@@ -50,7 +50,7 @@ const CURATED_RELATED: Record<string, string[]> = {
   "color-converter": ["number-base-converter","unit-converter","image-compressor","image-resizer"],
   "number-base-converter": ["color-converter","unit-converter","data-storage-converter","uuid-generator","jwt-decoder","hash-generator"],
   "timestamp-converter": ["data-storage-converter","jwt-decoder","regex-tester","json-formatter"],
-  "data-storage-converter": ["timestamp-converter","unit-converter","number-base-converter","image-resizer","video-size-calculator"],
+  "data-storage-converter": ["timestamp-converter","unit-converter","number-base-converter","image-resizer","video-size-calculator","image-format-converter"],
   "slug-generator": ["case-converter","url-encoder","markdown-to-html","utm-builder","fancy-font-generator"],
   "yaml-to-json": ["regex-tester","json-formatter","json-to-csv"],
   "lorem-ipsum-generator": ["markdown-to-html","word-counter","fancy-font-generator","five-letter-word-finder","word-scramble-solver","random-choice-picker"],
@@ -62,7 +62,7 @@ const CURATED_RELATED: Record<string, string[]> = {
   "aspect-ratio-calculator": ["image-resizer","image-compressor","percentage-calculator"],
   "utm-builder": ["url-encoder","slug-generator","text-diff-checker"],
   "hash-generator": ["password-generator","jwt-decoder","number-base-converter"],
-  "image-resizer": ["aspect-ratio-calculator","image-compressor","color-converter","data-storage-converter"],
+  "image-resizer": ["aspect-ratio-calculator","image-compressor","color-converter","data-storage-converter","image-format-converter"],
   "remove-duplicate-lines": ["sort-text-lines","find-and-replace-text","character-frequency-counter","readability-score-checker"],
   "sort-text-lines": ["remove-duplicate-lines","find-and-replace-text","character-frequency-counter"],
   "find-and-replace-text": ["remove-duplicate-lines","sort-text-lines","character-frequency-counter","readability-score-checker","text-repeater"],
@@ -106,7 +106,7 @@ const CURATED_RELATED: Record<string, string[]> = {
   "freelance-rate-calculator": ["profit-margin-calculator","break-even-calculator","tdee-calculator","tip-bill-split-calculator","sales-tax-calculator"],
   "reading-time-calculator": ["character-frequency-counter","five-letter-word-finder","date-countdown-calculator","word-counter","age-calculator","stopwatch-timer","text-repeater","reverse-text"],
   "rent-vs-buy-calculator": ["break-even-calculator","compound-interest-calculator","video-size-calculator","savings-goal-calculator"],
-  "video-size-calculator": ["data-storage-converter","rent-vs-buy-calculator","image-compressor","fuel-cost-calculator"],
+  "video-size-calculator": ["data-storage-converter","rent-vs-buy-calculator","image-compressor","fuel-cost-calculator","image-format-converter"],
   "age-calculator": ["date-countdown-calculator","due-date-calculator","sleep-cycle-calculator","reading-time-calculator"],
   "sales-tax-calculator": ["tip-bill-split-calculator","discount-calculator","profit-margin-calculator","freelance-rate-calculator"],
   "savings-goal-calculator": ["compound-interest-calculator","loan-emi-calculator","break-even-calculator","rent-vs-buy-calculator"],
@@ -116,7 +116,8 @@ const CURATED_RELATED: Record<string, string[]> = {
   "electricity-bill-calculator": ["fuel-cost-calculator","compound-interest-calculator","unit-converter","percentage-calculator"],
   "due-date-calculator": ["date-countdown-calculator","age-calculator","sleep-cycle-calculator","water-intake-calculator"],
   "text-repeater": ["reverse-text","word-counter","case-converter","find-and-replace-text"],
-  "reverse-text": ["text-repeater","case-converter","fancy-font-generator","word-counter"],
+  "reverse-text": ["text-repeater","case-converter","word-counter"],
+  "image-format-converter": ["image-compressor","image-resizer","data-storage-converter","video-size-calculator"],
 };
 
 /** Matches the contextual %%TOOL%% link written into each tool's About copy. */
@@ -199,6 +200,7 @@ const CONTEXTUAL_TOOL: Record<string, string> = {
   "due-date-calculator": "date-countdown-calculator",
   "text-repeater": "reverse-text",
   "reverse-text": "text-repeater",
+  "image-format-converter": "image-resizer",
 };
 
 type LocalePageProps = {

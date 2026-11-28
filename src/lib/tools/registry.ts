@@ -770,7 +770,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "sales-tax-calculator",
@@ -782,7 +781,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "savings-goal-calculator",
@@ -794,7 +792,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "fuel-cost-calculator",
@@ -806,7 +803,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "cooking-converter",
@@ -818,7 +814,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "stopwatch-timer",
@@ -830,7 +825,6 @@ export const tools: Tool[] = [
     inputs: [],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "electricity-bill-calculator",
@@ -842,7 +836,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "due-date-calculator",
@@ -854,7 +847,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "text-repeater",
@@ -866,7 +858,6 @@ export const tools: Tool[] = [
     inputs: ["text"],
     clientSide: true,
     status: "live",
-    isNew: true,
   },
   {
     id: "reverse-text",
@@ -876,6 +867,17 @@ export const tools: Tool[] = [
     description: "Reverse characters, words, lines or letters with case aware output.",
     icon: "ArrowDownUp",
     inputs: ["text"],
+    clientSide: true,
+    status: "live",
+  },
+  {
+    id: "image-format-converter",
+    slug: "image-format-converter",
+    title: "Image Format Converter",
+    category: "image",
+    description: "Convert local images between WebP, JPG, PNG and AVIF with quality presets.",
+    icon: "Image",
+    inputs: ["file"],
     clientSide: true,
     status: "live",
     isNew: true,

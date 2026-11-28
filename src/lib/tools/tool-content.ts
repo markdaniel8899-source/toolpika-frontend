@@ -177,6 +177,7 @@ const WITH_FULL_CONTENT = new Set([
   "due-date-calculator",
   "text-repeater",
   "reverse-text",
+  "image-format-converter",
 ]);
 
 /** Tools with an explicit long-tail intent list in their messages. */
@@ -302,6 +303,7 @@ const SECTION_PLANS: Record<string, ContentSectionKind[]> = {
   "due-date-calculator": ["definition", "facts", "guidance", "steps", "example", "faq"],
   "text-repeater": ["definition", "steps", "example", "guidance", "useCases", "faq"],
   "reverse-text": ["definition", "example", "facts", "guidance", "steps", "faq"],
+  "image-format-converter": ["definition", "steps", "guidance", "example", "facts", "useCases", "faq"],
 };
 
 function lines(value: string): string[] {

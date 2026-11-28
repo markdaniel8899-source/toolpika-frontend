@@ -82,6 +82,7 @@ const ElectricityBillCalculator = dynamic(() => import("./workspaces/electricity
 const DueDateCalculator = dynamic(() => import("./workspaces/due-date-calculator"), { loading });
 const TextRepeater = dynamic(() => import("./workspaces/text-repeater"), { loading });
 const ReverseText = dynamic(() => import("./workspaces/reverse-text"), { loading });
+const ImageFormatConverter = dynamic(() => import("./workspaces/image-format-converter"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -159,6 +160,7 @@ const WORKSPACES = {
   "due-date-calculator": DueDateCalculator,
   "text-repeater": TextRepeater,
   "reverse-text": ReverseText,
+  "image-format-converter": ImageFormatConverter,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {

@@ -10225,6 +10225,91 @@ select.tp-tool-select,
   }
 }
 
+/* Compact stacked flow for focused single-action tools */
+.tp-tool-body--stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 22px 22px;
+}
+
+.tp-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  background: var(--accent-wash);
+  color: var(--muted);
+  text-align: center;
+}
+
+.tp-drop-zone.is-dragging {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tp-drop-zone p {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tp-drop-zone .tp-tool-hint {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+
+.tp-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tp-color-input {
+  width: 44px;
+  height: 38px;
+  flex: none;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.tp-image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tp-image-preview-grid figure {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+
+.tp-image-preview-grid img {
+  width: 100%;
+  height: 130px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  object-fit: contain;
+}
+
+.tp-image-preview-grid figcaption {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
 /* Searchable currency picker */
 .tp-currency {
   position: relative;
