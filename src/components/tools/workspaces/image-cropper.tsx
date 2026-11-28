@@ -625,6 +625,33 @@ export default function ImageCropper() {
             </div>
           </ToolField>
 
+          <div className="tp-tool-group tp-tool-group--flush">
+            <span className="tp-tool-group-title">{tw("image-cropper.shapeLabel")}</span>
+            <SegmentedControl<CropShape>
+              label={tw("image-cropper.shapeLabel")}
+              value={shape}
+              options={[
+                { value: "rectangle", label: tw("image-cropper.shapeRectangle") },
+                { value: "square", label: tw("image-cropper.shapeSquare") },
+                { value: "circle", label: tw("image-cropper.shapeCircle") },
+                { value: "rounded", label: tw("image-cropper.shapeRounded") },
+                { value: "pill", label: tw("image-cropper.shapePill") },
+                { value: "triangle", label: tw("image-cropper.shapeTriangle") },
+              ]}
+              onChange={(next) => {
+                setShape(next);
+                if (next === "square" && loaded) {
+                  const nextBox = cropForPreset(box, { width: loaded.width, height: loaded.height }, "1:1");
+                  setPreset("1:1");
+                  setBox(nextBox);
+                  void renderCrop(nextBox, format, quality, next);
+                } else {
+                  void renderCrop(box, format, quality, next);
+                }
+              }}
+            />
+          </div>
+
           <details className="tp-tool-group tp-tool-group--flush">
             <summary className="tp-tool-group-title cursor-pointer">
               {tw("image-cropper.precisionExport")}
@@ -679,34 +706,6 @@ export default function ImageCropper() {
                     onValueChange={(value) => updateBox({ ...box, height: Number(value) || 1 })}
                   />
                 </ToolField>
-              </div>
-
-              <div className="tp-tool-group tp-tool-group--flush">
-                <span className="tp-tool-group-title">{tw("image-cropper.shapeLabel")}</span>
-                <SegmentedControl<CropShape>
-                  label={tw("image-cropper.shapeLabel")}
-                  value={shape}
-                  options={[
-                    { value: "rectangle", label: tw("image-cropper.shapeRectangle") },
-                    { value: "square", label: tw("image-cropper.shapeSquare") },
-                    { value: "circle", label: tw("image-cropper.shapeCircle") },
-                    { value: "rounded", label: tw("image-cropper.shapeRounded") },
-                    { value: "pill", label: tw("image-cropper.shapePill") },
-                    { value: "triangle", label: tw("image-cropper.shapeTriangle") },
-                  ]}
-                  onChange={(next) => {
-                    setShape(next);
-                    if (next === "square" && loaded) {
-                      const nextBox = cropForPreset(box, { width: loaded.width, height: loaded.height }, "1:1");
-                      setPreset("1:1");
-                      setBox(nextBox);
-                      void renderCrop(nextBox, format, quality, next);
-                    } else {
-                      void renderCrop(box, format, quality, next);
-                    }
-                  }}
-                />
-                <p className="tp-tool-hint">{tw("image-cropper.shapeHint")}</p>
               </div>
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

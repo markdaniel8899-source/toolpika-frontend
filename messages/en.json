@@ -6545,7 +6545,8 @@
       "tabCode": "Optimized code",
       "tabPreview": "Visual preview",
       "chooseSvg": "Choose SVG file",
-      "previewAlt": "Visual preview of the optimized SVG"
+      "previewAlt": "Visual preview of the optimized SVG",
+      "dropShort": "Drop an SVG file or paste markup below."
     },
     "timezone-converter": {
       "title": "Timezone Converter",

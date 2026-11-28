@@ -133,12 +133,6 @@ export default function SvgOptimizer() {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
-          <Button type="button" size="sm" onClick={handleSample}>
-            {tw("svg-optimizer.trySample")}
-          </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
-            {t("clear")}
-          </Button>
           {result ? (
             <div className="tp-meta-pill" aria-live="polite">
               <span>{tw("svg-optimizer.beforeLabel")}</span>
@@ -151,6 +145,14 @@ export default function SvgOptimizer() {
               <strong dir="ltr">{result.savedPercent}%</strong>
             </div>
           ) : null}
+          <div className="ml-auto flex items-center gap-1.5">
+            <Button type="button" size="sm" onClick={handleSample}>
+              {tw("svg-optimizer.trySample")}
+            </Button>
+            <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
+              {t("clear")}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -188,9 +190,9 @@ export default function SvgOptimizer() {
             <Button type="button" size="sm" variant={options.jsxAttributes ? "default" : "secondary"} aria-pressed={options.jsxAttributes} onClick={() => update({ jsxAttributes: !options.jsxAttributes })}>{tw("svg-optimizer.jsxAttributes")}</Button>
           </div>
 
-          <div className="tp-tool-drop" data-dragging={dragging ? "true" : undefined} {...dropHandlers}>
-            <Upload className="h-5 w-5" aria-hidden="true" />
-            <p>{tw("svg-optimizer.inputHint")}</p>
+          <div className="tp-tool-drop tp-tool-drop--compact" data-dragging={dragging ? "true" : undefined} {...dropHandlers}>
+            <Upload className="h-4 w-4" aria-hidden="true" />
+            <p className="tp-tool-hint">{tw("svg-optimizer.dropShort")}</p>
             <Button type="button" size="sm" variant="secondary" onClick={() => fileRef.current?.click()}>
               {tw("svg-optimizer.chooseSvg")}
             </Button>

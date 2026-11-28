@@ -10560,6 +10560,15 @@ details[open] > summary::after {
   }
 }
 
+.tp-tool-drop--compact {
+  padding: 10px 12px;
+  gap: 4px;
+}
+
+.tp-tool-drop--compact p {
+  margin: 0;
+}
+
 /* Industrial 12-column workspaces */
 .tp-industrial {
   display: grid;
