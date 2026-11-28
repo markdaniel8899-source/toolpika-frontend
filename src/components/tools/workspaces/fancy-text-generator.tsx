@@ -135,7 +135,7 @@ export default function FancyTextGenerator() {
           {tw("fancy-text-generator.styleCountBadge", { count: result.variants.length || 16 })}
         </ToolBadge>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("fancy-text-generator.trySample")}
           </Button>
         </div>

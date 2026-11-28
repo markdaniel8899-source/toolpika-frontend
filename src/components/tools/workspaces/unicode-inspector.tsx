@@ -125,7 +125,7 @@ export default function UnicodeInspector() {
           {tw("unicode-inspector.hiddenBadge", { count: flagged })}
         </ToolBadge>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("unicode-inspector.trySample")}
           </Button>
         </div>

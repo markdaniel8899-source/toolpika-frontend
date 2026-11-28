@@ -138,7 +138,7 @@ export default function UrlParser() {
           <strong dir="ltr">{parts.params.length}</strong>
         </div>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={loadSample}>
+          <Button type="button" variant="default" size="sm" onClick={loadSample}>
             {tw("url-parser.sampleAction")}
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={() => void handlePaste()}>

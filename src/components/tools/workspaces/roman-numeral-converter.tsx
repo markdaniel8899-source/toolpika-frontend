@@ -150,7 +150,7 @@ export default function RomanNumeralConverter() {
         </div>
         <ToolBadge tone="accent">{tw("roman-numeral-converter.heroNote")}</ToolBadge>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("roman-numeral-converter.trySample")}
           </Button>
         </div>

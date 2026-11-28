@@ -105,7 +105,7 @@ export default function PpiCalculator() {
         </div>
         <ToolBadge tone="accent">{tw("ppi-calculator.heroLabel")}</ToolBadge>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("ppi-calculator.trySample")}
           </Button>
         </div>

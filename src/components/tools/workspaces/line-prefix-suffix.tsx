@@ -116,7 +116,7 @@ export default function LinePrefixSuffix() {
         </div>
         <ToolBadge tone="accent">{tw("line-prefix-suffix.liveBadge")}</ToolBadge>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("line-prefix-suffix.trySample")}
           </Button>
         </div>

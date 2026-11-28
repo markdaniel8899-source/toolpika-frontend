@@ -144,7 +144,7 @@ export default function CssGradientGenerator() {
           <span dir="ltr">{clampAngle(options.angle)}°</span>
         </div>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("css-gradient-generator.trySample")}
           </Button>
         </div>

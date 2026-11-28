@@ -124,7 +124,7 @@ export default function RoiCalculator() {
           {positive ? tw("roi-calculator.gainBadge") : tw("roi-calculator.lossBadge")}
         </ToolBadge>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" variant="default" size="sm" onClick={handleSample}>
             {tw("roi-calculator.trySample")}
           </Button>
         </div>
