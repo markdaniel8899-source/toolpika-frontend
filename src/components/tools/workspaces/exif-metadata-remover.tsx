@@ -1,19 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ChangeEvent, type DragEvent as ReactDragEvent } from "react";
 import { useTranslations } from "next-intl";
-import { Check, Image as ImageIcon, LoaderCircle, RotateCcw, ShieldCheck, Upload } from "lucide-react";
+import { AlertCircle, Check, Image as ImageIcon, LoaderCircle, ShieldCheck, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemedSelect } from "@/components/ui/themed-select";
 import { ToolIcon } from "@/components/tools/tool-icon";
-import {
-  DownloadButton,
-  Stat,
-  ToolBadge,
-  ToolEmpty,
-  ToolField,
-  ToolPane,
-} from "../workspace-ui";
+import { DownloadButton, SegmentedControl, ToolBadge, ToolEmpty } from "../workspace-ui";
 import {
   ACCEPTED_TYPES,
   MAX_FILE_BYTES,
@@ -45,6 +37,7 @@ interface CleanImage {
 }
 
 type ExifErrorCode = "unsupported" | "tooLarge" | "decodeFailed" | "renderFailed";
+type OutputChoice = "original" | ImageFormat;
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -60,6 +53,12 @@ function surfaceColor(): string {
   return root.getPropertyValue("--surface").trim() || root.getPropertyValue("--background").trim() || "#ffffff";
 }
 
+/** Keep Original re-encodes in the source format; every other choice is explicit. */
+function resolvedFormat(choice: OutputChoice, sourceType: string): ImageFormat {
+  if (choice !== "original") return choice;
+  return isAcceptedType(sourceType) ? (sourceType as ImageFormat) : "image/png";
+}
+
 export default function ExifMetadataRemover() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
@@ -67,7 +66,7 @@ export default function ExifMetadataRemover() {
   const [original, setOriginal] = useState<OriginalImage | null>(null);
   const [scan, setScan] = useState<ExifScan | null>(null);
   const [scanEnabled, setScanEnabled] = useState(false);
-  const [format, setFormat] = useState<ImageFormat>("image/png");
+  const [format, setFormat] = useState<OutputChoice>("original");
   const [quality, setQuality] = useState(0.9);
   const [clean, setClean] = useState<CleanImage | null>(null);
   const [busy, setBusy] = useState(false);
@@ -172,7 +171,7 @@ export default function ExifMetadataRemover() {
       bytesRef.current = new Uint8Array(await candidate.arrayBuffer());
       setOriginal(next);
       setScan(scanEnabled ? scanForExif(bytesRef.current) : null);
-      await renderClean(next, format, quality);
+      await renderClean(next, resolvedFormat(format, candidate.type), quality);
     } catch {
       URL.revokeObjectURL(url);
       setErrorCode("decodeFailed");
@@ -210,7 +209,7 @@ export default function ExifMetadataRemover() {
     setOriginal(null);
     setScan(null);
     setScanEnabled(false);
-    setFormat("image/png");
+    setFormat("original");
     setQuality(0.9);
     setClean(null);
     setErrorCode(null);
@@ -219,6 +218,16 @@ export default function ExifMetadataRemover() {
       URL.revokeObjectURL(cleanUrlRef.current);
       cleanUrlRef.current = null;
     }
+  };
+
+  const changeFormat = (next: OutputChoice) => {
+    setFormat(next);
+    if (original) void renderClean(original, resolvedFormat(next, original.facts.type), quality);
+  };
+
+  const changeQuality = (next: number) => {
+    setQuality(next);
+    if (original) void renderClean(original, resolvedFormat(format, original.facts.type), next);
   };
 
   const errorMessage = errorCode
@@ -232,23 +241,38 @@ export default function ExifMetadataRemover() {
     : "";
 
   const change = original && clean ? sizeChange(original.facts.sizeBytes, clean.size) : null;
+  const effectiveFormat = original ? resolvedFormat(format, original.facts.type) : "image/png";
   const downloadName = original
-    ? `${parseFileName(original.facts.name).base || tw("exif-metadata-remover.defaultFileName")}-clean.${extensionForFormat(format)}`
-    : `${tw("exif-metadata-remover.defaultFileName")}-clean.${extensionForFormat(format)}`;
+    ? `${parseFileName(original.facts.name).base || tw("exif-metadata-remover.defaultFileName")}-clean.${extensionForFormat(effectiveFormat)}`
+    : `${tw("exif-metadata-remover.defaultFileName")}-clean.${extensionForFormat(effectiveFormat)}`;
 
-  const formatOptions = [
-    { value: "image/png", label: tw("exif-metadata-remover.formatPng") },
+  const formatOptions: { value: OutputChoice; label: string }[] = [
+    { value: "original", label: tw("exif-metadata-remover.formatOriginal") },
     { value: "image/jpeg", label: tw("exif-metadata-remover.formatJpeg") },
+    { value: "image/png", label: tw("exif-metadata-remover.formatPng") },
     { value: "image/webp", label: tw("exif-metadata-remover.formatWebp") },
   ];
 
+  const dropHandlers = {
+    onDragOver: (event: ReactDragEvent<HTMLDivElement>) => { event.preventDefault(); setDragging(true); },
+    onDragLeave: () => setDragging(false),
+    onDrop: (event: ReactDragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setDragging(false);
+      void handleFile(event.dataTransfer.files[0]);
+    },
+  };
+
+  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+    void handleFile(event.target.files?.[0]);
+    event.target.value = "";
+  };
+
   return (
     <div className="tp-tool">
-      <div className="tp-tool-bar">
+      <div className="tp-industrial-bar tp-tool-bar">
         <div className="tp-tool-identity">
-          <span className="tp-tool-mark" aria-hidden="true">
-            <ToolIcon name="ShieldCheck" />
-          </span>
+          <span className="tp-tool-mark" aria-hidden="true"><ToolIcon name="ShieldCheck" /></span>
           <span className="tp-tool-identity-text">
             <span className="tp-tool-name">{tw("exif-metadata-remover.title")}</span>
             <span className="tp-tool-subtitle">{tw("exif-metadata-remover.shortDesc")}</span>
@@ -259,126 +283,163 @@ export default function ExifMetadataRemover() {
             {tw("exif-metadata-remover.trySample")}
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
-            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            {tw("exif-metadata-remover.reset")}
+            {t("clear")}
           </Button>
         </div>
       </div>
 
-      <div className="tp-tool-body tp-tool-body--stacked">
-        <ToolPane
-          id="exif-source-title"
-          title={tw("exif-metadata-remover.sourceTitle")}
-          hint={tw("exif-metadata-remover.sourceHint")}
-        >
-          <div
-            className="tp-tool-drop"
-            data-dragging={dragging ? "true" : undefined}
-            onDragOver={(event) => {
-              event.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={(event) => {
-              event.preventDefault();
-              setDragging(false);
-              void handleFile(event.dataTransfer.files[0]);
-            }}
-          >
-            {busy ? <LoaderCircle className="h-5 w-5" aria-hidden="true" /> : <Upload className="h-5 w-5" aria-hidden="true" />}
-            <strong>{original ? original.facts.name : tw("exif-metadata-remover.dropTitle")}</strong>
-            <span>{original ? tw("exif-metadata-remover.replaceHint") : tw("exif-metadata-remover.dropHint")}</span>
-            <Button
-              type="button"
-              size="sm"
-              className="mt-1"
-              onClick={(event) => {
-                event.stopPropagation();
-                fileInputRef.current?.click();
-              }}
-            >
-              {tw("exif-metadata-remover.chooseFile")}
-            </Button>
-            <input
-              ref={fileInputRef}
-              id="exif-file"
-              type="file"
-              accept={ACCEPTED_TYPES.join(",")}
-              className="sr-only"
-              aria-label={tw("exif-metadata-remover.chooseFile")}
-              aria-invalid={Boolean(errorMessage)}
-              aria-describedby={errorMessage ? "exif-error" : undefined}
-              onChange={(event) => {
-                void handleFile(event.target.files?.[0]);
-                event.target.value = "";
-              }}
-            />
+      {errorMessage ? (
+        <p className="tp-tool-notice" id="exif-error" data-tone="warning" role="alert" aria-live="polite">
+          <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+          {errorMessage}
+        </p>
+      ) : null}
+
+      <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <section className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-5" aria-labelledby="exif-source-title">
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="exif-source-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("exif-metadata-remover.sourceTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("exif-metadata-remover.sourceHint")}</p>
+            </div>
           </div>
 
           {original ? (
-            <dl className="tp-tool-stats" aria-live="polite">
-              <Stat label={tw("exif-metadata-remover.fileName")} value={original.facts.name} />
-              <Stat label={tw("exif-metadata-remover.fileType")} value={original.facts.type} />
-              <Stat label={tw("exif-metadata-remover.fileSize")} value={formatBytes(original.facts.sizeBytes)} />
-              <Stat label={tw("exif-metadata-remover.modified")} value={formatModified(original.facts.lastModified)} />
-              <Stat
-                label={tw("exif-metadata-remover.dimensions")}
-                value={`${original.width} × ${original.height}`}
+            <div className="tp-stage" aria-live="polite">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={clean?.url ?? original.url}
+                alt={tw("exif-metadata-remover.previewAlt")}
+                className="max-h-[46vh] max-w-full object-contain"
               />
-            </dl>
+            </div>
+          ) : (
+            <div className="tp-tool-drop" data-dragging={dragging ? "true" : undefined} {...dropHandlers}>
+              {busy ? <LoaderCircle className="h-5 w-5" aria-hidden="true" /> : <Upload className="h-5 w-5" aria-hidden="true" />}
+              <p>{tw("exif-metadata-remover.dropTitle")}</p>
+              <p className="tp-tool-hint">{tw("exif-metadata-remover.dropHint")}</p>
+              <Button type="button" size="sm" onClick={() => fileInputRef.current?.click()}>
+                {t("chooseImage")}
+              </Button>
+            </div>
+          )}
+
+          <input
+            ref={fileInputRef}
+            id="exif-file"
+            type="file"
+            accept={ACCEPTED_TYPES.join(",")}
+            className="sr-only"
+            onChange={handleInput}
+            aria-label={tw("exif-metadata-remover.chooseFile")}
+            aria-invalid={Boolean(errorMessage)}
+            aria-describedby={errorMessage ? "exif-error" : undefined}
+          />
+
+          {!original ? (
+            <div className="flex items-center justify-center">
+              <ToolEmpty
+                icon={busy ? <LoaderCircle /> : <ImageIcon />}
+                title={busy ? tw("exif-metadata-remover.processing") : tw("exif-metadata-remover.emptyTitle")}
+                hint={busy ? tw("exif-metadata-remover.processingHint") : tw("exif-metadata-remover.emptyHint")}
+              />
+            </div>
+          ) : null}
+
+          {original ? (
+            <div className="tp-meta-pill" aria-live="polite">
+              <strong className="truncate max-w-[180px]">{original.facts.name}</strong>
+              <span aria-hidden="true">•</span>
+              <span dir="ltr">{formatBytes(original.facts.sizeBytes)}</span>
+              {clean ? (
+                <>
+                  <span aria-hidden="true">•</span>
+                  <span dir="ltr">{formatBytes(clean.size)}</span>
+                </>
+              ) : null}
+            </div>
+          ) : null}
+        </section>
+
+        <section className="flex min-h-0 min-w-0 flex-col gap-4 overflow-hidden lg:col-span-7" aria-labelledby="exif-options-title">
+          <div className="tp-industrial-bar">
+            <h3 id="exif-options-title" className="text-sm font-semibold text-[var(--text)]">
+              {tw("exif-metadata-remover.optionsTitle")}
+            </h3>
+            <Button type="button" variant="ghost" size="sm" onClick={() => fileInputRef.current?.click()}>
+              {tw("exif-metadata-remover.replaceImage")}
+            </Button>
+          </div>
+
+          {original ? (
+            <div className="tp-tool-group tp-tool-group--flush">
+              <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-xs">
+                <dt className="text-[var(--muted)]">{tw("exif-metadata-remover.fileName")}</dt>
+                <dd className="min-w-0 truncate text-right text-[var(--text)]" dir="ltr">{original.facts.name}</dd>
+                <dt className="text-[var(--muted)]">{tw("exif-metadata-remover.fileType")}</dt>
+                <dd className="min-w-0 truncate text-right text-[var(--text)]" dir="ltr">{original.facts.type}</dd>
+                <dt className="text-[var(--muted)]">{tw("exif-metadata-remover.fileSize")}</dt>
+                <dd className="min-w-0 truncate text-right text-[var(--text)]" dir="ltr">{formatBytes(original.facts.sizeBytes)}</dd>
+                <dt className="text-[var(--muted)]">{tw("exif-metadata-remover.modified")}</dt>
+                <dd className="min-w-0 truncate text-right text-[var(--text)]" dir="ltr">{formatModified(original.facts.lastModified)}</dd>
+                <dt className="text-[var(--muted)]">{tw("exif-metadata-remover.dimensions")}</dt>
+                <dd className="min-w-0 truncate text-right text-[var(--text)]" dir="ltr">{original.width} × {original.height}</dd>
+              </dl>
+
+              <div className="tp-check-row mt-3">
+                <input
+                  id="exif-scan"
+                  type="checkbox"
+                  className="tp-checkbox"
+                  checked={scanEnabled}
+                  onChange={(event) => handleScanToggle(event.target.checked)}
+                  aria-label={tw("exif-metadata-remover.scanToggle")}
+                  aria-describedby="exif-scan-hint"
+                />
+                <label htmlFor="exif-scan" className="tp-check-label">{tw("exif-metadata-remover.scanToggle")}</label>
+              </div>
+              <p className="tp-tool-hint" id="exif-scan-hint">{tw("exif-metadata-remover.scanHint")}</p>
+
+              {scan ? (
+                <p className="tp-tool-hint" aria-live="polite">
+                  {scan.markers === 0
+                    ? tw("exif-metadata-remover.scanNone")
+                    : `${tw("exif-metadata-remover.scanFound")}: ${scan.markers}`}
+                </p>
+              ) : null}
+
+              {clean ? (
+                <div className="mt-3 flex flex-wrap items-center gap-2" aria-live="polite">
+                  <ToolBadge tone="success">{tw("exif-metadata-remover.cleanBanner")}</ToolBadge>
+                  {change && change.savedBytes > 0 ? (
+                    <ToolBadge tone="success">{tw("exif-metadata-remover.smaller")}</ToolBadge>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
           ) : null}
 
           <div className="tp-tool-group tp-tool-group--flush">
-            <label htmlFor="exif-scan" className="tp-check-label">
-              {tw("exif-metadata-remover.scanToggle")}
-            </label>
-            <input
-              id="exif-scan"
-              type="checkbox"
-              className="tp-checkbox"
-              checked={scanEnabled}
-              onChange={(event) => handleScanToggle(event.target.checked)}
+            <span className="tp-tool-group-title">{tw("exif-metadata-remover.outputFormat")}</span>
+            <SegmentedControl<OutputChoice>
+              label={tw("exif-metadata-remover.outputFormat")}
+              value={format}
+              options={formatOptions}
+              onChange={changeFormat}
             />
-            <p className="tp-tool-hint">{tw("exif-metadata-remover.scanHint")}</p>
           </div>
 
-          {scan ? (
-            <p className="tp-tool-hint" aria-live="polite">
-              {scan.markers === 0
-                ? tw("exif-metadata-remover.scanNone")
-                : `${tw("exif-metadata-remover.scanFound")}: ${scan.markers}`}
-            </p>
-          ) : null}
-
-          {errorMessage ? (
-            <p className="tp-tool-error" id="exif-error" role="alert">
-              {errorMessage}
-            </p>
-          ) : null}
-        </ToolPane>
-
-        <ToolPane
-          id="exif-options-title"
-          title={tw("exif-metadata-remover.optionsTitle")}
-          hint={tw("exif-metadata-remover.optionsHint")}
-        >
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ToolField label={tw("exif-metadata-remover.outputFormat")}>
-              <ThemedSelect
-                value={format}
-                onValueChange={(value) => {
-                  const next = value as ImageFormat;
-                  setFormat(next);
-                  if (original) void renderClean(original, next, quality);
-                }}
-                options={formatOptions}
-                ariaLabel={tw("exif-metadata-remover.outputFormat")}
-              />
-            </ToolField>
-            <ToolField
-              label={t("quality")}
-              hint={format === "image/png" ? tw("exif-metadata-remover.qualityPngHint") : undefined}
-            >
+          <details className="tp-tool-group tp-tool-group--flush">
+            <summary className="tp-tool-group-title cursor-pointer">
+              {tw("exif-metadata-remover.advancedOptions")}
+            </summary>
+            <div className="mt-3 flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-2">
+                <label htmlFor="exif-quality" className="tp-tool-group-title">{t("quality")}</label>
+                <span className="tp-tool-value" dir="ltr">{Math.round(quality * 100)}%</span>
+              </div>
               <input
                 id="exif-quality"
                 type="range"
@@ -386,60 +447,25 @@ export default function ExifMetadataRemover() {
                 max={1}
                 step={0.05}
                 value={quality}
-                disabled={format === "image/png"}
+                disabled={!original || effectiveFormat === "image/png"}
                 aria-label={t("quality")}
-                onChange={(event) => {
-                  const next = Number(event.target.value);
-                  setQuality(next);
-                  if (original) void renderClean(original, format, next);
-                }}
+                onChange={(event) => changeQuality(Number(event.target.value))}
                 className="tp-tool-range"
               />
-            </ToolField>
-          </div>
-        </ToolPane>
+              {effectiveFormat === "image/png" ? (
+                <p className="tp-tool-hint">{tw("exif-metadata-remover.qualityPngHint")}</p>
+              ) : null}
+            </div>
+          </details>
 
-        <ToolPane
-          id="exif-result-title"
-          title={tw("exif-metadata-remover.resultTitle")}
-          hint={tw("exif-metadata-remover.resultHint")}
-          result
-        >
-          <div aria-live="polite" className="tp-tool-result">
-            {clean && original ? (
-              <>
-                {change && change.savedBytes > 0 ? (
-                  <ToolBadge tone="success">{tw("exif-metadata-remover.smaller")}</ToolBadge>
-                ) : null}
-                <div className="tp-tool-preview">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={clean.url} alt={tw("exif-metadata-remover.previewAlt")} />
-                </div>
-                <dl className="tp-tool-stats">
-                  <Stat label={tw("exif-metadata-remover.originalSize")} value={formatBytes(original.facts.sizeBytes)} />
-                  <Stat label={tw("exif-metadata-remover.cleanSize")} value={formatBytes(clean.size)} />
-                  <Stat
-                    label={tw("exif-metadata-remover.removedBytes")}
-                    value={`${change?.savedBytes ?? 0} B`}
-                  />
-                  <Stat label={tw("exif-metadata-remover.savedPercent")} value={`${change?.percent ?? 0}%`} />
-                </dl>
-              </>
-            ) : (
-              <ToolEmpty
-                icon={busy ? <LoaderCircle /> : <ImageIcon />}
-                title={busy ? tw("exif-metadata-remover.processing") : tw("exif-metadata-remover.emptyTitle")}
-                hint={busy ? tw("exif-metadata-remover.processingHint") : tw("exif-metadata-remover.emptyHint")}
-              />
-            )}
-          </div>
           <DownloadButton
             content={clean?.blob ?? null}
             fileName={downloadName}
-            label={t("download")}
+            label={tw("exif-metadata-remover.stripDownload")}
+            variant="default"
             className="tp-full-button"
           />
-        </ToolPane>
+        </section>
       </div>
 
       <div className="tp-tool-ribbon">

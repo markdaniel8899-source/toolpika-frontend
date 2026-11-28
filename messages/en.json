@@ -4972,7 +4972,10 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika image desk. Encoding uses the browser canvas API and all files stay on your device. Reviewed 28 November 2026. Technical background is available at https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob.",
         "searchIntents": "image format converter, png to webp, jpg to png converter, avif converter online, image converter browser, convert image to webp locally, png to jpg with background color, image quality presets converter, private image format converter, compare converted image size"
-      }
+      },
+      "replaceImage": "Replace image",
+      "advancedOptions": "Advanced options",
+      "downloadConverted": "Download converted image"
     },
     "aes-text-encryptor": {
       "title": "AES Text Encryptor",
@@ -5041,7 +5044,12 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika security desk. AES-GCM is specified in NIST SP 800-38D at https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf and runs through Web Crypto in your browser. Updated 28 November 2026.",
         "searchIntents": "aes text encryptor,aes gcm online,encrypt text with passphrase,decrypt aes gcm payload,browser aes encryption,private text encryptor,aes gcm base64,web crypto encryption tool,encrypt decrypt text online,authenticated encryption demo"
-      }
+      },
+      "samplePassphrase": "CorrectHorse9!Battery",
+      "aesGcmBadge": "AES-GCM",
+      "showAction": "Show",
+      "hideAction": "Hide",
+      "keyBits": "{bits} bit key"
     },
     "bcrypt-generator": {
       "title": "PBKDF2 Hash Generator",
@@ -5118,7 +5126,27 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika security desk. The PBKDF2 construction is defined in RFC 8018 at https://www.rfc-editor.org/rfc/rfc8018 and runs through the Web Crypto API in your browser. Updated 28 November 2026.",
         "searchIntents": "pbkdf2 hash generator,pbkdf2 online web crypto,salted hash generator,verify pbkdf2 hash,pbkdf2 sha256 tool,password derivation browser,iteration count hash,local hash verifier,secure hash demo,pbkdf2 string format"
-      }
+      },
+      "sampleAction": "Try sample",
+      "algorithmNoteCurrent": "This workspace uses PBKDF2 SHA-256 or SHA-512 through Web Crypto, not bcrypt.",
+      "saltLabel": "Salt",
+      "saltHint": "Base64 salt bytes. Leave empty for a fresh random salt, or paste a salt you saved earlier.",
+      "saltPlaceholder": "Base64 salt",
+      "randomSalt": "Random salt",
+      "advancedOptions": "Advanced options",
+      "keyLengthLabel": "Key length",
+      "keyLengthHint": "Derived key size in bytes. The size travels with the hash so verification can repeat it.",
+      "byteCount": "{count} bytes",
+      "algorithmSha256": "SHA-256",
+      "algorithmSha512": "SHA-512",
+      "outputFormatLabel": "Output format",
+      "outputBase64": "Base64",
+      "outputHex": "Hex",
+      "derivedKeyLabel": "Derived key",
+      "portableLabel": "Portable hash",
+      "errorSalt": "The salt is not valid base64.",
+      "fixSalt": "Paste a base64 salt, or clear the field to generate a random one.",
+      "fixHashAlgorithm": "Paste the complete PBKDF2 string with four dollar separated parts using the SHA-256 or SHA-512 label."
     },
     "chmod-calculator": {
       "title": "Chmod Calculator",
@@ -5179,7 +5207,8 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika security desk. Conversion is plain bit arithmetic performed in your browser. Reviewed 28 November 2026. Reference: https://www.gnu.org/software/coreutils/manual/html_node/File-permissions.html.",
         "searchIntents": "chmod calculator, octal to symbolic permissions, chmod 755 explained, file permission calculator, rwxr-xr-x converter, calculate chmod mode, unix permissions tool, chmod command generator, 0644 meaning, permission bits calculator"
-      }
+      },
+      "presetsLabel": "Presets"
     },
     "css-gradient-generator": {
       "title": "CSS Gradient Generator",
@@ -5243,7 +5272,10 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika code desk. Gradient values are assembled by pure functions and painted locally. Reviewed 28 November 2026. Technical reference: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient.",
         "searchIntents": "css gradient generator, linear gradient css, radial gradient builder, css color stop editor, gradient preview online, css background gradient, gradient angle tool, multiple color stops, gradient css code generator, free gradient maker"
-      }
+      },
+      "kindConic": "Conic",
+      "stopHexLabel": "Hex value",
+      "copyCss": "Copy CSS"
     },
     "css-shadow-generator": {
       "title": "CSS Shadow Generator",
@@ -5282,7 +5314,7 @@
         "aboutTitle": "About CSS Shadow Generator",
         "contextualLink": "For the background behind the card, pair it with %%TOOL%%.",
         "whatIsTitle": "What is a CSS shadow generator?",
-        "whatIs": "A CSS shadow generator turns a handful of numeric controls into a valid box-shadow value. The X and Y offsets move the shadow, blur softens its edge, spread grows or shrinks its footprint, and colour sets the tint. An inset flag draws the shadow inside the element instead of outside.\n\nThe box-shadow property accepts several layers separated by commas, painted from the first layer down to the last. That ordering matters: a broad diffuse layer usually sits first, followed by tighter contact shadows and a subtle inset highlight. Each layer here is built independently and joined in the order shown.\n\nColours are stored as hexadecimal values with a separate opacity percentage. The generator converts them to rgba so a soft shadow can let the page background show through. Native colour inputs keep the picker familiar, and the numeric bounds prevent extreme values from producing unusable output.\n\nThe preview card uses the same declaration that appears in the CSS box, so what you see is what you copy. There is no build step, no library and no server round trip. The sample button loads a three layer stack that demonstrates diffuse depth, a contact shadow and an inset light edge.",
+        "whatIs": "A CSS shadow generator turns a handful of numeric controls into a valid box-shadow value. The X and Y offsets move the shadow, blur softens its edge, spread grows or shrinks its footprint, and colour sets the tint. An inset flag draws the shadow inside the element instead of outside.\n\nThe box-shadow property accepts several layers separated by commas, painted from the first layer down to the last. That ordering matters: a broad diffuse layer usually sits first, followed by tighter contact shadows and a subtle inset highlight. Each layer here is built independently and joined in the order shown.\n\nColours are stored as hexadecimal values with a separate opacity percentage. The generator converts them to rgba so a soft shadow can let the page background show through. Native colour inputs keep the picker familiar, and the numeric bounds prevent extreme values from producing unusable output.\n\nThe preview card uses the same declaration that appears in the CSS box, so what you see is what you copy. There is no build step, no library and no server round trip. The sample button loads a three layer stack that demonstrates diffuse depth, a contact shadow and an inset light edge.\n\nEach shadow layer has its own horizontal offset, vertical offset, blur, spread, inset flag and color. Positive offsets move the shadow right and down, blur softens the edge, and spread grows or shrinks the shape before blurring. Inset shadows are drawn inside the box, which is useful for pressed buttons and wells.\n\nLayers are combined in the order shown, so the first layer sits in front. The live preview applies the same CSS string that appears in the output panel. Start from the sample, change one layer at a time, and copy the CSS when the depth feels right.",
         "howToTitle": "How to use CSS Shadow Generator",
         "howTo": "Open the preview pane and note how the current card looks.\nAdjust the X and Y steppers to move the first shadow layer.\nSet blur and spread to control softness and size.\nChoose a colour and lower the opacity for a softer tint.\nEnable inset when the shadow should sit inside the card.\nPress Add layer for a second or third shadow, then tune each value.\nCopy the generated CSS from the result pane and paste it into your stylesheet.",
         "guidanceTitle": "Layering shadows for a natural sense of depth",
@@ -5293,15 +5325,22 @@
         "exampleOutput": "Generated CSS: .card with three box-shadow layers\nPreview: card with soft violet lift and crisp contact edge\nCopy: ready for a stylesheet",
         "exampleNote": "Removing the inset layer leaves a flat card; adding spread grows the silhouette in every direction.",
         "featuresTitle": "What this tool does",
-        "features": "Multiple layers::Add up to eight shadows and edit each one independently.\nPrecise offsets::Step X and Y through negative and positive values.\nBlur and spread::Soften the edge or grow the footprint in small increments.\nInset support::Switch any layer to draw inside the card.\nColour and opacity::Pick a hex colour and set transparency from zero to one hundred.\nLive CSS::The preview and the declaration update together, ready to copy.",
+        "features": "Multiple layers::Add up to eight shadows and edit each one independently.\nPrecise offsets::Step X and Y through negative and positive values.\nBlur and spread::Soften the edge or grow the footprint in small increments.\nInset support::Switch any layer to draw inside the card.\nColour and opacity::Pick a hex colour and set transparency from zero to one hundred.\nLive CSS::The preview and the declaration update together, ready to copy.\nLayer ordering::Multiple shadows are combined in a visible, editable order.",
         "useCasesTitle": "Practical uses",
-        "useCases": "Card components::Design a reusable elevation scale for a design system.\nButton states::Compare a resting shadow with a pressed inset highlight.\nModal overlays::Build a deeper stack for dialogs above page content.\nStyle reviews::Export exact values for handoff to a developer.",
+        "useCases": "Card components::Design a reusable elevation scale for a design system.\nButton states::Compare a resting shadow with a pressed inset highlight.\nModal overlays::Build a deeper stack for dialogs above page content.\nStyle reviews::Export exact values for handoff to a developer.\nButton depth::Stack inset and outset layers for a tactile control.",
         "faqTitle": "Frequently asked questions",
-        "faqs": "What does each offset do?::X moves the shadow horizontally and Y moves it vertically. Positive values push it right and down, which mimics a light source above the element. Negative values move it left and up. Zero offsets with a blur create an even glow around the card.\nWhy use more than one layer?::Real objects cast several kinds of shade at once. A wide soft layer suggests distance from the surface, while a tight dark layer describes direct contact. Combining them in one box-shadow value gives a more convincing card than a single heavy shadow, and each layer stays easy to tune.\nWhat does inset change?::The inset keyword moves the shadow inside the element box. It is useful for a thin top highlight or a pressed button surface. Inset layers are painted in the same comma separated list as regular layers, so you can mix them freely with outer shadows.\nHow does opacity work here?::Each layer has its own opacity from zero to one hundred percent. The colour input stores a hex value, and the generator converts both into an rgba function. Lower values let the background show through and keep a large blur from looking like a solid block.\nHow many layers can I add?::You can add up to eight layers. The Add button stops at eight and shows a short message explaining how to remove a layer first. Eight is enough for ambient lift, contact shading and highlights without producing a declaration that is hard to maintain.\nDoes the tool send my CSS anywhere?::No. Values are held in browser state, converted by pure functions and painted locally in the preview. Nothing is uploaded and no analytics event is recorded. Only the most recent settings are kept on this device so the preview is restored when you return.",
+        "faqs": "What does each offset do?::X moves the shadow horizontally and Y moves it vertically. Positive values push it right and down, which mimics a light source above the element. Negative values move it left and up. Zero offsets with a blur create an even glow around the card.\nWhy use more than one layer?::Real objects cast several kinds of shade at once. A wide soft layer suggests distance from the surface, while a tight dark layer describes direct contact. Combining them in one box-shadow value gives a more convincing card than a single heavy shadow, and each layer stays easy to tune.\nWhat does inset change?::The inset keyword moves the shadow inside the element box. It is useful for a thin top highlight or a pressed button surface. Inset layers are painted in the same comma separated list as regular layers, so you can mix them freely with outer shadows.\nHow does opacity work here?::Each layer has its own opacity from zero to one hundred percent. The colour input stores a hex value, and the generator converts both into an rgba function. Lower values let the background show through and keep a large blur from looking like a solid block.\nHow many layers can I add?::You can add up to eight layers. The Add button stops at eight and shows a short message explaining how to remove a layer first. Eight is enough for ambient lift, contact shading and highlights without producing a declaration that is hard to maintain.\nDoes the tool send my CSS anywhere?::No. Values are held in browser state, converted by pure functions and painted locally in the preview. Nothing is uploaded and no analytics event is recorded. Only the most recent settings are kept on this device so the preview is restored when you return.\nWhy do layer order and spread matter?::Shadows are painted in the order listed, so an early layer can cover a later one. Spread changes the shadow size before blur, which makes an edge tighter or wider without moving the box. Adjust one layer at a time and watch the live preview to see the effect clearly.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika code desk. Shadow values are converted by pure functions and painted locally. Reviewed 28 November 2026. Technical reference: https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow.",
         "searchIntents": "css shadow generator, box shadow generator, layered box shadow, css shadow preview, inset shadow builder, shadow css code, blur spread generator, multiple box shadows, card shadow css, free css shadow tool"
-      }
+      },
+      "stageColorLabel": "Stage colour",
+      "cardColorLabel": "Card colour",
+      "hideLayer": "Hide layer {number}",
+      "showLayer": "Show layer {number}",
+      "copyCss": "Copy CSS",
+      "maxLayers": "Maximum {count} layers",
+      "hiddenLayers": "{count} hidden"
     },
     "csv-to-json": {
       "title": "CSV to JSON",
@@ -5374,7 +5413,15 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika converter desk. CSV field quoting follows the rules in RFC 4180 at https://www.rfc-editor.org/rfc/rfc4180 and runs entirely in your browser. Updated 28 November 2026.",
         "searchIntents": "csv to json,csv to json converter,tsv to json,custom delimiter parser,csv with header to json,markdown table generator,csv ragged row check,spreadsheet to json online,csv to json local,convert comma separated to objects"
-      }
+      },
+      "delimiterAuto": "Auto",
+      "delimiterComma": "Comma",
+      "delimiterTab": "Tab",
+      "delimiterSemicolon": "Semicolon",
+      "uploadCsv": "Upload .csv",
+      "tabJson": "JSON Output",
+      "tabTable": "Table Preview",
+      "detectedLabel": "Detected delimiter"
     },
     "exif-metadata-remover": {
       "title": "EXIF Metadata Remover",
@@ -5432,7 +5479,7 @@
         "aboutTitle": "About EXIF Metadata Remover",
         "contextualLink": "Want a smaller file after cleaning? Try %%TOOL%%.",
         "whatIsTitle": "What is an EXIF Metadata Remover?",
-        "whatIs": "Photographs can carry extra information beyond the visible pixels. Camera models, timestamps, GPS coordinates and editing software are often stored in EXIF blocks inside JPEG files, while PNG and WebP have their own chunk systems. A quick scanner can count known signatures, but reading every tag needs a full parser.\n\nThis tool inspects the ordinary file facts the browser exposes: name, MIME type, byte size and last modified time. If you enable the byte scan, it searches the raw bytes for JPEG APP1 EXIF headers, PNG eXIf chunks and WebP EXIF chunks, then reports how many signatures it found. That count is a hint, not a complete inventory.\n\nRemoving metadata works by drawing the decoded image onto a fresh canvas and encoding a new blob. The new file contains only pixel data and the headers the encoder adds itself. JPEG, PNG and WebP output are offered, and lossy quality applies to JPEG and WebP. The preview and before and after sizes come from the same local file.\n\nRe encoding always changes the byte structure, and a lossy format can change pixel values slightly. If you need exact archival preservation, keep the original file. The 20 MB ceiling exists because decoding and canvas encoding both happen in memory on your device.",
+        "whatIs": "Photographs can carry extra information beyond the visible pixels. Camera models, timestamps, GPS coordinates and editing software are often stored in EXIF blocks inside JPEG files, while PNG and WebP have their own chunk systems. A quick scanner can count known signatures, but reading every tag needs a full parser.\n\nThis tool inspects the ordinary file facts the browser exposes: name, MIME type, byte size and last modified time. If you enable the byte scan, it searches the raw bytes for JPEG APP1 EXIF headers, PNG eXIf chunks and WebP EXIF chunks, then reports how many signatures it found. That count is a hint, not a complete inventory.\n\nRemoving metadata works by drawing the decoded image onto a fresh canvas and encoding a new blob. The new file contains only pixel data and the headers the encoder adds itself. JPEG, PNG and WebP output are offered, and lossy quality applies to JPEG and WebP. The preview and before and after sizes come from the same local file.\n\nRe encoding always changes the byte structure, and a lossy format can change pixel values slightly. If you need exact archival preservation, keep the original file. The 20 MB ceiling exists because decoding and canvas encoding both happen in memory on your device.\n\nThe metadata scan looks for common EXIF markers in the file bytes and reports what it finds. It is a basic scan, not a full EXIF parser, so specialist fields in unusual files may not be listed. Re-encoding through canvas removes embedded metadata because the new image is drawn from pixels rather than copied from the original byte stream.\n\nChoosing a format changes the trade off. PNG keeps transparency and pixel accuracy, JPEG produces smaller photos but fills transparency with a background color, and WebP offers a useful middle ground. The result card compares byte sizes so you can see how much data was removed along with the metadata. The original file never leaves the browser.",
         "howToTitle": "How to use EXIF Metadata Remover",
         "howTo": "Drop a JPEG, PNG or WebP file or choose one with the file picker.\nRead the file name, type, size, modified time and dimensions.\nEnable the byte scan if you want a signature count.\nChoose PNG, JPEG or WebP for the clean copy.\nSet quality when you pick a lossy format.\nCompare the original and clean sizes in the result pane.\nDownload the clean image from the result pane.",
         "guidanceTitle": "What a byte scan can and cannot tell you",
@@ -5443,15 +5490,20 @@
         "exampleOutput": "DSCF1024-clean.png, 3.8 MB, scan of output finds 0 signatures",
         "exampleNote": "The clean copy is re encoded, so its pixel bytes and file size both change.",
         "featuresTitle": "What this tool does",
-        "features": "File facts::Shows name, MIME type, size, modified time and dimensions.\nOptional byte scan::Counts known EXIF signatures in the raw file.\nFresh encoding::Draws pixels onto a new canvas to drop embedded blocks.\nThree formats::Export a clean PNG, JPEG or WebP copy.\nBefore and after::Compares source and output sizes with the saved percentage.\nLocal preview::Inspect the clean image before you download it.",
+        "features": "File facts::Shows name, MIME type, size, modified time and dimensions.\nOptional byte scan::Counts known EXIF signatures in the raw file.\nFresh encoding::Draws pixels onto a new canvas to drop embedded blocks.\nThree formats::Export a clean PNG, JPEG or WebP copy.\nBefore and after::Compares source and output sizes with the saved percentage.\nLocal preview::Inspect the clean image before you download it.\nBasic marker scan::Common EXIF markers are reported before the clean copy is produced.",
         "useCasesTitle": "Practical uses",
-        "useCases": "Sharing photos::Strip camera details before posting.\nClient delivery::Send clean previews without embedded tags.\nPrivacy checks::See whether a file carries known EXIF signatures.\nWeb assets::Produce a lean copy for a page.",
+        "useCases": "Sharing photos::Strip camera details before posting.\nClient delivery::Send clean previews without embedded tags.\nPrivacy checks::See whether a file carries known EXIF signatures.\nWeb assets::Produce a lean copy for a page.\nPublishing photos::Remove location and camera details before sharing a picture.",
         "faqTitle": "Frequently asked questions",
-        "faqs": "Does this read every EXIF tag?::No. The byte scan counts a few known signatures such as JPEG APP1 EXIF headers and PNG eXIf chunks. It does not decode individual tags. A dedicated metadata reader is needed for a full inventory, and even then the safest way to produce a clean copy is re encoding.\nWhy does the file size change?::A clean copy is built from the decoded pixels and encoded again, so container headers are rebuilt. Lossless PNG can grow, while JPEG and WebP often shrink. The size comparison shows the exact difference, and the saved percentage is calculated from the two byte counts.\nWill pixels stay identical?::PNG keeps the pixel values exactly because it is lossless. JPEG and WebP use lossy compression, so a second encoding can shift a few values slightly. If byte for byte preservation matters, keep the original file and use the clean copy only for sharing.\nCan GPS coordinates survive?::Re encoding drops the metadata blocks that hold GPS fields because the new canvas holds only pixels. The scan looks for signatures, not individual GPS tags, so use it as a quick signal. For sensitive workflows, verify the downloaded file with a dedicated metadata tool.\nWhy is there a 20 MB ceiling?::The browser must hold the decoded image and the new canvas in memory at the same time. Very large files can exhaust that budget and fail on smaller devices. Convert or compress the photo first, then run the clean copy step on the reduced file.\nIs my photo uploaded?::No. The file stays in this tab. The facts come from the file object, the byte scan reads its buffer locally, and the clean image is drawn on a canvas built here. The download uses a temporary object URL that is released when you reset.",
+        "faqs": "Does this read every EXIF tag?::No. The byte scan counts a few known signatures such as JPEG APP1 EXIF headers and PNG eXIf chunks. It does not decode individual tags. A dedicated metadata reader is needed for a full inventory, and even then the safest way to produce a clean copy is re encoding.\nWhy does the file size change?::A clean copy is built from the decoded pixels and encoded again, so container headers are rebuilt. Lossless PNG can grow, while JPEG and WebP often shrink. The size comparison shows the exact difference, and the saved percentage is calculated from the two byte counts.\nWill pixels stay identical?::PNG keeps the pixel values exactly because it is lossless. JPEG and WebP use lossy compression, so a second encoding can shift a few values slightly. If byte for byte preservation matters, keep the original file and use the clean copy only for sharing.\nCan GPS coordinates survive?::Re encoding drops the metadata blocks that hold GPS fields because the new canvas holds only pixels. The scan looks for signatures, not individual GPS tags, so use it as a quick signal. For sensitive workflows, verify the downloaded file with a dedicated metadata tool.\nWhy is there a 20 MB ceiling?::The browser must hold the decoded image and the new canvas in memory at the same time. Very large files can exhaust that budget and fail on smaller devices. Convert or compress the photo first, then run the clean copy step on the reduced file.\nIs my photo uploaded?::No. The file stays in this tab. The facts come from the file object, the byte scan reads its buffer locally, and the clean image is drawn on a canvas built here. The download uses a temporary object URL that is released when you reset.\nDoes the scan find every metadata field?::No. The scan checks for common EXIF markers in the file bytes and reports what it recognises. It is a basic inspector, not a full EXIF parser. Re-encoding still rebuilds the image from pixels, which removes embedded metadata that the simple scan may not name.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika image desk. Metadata facts and the byte scan are local, and the clean copy is encoded in the browser. Last updated 28 November 2026. Reference: https://developer.mozilla.org/en-US/docs/Web/API/File",
         "searchIntents": "remove exif data, strip image metadata, photo privacy cleaner, exif remover online, remove gps from photo, clean image metadata, jpeg metadata stripper, png metadata remover, browser exif cleaner, photo metadata checker"
-      }
+      },
+      "replaceImage": "Replace image",
+      "formatOriginal": "Keep original",
+      "cleanBanner": "Metadata removed from this copy.",
+      "advancedOptions": "Advanced options",
+      "stripDownload": "Strip & download clean image"
     },
     "fancy-text-generator": {
       "title": "Fancy Text Generator",
@@ -5512,7 +5564,28 @@
       "seo": {
         "title": "Fancy Text Generator | Toolpika",
         "description": "Fancy Text Generator turns ordinary letters into bold, italic, monospace, strikethrough and script Unicode styles. Type once, compare the five live previews, then click any card to copy the exact styled string to your clipboard without an upload or an account."
-      }
+      },
+      "styleBoldSerif": "Bold Serif",
+      "styleItalicSerif": "Italic Serif",
+      "styleBoldItalic": "Bold Italic",
+      "styleBoldScript": "Bold Script",
+      "styleFraktur": "Fraktur",
+      "styleBoldFraktur": "Bold Fraktur",
+      "styleDoubleStruck": "Double-Struck",
+      "styleSansSerif": "Sans Serif",
+      "styleSansSerifBold": "Sans Serif Bold",
+      "styleSansSerifItalic": "Sans Serif Italic",
+      "styleSansSerifBoldItalic": "Sans Serif Bold Italic",
+      "styleCircled": "Circled",
+      "styleSquared": "Squared",
+      "styleCountBadge": "{count} styles",
+      "maxLabel": "Limit {max}",
+      "stylesHint": "Sixteen live styles. Copy the one you like.",
+      "downloadFileName": "fancy-text-styles.txt",
+      "selectedHint": "Last copied",
+      "gridErrorHint": "The message above explains what to change. Previews return as soon as you add a Latin letter or digit.",
+      "gridEmptyHint": "Type a word to preview every Unicode style.",
+      "lastStyleHint": "Last copied style:"
     },
     "gpa-calculator": {
       "title": "GPA Calculator",
@@ -5595,7 +5668,13 @@
       "seo": {
         "title": "GPA Calculator | Toolpika",
         "description": "GPA Calculator turns course credits and letter grades into a semester grade point average and a cumulative average. Add or remove course rows, choose whether honors and advanced placement courses earn extra weight, then copy the result with its quality points."
-      }
+      },
+      "errorPriorGpaScale": "The prior average is not a number from zero to {max}.",
+      "scaleLabel": "{max}.0 scale",
+      "scaleTitle": "Grade scale",
+      "courseNamePlaceholder": "Course name",
+      "advancedTitle": "Prior study and weighting",
+      "downloadFileName": "gpa-summary.txt"
     },
     "html-entity-encoder": {
       "title": "HTML Entity Encoder",
@@ -5691,7 +5770,7 @@
         "aboutTitle": "About Image Color Picker",
         "contextualLink": "Need to convert a color value? Try %%TOOL%%.",
         "whatIsTitle": "What is an Image Color Picker?",
-        "whatIs": "A color palette is a short list of shades that represent an image. Instead of choosing colors by eye, sampling groups similar pixels and ranks the groups by how often they appear. The result is a compact summary of the visual mood, useful when a design needs to match a photograph.\n\nThis tool draws the image onto a small canvas and reads its pixel data. Pixels are grouped into buckets, transparent pixels are skipped, and the most frequent buckets become swatches. Each swatch shows a HEX code, an RGB triple and an HSL triple, plus the share of sampled pixels it represents.\n\nHEX is compact for CSS, RGB describes the red, green and blue channels, and HSL describes hue, saturation and lightness. Seeing all three makes it easier to adjust a shade by hand. The CSS block writes each color as a custom property, so the palette can be pasted into a theme file.\n\nSampling is approximate by design. A bucket may blend nearby shades, and a dominant background can crowd out small accent colors. Changing the palette size reveals more or fewer groups. The image never leaves the tab, and the sample button builds a test strip locally so the flow can be tried instantly.",
+        "whatIs": "A color palette is a short list of shades that represent an image. Instead of choosing colors by eye, sampling groups similar pixels and ranks the groups by how often they appear. The result is a compact summary of the visual mood, useful when a design needs to match a photograph.\n\nThis tool draws the image onto a small canvas and reads its pixel data. Pixels are grouped into buckets, transparent pixels are skipped, and the most frequent buckets become swatches. Each swatch shows a HEX code, an RGB triple and an HSL triple, plus the share of sampled pixels it represents.\n\nHEX is compact for CSS, RGB describes the red, green and blue channels, and HSL describes hue, saturation and lightness. Seeing all three makes it easier to adjust a shade by hand. The CSS block writes each color as a custom property, so the palette can be pasted into a theme file.\n\nSampling is approximate by design. A bucket may blend nearby shades, and a dominant background can crowd out small accent colors. Changing the palette size reveals more or fewer groups. The image never leaves the tab, and the sample button builds a test strip locally so the flow can be tried instantly.\n\nColor extraction reads the pixels of the uploaded image directly. Fully transparent pixels are ignored, and the remaining samples are grouped into color buckets so the displayed HEX values reflect what is actually visible. A lower color count merges similar shades, while a higher count reveals small accents.\n\nEach swatch shows its HEX, RGB and HSL values plus the share of sampled pixels it represents. The CSS block maps the palette to custom properties with simple names, ready to paste into a stylesheet. Because the palette comes from your own image, the result is a real palette rather than a decorative preset.",
         "howToTitle": "How to use Image Color Picker",
         "howTo": "Drop a JPEG, PNG or WebP image or choose one with the file picker.\nSet the number of colors you want in the palette.\nRead the HEX, RGB and HSL values under each swatch.\nCheck the share percentage beside each color.\nCopy the CSS custom property block into your stylesheet.\nCopy the full palette text when you need all formats.\nTry the sample image to see the flow without a file.",
         "guidanceTitle": "Reading a palette you can actually use",
@@ -5702,22 +5781,28 @@
         "exampleOutput": "CSS block starting with --color-1: #2B1B4A and --color-2: #E8734A",
         "exampleNote": "The share percentages show that the dark violet background covers the most pixels.",
         "featuresTitle": "What this tool does",
-        "features": "Local sampling::Reads pixels from a canvas in this tab.\nRanked swatches::Shows the most common colors first.\nThree formats::Displays HEX, RGB and HSL for every swatch.\nShare percentages::Tells you how much of the image each color covers.\nCSS variables::Builds a custom property block ready to paste.\nPalette copy::Copies every color in all three formats at once.",
+        "features": "Local sampling::Reads pixels from a canvas in this tab.\nRanked swatches::Shows the most common colors first.\nThree formats::Displays HEX, RGB and HSL for every swatch.\nShare percentages::Tells you how much of the image each color covers.\nCSS variables::Builds a custom property block ready to paste.\nPalette copy::Copies every color in all three formats at once.\nReal pixel palette::Swatches come from the uploaded image, never from a preset list.",
         "useCasesTitle": "Practical uses",
-        "useCases": "Theme matching::Pull colors from a brand photo.\nDesign systems::Seed custom properties from a reference image.\nArt direction::Find a dominant background tone.\nQuick inspection::Check which colors define a screenshot.",
+        "useCases": "Theme matching::Pull colors from a brand photo.\nDesign systems::Seed custom properties from a reference image.\nArt direction::Find a dominant background tone.\nQuick inspection::Check which colors define a screenshot.\nTheme sampling::Build a CSS palette from a brand image.",
         "faqTitle": "Frequently asked questions",
-        "faqs": "How are the colors chosen?::The image is drawn small on a canvas and its pixels are grouped into buckets of similar values. Buckets are ranked by how often they occur, and the top groups become swatches. Transparent pixels are ignored, and each swatch is the average color of its bucket.\nWhy can a small accent be missing?::Ranking favours area, so a tiny bright detail can lose to a large flat background. Increase the palette size to reveal smaller groups. If an accent still does not appear, crop the image around that detail first and sample again.\nWhat does the share percentage mean?::It is the share of sampled pixels that fell into that color bucket, rounded to a whole percent. It is an estimate rather than an exact count because pixels are bucketed. Use it to judge which tones dominate the composition.\nCan I use the values in CSS?::Yes. Each swatch is shown as HEX, RGB and HSL, and the CSS block wraps them in custom properties. Paste the block into a root rule and reference the variables anywhere in your styles. The HEX form is the shortest for hand edits.\nDoes the tool upload my image?::No. The file is decoded by the browser, drawn on a local canvas and read there. The swatches and copied strings are produced in this tab. Closing the page discards the image, and the sample button generates its own test strip locally.\nWhy does the palette change with size?::A smaller palette merges nearby shades into broader groups, while a larger one splits them into finer swatches. The sampling method stays the same, so the colors remain related. Try a few sizes to find the summary that suits your design.",
+        "faqs": "How are the colors chosen?::The image is drawn small on a canvas and its pixels are grouped into buckets of similar values. Buckets are ranked by how often they occur, and the top groups become swatches. Transparent pixels are ignored, and each swatch is the average color of its bucket.\nWhy can a small accent be missing?::Ranking favours area, so a tiny bright detail can lose to a large flat background. Increase the palette size to reveal smaller groups. If an accent still does not appear, crop the image around that detail first and sample again.\nWhat does the share percentage mean?::It is the share of sampled pixels that fell into that color bucket, rounded to a whole percent. It is an estimate rather than an exact count because pixels are bucketed. Use it to judge which tones dominate the composition.\nCan I use the values in CSS?::Yes. Each swatch is shown as HEX, RGB and HSL, and the CSS block wraps them in custom properties. Paste the block into a root rule and reference the variables anywhere in your styles. The HEX form is the shortest for hand edits.\nDoes the tool upload my image?::No. The file is decoded by the browser, drawn on a local canvas and read there. The swatches and copied strings are produced in this tab. Closing the page discards the image, and the sample button generates its own test strip locally.\nWhy does the palette change with size?::A smaller palette merges nearby shades into broader groups, while a larger one splits them into finer swatches. The sampling method stays the same, so the colors remain related. Try a few sizes to find the summary that suits your design.\nAre the colors taken from my image?::Yes. The palette is calculated from the pixels of the uploaded file. Transparent pixels are skipped and similar shades are grouped, so the swatches describe what is visible in the picture. Changing the color count recalculates the palette from the same sampled pixels.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika image desk. Canvas sampling and color conversion happen in the browser with no upload. Last updated 28 November 2026. Reference: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData",
         "searchIntents": "image color picker, extract colors from image, dominant color finder, image palette generator, hex rgb hsl picker, css color variables, sample colors photo, palette from screenshot, color extraction tool, browser color sampler"
-      }
+      },
+      "countLabel": "Number of colors",
+      "countHint": "Choose between 3 and 12 colors. The palette is read from the pixels of your image, not from a preset list.",
+      "replaceImage": "Replace image",
+      "pickHint": "Click or hover the image to pick a pixel.",
+      "selectedColor": "Selected color",
+      "copyCss": "Copy CSS"
     },
     "image-cropper": {
       "title": "Image Cropper",
       "shortDesc": "Crop JPEG, PNG and WebP images to a rectangle or circle in your browser.",
       "seo": {
         "title": "Image Cropper - Crop Photos to Any Shape | Toolpika",
-        "description": "Crop a photo to a square, portrait or widescreen rectangle, or make a circular avatar. Set exact offsets and export PNG, JPEG or WebP without uploading."
+        "description": "Crop images in different shapes in your browser. Choose a rectangle, square, circle or rounded frame, drag to resize it, then download the cropped image."
       },
       "trySample": "Try sample",
       "reset": "Reset",
@@ -5767,7 +5852,7 @@
         "aboutTitle": "About Image Cropper",
         "contextualLink": "Need a different size after cropping? Try %%TOOL%%.",
         "whatIsTitle": "What is an Image Cropper?",
-        "whatIs": "Cropping removes pixels from the edges of an image so the subject fills the frame. Unlike resizing, which changes every pixel, cropping keeps the remaining pixels at their original sharpness. You choose a rectangle inside the source, and the browser draws only that region onto a new canvas. Nothing outside the box reaches the exported file, but the original file on your device is untouched.\n\nAn aspect preset fixes the shape of that rectangle. Free lets you choose width and height independently. Square, four by three, sixteen by nine and three by four keep a fixed width to height relationship, so social posts, banners and portrait thumbnails fit their target slots without stretching. Changing a preset recenters the box, and you can still drag it or edit the offset numbers to recompose the shot.\n\nA circular crop clips the rectangle to a circle before export. The area outside the circle becomes transparent, which works with PNG and WebP. JPEG cannot store transparency, so those corners are filled with the page surface colour instead. The overlay on the preview uses the same rounded shape, so what you see matches the downloaded file.\n\nOutput format decides how the cropped pixels are encoded. PNG is lossless and preserves transparency, JPEG is compact for photographs, and WebP offers good quality at smaller sizes. Quality applies to JPEG and WebP only. The tool caps files at 20 MB and canvas sides at 8192 pixels, and the sample button draws a test image locally so you can try the flow.",
+        "whatIs": "Cropping removes pixels from the edges of an image so the subject fills the frame. Unlike resizing, which changes every pixel, cropping keeps the remaining pixels at their original sharpness. You choose a rectangle inside the source, and the browser draws only that region onto a new canvas. Nothing outside the box reaches the exported file, but the original file on your device is untouched.\n\nAn aspect preset fixes the shape of that rectangle. Free lets you choose width and height independently. Square, four by three, sixteen by nine and three by four keep a fixed width to height relationship, so social posts, banners and portrait thumbnails fit their target slots without stretching. Changing a preset recenters the box, and you can still drag it or edit the offset numbers to recompose the shot.\n\nA circular crop clips the rectangle to a circle before export. The area outside the circle becomes transparent, which works with PNG and WebP. JPEG cannot store transparency, so those corners are filled with the page surface colour instead. The overlay on the preview uses the same rounded shape, so what you see matches the downloaded file.\n\nOutput format decides how the cropped pixels are encoded. PNG is lossless and preserves transparency, JPEG is compact for photographs, and WebP offers good quality at smaller sizes. Quality applies to JPEG and WebP only. The tool caps files at 20 MB and canvas sides at 8192 pixels, and the sample button draws a test image locally so you can try the flow.\n\nShapes are applied as an export mask. A rectangle keeps every pixel inside the frame. A square locks the frame to a one to one ratio, which suits profile pictures and product tiles. A circle clips the crop to a round avatar, and a rounded rectangle softens the corners for cards and thumbnails. The source image is never changed, only the exported copy.\n\nThe crop frame can be moved with a mouse, a trackpad or touch. Four corner handles resize the frame directly, while the numeric fields give exact pixel values when precision matters. Aspect presets clamp the frame to a chosen ratio, and the live preview shows how much of the original image will remain after export.",
         "howToTitle": "How to use Image Cropper",
         "howTo": "Drop a JPEG, PNG or WebP image or choose one with the file picker.\nSelect an aspect preset or leave the crop free.\nSet the crop width and height in pixels.\nAdjust the X and Y offsets or drag the overlay on the preview.\nEnable the circular crop when you need an avatar.\nPick PNG, JPEG or WebP and set quality for the lossy formats.\nDownload the cropped file from the result pane.",
         "guidanceTitle": "Choosing a crop shape and export format",
@@ -5778,15 +5863,24 @@
         "exampleOutput": "900 × 900 WebP with transparent corners and a -crop.webp file name",
         "exampleNote": "The pixels inside the circle keep their original sharpness because the source is not rescaled.",
         "featuresTitle": "What this tool does",
-        "features": "Aspect presets::Free, square, four by three, sixteen by nine and three by four.\nDraggable overlay::Move the crop box on the preview with a pointer or touch.\nPrecise offsets::Set X, Y, width and height in pixels for repeatable crops.\nCircular export::Clip to a circle for avatars with transparent corners.\nThree formats::Export PNG, JPEG or WebP with the matching extension.\nLocal preview::Check the composition and output size before downloading.",
+        "features": "Aspect presets::Free, square, four by three, sixteen by nine and three by four.\nDraggable overlay::Move the crop box on the preview with a pointer or touch.\nPrecise offsets::Set X, Y, width and height in pixels for repeatable crops.\nCircular export::Clip to a circle for avatars with transparent corners.\nThree formats::Export PNG, JPEG or WebP with the matching extension.\nLocal preview::Check the composition and output size before downloading.\nFour crop shapes::Rectangle, square, circle and rounded outputs are produced from one source image.",
         "useCasesTitle": "Practical uses",
-        "useCases": "Profile avatars::Crop a portrait into a clean circular image.\nSocial posts::Match a platform aspect ratio without stretching.\nProduct photos::Remove distracting edges before upload.\nThumbnails::Frame a video cover at sixteen by nine.",
+        "useCases": "Profile avatars::Crop a portrait into a clean circular image.\nSocial posts::Match a platform aspect ratio without stretching.\nProduct photos::Remove distracting edges before upload.\nThumbnails::Frame a video cover at sixteen by nine.\nAvatar creation::Crop a square photo into a circle for a profile page.",
         "faqTitle": "Frequently asked questions",
-        "faqs": "Does cropping reduce image quality?::Cropping removes pixels at the edges but keeps the remaining pixels exactly as they were. Sharpness inside the box does not change. Only the lossy formats, JPEG and WebP, alter pixel data when the crop is encoded, and the quality control manages how much detail they keep.\nWhat does the circle option do?::It clips the crop rectangle to a circle before encoding. The corners outside the circle become transparent in PNG and WebP. JPEG cannot store transparency, so those corners are filled with the page surface colour. The preview overlay rounds to match, so the downloaded file reflects what you saw.\nCan I type exact crop coordinates?::Yes. The X and Y fields move the top left corner, while width and height set the box size in source pixels. Values are clamped so the box stays inside the image. With a preset selected, changing one side recalculates the other to keep the chosen ratio.\nWhich export format should I choose?::Use PNG when you need transparency or lossless pixels, JPEG for compact photographs, and WebP when you want compression with an alpha channel. Quality applies to JPEG and WebP only. The file name gets the matching extension so the download opens correctly.\nIs my photo uploaded anywhere?::No. The file is decoded by your browser and drawn on a canvas in this tab. The overlay, the preview and the download all come from that same page. Closing the tab discards everything, and the download is built through a temporary local object URL.\nWhy was my file rejected?::Only JPEG, PNG and WebP files up to 20 MB are accepted because the browser must decode them in memory. Save the photo in one of those formats first. A very large image may also exceed the 8192 pixel canvas budget, so resize it before cropping.",
+        "faqs": "Does cropping reduce image quality?::Cropping removes pixels at the edges but keeps the remaining pixels exactly as they were. Sharpness inside the box does not change. Only the lossy formats, JPEG and WebP, alter pixel data when the crop is encoded, and the quality control manages how much detail they keep.\nWhat does the circle option do?::It clips the crop rectangle to a circle before encoding. The corners outside the circle become transparent in PNG and WebP. JPEG cannot store transparency, so those corners are filled with the page surface colour. The preview overlay rounds to match, so the downloaded file reflects what you saw.\nCan I type exact crop coordinates?::Yes. The X and Y fields move the top left corner, while width and height set the box size in source pixels. Values are clamped so the box stays inside the image. With a preset selected, changing one side recalculates the other to keep the chosen ratio.\nWhich export format should I choose?::Use PNG when you need transparency or lossless pixels, JPEG for compact photographs, and WebP when you want compression with an alpha channel. Quality applies to JPEG and WebP only. The file name gets the matching extension so the download opens correctly.\nIs my photo uploaded anywhere?::No. The file is decoded by your browser and drawn on a canvas in this tab. The overlay, the preview and the download all come from that same page. Closing the tab discards everything, and the download is built through a temporary local object URL.\nWhy was my file rejected?::Only JPEG, PNG and WebP files up to 20 MB are accepted because the browser must decode them in memory. Save the photo in one of those formats first. A very large image may also exceed the 8192 pixel canvas budget, so resize it before cropping.\nWhich crop shape should I use?::Use a rectangle for photos and general images, a square for profile tiles, a circle for avatars and a rounded rectangle for cards. Each shape changes only the exported copy. The original file stays unchanged, so you can try several shapes from the same upload without reselecting the image.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika image desk. Cropping and encoding run through the browser canvas with no upload. Last updated 28 November 2026. Reference: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage",
         "searchIntents": "crop image online, free image cropper, crop photo to square, circular avatar cropper, crop image by pixels, aspect ratio crop tool, crop JPEG PNG WebP, drag crop box photo, crop image in browser, make profile picture crop"
-      }
+      },
+      "shapeLabel": "Crop shape",
+      "shapeRectangle": "Rectangle",
+      "shapeSquare": "Square",
+      "shapeCircle": "Circle",
+      "shapeRounded": "Rounded",
+      "shapeHint": "Drag the crop frame or its four corner handles to set the area. Shapes change the export mask, not the source image.",
+      "replaceImage": "Replace image",
+      "precisionExport": "Precision & export settings",
+      "downloadCropped": "Download cropped image"
     },
     "image-to-base64": {
       "title": "Image to Base64",
@@ -5817,7 +5911,7 @@
       "cssTitle": "CSS background image",
       "htmlTitle": "HTML img element",
       "decodeTitle": "Decode a Data URL",
-      "decodeHint": "Paste an image Data URL to rebuild the file locally.",
+      "decodeHint": "Paste a Data URL to preview and download the image it contains.",
       "pasteLabel": "Paste Data URL",
       "pastePlaceholder": "data:image/png;base64,...",
       "decodeButton": "Decode",
@@ -5835,7 +5929,7 @@
         "aboutTitle": "About Image to Base64",
         "contextualLink": "Need to encode plain text instead? Try %%TOOL%%.",
         "whatIsTitle": "What is Image to Base64?",
-        "whatIs": "A Data URL embeds a file directly inside a text string. Instead of pointing to a separate image file, the browser reads the encoded bytes from the URL itself. Base64 maps binary data to printable ASCII characters, so an image can travel inside CSS, HTML or JSON without a second request.\n\nThe prefix records the MIME type, which tells the browser how to interpret the bytes. This tool detects the type from the local file and writes data:image/png;base64 or the matching JPEG, WebP or GIF form. Keeping the MIME accurate matters because a wrong prefix can make the image fail to render.\n\nThe result pane offers three copy ready forms: the raw Data URL, a CSS background-image declaration and a complete HTML img element. Each can be pasted into a stylesheet or document. Large images produce very long strings, so a warning appears when the source exceeds about 1.5 MB.\n\nDecoding works in reverse. Paste any image Data URL, and the tool splits the prefix from the payload, rebuilds the bytes locally and offers a preview plus a downloaded file. Nothing is uploaded, and the object URL used for the preview is released when you reset or leave the tool.",
+        "whatIs": "A Data URL embeds a file directly inside a text string. Instead of pointing to a separate image file, the browser reads the encoded bytes from the URL itself. Base64 maps binary data to printable ASCII characters, so an image can travel inside CSS, HTML or JSON without a second request.\n\nThe prefix records the MIME type, which tells the browser how to interpret the bytes. This tool detects the type from the local file and writes data:image/png;base64 or the matching JPEG, WebP or GIF form. Keeping the MIME accurate matters because a wrong prefix can make the image fail to render.\n\nThe result pane offers three copy ready forms: the raw Data URL, a CSS background-image declaration and a complete HTML img element. Each can be pasted into a stylesheet or document. Large images produce very long strings, so a warning appears when the source exceeds about 1.5 MB.\n\nDecoding works in reverse. Paste any image Data URL, and the tool splits the prefix from the payload, rebuilds the bytes locally and offers a preview plus a downloaded file. Nothing is uploaded, and the object URL used for the preview is released when you reset or leave the tool.\n\nBase64 is a text encoding for binary data. A Data URL places that text in a single string that begins with a media type marker, so a browser can render the image without a separate file request. This is useful for small icons, inline previews and self contained HTML examples, but it makes the source about thirty three percent larger than the original bytes.\n\nThe two directions are kept separate on purpose. Image to Base reads a local file and produces the Data URL, a CSS background rule and an HTML img tag. Base to Image takes a pasted Data URL, decodes its bytes locally and offers a preview and download. Keeping the flows apart avoids mixing an upload field with a paste field in one confusing screen.",
         "howToTitle": "How to use Image to Base64",
         "howTo": "Drop a JPEG, PNG, WebP or GIF image or choose one with the file picker.\nRead the detected MIME type, source size and encoded length.\nCopy the Data URL, the CSS declaration or the HTML element.\nPaste a Data URL into the decode field to reverse the process.\nSelect Decode to rebuild the image bytes locally.\nCheck the decoded preview and MIME type.\nDownload the decoded file with the correct extension.",
         "guidanceTitle": "When to embed images as Data URLs",
@@ -5846,15 +5940,20 @@
         "exampleOutput": "data:image/png;base64,iVBOR... and a CSS background-image declaration",
         "exampleNote": "The CSS snippet quotes the URL so the long string stays valid in a stylesheet.",
         "featuresTitle": "What this tool does",
-        "features": "MIME detection::Reads the file type and writes the matching Data URL prefix.\nThree snippets::Copy the raw Data URL, CSS declaration or HTML element.\nReverse decoding::Paste a Data URL to preview and download its bytes.\nSize awareness::Shows encoded length and warns on large sources.\nLocal decoding::Rebuilds image bytes without any server call.\nClean file names::Downloads decoded images with the correct extension.",
+        "features": "MIME detection::Reads the file type and writes the matching Data URL prefix.\nThree snippets::Copy the raw Data URL, CSS declaration or HTML element.\nReverse decoding::Paste a Data URL to preview and download its bytes.\nSize awareness::Shows encoded length and warns on large sources.\nLocal decoding::Rebuilds image bytes without any server call.\nClean file names::Downloads decoded images with the correct extension.\nClear directions::Image to Base and Base to Image are separate flows with their own inputs and results.",
         "useCasesTitle": "Practical uses",
-        "useCases": "Single file HTML::Embed a small logo without a separate asset.\nCSS icons::Inline a tiny background image in a stylesheet.\nData transport::Place an image inside a JSON payload.\nQuick recovery::Turn a pasted Data URL back into a file.",
+        "useCases": "Single file HTML::Embed a small logo without a separate asset.\nCSS icons::Inline a tiny background image in a stylesheet.\nData transport::Place an image inside a JSON payload.\nQuick recovery::Turn a pasted Data URL back into a file.\nInline email icons::Encode a small icon so it travels inside an HTML snippet.",
         "faqTitle": "Frequently asked questions",
-        "faqs": "Is uploading required?::No. The file is read with the browser FileReader and converted to a Data URL in this tab. Nothing is sent to a server. Decoding also happens locally, and the preview uses a temporary object URL that is released when you reset or close the page.\nWhy is there a size warning?::Base64 grows the data by about a third, and a Data URL cannot be cached on its own. Once the source passes roughly 1.5 MB the generated strings become hard to paste and slow to ship. The warning is advice, not a block, so small overrides remain possible.\nWhich formats are supported?::JPEG, PNG, WebP and GIF files are accepted because their MIME types are recognised here. Other image formats can often be converted to PNG first. A pasted Data URL with any image prefix can still be decoded for preview and download even if it was made elsewhere.\nWhat is the HTML snippet for?::It gives you a complete img element whose src is the generated Data URL. Paste it straight into a page and the image renders without a separate file. The alt text is taken from the local file name so the element stays accessible.\nCan I decode a wrapped Data URL?::Yes. Whitespace inside the base64 payload is ignored during parsing, so a string broken across lines still works. The prefix must begin with data:image and use base64 encoding. If the payload length is invalid, the tool reports a decode message.\nDoes decoding change the image?::No. The bytes are reconstructed exactly as they were encoded, so the decoded download matches the source pixels. The MIME type from the Data URL decides the file extension. Re encoding is never part of this step.",
+        "faqs": "Is uploading required?::No. The file is read with the browser FileReader and converted to a Data URL in this tab. Nothing is sent to a server. Decoding also happens locally, and the preview uses a temporary object URL that is released when you reset or close the page.\nWhy is there a size warning?::Base64 grows the data by about a third, and a Data URL cannot be cached on its own. Once the source passes roughly 1.5 MB the generated strings become hard to paste and slow to ship. The warning is advice, not a block, so small overrides remain possible.\nWhich formats are supported?::JPEG, PNG, WebP and GIF files are accepted because their MIME types are recognised here. Other image formats can often be converted to PNG first. A pasted Data URL with any image prefix can still be decoded for preview and download even if it was made elsewhere.\nWhat is the HTML snippet for?::It gives you a complete img element whose src is the generated Data URL. Paste it straight into a page and the image renders without a separate file. The alt text is taken from the local file name so the element stays accessible.\nCan I decode a wrapped Data URL?::Yes. Whitespace inside the base64 payload is ignored during parsing, so a string broken across lines still works. The prefix must begin with data:image and use base64 encoding. If the payload length is invalid, the tool reports a decode message.\nDoes decoding change the image?::No. The bytes are reconstructed exactly as they were encoded, so the decoded download matches the source pixels. The MIME type from the Data URL decides the file extension. Re encoding is never part of this step.\nWhy is a Data URL larger than the file?::Base64 stores three bytes as four text characters, so the encoded string is roughly thirty three percent larger than the original binary data. That is acceptable for small icons and inline previews, but large photographs are better kept as separate files and referenced by a normal URL.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika image desk. File reading and Data URL encoding happen in the browser with no upload. Last updated 28 November 2026. Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs",
         "searchIntents": "image to base64, convert image to data URL, base64 image encoder, data URL to image, CSS background image data URL, HTML img data URL, image MIME detector, decode data URL online, base64 image preview, inline image converter"
-      }
+      },
+      "modeLabel": "Choose a direction",
+      "modeEncode": "Image to Base",
+      "modeDecode": "Base to Image",
+      "encodeHint": "Upload a local image to get a Data URL plus CSS and HTML snippets you can copy.",
+      "copySnippet": "Copy snippet"
     },
     "json-to-typescript": {
       "title": "JSON to TypeScript",
@@ -5913,7 +6012,8 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika code desk. Parsing and code generation run in the browser with no upload. Last updated 28 November 2026. Reference: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
         "searchIntents": "json to typescript, generate interface from json, json to ts types, typescript type generator, json schema to typescript, convert json to interface, optional fields typescript, api response typescript types, json to typescript online, ts interface generator"
-      }
+      },
+      "advancedOptions": "Advanced options"
     },
     "line-prefix-suffix": {
       "title": "Line Prefix Suffix",
@@ -5990,7 +6090,10 @@
       "seo": {
         "title": "Line Prefix Suffix | Toolpika",
         "description": "Line Prefix Suffix adds text before and after every line, wraps each line in a chosen character and numbers the result. Choose whether blank lines are kept, watch the live output update, then copy or download the finished text in one step."
-      }
+      },
+      "liveBadge": "Live output",
+      "trimLabel": "Trim whitespace",
+      "advancedTitle": "Advanced options"
     },
     "password-strength-checker": {
       "title": "Password Strength Checker",
@@ -6068,7 +6171,10 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika security desk. The scoring model takes cues from the NIST SP 800-63 guidance at https://pages.nist.gov/800-63-3/sp800-63b.html and runs entirely in your browser. Updated 28 November 2026.",
         "searchIntents": "password strength checker,check password strength,password entropy estimator,local password score,password pattern check,strong password tips,is my password strong,password security checker offline,password length check,private password tester"
-      }
+      },
+      "generateExample": "Generate strong example",
+      "showAction": "Show",
+      "hideAction": "Hide"
     },
     "ppi-calculator": {
       "title": "PPI Calculator",
@@ -6128,7 +6234,13 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika calculator desk. All maths runs locally with no network access. Reviewed 28 November 2026. The concept is explained at https://en.wikipedia.org/wiki/Pixels_per_inch.",
         "searchIntents": "ppi calculator, pixels per inch calculator, calculate screen density, image ppi from dimensions, megapixel calculator, aspect ratio from pixels, display sharpness calculator, ppi from diagonal inches, local ppi tool, print density calculator"
-      }
+      },
+      "presetsLabel": "Presets",
+      "preset1080p": "1080p 24\"",
+      "preset1440p": "1440p 27\"",
+      "preset4k": "4K 27\"",
+      "presetMacbook": "MacBook 14\"",
+      "badgeDotPitch": "Dot pitch"
     },
     "robots-txt-generator": {
       "title": "Robots Txt Generator",
@@ -6203,7 +6315,11 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika code desk. Rules are formatted by pure functions and stay in your tab. Reviewed 28 November 2026. Google crawler guidance: https://developers.google.com/search/docs/crawling-indexing/robots/intro.",
         "searchIntents": "robots txt generator, create robots.txt, robots.txt builder, disallow path generator, crawl delay setting, sitemap robots directive, user agent robots rules, robots file preview, block crawlers robots.txt, free robots txt tool"
-      }
+      },
+      "addRule": "Add rule",
+      "defaultPolicyLabel": "Default policy",
+      "policyAllowAll": "Allow all",
+      "policyDisallowAll": "Disallow all"
     },
     "roi-calculator": {
       "title": "ROI Calculator",
@@ -6276,7 +6392,17 @@
       "seo": {
         "title": "ROI Calculator | Toolpika",
         "description": "ROI Calculator measures return against the original investment and annualises that return across a chosen number of years. Enter the investment, net profit and holding period to see ROI, ending value, money multiple and compound annual growth rate in one result pane."
-      }
+      },
+      "errorEmptyReturned": "Enter the total amount returned.",
+      "fixReturned": "Type a number, or zero if nothing came back.",
+      "errorInvalidReturned": "The returned value is not a number.",
+      "netProfitLabel": "Net profit",
+      "gainBadge": "Gain",
+      "lossBadge": "Loss",
+      "returnedLabel": "Returned value",
+      "returnedHint": "The total amount you received at the end.",
+      "downloadFileName": "roi-summary.txt",
+      "formulaReturned": "Net profit = returned value - initial investment\nROI = net profit / initial investment x 100\nAnnualised return = (returned value / investment)^(1 / years) - 1"
     },
     "roman-numeral-converter": {
       "title": "Roman Numeral Converter",
@@ -6342,7 +6468,10 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika converter desk. Conversion and validation run locally with no network access. Reviewed 28 November 2026. Background on the notation is available at https://en.wikipedia.org/wiki/Roman_numerals.",
         "searchIntents": "roman numeral converter, number to roman numeral, roman numeral to number, convert 1994 to roman, roman numerals 1 to 3999, subtractive notation converter, roman numeral validator, private roman converter, roman numeral examples, roman numbers online tool"
-      }
+      },
+      "numberLabel": "Number (1 to 3999)",
+      "romanLabel": "Roman numeral",
+      "breakdownLabel": "Breakdown"
     },
     "svg-optimizer": {
       "title": "SVG Optimizer",
@@ -6390,7 +6519,7 @@
         "aboutTitle": "About SVG Optimizer",
         "contextualLink": "For the matching stylesheet cleanup, open %%TOOL%% after you finish here.",
         "whatIsTitle": "What is an SVG optimizer?",
-        "whatIs": "An SVG optimizer rewrites vector markup so the same picture takes fewer bytes. It keeps the shapes, paths and styles intact while removing text that browsers never render, such as comments and editor notes. The result is still plain SVG that any browser or design tool can open.\n\nThe cleanup is deliberately conservative. Comments are dropped, metadata and desc blocks are removed, and editor namespaces such as inkscape and sodipodi are stripped from tags. Whitespace outside quoted values is collapsed, so path data and colour values keep their exact characters.\n\nThe JSX option renames attributes for React style components. Kebab case names become camel case, class becomes className and for becomes htmlFor. Quoted values are left alone, which matters for path strings and data URLs. The option only changes attribute names, never geometry.\n\nBefore writing output, the tool checks that the input starts with an svg root and that every tag closes in order. Errors name the problem and suggest a fix rather than guessing. Byte counts before and after show how much was saved, and the result can be copied or downloaded.",
+        "whatIs": "An SVG optimizer rewrites vector markup so the same picture takes fewer bytes. It keeps the shapes, paths and styles intact while removing text that browsers never render, such as comments and editor notes. The result is still plain SVG that any browser or design tool can open.\n\nThe cleanup is deliberately conservative. Comments are dropped, metadata and desc blocks are removed, and editor namespaces such as inkscape and sodipodi are stripped from tags. Whitespace outside quoted values is collapsed, so path data and colour values keep their exact characters.\n\nThe JSX option renames attributes for React style components. Kebab case names become camel case, class becomes className and for becomes htmlFor. Quoted values are left alone, which matters for path strings and data URLs. The option only changes attribute names, never geometry.\n\nBefore writing output, the tool checks that the input starts with an svg root and that every tag closes in order. Errors name the problem and suggest a fix rather than guessing. Byte counts before and after show how much was saved, and the result can be copied or downloaded.\n\nThe optimizer keeps the SVG element tree intact and removes only redundant material. Comments, editor metadata and repeated whitespace are safe to drop. Optional JSX conversion changes hyphenated attribute names into camelCase for React projects while leaving the geometry untouched.\n\nA side by side layout makes review quick. The source stays on the left and the cleaned markup on the right, with byte counts and a saved percentage above the output. Paste markup from a design export, compare the two blocks, then copy or download the result when it looks right.",
         "howToTitle": "How to use SVG Optimizer",
         "howTo": "Paste an SVG document into the input box, or press Try sample for a demo icon.\nRead the inline error if the markup is not an SVG or has unclosed tags.\nChoose whether comments should be removed from the source.\nTurn off metadata removal when editor credits must stay in the file.\nKeep whitespace collapse on to compact attribute spacing and text nodes.\nEnable JSX attributes when the output is going into a React component.\nCompare the byte counts, then copy or download the optimized SVG.",
         "guidanceTitle": "Choosing cleanup options for production SVG files",
@@ -6401,15 +6530,19 @@
         "exampleOutput": "Produced: compact SVG\nBytes saved: shown as a percentage\nDownload name: optimized.svg",
         "exampleNote": "Turning on JSX attributes changes stroke-width to strokeWidth while the quoted path data stays exactly the same.",
         "featuresTitle": "What this tool does",
-        "features": "Comment removal::Drops XML comments that browsers ignore, with the count shown below the result.\nMetadata cleanup::Strips metadata, title and desc blocks plus common editor namespaces.\nWhitespace collapse::Compacts spacing outside quotes while preserving attribute values and path data.\nJSX attributes::Renames kebab case attributes and class for React style components.\nValidation with fixes::Reports an invalid root or unbalanced tags and tells you what to correct.\nBefore and after bytes::Shows input size, output size and the percentage saved.",
+        "features": "Comment removal::Drops XML comments that browsers ignore, with the count shown below the result.\nMetadata cleanup::Strips metadata, title and desc blocks plus common editor namespaces.\nWhitespace collapse::Compacts spacing outside quotes while preserving attribute values and path data.\nJSX attributes::Renames kebab case attributes and class for React style components.\nValidation with fixes::Reports an invalid root or unbalanced tags and tells you what to correct.\nBefore and after bytes::Shows input size, output size and the percentage saved.\nSide by side review::Source and cleaned markup sit together with byte counts and saved percentage.",
         "useCasesTitle": "Practical uses",
-        "useCases": "Web assets::Shrink icons before shipping them in a page bundle.\nReact components::Convert markup attributes so pasted SVG compiles in JSX.\nDesign handoff::Remove editor notes before sending an asset to a developer.\nDocumentation::Keep a clean, readable example without invisible metadata.",
+        "useCases": "Web assets::Shrink icons before shipping them in a page bundle.\nReact components::Convert markup attributes so pasted SVG compiles in JSX.\nDesign handoff::Remove editor notes before sending an asset to a developer.\nDocumentation::Keep a clean, readable example without invisible metadata.\nDesign handoff::Clean a design export before placing it in a codebase.",
         "faqTitle": "Frequently asked questions",
-        "faqs": "Does optimization change the picture?::No. The cleanup removes comments, editor metadata and redundant whitespace while keeping shapes, path data and colours unchanged. The browser paints the same geometry from a smaller string. If you enable JSX attributes, only attribute names change, never coordinates or styles.\nWhy is my SVG rejected?::The tool requires a document with an svg root element and tags that open and close in the right order. It also rejects files over 200,000 characters. The inline message names the problem and suggests the fix, so you can correct the source and paste it again.\nWhat does metadata removal delete?::It removes metadata, title and desc elements and attributes from common vector editors such as inkscape and sodipodi. Those entries are useful while designing but rarely needed in a published asset. Turn the option off if credits or accessibility descriptions must stay in the file.\nWill quoted path data stay intact?::Yes. Whitespace collapse and attribute renaming only work outside quoted values. A path string keeps its spaces, commas and letters exactly as written, and a data URL is never rewritten. This is why tokenising the markup is safer than a plain find and replace.\nWhen should I use JSX attributes?::Use that option when the output goes into a React or JSX file. It changes names such as stroke-width to strokeWidth and class to className, which are required by JSX. Leave it off for SVG files served directly from a server or opened in a design tool.\nIs my SVG uploaded anywhere?::No. All tokenising, cleanup and counting happen in your browser tab. Nothing is sent to a server, and the pasted markup is not written to storage. Only the four option choices are remembered on this device so the same settings are ready on your next visit.",
+        "faqs": "Does optimization change the picture?::No. The cleanup removes comments, editor metadata and redundant whitespace while keeping shapes, path data and colours unchanged. The browser paints the same geometry from a smaller string. If you enable JSX attributes, only attribute names change, never coordinates or styles.\nWhy is my SVG rejected?::The tool requires a document with an svg root element and tags that open and close in the right order. It also rejects files over 200,000 characters. The inline message names the problem and suggests the fix, so you can correct the source and paste it again.\nWhat does metadata removal delete?::It removes metadata, title and desc elements and attributes from common vector editors such as inkscape and sodipodi. Those entries are useful while designing but rarely needed in a published asset. Turn the option off if credits or accessibility descriptions must stay in the file.\nWill quoted path data stay intact?::Yes. Whitespace collapse and attribute renaming only work outside quoted values. A path string keeps its spaces, commas and letters exactly as written, and a data URL is never rewritten. This is why tokenising the markup is safer than a plain find and replace.\nWhen should I use JSX attributes?::Use that option when the output goes into a React or JSX file. It changes names such as stroke-width to strokeWidth and class to className, which are required by JSX. Leave it off for SVG files served directly from a server or opened in a design tool.\nIs my SVG uploaded anywhere?::No. All tokenising, cleanup and counting happen in your browser tab. Nothing is sent to a server, and the pasted markup is not written to storage. Only the four option choices are remembered on this device so the same settings are ready on your next visit.\nDoes optimization change the drawing?::No. The tool removes comments, metadata and repeated whitespace, and it can rename attributes for JSX. Paths, shapes, fills and viewBox values stay as they are. Compare the source and result side by side, then copy the version you want to use.",
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika code desk. Cleanup runs locally with a quote-aware tokenizer, and the result stays in your tab. Reviewed 28 November 2026. Background on SVG markup is available at https://developer.mozilla.org/en-US/docs/Web/SVG.",
         "searchIntents": "svg optimizer, optimize svg online, remove svg metadata, minify svg code, svg cleaner, compress svg markup, svg to jsx attributes, clean svg comments, reduce svg file size, private svg optimizer"
-      }
+      },
+      "tabCode": "Optimized code",
+      "tabPreview": "Visual preview",
+      "chooseSvg": "Choose SVG file",
+      "previewAlt": "Visual preview of the optimized SVG"
     },
     "timezone-converter": {
       "title": "Timezone Converter",
@@ -6488,7 +6621,19 @@
       "seo": {
         "title": "Timezone Converter | Toolpika",
         "description": "Timezone Converter takes one base date and time, then shows the same moment in several IANA time zones. Pick a base zone, choose target cities, adjust by hours with the quick controls and copy the full list of converted times."
-      }
+      },
+      "format12": "12 hour",
+      "format24": "24 hour",
+      "zoneCountBadge": "{count} zones",
+      "resetToNow": "Reset to now",
+      "searchPlaceholder": "Search city or zone",
+      "noZoneResults": "No zone matches that search.",
+      "advancedTitle": "Hour adjustment",
+      "formatLabel": "Clock format",
+      "addZone": "Add target timezone",
+      "downloadFileName": "timezone-summary.txt",
+      "removeZone": "Remove {zone}",
+      "copyTime": "Copy time"
     },
     "unicode-inspector": {
       "title": "Unicode Inspector",
@@ -6555,7 +6700,15 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika text desk. Scanning and cleaning run locally with no network access. Reviewed 28 November 2026. Character behaviour is documented at https://www.unicode.org/reports/tr9/.",
         "searchIntents": "unicode inspector, find zero width characters, detect hidden unicode, non breaking space finder, remove invisible characters, unicode code point table, direction mark detector, clean pasted text, private unicode tool, hidden character checker"
-      }
+      },
+      "hiddenBadge": "{count} hidden",
+      "stripHidden": "Strip hidden chars",
+      "downloadFileName": "cleaned-text.txt",
+      "tokenStripTitle": "Character map",
+      "tokenHint": "Hidden characters appear as warning pills. Ordinary characters stay plain.",
+      "tableChar": "Char",
+      "tableUnicode": "Unicode",
+      "tableUtf8": "UTF-8 hex"
     },
     "url-parser": {
       "title": "URL Parser",
@@ -6625,7 +6778,11 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika code desk. Parsing follows the WHATWG URL Standard at https://url.spec.whatwg.org/ and runs entirely in your browser. Updated 28 November 2026.",
         "searchIntents": "url parser,parse url online,split url into parts,url query parameter editor,rebuild url from parts,url fragment inspector,extract host from url,edit query strings online,private url parser tool,url structure visualizer"
-      }
+      },
+      "pasteAction": "Paste",
+      "pasteFailed": "Clipboard access was blocked. Paste the link with your keyboard instead.",
+      "noHost": "No host",
+      "paramCount": "{count} params"
     },
     "xml-to-json": {
       "title": "XML to JSON",
@@ -6684,7 +6841,14 @@
         "trustTitle": "About this tool",
         "trustBody": "Built by the Toolpika converter desk. Parsing uses the standard browser XML parser and every document stays on your device. Reviewed 28 November 2026. Technical details are documented at https://developer.mozilla.org/en-US/docs/Web/API/DOMParser.",
         "searchIntents": "xml to json converter, convert xml to json online, xml attributes to json, repeated xml elements to array, xml to json browser tool, private xml converter, format xml as json, xml parser to json, copy xml as json, download json from xml"
-      }
+      },
+      "uploadXml": "Upload .xml",
+      "includeAttributes": "Include attributes",
+      "prettyCompactLabel": "Output style",
+      "prettyLabel": "Pretty",
+      "compactLabel": "Compact",
+      "advancedTitle": "Advanced Options",
+      "uploadError": "That file could not be read as XML."
     }
   },
   "search": {

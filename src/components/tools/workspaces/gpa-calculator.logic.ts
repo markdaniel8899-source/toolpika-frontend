@@ -45,8 +45,11 @@ export type GpaErrorCode =
   | "INVALID_PRIOR_CREDITS"
   | "PRIOR_PAIR_INCOMPLETE";
 
+export type GpaScale = 4 | 5;
+
 export interface CourseRow {
   id: string;
+  name: string;
   credits: string;
   grade: Grade;
   weight: CourseWeight;
@@ -57,6 +60,7 @@ export interface GpaInput {
   priorGpa: string;
   priorCredits: string;
   weighted: boolean;
+  scale: GpaScale;
 }
 
 export interface GpaResult {
@@ -70,6 +74,10 @@ export interface GpaResult {
 
 function round(value: number): number {
   return Math.round(value * 1000) / 1000;
+}
+
+function roundPoints(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 /** Calculate semester and cumulative GPA from course rows and prior totals. */
@@ -107,9 +115,10 @@ export function calculateGpa(input: GpaInput): GpaResult {
       return { ...blank, error: { code: "INVALID_GRADE", rowId: course.id } };
     }
 
+    const scaledPoints = input.scale === 5 ? roundPoints(basePoints * 1.25) : basePoints;
     const pointsPerCredit = input.weighted
-      ? Math.min(MAX_POINTS_PER_COURSE, basePoints + WEIGHT_BONUS[course.weight])
-      : basePoints;
+      ? Math.min(MAX_POINTS_PER_COURSE, scaledPoints + WEIGHT_BONUS[course.weight])
+      : scaledPoints;
 
     totalCredits += credits;
     qualityPoints += credits * pointsPerCredit;
@@ -126,7 +135,7 @@ export function calculateGpa(input: GpaInput): GpaResult {
   const priorGpa = priorGpaRaw === "" ? 0 : Number(priorGpaRaw);
   const priorCredits = priorCreditsRaw === "" ? 0 : Number(priorCreditsRaw);
 
-  if (!Number.isFinite(priorGpa) || priorGpa < 0 || priorGpa > MAX_POINTS_PER_COURSE) {
+  if (!Number.isFinite(priorGpa) || priorGpa < 0 || priorGpa > input.scale) {
     return { ...blank, error: { code: "INVALID_PRIOR_GPA" } };
   }
   if (!Number.isFinite(priorCredits) || priorCredits < 0 || priorCredits > 1_000) {

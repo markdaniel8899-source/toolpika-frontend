@@ -11,6 +11,7 @@ export interface LineOptions {
   wrapper: string;
   numberLines: boolean;
   skipEmpty: boolean;
+  trim: boolean;
   startAt: number;
 }
 
@@ -20,6 +21,7 @@ export const DEFAULT_LINE_OPTIONS: LineOptions = {
   wrapper: "",
   numberLines: false,
   skipEmpty: true,
+  trim: false,
   startAt: 1,
 };
 
@@ -62,12 +64,13 @@ export function decorateLines(text: string, options: LineOptions): LineResult {
   const lines: string[] = [];
 
   for (const line of source) {
-    if (options.skipEmpty && line.trim().length === 0) continue;
+    const value = options.trim ? line.trim() : line;
+    if (options.skipEmpty && value.trim().length === 0) continue;
 
     const ordinal = options.startAt + lines.length;
     const number = options.numberLines ? `${String(ordinal).padStart(2, "0")}. ` : "";
     lines.push(
-      `${number}${options.prefix}${options.wrapper}${line}${options.wrapper}${options.suffix}`,
+      `${number}${options.prefix}${options.wrapper}${value}${options.wrapper}${options.suffix}`,
     );
   }
 

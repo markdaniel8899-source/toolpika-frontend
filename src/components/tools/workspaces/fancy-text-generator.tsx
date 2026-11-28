@@ -1,14 +1,16 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Check, RotateCcw, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
 import {
   CopyButton,
+  DownloadButton,
+  ToolBadge,
   ToolEmpty,
-  ToolPane,
+  selectClassName,
   useCopyFeedback,
   useCopyShortcut,
 } from "@/components/tools/workspace-ui";
@@ -22,21 +24,32 @@ import {
 const ERROR_ID = "tp-fancy-text-error";
 
 const STYLE_LABEL_KEYS: Record<FancyStyleId, string> = {
-  bold: "fancy-text-generator.styleBold",
-  italic: "fancy-text-generator.styleItalic",
-  monospace: "fancy-text-generator.styleMonospace",
-  strikethrough: "fancy-text-generator.styleStrikethrough",
+  boldSerif: "fancy-text-generator.styleBoldSerif",
+  italicSerif: "fancy-text-generator.styleItalicSerif",
+  boldItalic: "fancy-text-generator.styleBoldItalic",
   script: "fancy-text-generator.styleScript",
+  boldScript: "fancy-text-generator.styleBoldScript",
+  monospace: "fancy-text-generator.styleMonospace",
+  fraktur: "fancy-text-generator.styleFraktur",
+  boldFraktur: "fancy-text-generator.styleBoldFraktur",
+  doubleStruck: "fancy-text-generator.styleDoubleStruck",
+  sansSerif: "fancy-text-generator.styleSansSerif",
+  sansSerifBold: "fancy-text-generator.styleSansSerifBold",
+  sansSerifItalic: "fancy-text-generator.styleSansSerifItalic",
+  sansSerifBoldItalic: "fancy-text-generator.styleSansSerifBoldItalic",
+  circled: "fancy-text-generator.styleCircled",
+  squared: "fancy-text-generator.styleSquared",
+  strikethrough: "fancy-text-generator.styleStrikethrough",
 };
 
 export default function FancyTextGenerator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
-
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [text, setText] = useState("");
-  const [selected, setSelected] = useState<FancyStyleId>("bold");
+  const [selected, setSelected] = useState<FancyStyleId>("boldSerif");
   const [copiedId, setCopiedId] = useState<FancyStyleId | null>(null);
-  const { copied, copy } = useCopyFeedback();
+  const { copied, copy, reset: resetCopy } = useCopyFeedback();
 
   const result = useMemo(() => buildFancyResult(text), [text]);
 
@@ -54,46 +67,61 @@ export default function FancyTextGenerator() {
     }
   })();
 
-  const activeVariant = result.variants.find((variant) => variant.id === selected);
   const ready = result.variants.length > 0 && !errorText;
+  const selectedVariant = result.variants.find((variant) => variant.id === selected)
+    ?? result.variants[0];
+  const selectedText = selectedVariant?.text ?? "";
+  const selectedLabel = selectedVariant
+    ? tw(STYLE_LABEL_KEYS[selectedVariant.id])
+    : "";
 
-  const handleVariant = useCallback(
-    async (id: FancyStyleId, value: string) => {
-      const ok = await copy(value);
-      if (ok) {
-        setSelected(id);
-        setCopiedId(id);
-      }
-    },
-    [copy],
+  const reportText = useMemo(
+    () => (ready
+      ? result.variants
+        .map((variant) => `${tw(STYLE_LABEL_KEYS[variant.id])}: ${variant.text}`)
+        .join("\n")
+      : ""),
+    [ready, result.variants, tw],
   );
 
+  const handleVariant = useCallback(async (id: FancyStyleId, value: string) => {
+    const ok = await copy(value);
+    if (ok) {
+      setSelected(id);
+      setCopiedId(id);
+    }
+  }, [copy]);
+
   const handleCopyShortcut = useCallback(() => {
-    const variant = result.variants.find((item) => item.id === selected) ?? result.variants[0];
-    if (variant) void copy(variant.text);
-  }, [copy, result.variants, selected]);
+    if (selectedText) void copy(selectedText);
+  }, [copy, selectedText]);
   useCopyShortcut(handleCopyShortcut);
 
   const handleSample = () => {
     setText(tw("fancy-text-generator.sampleText"));
-    setSelected("bold");
+    setSelected("boldSerif");
     setCopiedId(null);
+    resetCopy();
+    inputRef.current?.focus();
   };
 
-  const handleReset = () => {
+  const handleClear = () => {
     setText("");
-    setSelected("bold");
+    setSelected("boldSerif");
     setCopiedId(null);
+    resetCopy();
+    inputRef.current?.focus();
   };
 
   const handleTextChange = (value: string) => {
     setText(value);
     setCopiedId(null);
+    resetCopy();
   };
 
   return (
     <div className="tp-tool">
-      <div className="tp-tool-bar">
+      <div className="tp-industrial-bar tp-tool-bar">
         <div className="tp-tool-identity">
           <span className="tp-tool-mark" aria-hidden="true">
             <ToolIcon name="Sparkles" />
@@ -103,96 +131,148 @@ export default function FancyTextGenerator() {
             <span className="tp-tool-subtitle">{tw("fancy-text-generator.subtitle")}</span>
           </span>
         </div>
-        <div className="tp-tool-actions">
-          <Button type="button" size="sm" onClick={handleSample}>
-            {tw("fancy-text-generator.trySample")}
-          </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
-            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            {tw("fancy-text-generator.reset")}
-          </Button>
-        </div>
+        <ToolBadge tone="accent">
+          {tw("fancy-text-generator.styleCountBadge", { count: result.variants.length || 16 })}
+        </ToolBadge>
       </div>
 
-      <div className="tp-tool-body tp-tool-body--stacked">
-        <ToolPane
-          id="tp-fancy-text-input-title"
-          title={tw("fancy-text-generator.inputTitle")}
-          hint={tw("fancy-text-generator.inputHint")}
+      <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <section
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-12 lg:sticky lg:top-4 lg:z-10"
+          aria-labelledby="tp-fancy-text-input-title"
         >
-          <div className="flex flex-col gap-2">
-            <label className="tp-tool-label" htmlFor="tp-fancy-text-input">
-              {tw("fancy-text-generator.inputLabel")}
-            </label>
-            <textarea
-              id="tp-fancy-text-input"
-              className="tp-field-input tp-tool-editor"
-              value={text}
-              rows={5}
-              placeholder={t("startTyping")}
-              aria-describedby={errorText ? ERROR_ID : undefined}
-              onChange={(event) => handleTextChange(event.target.value)}
-              spellCheck={false}
-            />
-            <p className="tp-tool-hint">
-              {result.inputCharacters} {t("characters")}
-              {ready ? ` · ${result.mappedCharacters} ${tw("fancy-text-generator.mappedLabel")}` : ""}
-            </p>
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="tp-fancy-text-input-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("fancy-text-generator.inputTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("fancy-text-generator.inputHint")}</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+                {tw("fancy-text-generator.trySample")}
+              </Button>
+              <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+                {t("clear")}
+              </Button>
+            </div>
+          </div>
+
+          <label htmlFor="tp-fancy-text-input" className="text-sm font-medium text-[var(--text)]">
+            {tw("fancy-text-generator.inputLabel")}
+          </label>
+          <input
+            id="tp-fancy-text-input"
+            ref={inputRef}
+            type="text"
+            autoComplete="off"
+            className={`${selectClassName} font-mono`}
+            value={text}
+            placeholder={t("startTyping")}
+            aria-invalid={Boolean(errorText) || undefined}
+            aria-describedby={errorText ? ERROR_ID : undefined}
+            onChange={(event) => handleTextChange(event.target.value)}
+            spellCheck={false}
+          />
+
+          <div className="tp-meta-pill" aria-live="polite">
+            <span>{t("characters")}</span>
+            <strong dir="ltr">{result.inputCharacters}</strong>
+            {ready ? (
+              <>
+                <span aria-hidden="true">•</span>
+                <span>{tw("fancy-text-generator.mappedLabel")}</span>
+                <strong dir="ltr">{result.mappedCharacters}</strong>
+              </>
+            ) : null}
+            <span aria-hidden="true">•</span>
+            <span>{tw("fancy-text-generator.maxLabel", { max: MAX_TEXT_LENGTH })}</span>
           </div>
 
           {errorText ? (
-            <p id={ERROR_ID} className="tp-tool-error" role="alert">
+            <p id={ERROR_ID} className="tp-tool-notice" data-tone="danger" role="alert" aria-live="polite">
               {errorText}
             </p>
           ) : null}
-        </ToolPane>
+        </section>
 
-        <ToolPane
-          id="tp-fancy-text-result-title"
-          title={tw("fancy-text-generator.resultTitle")}
-          hint={tw("fancy-text-generator.resultHint")}
-          actions={
-            <CopyButton
-              text={ready && activeVariant ? activeVariant.text : ""}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
-          }
+        <section
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-auto lg:col-span-12"
+          aria-labelledby="tp-fancy-text-result-title"
         >
-          {!ready ? (
-            <div aria-live="polite">
-              <ToolEmpty
-                icon={<Sparkles aria-hidden="true" />}
-                title={tw("fancy-text-generator.emptyTitle")}
-                hint={errorText
-                  ? tw("fancy-text-generator.errorEmptyHint")
-                  : tw("fancy-text-generator.emptyHint")}
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="tp-fancy-text-result-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("fancy-text-generator.resultTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("fancy-text-generator.stylesHint")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <CopyButton
+                text={selectedText}
+                label={t("copy")}
+                copiedLabel={t("copied")}
+              />
+              <DownloadButton
+                content={reportText || null}
+                fileName={tw("fancy-text-generator.downloadFileName")}
+                label={t("download")}
+                variant="default"
               />
             </div>
+          </div>
+
+          {ready ? (
+            <div
+              className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              aria-live="polite"
+            >
+              {result.variants.map((variant) => {
+                const label = tw(STYLE_LABEL_KEYS[variant.id]);
+                const isCopied = copiedId === variant.id && copied;
+                return (
+                  <div
+                    key={variant.id}
+                    className="flex min-w-0 flex-col gap-2 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-3"
+                  >
+                    <div className="tp-industrial-bar">
+                      <span className="tp-tool-label">{label}</span>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={isCopied ? "default" : "secondary"}
+                        aria-label={`${t("copy")} ${label}`}
+                        onClick={() => void handleVariant(variant.id, variant.text)}
+                      >
+                        {isCopied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : null}
+                        {isCopied ? t("copied") : t("copy")}
+                      </Button>
+                    </div>
+                    <output dir="ltr" className="block min-w-0 break-words font-mono text-sm leading-relaxed text-[var(--text)]">
+                      {variant.text}
+                    </output>
+                    {selectedVariant?.id === variant.id ? (
+                      <span className="tp-tool-hint">{tw("fancy-text-generator.selectedHint")}</span>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
           ) : (
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2" aria-live="polite">
-              {result.variants.map((variant) => (
-                <button
-                  key={variant.id}
-                  type="button"
-                  className="flex min-w-0 flex-col gap-2 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-3 text-start transition-colors hover:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                  aria-label={`${tw(STYLE_LABEL_KEYS[variant.id])} ${t("copy")}`}
-                  aria-pressed={selected === variant.id}
-                  onClick={() => void handleVariant(variant.id, variant.text)}
-                >
-                  <span className="tp-tool-label">
-                    {tw(STYLE_LABEL_KEYS[variant.id])}
-                    {copiedId === variant.id && copied ? ` · ${t("copied")}` : ""}
-                  </span>
-                  <output dir="ltr" className="block min-w-0 break-words font-mono text-sm leading-relaxed text-[var(--text)]">
-                    {variant.text}
-                  </output>
-                </button>
-              ))}
+            <div aria-live="polite">
+              <ToolEmpty
+                icon={<ToolIcon name="Sparkles" />}
+                title={tw("fancy-text-generator.emptyTitle")}
+                hint={errorText
+                  ? tw("fancy-text-generator.gridErrorHint")
+                  : tw("fancy-text-generator.gridEmptyHint")}
+              />
             </div>
           )}
-          <p className="tp-tool-hint">{tw("fancy-text-generator.copyHint")}</p>
-        </ToolPane>
+          <p className="tp-tool-hint">
+            {selectedLabel ? `${tw("fancy-text-generator.lastStyleHint")} ${selectedLabel}` : tw("fancy-text-generator.copyHint")}
+          </p>
+        </section>
       </div>
 
       <div className="tp-tool-ribbon">

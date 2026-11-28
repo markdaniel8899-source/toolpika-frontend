@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import { useTranslations } from "next-intl";
-import { AlertCircle, Check, Download, RotateCcw, Upload } from "lucide-react";
+import { AlertCircle, Check, Download, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
-import { DownloadButton, SegmentedControl, Stat, ToolEmpty } from "@/components/tools/workspace-ui";
+import { DownloadButton, SegmentedControl, ToolEmpty } from "@/components/tools/workspace-ui";
 import {
   clampQuality,
   formatBytes,
@@ -66,7 +66,7 @@ export default function ImageFormatConverter() {
   const [background, setBackground] = useState("#ffffff");
   const [errorCode, setErrorCode] = useState<ErrorCode | null>(null);
   const [busy, setBusy] = useState(false);
-  const [avifSupported, setAvifSupported] = useState(true);
+  const [avifSupported] = useState(detectAvif);
   const [dragging, setDragging] = useState(false);
 
   const originalUrlRef = useRef<string | null>(null);
@@ -74,9 +74,7 @@ export default function ImageFormatConverter() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setAvifSupported(detectAvif()), 0);
     return () => {
-      clearTimeout(timer);
       if (originalUrlRef.current) URL.revokeObjectURL(originalUrlRef.current);
       if (convertedUrlRef.current) URL.revokeObjectURL(convertedUrlRef.current);
     };
@@ -160,11 +158,15 @@ export default function ImageFormatConverter() {
     event.target.value = "";
   };
 
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setDragging(false);
-    const file = event.dataTransfer.files?.[0];
-    if (file) handleFile(file);
+  const dropHandlers = {
+    onDragOver: (event: DragEvent<HTMLElement>) => { event.preventDefault(); setDragging(true); },
+    onDragLeave: () => setDragging(false),
+    onDrop: (event: DragEvent<HTMLElement>) => {
+      event.preventDefault();
+      setDragging(false);
+      const file = event.dataTransfer.files?.[0];
+      if (file) handleFile(file);
+    },
   };
 
   const handleSample = () => {
@@ -197,6 +199,7 @@ export default function ImageFormatConverter() {
     setQuality(80);
     setBackground("#ffffff");
     setErrorCode(null);
+    setDragging(false);
   };
 
   const changeFormat = (next: OutputFormat) => {
@@ -236,18 +239,19 @@ export default function ImageFormatConverter() {
 
   const formatOptions = [
     { value: "image/webp" as const, label: tw("image-format-converter.formatWebp") },
-    { value: "image/jpeg" as const, label: tw("image-format-converter.formatJpeg") },
     { value: "image/png" as const, label: tw("image-format-converter.formatPng") },
+    { value: "image/jpeg" as const, label: tw("image-format-converter.formatJpeg") },
     { value: "image/avif" as const, label: tw("image-format-converter.formatAvif") },
   ];
 
   return (
     <div className="tp-tool">
-      <div className="tp-tool-bar">
+      <div className="tp-industrial-bar tp-tool-bar">
         <div className="tp-tool-identity">
           <span className="tp-tool-mark" aria-hidden="true"><ToolIcon name="Image" /></span>
           <span className="tp-tool-identity-text">
             <span className="tp-tool-name">{tw("image-format-converter.title")}</span>
+            <span className="tp-tool-subtitle">{tw("image-format-converter.shortDesc")}</span>
           </span>
         </div>
         <div className="tp-tool-actions">
@@ -255,166 +259,184 @@ export default function ImageFormatConverter() {
             {tw("image-format-converter.trySample")}
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
-            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            {tw("image-format-converter.reset")}
+            {t("clear")}
           </Button>
         </div>
       </div>
 
       {errorText ? (
-        <p className="tp-tool-notice" data-tone="warning" role="alert" aria-live="polite">
+        <p className="tp-tool-notice" id="tp-image-format-error" data-tone="warning" role="alert" aria-live="polite">
           <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
           {errorText}
         </p>
       ) : null}
 
-      <div className="tp-tool-body tp-tool-body--stacked">
-        <section className="tp-tool-pane" aria-labelledby="tp-image-format-input-title">
-          <div className="tp-tool-pane-head">
-            <div className="tp-tool-pane-title">
-              <h3 id="tp-image-format-input-title">{tw("image-format-converter.inputTitle")}</h3>
-              <p className="tp-tool-pane-hint">{tw("image-format-converter.inputHint")}</p>
+      <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <section className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-7" aria-labelledby="tp-image-format-input-title">
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="tp-image-format-input-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("image-format-converter.inputTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("image-format-converter.inputHint")}</p>
             </div>
           </div>
-          <div className="tp-tool-pane-body">
-            <div
-              className={`tp-drop-zone${dragging ? " is-dragging" : ""}`}
-              onDragOver={(event) => { event.preventDefault(); setDragging(true); }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={handleDrop}
-            >
-              <Upload className="h-5 w-5" aria-hidden="true" />
-              <p>{tw("image-format-converter.uploadLabel")}</p>
-              <p className="tp-tool-hint">{tw("image-format-converter.dropHint")}</p>
-              <input
-                ref={fileInputRef}
-                id="tp-image-format-file"
-                type="file"
-                accept={["image/jpeg", "image/png", "image/webp", "image/avif", "image/bmp"].join(",")}
-                className="sr-only"
-                onChange={handleInput}
-                aria-label={tw("image-format-converter.uploadLabel")}
+
+          {original && converted ? (
+            <div className="tp-stage" aria-live="polite">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={converted.url}
+                alt={tw("image-format-converter.convertedPreview")}
+                className="max-h-[46vh] max-w-full object-contain"
               />
+            </div>
+          ) : (
+            <div className="tp-tool-drop" data-dragging={dragging ? "true" : undefined} {...dropHandlers}>
+              {busy ? <Download className="h-5 w-5" aria-hidden="true" /> : <Upload className="h-5 w-5" aria-hidden="true" />}
+              <p>{busy ? tw("image-format-converter.busyTitle") : tw("image-format-converter.uploadLabel")}</p>
+              <p className="tp-tool-hint">{tw("image-format-converter.dropHint")}</p>
               <Button type="button" size="sm" variant="secondary" onClick={() => fileInputRef.current?.click()}>
                 {t("chooseImage")}
               </Button>
             </div>
+          )}
 
-            <div className="tp-tool-group tp-tool-group--flush">
-              <span className="tp-tool-group-title">{tw("image-format-converter.formatLabel")}</span>
-              <SegmentedControl<OutputFormat>
-                label={tw("image-format-converter.formatLabel")}
-                value={format}
-                options={formatOptions}
-                onChange={changeFormat}
+          <input
+            ref={fileInputRef}
+            id="tp-image-format-file"
+            type="file"
+            accept={["image/jpeg", "image/png", "image/webp", "image/avif", "image/bmp"].join(",")}
+            className="sr-only"
+            onChange={handleInput}
+            aria-label={tw("image-format-converter.uploadLabel")}
+            aria-invalid={Boolean(errorText)}
+            aria-describedby={errorText ? "tp-image-format-error" : undefined}
+          />
+          {!original || !converted ? (
+            <div className="flex items-center justify-center">
+              <ToolEmpty
+                icon={<Download aria-hidden="true" />}
+                title={tw("image-format-converter.emptyTitle")}
+                hint={tw("image-format-converter.emptyHint")}
               />
-              {format === "image/avif" && !avifSupported ? (
-                <p className="tp-tool-hint">{tw("image-format-converter.avifCapability")}</p>
-              ) : null}
-              {!isLossy(format) ? (
-                <p className="tp-tool-hint">{tw("image-format-converter.losslessNote")}</p>
+            </div>
+          ) : null}
+
+          {original && converted ? (
+            <div className="tp-meta-pill" aria-live="polite">
+              <strong className="truncate max-w-[180px]">{fileName}</strong>
+              <span aria-hidden="true">•</span>
+              <span dir="ltr">{original.width} × {original.height}</span>
+              <span aria-hidden="true">•</span>
+              <span dir="ltr">{formatBytes(original.file.size)} → {formatBytes(converted.blob.size)}</span>
+              {delta ? (
+                <>
+                  <span aria-hidden="true">•</span>
+                  <span dir="ltr">{formatDelta(delta)}</span>
+                </>
               ) : null}
             </div>
-
-            {isLossy(format) ? (
-              <div className="tp-tool-group tp-tool-group--flush">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="tp-tool-group-title">{tw("image-format-converter.qualityLabel")}</span>
-                  <span className="tp-tool-value" dir="ltr">{quality}%</span>
-                </div>
-                <input
-                  type="range"
-                  min={1}
-                  max={100}
-                  step={1}
-                  value={quality}
-                  className="tp-tool-range"
-                  aria-label={tw("image-format-converter.qualityLabel")}
-                  onChange={(event) => changeQuality(Number(event.target.value))}
-                />
-                <div className="flex flex-wrap gap-2">
-                  {[50, 75, 90].map((preset) => (
-                    <Button key={preset} type="button" size="sm" variant="secondary" onClick={() => changeQuality(preset)}>
-                      {preset}%
-                    </Button>
-                  ))}
-                </div>
-                <p className="tp-tool-hint">{tw("image-format-converter.qualityHint")}</p>
-              </div>
-            ) : null}
-
-            {format === "image/jpeg" ? (
-              <div className="tp-tool-group tp-tool-group--flush">
-                <label className="tp-tool-label" htmlFor="tp-image-format-background">
-                  {tw("image-format-converter.backgroundLabel")}
-                </label>
-                <div className="tp-color-row">
-                  <input
-                    id="tp-image-format-background"
-                    type="color"
-                    value={background}
-                    className="tp-color-input"
-                    onChange={(event) => changeBackground(event.target.value)}
-                    aria-label={tw("image-format-converter.backgroundLabel")}
-                  />
-                  <input
-                    type="text"
-                    className="tp-field-input"
-                    value={background}
-                    aria-label={tw("image-format-converter.backgroundHexLabel")}
-                    onChange={(event) => changeBackground(event.target.value)}
-                  />
-                </div>
-                <p className="tp-tool-hint">{tw("image-format-converter.backgroundHint")}</p>
-              </div>
-            ) : null}
-          </div>
+          ) : null}
         </section>
 
-        <section className="tp-tool-pane tp-tool-pane--result" aria-labelledby="tp-image-format-result-title">
-          <div className="tp-tool-pane-head">
-            <div className="tp-tool-pane-title">
-              <h3 id="tp-image-format-result-title">{t("results")}</h3>
-              <p className="tp-tool-pane-hint">{tw("image-format-converter.resultHint")}</p>
-            </div>
-            {converted ? (
-              <div className="tp-tool-pane-actions">
-                <DownloadButton content={converted.blob} fileName={fileName} label={tw("image-format-converter.downloadLabel")} />
-              </div>
+        <section className="flex min-h-0 min-w-0 flex-col gap-4 overflow-hidden lg:col-span-5" aria-labelledby="tp-image-format-options-title">
+          <div className="tp-industrial-bar">
+            <h3 id="tp-image-format-options-title" className="text-sm font-semibold text-[var(--text)]">
+              {tw("image-format-converter.formatLabel")}
+            </h3>
+            <Button type="button" variant="ghost" size="sm" onClick={() => fileInputRef.current?.click()}>
+              {tw("image-format-converter.replaceImage")}
+            </Button>
+          </div>
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <SegmentedControl<OutputFormat>
+              label={tw("image-format-converter.formatLabel")}
+              value={format}
+              options={formatOptions}
+              onChange={changeFormat}
+            />
+            {format === "image/avif" && !avifSupported ? (
+              <p className="tp-tool-hint">{tw("image-format-converter.avifCapability")}</p>
             ) : null}
           </div>
-          <div className="tp-tool-pane-body">
-            {!original || !converted ? (
-              <ToolEmpty icon={<Download aria-hidden="true" />} title={busy ? tw("image-format-converter.busyTitle") : tw("image-format-converter.emptyTitle")} hint={tw("image-format-converter.emptyHint")} />
-            ) : (
-              <div className="tp-tool-result" aria-live="polite">
-                <div className="tp-image-preview-grid">
-                  <figure>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={original.url} alt={tw("image-format-converter.originalPreview")} />
-                    <figcaption>{tw("image-format-converter.originalLabel")}</figcaption>
-                  </figure>
-                  <figure>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={converted.url} alt={tw("image-format-converter.convertedPreview")} />
-                    <figcaption>{tw("image-format-converter.convertedLabel")}</figcaption>
-                  </figure>
-                </div>
 
-                <dl className="tp-tool-stats">
-                  <Stat label={tw("image-format-converter.dimensionsLabel")} value={`${original.width} × ${original.height}`} />
-                  <Stat label={tw("image-format-converter.originalSizeLabel")} value={formatBytes(original.file.size)} />
-                  <Stat label={tw("image-format-converter.convertedSizeLabel")} value={formatBytes(converted.blob.size)} />
-                  <Stat label={tw("image-format-converter.deltaLabel")} value={delta ? formatDelta(delta) : "0 B"} />
-                </dl>
-
-                <div className="tp-tool-group tp-tool-group--flush">
-                  <span className="tp-tool-group-title">{tw("image-format-converter.fileLabel")}</span>
-                  <div className="tp-tool-url"><code dir="ltr">{fileName}</code></div>
-                </div>
-              </div>
-            )}
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="flex items-center justify-between gap-2">
+              <label htmlFor="tp-image-format-quality" className="tp-tool-group-title">
+                {tw("image-format-converter.qualityLabel")}
+              </label>
+              <span className="tp-tool-value" dir="ltr">{quality}%</span>
+            </div>
+            <input
+              id="tp-image-format-quality"
+              type="range"
+              min={1}
+              max={100}
+              step={1}
+              value={quality}
+              disabled={!isLossy(format)}
+              className="tp-tool-range"
+              aria-label={tw("image-format-converter.qualityLabel")}
+              aria-describedby="tp-image-format-quality-hint"
+              onChange={(event) => changeQuality(Number(event.target.value))}
+            />
+            <div className="flex flex-wrap gap-2">
+              {[50, 75, 90].map((preset) => (
+                <Button
+                  key={preset}
+                  type="button"
+                  size="sm"
+                  variant="secondary"
+                  disabled={!isLossy(format)}
+                  onClick={() => changeQuality(preset)}
+                >
+                  {preset}%
+                </Button>
+              ))}
+            </div>
+            <p className="tp-tool-hint" id="tp-image-format-quality-hint">
+              {isLossy(format) ? tw("image-format-converter.qualityHint") : tw("image-format-converter.losslessNote")}
+            </p>
           </div>
+
+          <details className="tp-tool-group tp-tool-group--flush">
+            <summary className="tp-tool-group-title cursor-pointer">
+              {tw("image-format-converter.advancedOptions")}
+            </summary>
+            <div className="mt-3 flex flex-col gap-2">
+              <label className="tp-tool-label" htmlFor="tp-image-format-background">
+                {tw("image-format-converter.backgroundLabel")}
+              </label>
+              <div className="tp-color-row">
+                <input
+                  id="tp-image-format-background"
+                  type="color"
+                  value={background}
+                  className="tp-color-input"
+                  onChange={(event) => changeBackground(event.target.value)}
+                  aria-label={tw("image-format-converter.backgroundLabel")}
+                />
+                <input
+                  type="text"
+                  className="tp-field-input"
+                  value={background}
+                  aria-label={tw("image-format-converter.backgroundHexLabel")}
+                  onChange={(event) => changeBackground(event.target.value)}
+                />
+              </div>
+              <p className="tp-tool-hint">{tw("image-format-converter.backgroundHint")}</p>
+            </div>
+          </details>
+
+          <DownloadButton
+            content={converted?.blob ?? null}
+            fileName={fileName}
+            label={tw("image-format-converter.downloadConverted")}
+            variant="default"
+            className="tp-full-button"
+          />
         </section>
       </div>
 

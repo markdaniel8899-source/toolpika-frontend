@@ -1,18 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent as ReactDragEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { useTranslations } from "next-intl";
-import { LoaderCircle, Palette as PaletteIcon, Upload } from "lucide-react";
+import { AlertCircle, Check, Image as ImageIcon, LoaderCircle, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  CopyButton,
-  NumberStepper,
-  Stat,
-  ToolEmpty,
-  ToolField,
-  ToolPane,
-  ToolShell,
-} from "../workspace-ui";
+import { ToolIcon } from "@/components/tools/tool-icon";
+import { CopyButton, NumberStepper, ToolEmpty, ToolField } from "../workspace-ui";
 import {
   ACCEPTED_TYPES,
   DEFAULT_PALETTE_SIZE,
@@ -20,11 +13,16 @@ import {
   MAX_PALETTE_SIZE,
   MIN_PALETTE_SIZE,
   cssVariables,
+  formatBytes,
   formatHsl,
   formatRgb,
   isAcceptedType,
   quantizePalette,
+  rgbToHex,
+  rgbToHsl,
+  type Hsl,
   type PaletteSwatch,
+  type Rgb,
 } from "./image-color-picker.logic";
 
 interface LoadedImage {
@@ -40,6 +38,12 @@ interface DecodedImage {
   width: number;
   height: number;
   close: () => void;
+}
+
+interface PickedColor {
+  hex: string;
+  rgb: Rgb;
+  hsl: Hsl;
 }
 
 type ColorErrorCode = "unsupported" | "tooLarge" | "decodeFailed" | "sampleFailed";
@@ -79,11 +83,14 @@ export default function ImageColorPicker() {
   const [loaded, setLoaded] = useState<LoadedImage | null>(null);
   const [count, setCount] = useState(String(DEFAULT_PALETTE_SIZE));
   const [palette, setPalette] = useState<PaletteSwatch[]>([]);
+  const [selected, setSelected] = useState<PickedColor | null>(null);
+  const [loupe, setLoupe] = useState<{ x: number; y: number } | null>(null);
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [errorCode, setErrorCode] = useState<ColorErrorCode | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const sourceRef = useRef<DecodedImage | null>(null);
+  const pixelCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const releaseSource = useCallback(() => {
     if (sourceRef.current) {
@@ -101,20 +108,31 @@ export default function ImageColorPicker() {
     return () => URL.revokeObjectURL(loaded.url);
   }, [loaded]);
 
-  const extract = useCallback((wanted: number) => {
+  const buildSampleCanvas = useCallback(() => {
     const source = sourceRef.current;
-    if (!source) return;
+    if (!source) return null;
+    const canvas = document.createElement("canvas");
+    const ratio = source.width / Math.max(1, source.height);
+    canvas.width = Math.max(1, Math.min(512, source.width));
+    canvas.height = Math.max(1, Math.round(canvas.width / ratio));
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) return null;
+    context.drawImage(source.source, 0, 0, canvas.width, canvas.height);
+    return canvas;
+  }, []);
+
+  const extract = useCallback((wanted: number) => {
+    const canvas = buildSampleCanvas();
+    if (!canvas) {
+      setErrorCode("sampleFailed");
+      return;
+    }
     try {
-      const canvas = document.createElement("canvas");
-      const ratio = source.width / Math.max(1, source.height);
-      canvas.width = Math.max(1, Math.min(512, source.width));
-      canvas.height = Math.max(1, Math.round(canvas.width / ratio));
       const context = canvas.getContext("2d", { willReadFrequently: true });
       if (!context) {
         setErrorCode("sampleFailed");
         return;
       }
-      context.drawImage(source.source, 0, 0, canvas.width, canvas.height);
       const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
       const result = quantizePalette(data, wanted);
       if (result.length === 0) {
@@ -126,7 +144,7 @@ export default function ImageColorPicker() {
     } catch {
       setErrorCode("sampleFailed");
     }
-  }, []);
+  }, [buildSampleCanvas]);
 
   const handleFile = useCallback(
     async (candidate: File | undefined, wanted: number) => {
@@ -154,6 +172,9 @@ export default function ImageColorPicker() {
           width: decoded.width,
           height: decoded.height,
         });
+        pixelCanvasRef.current = buildSampleCanvas();
+        setSelected(null);
+        setLoupe(null);
         extract(wanted);
         setBusy(false);
       } catch {
@@ -162,8 +183,27 @@ export default function ImageColorPicker() {
         setBusy(false);
       }
     },
-    [extract, releaseSource],
+    [extract, buildSampleCanvas, releaseSource],
   );
+
+  const pickAt = (event: ReactPointerEvent<HTMLImageElement>) => {
+    const canvas = pixelCanvasRef.current;
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (!canvas || rect.width === 0 || rect.height === 0) return;
+    const x = Math.max(0, Math.min(canvas.width - 1, Math.floor((event.nativeEvent.offsetX / rect.width) * canvas.width)));
+    const y = Math.max(0, Math.min(canvas.height - 1, Math.floor((event.nativeEvent.offsetY / rect.height) * canvas.height)));
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) return;
+    const pixel = context.getImageData(x, y, 1, 1).data;
+    const r = pixel[0];
+    const g = pixel[1];
+    const b = pixel[2];
+    const a = pixel[3];
+    if (a < 128) return;
+    const rgb: Rgb = { r, g, b };
+    setSelected({ hex: rgbToHex(rgb), rgb, hsl: rgbToHsl(rgb) });
+    setLoupe({ x: event.nativeEvent.offsetX, y: event.nativeEvent.offsetY });
+  };
 
   const handleSample = () => {
     const canvas = document.createElement("canvas");
@@ -190,9 +230,12 @@ export default function ImageColorPicker() {
 
   const handleReset = () => {
     releaseSource();
+    pixelCanvasRef.current = null;
     setLoaded(null);
     setCount(String(DEFAULT_PALETTE_SIZE));
     setPalette([]);
+    setSelected(null);
+    setLoupe(null);
     setErrorCode(null);
     setDragging(false);
   };
@@ -208,70 +251,133 @@ export default function ImageColorPicker() {
     : "";
 
   const css = useMemo(() => cssVariables(palette), [palette]);
-  const paletteText = useMemo(
-    () => palette.map((swatch) => `${swatch.hex} ${formatRgb(swatch.rgb)} ${formatHsl(swatch.hsl)}`).join("\n"),
-    [palette],
-  );
+
+  const dropHandlers = {
+    onDragOver: (event: ReactDragEvent<HTMLDivElement>) => { event.preventDefault(); setDragging(true); },
+    onDragLeave: () => setDragging(false),
+    onDrop: (event: ReactDragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setDragging(false);
+      void handleFile(event.dataTransfer.files[0], Number(count) || DEFAULT_PALETTE_SIZE);
+    },
+  };
 
   return (
-    <ToolShell
-      title={tw("image-color-picker.title")}
-      subtitle={tw("image-color-picker.shortDesc")}
-      icon="Palette"
-      sampleLabel={tw("image-color-picker.trySample")}
-      resetLabel={tw("image-color-picker.reset")}
-      privacyLabel={tw("image-color-picker.privacyRibbon")}
-      onSample={handleSample}
-      onReset={handleReset}
-      input={
-        <ToolPane
-          id="color-controls-title"
-          title={tw("image-color-picker.controlsTitle")}
-          hint={tw("image-color-picker.controlsHint")}
-          className="order-2"
-        >
-          <div
-            className="tp-tool-drop"
-            data-dragging={dragging ? "true" : undefined}
-            onDragOver={(event) => {
-              event.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={(event) => {
-              event.preventDefault();
-              setDragging(false);
-              void handleFile(event.dataTransfer.files[0], Number(count) || DEFAULT_PALETTE_SIZE);
-            }}
-          >
-            {busy ? <LoaderCircle className="h-5 w-5" aria-hidden="true" /> : <Upload className="h-5 w-5" aria-hidden="true" />}
-            <strong>{loaded ? loaded.name : tw("image-color-picker.dropTitle")}</strong>
-            <span>{loaded ? tw("image-color-picker.replaceHint") : tw("image-color-picker.dropHint")}</span>
-            <Button
-              type="button"
-              size="sm"
-              className="mt-1"
-              onClick={(event) => {
-                event.stopPropagation();
-                fileInputRef.current?.click();
-              }}
-            >
-              {tw("image-color-picker.chooseFile")}
+    <div className="tp-tool">
+      <div className="tp-industrial-bar tp-tool-bar">
+        <div className="tp-tool-identity">
+          <span className="tp-tool-mark" aria-hidden="true"><ToolIcon name="Palette" /></span>
+          <span className="tp-tool-identity-text">
+            <span className="tp-tool-name">{tw("image-color-picker.title")}</span>
+            <span className="tp-tool-subtitle">{tw("image-color-picker.shortDesc")}</span>
+          </span>
+        </div>
+        <div className="tp-tool-actions">
+          <Button type="button" size="sm" onClick={handleSample}>
+            {tw("image-color-picker.trySample")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
+            {t("clear")}
+          </Button>
+        </div>
+      </div>
+
+      {errorMessage ? (
+        <p className="tp-tool-notice" id="color-error" data-tone="warning" role="alert" aria-live="polite">
+          <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+          {errorMessage}
+        </p>
+      ) : null}
+
+      <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <section className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-6" aria-labelledby="color-stage-title">
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="color-stage-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("image-color-picker.stageTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("image-color-picker.pickHint")}</p>
+            </div>
+            <Button type="button" variant="ghost" size="sm" onClick={() => fileInputRef.current?.click()}>
+              {tw("image-color-picker.replaceImage")}
             </Button>
-            <input
-              ref={fileInputRef}
-              id="color-file"
-              type="file"
-              accept={ACCEPTED_TYPES.join(",")}
-              className="sr-only"
-              aria-label={tw("image-color-picker.chooseFile")}
-              aria-invalid={Boolean(errorMessage)}
-              aria-describedby={errorMessage ? "color-error" : undefined}
-              onChange={(event) => {
-                void handleFile(event.target.files?.[0], Number(count) || DEFAULT_PALETTE_SIZE);
-                event.target.value = "";
-              }}
-            />
+          </div>
+
+          {loaded ? (
+            <div className="tp-stage" aria-live="polite">
+              <div className="relative inline-block max-w-full" style={{ lineHeight: 0 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={loaded.url}
+                  alt={tw("image-color-picker.previewAlt")}
+                  className="block max-h-[44vh] max-w-full cursor-crosshair"
+                  onPointerMove={pickAt}
+                  onPointerDown={pickAt}
+                />
+                {selected && loupe ? (
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute z-10 h-10 w-10 rounded-full border-2 border-[var(--surface)] shadow-lg"
+                    style={{
+                      left: loupe.x,
+                      top: loupe.y,
+                      transform: "translate(-50%, -50%)",
+                      background: selected.hex,
+                    }}
+                  />
+                ) : null}
+              </div>
+            </div>
+          ) : (
+            <div className="tp-tool-drop" data-dragging={dragging ? "true" : undefined} {...dropHandlers}>
+              {busy ? <LoaderCircle className="h-5 w-5" aria-hidden="true" /> : <Upload className="h-5 w-5" aria-hidden="true" />}
+              <p>{tw("image-color-picker.dropTitle")}</p>
+              <p className="tp-tool-hint">{tw("image-color-picker.dropHint")}</p>
+              <Button type="button" size="sm" onClick={() => fileInputRef.current?.click()}>
+                {t("chooseImage")}
+              </Button>
+            </div>
+          )}
+
+          <input
+            ref={fileInputRef}
+            id="color-file"
+            type="file"
+            accept={ACCEPTED_TYPES.join(",")}
+            className="sr-only"
+            onChange={(event) => {
+              void handleFile(event.target.files?.[0], Number(count) || DEFAULT_PALETTE_SIZE);
+              event.target.value = "";
+            }}
+            aria-label={tw("image-color-picker.chooseFile")}
+            aria-invalid={Boolean(errorMessage)}
+            aria-describedby={errorMessage ? "color-error" : undefined}
+          />
+
+          {!loaded ? (
+            <div className="flex items-center justify-center">
+              <ToolEmpty
+                icon={busy ? <LoaderCircle /> : <ImageIcon />}
+                title={busy ? tw("image-color-picker.processing") : tw("image-color-picker.emptyTitle")}
+                hint={busy ? tw("image-color-picker.processingHint") : tw("image-color-picker.emptyHint")}
+              />
+            </div>
+          ) : null}
+
+          {loaded ? (
+            <div className="tp-meta-pill" aria-live="polite">
+              <strong className="truncate max-w-[180px]">{loaded.name}</strong>
+              <span aria-hidden="true">•</span>
+              <span dir="ltr">{formatBytes(loaded.size)}</span>
+            </div>
+          ) : null}
+        </section>
+
+        <section className="flex min-h-0 min-w-0 flex-col gap-4 overflow-hidden lg:col-span-6" aria-labelledby="color-palette-title">
+          <div className="tp-industrial-bar">
+            <h3 id="color-palette-title" className="text-sm font-semibold text-[var(--text)]">
+              {tw("image-color-picker.paletteTitle")}
+            </h3>
           </div>
 
           <ToolField label={tw("image-color-picker.colorCount")} hint={tw("image-color-picker.colorCountHint")}>
@@ -287,83 +393,64 @@ export default function ImageColorPicker() {
             />
           </ToolField>
 
-          {loaded ? (
-            <dl className="tp-tool-stats" aria-live="polite">
-              <Stat label={tw("image-color-picker.fileName")} value={loaded.name} />
-              <Stat label={tw("image-color-picker.fileSize")} value={`${loaded.size} B`} />
-            </dl>
+          {palette.length > 0 ? (
+            <div className="flex flex-wrap gap-2" role="group" aria-label={tw("image-color-picker.paletteTitle")}>
+              {palette.map((swatch, index) => (
+                <button
+                  key={`${swatch.hex}-${index}`}
+                  type="button"
+                  className="flex items-center gap-2 rounded-full border border-[var(--border)] px-2 py-1 text-xs"
+                  onClick={() => setSelected({ hex: swatch.hex, rgb: swatch.rgb, hsl: swatch.hsl })}
+                  aria-label={`${swatch.hex} ${swatch.share}%`}
+                >
+                  <span className="h-5 w-5 shrink-0 rounded-full border border-[var(--border)]" style={{ background: swatch.hex }} aria-hidden="true" />
+                  <span dir="ltr">{swatch.hex}</span>
+                </button>
+              ))}
+            </div>
           ) : null}
 
-          {errorMessage ? (
-            <p className="tp-tool-error" id="color-error" role="alert">
-              {errorMessage}
-            </p>
-          ) : null}
-        </ToolPane>
-      }
-      result={
-        <ToolPane
-          id="color-stage-title"
-          title={tw("image-color-picker.stageTitle")}
-          hint={tw("image-color-picker.stageHint")}
-          className="order-1"
-          result
-        >
-          <div aria-live="polite" className="tp-tool-result">
-            {loaded ? (
-              <>
-                <div className="tp-tool-preview">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={loaded.url} alt={tw("image-color-picker.previewAlt")} />
+          <div className="tp-tool-group tp-tool-group--flush">
+            <span className="tp-tool-group-title">{tw("image-color-picker.selectedColor")}</span>
+            {selected ? (
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="h-7 w-7 shrink-0 rounded-md border border-[var(--border)]" style={{ background: selected.hex }} aria-hidden="true" />
+                  <code className="min-w-0 flex-1 text-xs text-[var(--text)]" dir="ltr">{selected.hex}</code>
+                  <CopyButton text={selected.hex} label={t("copy")} copiedLabel={t("copied")} />
                 </div>
-                <h4 className="tp-tool-group-title">{tw("image-color-picker.paletteTitle")}</h4>
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  {palette.map((swatch, index) => (
-                    <div key={`${swatch.hex}-${index}`} className="tp-tool-group tp-tool-group--flush">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="h-8 w-8 shrink-0 rounded-md border border-[var(--border)]"
-                          style={{ background: swatch.hex }}
-                          aria-hidden="true"
-                        />
-                        <div className="min-w-0" dir="ltr">
-                          <strong className="text-sm text-[var(--text)]">{swatch.hex}</strong>
-                          <p className="tp-tool-hint">{formatRgb(swatch.rgb)}</p>
-                          <p className="tp-tool-hint">{formatHsl(swatch.hsl)}</p>
-                        </div>
-                        <span className="tp-tool-pill">{swatch.share}%</span>
-                      </div>
-                    </div>
-                  ))}
+                <div className="flex items-center justify-between gap-2">
+                  <code className="min-w-0 flex-1 text-xs text-[var(--text)]" dir="ltr">{formatRgb(selected.rgb)}</code>
+                  <CopyButton text={formatRgb(selected.rgb)} label={t("copy")} copiedLabel={t("copied")} />
                 </div>
-                <div className="tp-tool-pane-head">
-                  <div className="tp-tool-pane-title">
-                    <h3>{tw("image-color-picker.cssTitle")}</h3>
-                  </div>
-                  <div className="tp-tool-pane-actions">
-                    <CopyButton text={css} label={t("copy")} copiedLabel={t("copied")} />
-                    <CopyButton text={paletteText} label={tw("image-color-picker.copyPalette")} copiedLabel={t("copied")} />
-                  </div>
+                <div className="flex items-center justify-between gap-2">
+                  <code className="min-w-0 flex-1 text-xs text-[var(--text)]" dir="ltr">{formatHsl(selected.hsl)}</code>
+                  <CopyButton text={formatHsl(selected.hsl)} label={t("copy")} copiedLabel={t("copied")} />
                 </div>
-                <textarea
-                  id="color-css"
-                  className="tp-tool-editor"
-                  value={css}
-                  readOnly
-                  dir="ltr"
-                  aria-label={tw("image-color-picker.cssTitle")}
-                />
-              </>
+              </div>
             ) : (
-              <ToolEmpty
-                icon={busy ? <LoaderCircle /> : <PaletteIcon />}
-                title={busy ? tw("image-color-picker.processing") : tw("image-color-picker.emptyTitle")}
-                hint={busy ? tw("image-color-picker.processingHint") : tw("image-color-picker.emptyHint")}
-              />
+              <p className="tp-tool-hint">{tw("image-color-picker.pickHint")}</p>
             )}
           </div>
-        </ToolPane>
-      }
-    />
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="tp-industrial-bar">
+              <span className="tp-tool-group-title">{tw("image-color-picker.cssTitle")}</span>
+              <CopyButton text={css} label={tw("image-color-picker.copyCss")} copiedLabel={t("copied")} />
+            </div>
+            <div className="tp-output-viewer" role="region" aria-label={tw("image-color-picker.cssTitle")}>
+              <code dir="ltr">{css}</code>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="tp-tool-ribbon">
+        <span className="tp-tool-ribbon-note">
+          <Check className="h-[13px] w-[13px]" aria-hidden="true" />
+          {tw("image-color-picker.privacyRibbon")}
+        </span>
+      </div>
+    </div>
   );
 }

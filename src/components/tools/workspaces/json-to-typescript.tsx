@@ -2,17 +2,15 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Braces, ClipboardPaste, X } from "lucide-react";
+import { AlertCircle, Braces, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ToolIcon } from "@/components/tools/tool-icon";
 import {
   CheckboxRow,
-  CodeOutput,
+  CopyButton,
+  DownloadButton,
   SegmentedControl,
-  Stat,
   ToolEmpty,
-  ToolField,
-  ToolPane,
-  ToolShell,
   selectClassName,
 } from "../workspace-ui";
 import {
@@ -49,66 +47,107 @@ export default function JsonToTypeScript() {
     inputRef.current?.focus();
   };
 
-  const handleReset = () => {
+  const handleClear = () => {
     setInput("");
-    setOptions(DEFAULT_OPTIONS);
     inputRef.current?.focus();
   };
 
-  const handlePaste = async () => {
+  const handleFormat = () => {
+    if (!input.trim()) return;
     try {
-      const clip = await navigator.clipboard.readText();
-      if (clip) setInput((previous) => (previous ? `${previous}\n${clip}` : clip));
+      setInput(JSON.stringify(JSON.parse(input), null, 2));
     } catch {
-      // Clipboard permission can be denied; the editor remains usable.
+      // Keep the source visible when it cannot be parsed yet.
     }
     inputRef.current?.focus();
   };
 
   return (
-    <ToolShell
-      title={tw("json-to-typescript.title")}
-      subtitle={tw("json-to-typescript.shortDesc")}
-      icon="Braces"
-      sampleLabel={tw("json-to-typescript.trySample")}
-      resetLabel={tw("json-to-typescript.reset")}
-      privacyLabel={tw("json-to-typescript.privacyRibbon")}
-      onSample={handleSample}
-      onReset={handleReset}
-      input={
-        <ToolPane
-          id="ts-input-title"
-          title={tw("json-to-typescript.inputTitle")}
-          hint={tw("json-to-typescript.inputHint")}
-          actions={
-            <div className="tp-tool-inline-actions">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => void handlePaste()}
-                aria-label={tw("json-to-typescript.paste")}
-              >
-                <ClipboardPaste aria-hidden="true" />
+    <div className="tp-tool">
+      <div className="tp-industrial-bar tp-tool-bar">
+        <div className="tp-tool-identity">
+          <span className="tp-tool-mark" aria-hidden="true"><ToolIcon name="Braces" /></span>
+          <span className="tp-tool-identity-text">
+            <span className="tp-tool-name">{tw("json-to-typescript.title")}</span>
+            <span className="tp-tool-subtitle">{tw("json-to-typescript.shortDesc")}</span>
+          </span>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <label
+            htmlFor="ts-root-name"
+            className="flex items-center gap-2 text-xs font-medium text-[var(--text)]"
+          >
+            {tw("json-to-typescript.rootName")}
+            <input
+              id="ts-root-name"
+              type="text"
+              className={`${selectClassName} w-28`}
+              value={options.rootName}
+              autoComplete="off"
+              dir="ltr"
+              placeholder="Root"
+              aria-label={tw("json-to-typescript.rootName")}
+              onChange={(event) =>
+                setOptions((previous) => ({ ...previous, rootName: event.target.value }))
+              }
+            />
+          </label>
+          <SegmentedControl<RootStyle>
+            label={tw("json-to-typescript.styleTitle")}
+            value={options.style}
+            options={[
+              { value: "interface", label: tw("json-to-typescript.styleInterface") },
+              { value: "type", label: tw("json-to-typescript.styleType") },
+            ]}
+            onChange={(style) => setOptions((previous) => ({ ...previous, style }))}
+          />
+          <CheckboxRow
+            id="ts-optional"
+            label={tw("json-to-typescript.optionalFields")}
+            checked={options.optional}
+            onChange={(optional) => setOptions((previous) => ({ ...previous, optional }))}
+          />
+        </div>
+      </div>
+
+      {errorMessage ? (
+        <p
+          className="tp-tool-notice"
+          id="ts-input-error"
+          data-tone="warning"
+          role="alert"
+          aria-live="polite"
+        >
+          <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+          {errorMessage}
+        </p>
+      ) : null}
+
+      <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <section
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-6"
+          aria-labelledby="ts-input-title"
+        >
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="ts-input-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("json-to-typescript.inputTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("json-to-typescript.inputHint")}</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+                {tw("json-to-typescript.trySample")}
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                disabled={!input}
-                onClick={handleReset}
-                aria-label={t("clear")}
-              >
-                <X aria-hidden="true" />
+              <Button type="button" variant="ghost" size="sm" onClick={handleFormat} disabled={!input}>
+                {t("formatJson")}
+              </Button>
+              <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
+                {t("clear")}
               </Button>
             </div>
-          }
-          footer={
-            <span aria-live="polite">
-              {input.length} {t("characters").toLowerCase()}
-            </span>
-          }
-        >
+          </div>
+
           <textarea
             id="ts-input"
             ref={inputRef}
@@ -122,52 +161,22 @@ export default function JsonToTypeScript() {
             spellCheck={false}
             dir="ltr"
           />
-          {errorMessage ? (
-            <p className="tp-tool-error" id="ts-input-error" role="alert">
-              {errorMessage}
-            </p>
-          ) : null}
 
-          <div className="tp-tool-options-head">
-            <h3>{t("options")}</h3>
+          <div className="tp-meta-pill" aria-live="polite">
+            <span dir="ltr">{input.length} {t("characters").toLowerCase()}</span>
+            {result?.ok ? (
+              <>
+                <span aria-hidden="true">•</span>
+                <span>{t("jsonValid")}</span>
+              </>
+            ) : null}
           </div>
-          <div className="tp-tool-options-grid tp-tool-options-grid--single">
-            <ToolField label={tw("json-to-typescript.rootName")} hint={tw("json-to-typescript.rootNameHint")}>
-              <input
-                id="ts-root-name"
-                type="text"
-                className={selectClassName}
-                value={options.rootName}
-                autoComplete="off"
-                dir="ltr"
-                placeholder="Root"
-                aria-label={tw("json-to-typescript.rootName")}
-                onChange={(event) =>
-                  setOptions((previous) => ({ ...previous, rootName: event.target.value }))
-                }
-              />
-            </ToolField>
 
-            <div className="tp-tool-group">
-              <p className="tp-tool-group-title">{tw("json-to-typescript.styleTitle")}</p>
-              <SegmentedControl<RootStyle>
-                label={tw("json-to-typescript.styleTitle")}
-                value={options.style}
-                options={[
-                  { value: "interface", label: tw("json-to-typescript.styleInterface") },
-                  { value: "type", label: tw("json-to-typescript.styleType") },
-                ]}
-                onChange={(style) => setOptions((previous) => ({ ...previous, style }))}
-              />
-            </div>
-
-            <div className="tp-tool-group">
-              <CheckboxRow
-                id="ts-optional"
-                label={tw("json-to-typescript.optionalFields")}
-                checked={options.optional}
-                onChange={(optional) => setOptions((previous) => ({ ...previous, optional }))}
-              />
+          <details className="tp-tool-group tp-tool-group--flush">
+            <summary className="tp-tool-group-title cursor-pointer">
+              {tw("json-to-typescript.advancedOptions")}
+            </summary>
+            <div className="mt-3">
               <CheckboxRow
                 id="ts-nullable"
                 label={tw("json-to-typescript.nullableTypes")}
@@ -175,49 +184,77 @@ export default function JsonToTypeScript() {
                 onChange={(nullable) => setOptions((previous) => ({ ...previous, nullable }))}
               />
             </div>
-          </div>
-        </ToolPane>
-      }
-      result={
-        <ToolPane
-          id="ts-result-title"
-          title={t("result")}
-          hint={tw("json-to-typescript.resultHint")}
-          result
+          </details>
+        </section>
+
+        <section
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-6"
+          aria-labelledby="ts-result-title"
         >
-          {result && result.ok ? (
-            <div className="tp-tool-result" aria-live="polite">
-              <dl className="tp-tool-stats">
-                <Stat label={tw("json-to-typescript.typeName")} value={result.typeName} />
-                <Stat label={tw("json-to-typescript.fieldCount")} value={result.fieldCount} />
-                <Stat
-                  label={tw("json-to-typescript.rootKind")}
-                  value={
-                    result.rootKind === "object"
-                      ? tw("json-to-typescript.kindObject")
-                      : result.rootKind === "array"
-                        ? tw("json-to-typescript.kindArray")
-                        : tw("json-to-typescript.kindScalar")
-                  }
-                />
-              </dl>
-              <CodeOutput
-                code={result.code}
-                language="js"
-                label={t("result")}
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="ts-result-title" className="text-sm font-semibold text-[var(--text)]">
+                {t("result")}
+              </h3>
+              <p className="tp-tool-hint">{tw("json-to-typescript.resultHint")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <CopyButton
+                text={result?.ok ? result.code : ""}
+                label={t("copy")}
+                copiedLabel={t("copied")}
+              />
+              <DownloadButton
+                content={result?.ok ? result.code : null}
                 fileName="types.ts"
                 mimeType="text/typescript;charset=utf-8"
+                label={t("download")}
+                variant="default"
               />
             </div>
-          ) : reason ? null : (
-            <ToolEmpty
-              icon={<Braces aria-hidden="true" />}
-              title={tw("json-to-typescript.emptyTitle")}
-              hint={tw("json-to-typescript.emptyHint")}
-            />
+          </div>
+
+          {result?.ok ? (
+            <div className="flex min-h-0 flex-1 flex-col gap-3" aria-live="polite">
+              <div className="tp-meta-pill">
+                <strong dir="ltr">{result.typeName}</strong>
+                <span aria-hidden="true">•</span>
+                <span dir="ltr">{result.fieldCount} {tw("json-to-typescript.fieldCount").toLowerCase()}</span>
+                <span aria-hidden="true">•</span>
+                <span>
+                  {result.rootKind === "object"
+                    ? tw("json-to-typescript.kindObject")
+                    : result.rootKind === "array"
+                      ? tw("json-to-typescript.kindArray")
+                      : tw("json-to-typescript.kindScalar")}
+                </span>
+              </div>
+              <div
+                className="tp-output-viewer"
+                role="region"
+                aria-label={t("result")}
+              >
+                <code dir="ltr">{result.code}</code>
+              </div>
+            </div>
+          ) : (
+            <div aria-live="polite">
+              <ToolEmpty
+                icon={<Braces aria-hidden="true" />}
+                title={tw("json-to-typescript.emptyTitle")}
+                hint={errorMessage || tw("json-to-typescript.emptyHint")}
+              />
+            </div>
           )}
-        </ToolPane>
-      }
-    />
+        </section>
+      </div>
+
+      <div className="tp-tool-ribbon">
+        <span className="tp-tool-ribbon-note">
+          <Check className="h-[13px] w-[13px]" aria-hidden="true" />
+          {tw("json-to-typescript.privacyRibbon")}
+        </span>
+      </div>
+    </div>
   );
 }

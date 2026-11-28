@@ -2,15 +2,15 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { AlertCircle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ToolIcon } from "@/components/tools/tool-icon";
 import {
   CheckboxRow,
   CopyButton,
-  HeroValue,
-  Stat,
-  ToolField,
-  ToolPane,
-  ToolShell,
+  DownloadButton,
+  ToolBadge,
+  selectClassName,
 } from "@/components/tools/workspace-ui";
 import {
   chmodCommand,
@@ -25,95 +25,141 @@ import {
   symbolicMode,
   type ChmodState,
   type PermissionClass,
+  type PermissionKind,
 } from "./chmod-calculator.logic";
 
-const OCTAL_ERROR_ID = "tp-chmod-octal-error";
+const ERROR_ID = "tp-chmod-octal-error";
+const PRESETS = ["644", "755", "777", "600"] as const;
+
+function cloneState(source: ChmodState): ChmodState {
+  return {
+    owner: { ...source.owner },
+    group: { ...source.group },
+    public: { ...source.public },
+  };
+}
 
 export default function ChmodCalculator() {
   const t = useTranslations("toolUi");
   const tw = useTranslations("tools");
 
-  const [state, setState] = useState<ChmodState>(() => ({
-    owner: { ...DEFAULT_CHMOD_STATE.owner },
-    group: { ...DEFAULT_CHMOD_STATE.group },
-    public: { ...DEFAULT_CHMOD_STATE.public },
-  }));
-  const [octal, setOctal] = useState(numericMode(DEFAULT_CHMOD_STATE));
-  const [error, setError] = useState("");
+  const [state, setState] = useState<ChmodState>(() => cloneState(DEFAULT_CHMOD_STATE));
+  const [octal, setOctal] = useState(() => numericMode(DEFAULT_CHMOD_STATE));
 
+  const parsedOctal = useMemo(() => parseOctalMode(octal), [octal]);
   const numeric = useMemo(() => numericMode(state), [state]);
   const symbolic = useMemo(() => symbolicMode(state), [state]);
   const command = useMemo(() => chmodCommand(state), [state]);
+  const errorText = parsedOctal
+    ? ""
+    : `${tw("chmod-calculator.errorOctal")} ${tw("chmod-calculator.fixOctal")}`;
+
+  const applyState = useCallback((next: ChmodState) => {
+    setState(next);
+    setOctal(numericMode(next));
+  }, []);
 
   const setPermission = useCallback(
-    (permissionClass: PermissionClass, kind: "read" | "write" | "execute", value: boolean) => {
-      const next: ChmodState = {
+    (permissionClass: PermissionClass, kind: PermissionKind, value: boolean) => {
+      applyState({
         ...state,
         [permissionClass]: { ...state[permissionClass], [kind]: value },
-      };
-      setState(next);
-      setOctal(numericMode(next));
-      setError("");
+      });
     },
-    [state],
+    [applyState, state],
   );
 
-  const applyOctal = useCallback(() => {
-    const parsed = parseOctalMode(octal);
-    if (!parsed) {
-      setError(`${tw("chmod-calculator.errorOctal")} ${tw("chmod-calculator.fixOctal")}`);
-      return;
-    }
-    setError("");
-    setState(parsed);
-    setOctal(numericMode(parsed));
-  }, [octal, tw]);
+  const handleOctalChange = (value: string) => {
+    setOctal(value);
+    const parsed = parseOctalMode(value);
+    if (parsed) setState(parsed);
+  };
 
-  const handleSample = useCallback(() => {
-    const next = {
-      owner: { ...SAMPLE_CHMOD_STATE.owner },
-      group: { ...SAMPLE_CHMOD_STATE.group },
-      public: { ...SAMPLE_CHMOD_STATE.public },
-    };
-    setState(next);
-    setOctal(numericMode(next));
-    setError("");
-  }, []);
-
-  const handleReset = useCallback(() => {
-    const next = {
-      owner: { ...DEFAULT_CHMOD_STATE.owner },
-      group: { ...DEFAULT_CHMOD_STATE.group },
-      public: { ...DEFAULT_CHMOD_STATE.public },
-    };
-    setState(next);
-    setOctal(numericMode(next));
-    setError("");
-  }, []);
+  const handleSample = useCallback(() => applyState(cloneState(SAMPLE_CHMOD_STATE)), [applyState]);
+  const handleClear = useCallback(() => applyState(cloneState(DEFAULT_CHMOD_STATE)), [applyState]);
 
   return (
-    <ToolShell
-      title={tw("chmod-calculator.title")}
-      subtitle={tw("chmod-calculator.subtitle")}
-      icon="KeyRound"
-      sampleLabel={tw("chmod-calculator.trySample")}
-      resetLabel={tw("chmod-calculator.reset")}
-      privacyLabel={tw("chmod-calculator.privacyRibbon")}
-      onSample={handleSample}
-      onReset={handleReset}
-      input={
-        <ToolPane
-          id="tp-chmod-input-title"
-          title={tw("chmod-calculator.inputTitle")}
-          hint={tw("chmod-calculator.inputHint")}
-        >
-          {error ? (
-            <p id={OCTAL_ERROR_ID} className="tp-tool-error" role="alert">
-              {error}
-            </p>
-          ) : null}
+    <div className="tp-tool">
+      <div className="tp-industrial-bar tp-tool-bar">
+        <div className="tp-tool-identity">
+          <span className="tp-tool-mark" aria-hidden="true">
+            <ToolIcon name="KeyRound" />
+          </span>
+          <span className="tp-tool-identity-text">
+            <span className="tp-tool-name">{tw("chmod-calculator.title")}</span>
+            <span className="tp-tool-subtitle">{tw("chmod-calculator.shortDesc")}</span>
+          </span>
+        </div>
+        <div className="tp-meta-pill" aria-live="polite">
+          <span>{tw("chmod-calculator.symbolicLabel")}</span>
+          <strong dir="ltr">{symbolic}</strong>
+          <span aria-hidden="true">•</span>
+          <span>{tw("chmod-calculator.numericLabel")}</span>
+          <strong dir="ltr">{numeric}</strong>
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {errorText ? (
+        <p
+          className="tp-tool-notice"
+          id={ERROR_ID}
+          data-tone="warning"
+          role="alert"
+          aria-live="polite"
+        >
+          <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+          {errorText}
+        </p>
+      ) : null}
+
+      <div className="tp-industrial grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <section
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-hidden lg:col-span-6"
+          aria-labelledby="tp-chmod-input-title"
+        >
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="tp-chmod-input-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("chmod-calculator.inputTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("chmod-calculator.inputHint")}</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+                {tw("chmod-calculator.trySample")}
+              </Button>
+              <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+                {t("clear")}
+              </Button>
+            </div>
+          </div>
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <div className="tp-industrial-bar">
+              <span className="tp-tool-group-title">{tw("chmod-calculator.presetsLabel")}</span>
+              <div className="flex flex-wrap gap-1">
+                {PRESETS.map((preset) => {
+                  const parsed = parseOctalMode(preset);
+                  return (
+                    <Button
+                      key={preset}
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      aria-pressed={parsed ? numericMode(parsed) === numeric : false}
+                      onClick={() => {
+                        if (parsed) applyState(parsed);
+                      }}
+                    >
+                      {preset}
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {PERMISSION_CLASSES.map((permissionClass) => (
               <div className="tp-tool-group tp-tool-group--flush" key={permissionClass}>
                 <span className="tp-tool-group-title">
@@ -128,86 +174,90 @@ export default function ChmodCalculator() {
                     onChange={(value) => setPermission(permissionClass, kind, value)}
                   />
                 ))}
-                <p className="tp-tool-hint">
-                  {tw("chmod-calculator.classSummary", {
-                    digits: permissionDigit(state[permissionClass]),
-                    chars: permissionChars(state[permissionClass]),
-                  })}
-                </p>
+                <div className="tp-meta-pill">
+                  <strong dir="ltr">{permissionDigit(state[permissionClass])}</strong>
+                  <span aria-hidden="true">•</span>
+                  <span dir="ltr">{permissionChars(state[permissionClass])}</span>
+                </div>
               </div>
             ))}
           </div>
 
-          <ToolField
-            label={tw("chmod-calculator.octalLabel")}
-            htmlFor="tp-chmod-octal"
-            hint={tw("chmod-calculator.octalHint")}
-          >
-            <div className="tp-tool-inline-actions">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="tp-chmod-octal" className="text-sm font-medium text-[var(--text)]">
+              {tw("chmod-calculator.octalLabel")}
+            </label>
+            <div className="flex items-center gap-2">
               <input
                 id="tp-chmod-octal"
-                className="tp-tool-field"
+                className={`${selectClassName} min-w-0 flex-1`}
                 inputMode="numeric"
                 autoComplete="off"
                 value={octal}
-                onChange={(event) => setOctal(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") applyOctal();
-                }}
-                aria-describedby={error ? OCTAL_ERROR_ID : undefined}
+                onChange={(event) => handleOctalChange(event.target.value)}
+                aria-invalid={Boolean(errorText)}
+                aria-describedby={errorText ? ERROR_ID : undefined}
                 dir="ltr"
               />
-              <Button type="button" size="sm" onClick={applyOctal}>
-                {tw("chmod-calculator.apply")}
-              </Button>
+              <span className="tp-meta-pill" aria-hidden="true">
+                <strong dir="ltr">{symbolic}</strong>
+              </span>
             </div>
-          </ToolField>
-        </ToolPane>
-      }
-      result={
-        <ToolPane
-          id="tp-chmod-result-title"
-          title={tw("chmod-calculator.resultTitle")}
-          hint={tw("chmod-calculator.resultHint")}
-          result
-          actions={
-            <CopyButton
-              text={command}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
-          }
+            <p className="tp-tool-hint">{tw("chmod-calculator.octalHint")}</p>
+          </div>
+        </section>
+
+        <section
+          className="flex min-h-0 min-w-0 flex-col gap-3 overflow-auto lg:col-span-6"
+          aria-labelledby="tp-chmod-result-title"
         >
-          <div className="tp-tool-result" aria-live="polite">
-            <HeroValue
-              label={tw("chmod-calculator.numericLabel")}
-              value={numeric}
-              note={tw("chmod-calculator.numericNote")}
-            />
-            <dl className="tp-tool-stats">
-              <Stat label={tw("chmod-calculator.symbolicLabel")} value={symbolic} />
-              <Stat
-                label={tw("chmod-calculator.ownerStat")}
-                value={`${permissionDigit(state.owner)} · ${permissionChars(state.owner)}`}
+          <div className="tp-industrial-bar">
+            <div>
+              <h3 id="tp-chmod-result-title" className="text-sm font-semibold text-[var(--text)]">
+                {tw("chmod-calculator.resultTitle")}
+              </h3>
+              <p className="tp-tool-hint">{tw("chmod-calculator.resultHint")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <CopyButton text={command} label={t("copy")} copiedLabel={t("copied")} />
+              <DownloadButton
+                content={command}
+                fileName="chmod-command.txt"
+                label={t("download")}
+                variant="default"
               />
-              <Stat
-                label={tw("chmod-calculator.groupStat")}
-                value={`${permissionDigit(state.group)} · ${permissionChars(state.group)}`}
-              />
-              <Stat
-                label={tw("chmod-calculator.publicStat")}
-                value={`${permissionDigit(state.public)} · ${permissionChars(state.public)}`}
-              />
-            </dl>
-            <div className="flex flex-col gap-1">
-              <span className="tp-tool-label">{tw("chmod-calculator.commandLabel")}</span>
-              <div className="tp-tool-url" dir="ltr">
-                <code>{command}</code>
-              </div>
             </div>
           </div>
-        </ToolPane>
-      }
-    />
+
+          <div className="tp-meta-pill" aria-live="polite">
+            <strong dir="ltr">{numeric}</strong>
+            <span aria-hidden="true">•</span>
+            <span dir="ltr">{symbolic}</span>
+            {PERMISSION_CLASSES.map((permissionClass) => (
+              <span key={permissionClass} dir="ltr">
+                {tw(`chmod-calculator.class${permissionClass.charAt(0).toUpperCase()}${permissionClass.slice(1)}`)}{" "}
+                {permissionDigit(state[permissionClass])} · {permissionChars(state[permissionClass])}
+              </span>
+            ))}
+          </div>
+
+          <ToolBadge tone="accent">{symbolic}</ToolBadge>
+
+          <div className="flex min-h-0 flex-col gap-2">
+            <span className="tp-tool-label">{tw("chmod-calculator.commandLabel")}</span>
+            <div className="tp-output-viewer" role="region" aria-label={tw("chmod-calculator.commandLabel")}>
+              <code dir="ltr">{command}</code>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="tp-tool-ribbon">
+        <span className="tp-tool-ribbon-note">
+          <Check className="h-[13px] w-[13px]" aria-hidden="true" />
+          {tw("chmod-calculator.privacyRibbon")}
+        </span>
+      </div>
+    </div>
   );
 }

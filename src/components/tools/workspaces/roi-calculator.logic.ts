@@ -7,15 +7,15 @@ export type RoiErrorCode =
   | "EMPTY_INVESTMENT"
   | "INVALID_INVESTMENT"
   | "ZERO_INVESTMENT"
-  | "EMPTY_PROFIT"
-  | "INVALID_PROFIT"
+  | "EMPTY_RETURNED"
+  | "INVALID_RETURNED"
   | "EMPTY_YEARS"
   | "INVALID_YEARS"
   | "YEARS_OUT_OF_RANGE";
 
 export interface RoiInput {
   investment: string;
-  profit: string;
+  returnedValue: string;
   years: string;
 }
 
@@ -53,12 +53,12 @@ export function calculateRoi(input: RoiInput): RoiResult {
     return { ...blank, error: { code: "ZERO_INVESTMENT" } };
   }
 
-  if (input.profit.trim().length === 0) {
-    return { ...blank, error: { code: "EMPTY_PROFIT" } };
+  if (input.returnedValue.trim().length === 0) {
+    return { ...blank, error: { code: "EMPTY_RETURNED" } };
   }
-  const profit = Number(input.profit);
-  if (!Number.isFinite(profit)) {
-    return { ...blank, error: { code: "INVALID_PROFIT" } };
+  const returnedValue = Number(input.returnedValue);
+  if (!Number.isFinite(returnedValue)) {
+    return { ...blank, error: { code: "INVALID_RETURNED" } };
   }
 
   if (input.years.trim().length === 0) {
@@ -72,18 +72,18 @@ export function calculateRoi(input: RoiInput): RoiResult {
     return { ...blank, error: { code: "YEARS_OUT_OF_RANGE" } };
   }
 
-  const endingValue = investment + profit;
-  const roi = round((profit / investment) * 100);
-  const multiple = round(endingValue / investment);
-  const cagr = endingValue > 0
-    ? round((Math.pow(endingValue / investment, 1 / years) - 1) * 100)
+  const netGain = round(returnedValue - investment);
+  const roi = round((netGain / investment) * 100);
+  const multiple = round(returnedValue / investment);
+  const cagr = returnedValue > 0
+    ? round((Math.pow(returnedValue / investment, 1 / years) - 1) * 100)
     : null;
 
   return {
     roi,
     cagr,
-    netGain: round(profit),
-    endingValue: round(endingValue),
+    netGain,
+    endingValue: round(returnedValue),
     multiple,
   };
 }

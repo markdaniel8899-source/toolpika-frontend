@@ -619,6 +619,7 @@ export function DownloadButton({
   label,
   className,
   disabled,
+  variant = "secondary",
 }: {
   content: string | Blob | null;
   fileName: string;
@@ -626,6 +627,7 @@ export function DownloadButton({
   label: string;
   className?: string;
   disabled?: boolean;
+  variant?: "default" | "secondary" | "ghost";
 }) {
   const urlRef = useRef<string | null>(null);
 
@@ -650,7 +652,7 @@ export function DownloadButton({
   };
 
   return (
-    <Button type="button" variant="secondary" size="sm" onClick={download} disabled={disabled || !content} className={className}>
+    <Button type="button" variant={variant} size="sm" onClick={download} disabled={disabled || !content} className={className}>
       <Download className="h-3.5 w-3.5" aria-hidden="true" />
       {label}
     </Button>
@@ -719,6 +721,11 @@ export function NumberStepper({
         aria-label={ariaLabel}
         aria-describedby={describedBy}
         onChange={(event) => onValueChange(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+          event.preventDefault();
+          bump(event.key === "ArrowUp" ? 1 : -1);
+        }}
       />
       <span className="tp-stepper-controls" aria-hidden="false">
         <button

@@ -1,10 +1,11 @@
 /**
  * Pure helpers for the Web Crypto PBKDF2 workflow.
- * This workspace uses PBKDF2 SHA-256 via Web Crypto, not bcrypt.
+ * This workspace uses PBKDF2 SHA-256 or SHA-512 via Web Crypto, not bcrypt.
  * The slug stays bcrypt-generator for routing compatibility.
  */
 
 export type HashMode = "generate" | "verify";
+export type Pbkdf2Algorithm = "SHA-256" | "SHA-512";
 export type PassphraseIssue = "empty" | "short";
 export type HashIssue = "empty" | "format" | "iterations";
 
@@ -12,12 +13,17 @@ export interface Pbkdf2Parts {
   iterations: number;
   salt: string;
   digest: string;
+  algorithm: Pbkdf2Algorithm;
+  /** Derived key size in bytes, recovered from the digest when parsing. */
+  keyLength: number;
 }
 
 export const PBKDF2_ALGORITHM = "PBKDF2-SHA256";
 export const PBKDF2_PREFIX = "pbkdf2-sha256";
+export const PBKDF2_SHA512_PREFIX = "pbkdf2-sha512";
 export const PBKDF2_DIGEST_BYTES = 32;
 export const PBKDF2_SALT_BYTES = 16;
+export const KEY_LENGTH_OPTIONS = [16, 32, 64] as const;
 export const DEFAULT_ITERATIONS = 210000;
 export const ITERATION_OPTIONS = [100000, 210000, 310000, 600000] as const;
 export const MIN_PASSPHRASE_LENGTH = 8;
@@ -64,18 +70,41 @@ export function base64ToBytes(text: string): Uint8Array | null {
   return new Uint8Array(bytes);
 }
 
-/** One portable string with version, iteration count, salt and digest. */
+/** Lowercase hex encoding, used by the Hex output toggle. */
+export function bytesToHex(bytes: Uint8Array): string {
+  let output = "";
+  for (const byte of bytes) output += byte.toString(16).padStart(2, "0");
+  return output;
+}
+
+/** One portable string with algorithm, iteration count, salt and digest. */
 export function formatHash(parts: Pbkdf2Parts): string {
-  return [PBKDF2_PREFIX, parts.iterations, parts.salt, parts.digest].join("$");
+  const prefix = parts.algorithm === "SHA-512" ? PBKDF2_SHA512_PREFIX : PBKDF2_PREFIX;
+  return [prefix, parts.iterations, parts.salt, parts.digest].join("$");
 }
 
 export function parseHash(text: string): Pbkdf2Parts | null {
   const sections = text.trim().split("$");
-  if (sections.length !== 4 || sections[0] !== PBKDF2_PREFIX) return null;
+  if (sections.length !== 4) return null;
+  const algorithm: Pbkdf2Algorithm | null =
+    sections[0] === PBKDF2_PREFIX
+      ? "SHA-256"
+      : sections[0] === PBKDF2_SHA512_PREFIX
+        ? "SHA-512"
+        : null;
+  if (!algorithm) return null;
   const iterations = Number(sections[1]);
   if (!Number.isInteger(iterations) || iterations < 10000 || iterations > 5000000) return null;
-  if (!base64ToBytes(sections[2]) || !base64ToBytes(sections[3])) return null;
-  return { iterations, salt: sections[2], digest: sections[3] };
+  const salt = base64ToBytes(sections[2]);
+  const digest = base64ToBytes(sections[3]);
+  if (!salt || !digest || digest.byteLength < 1 || digest.byteLength > 128) return null;
+  return {
+    iterations,
+    salt: sections[2],
+    digest: sections[3],
+    algorithm,
+    keyLength: digest.byteLength,
+  };
 }
 
 export function checkPassphrase(value: string): PassphraseIssue | null {

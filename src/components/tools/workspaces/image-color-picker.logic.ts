@@ -8,7 +8,7 @@ export const MAX_FILE_BYTES = 20 * 1024 * 1024;
 export const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 export const DEFAULT_PALETTE_SIZE = 6;
 export const MIN_PALETTE_SIZE = 3;
-export const MAX_PALETTE_SIZE = 10;
+export const MAX_PALETTE_SIZE = 12;
 /** Skip every other pixel when quantizing large images. */
 export const PIXEL_STRIDE = 2;
 
@@ -33,6 +33,13 @@ export interface PaletteSwatch {
 
 export function isAcceptedType(type: string): boolean {
   return (ACCEPTED_TYPES as readonly string[]).includes(type);
+}
+
+export function formatBytes(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes < 0) return "0 B";
+  if (bytes < 1024) return `${Math.round(bytes)} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
 export function clampByte(value: number): number {
@@ -73,60 +80,113 @@ export function formatHsl(hsl: Hsl): string {
   return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
 }
 
-interface Bucket {
+interface Sample {
   r: number;
   g: number;
   b: number;
-  count: number;
+}
+
+function distance(a: Sample, b: Sample): number {
+  return Math.hypot(a.r - b.r, a.g - b.g, a.b - b.b);
 }
 
 /**
- * Quantize sampled pixels into colour buckets and return the most common ones
- * with their share of the sampled pixels. Fully transparent pixels are skipped.
+ * Extract a real palette from sampled pixels using k-means. Transparent pixels
+ * are ignored, near duplicate centres are merged and clusters are ranked by
+ * the share of pixels they represent.
  */
 export function quantizePalette(
   data: Uint8ClampedArray,
   count: number,
-  bucketSize = 32,
 ): PaletteSwatch[] {
-  const buckets = new Map<number, Bucket>();
-  let sampled = 0;
-
+  const pixels: Sample[] = [];
   for (let index = 0; index < data.length; index += 4 * PIXEL_STRIDE) {
-    const alpha = data[index + 3];
-    if (alpha < 128) continue;
-    const r = data[index];
-    const g = data[index + 1];
-    const b = data[index + 2];
-    const key =
-      (Math.floor(r / bucketSize) << 16) |
-      (Math.floor(g / bucketSize) << 8) |
-      Math.floor(b / bucketSize);
-    const bucket = buckets.get(key) ?? { r: 0, g: 0, b: 0, count: 0 };
-    bucket.r += r;
-    bucket.g += g;
-    bucket.b += b;
-    bucket.count += 1;
-    buckets.set(key, bucket);
-    sampled += 1;
+    if (data[index + 3] < 128) continue;
+    pixels.push({ r: data[index], g: data[index + 1], b: data[index + 2] });
+  }
+  if (pixels.length === 0) return [];
+
+  const wanted = Math.max(1, Math.min(12, Math.round(count)));
+  const unique = new Map<string, { color: Sample; count: number }>();
+  for (const pixel of pixels) {
+    const key = `${pixel.r},${pixel.g},${pixel.b}`;
+    const found = unique.get(key);
+    if (found) found.count += 1;
+    else unique.set(key, { color: pixel, count: 1 });
   }
 
-  if (sampled === 0) return [];
+  const ranked = [...unique.values()].sort((a, b) => b.count - a.count);
+  const centers: Sample[] = [];
+  for (const item of ranked) {
+    if (centers.length >= wanted) break;
+    if (centers.every((center) => distance(center, item.color) > 28)) {
+      centers.push({ ...item.color });
+    }
+  }
+  for (const item of ranked) {
+    if (centers.length >= wanted) break;
+    centers.push({ ...item.color });
+  }
 
-  const ranked = Array.from(buckets.values()).sort((a, b) => b.count - a.count);
-  return ranked.slice(0, Math.max(1, count)).map((bucket) => {
-    const rgb: Rgb = {
-      r: clampByte(bucket.r / bucket.count),
-      g: clampByte(bucket.g / bucket.count),
-      b: clampByte(bucket.b / bucket.count),
-    };
-    return {
-      hex: rgbToHex(rgb),
-      rgb,
-      hsl: rgbToHsl(rgb),
-      share: Math.round((bucket.count / sampled) * 100),
-    };
-  });
+  const assigned = new Array<number>(pixels.length).fill(0);
+  for (let step = 0; step < 10; step += 1) {
+    for (let index = 0; index < pixels.length; index += 1) {
+      let best = 0;
+      let bestDistance = Number.POSITIVE_INFINITY;
+      for (let center = 0; center < centers.length; center += 1) {
+        const value = distance(pixels[index], centers[center]);
+        if (value < bestDistance) {
+          bestDistance = value;
+          best = center;
+        }
+      }
+      assigned[index] = best;
+    }
+    for (let center = 0; center < centers.length; center += 1) {
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let total = 0;
+      for (let index = 0; index < pixels.length; index += 1) {
+        if (assigned[index] !== center) continue;
+        r += pixels[index].r;
+        g += pixels[index].g;
+        b += pixels[index].b;
+        total += 1;
+      }
+      if (total > 0) centers[center] = { r: r / total, g: g / total, b: b / total };
+    }
+  }
+
+  const totals = new Array<number>(centers.length).fill(0);
+  for (const owner of assigned) totals[owner] += 1;
+
+  const swatches: PaletteSwatch[] = centers
+    .map((center, index) => ({
+      center,
+      total: totals[index],
+    }))
+    .filter((item) => item.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .map((item) => {
+      const rgb: Rgb = {
+        r: clampByte(item.center.r),
+        g: clampByte(item.center.g),
+        b: clampByte(item.center.b),
+      };
+      return {
+        hex: rgbToHex(rgb),
+        rgb,
+        hsl: rgbToHsl(rgb),
+        share: Math.round((item.total / pixels.length) * 100),
+      };
+    });
+
+  const deduped: PaletteSwatch[] = [];
+  for (const swatch of swatches) {
+    if (deduped.every((other) => distance(swatch.rgb, other.rgb) > 12)) deduped.push(swatch);
+  }
+  return deduped.slice(0, wanted);
 }
 
 /** A CSS custom property block ready to paste into a stylesheet. */
