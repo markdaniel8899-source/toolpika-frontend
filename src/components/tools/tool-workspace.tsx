@@ -83,6 +83,31 @@ const DueDateCalculator = dynamic(() => import("./workspaces/due-date-calculator
 const TextRepeater = dynamic(() => import("./workspaces/text-repeater"), { loading });
 const ReverseText = dynamic(() => import("./workspaces/reverse-text"), { loading });
 const ImageFormatConverter = dynamic(() => import("./workspaces/image-format-converter"), { loading });
+const ImageCropper = dynamic(() => import("./workspaces/image-cropper"), { loading });
+const ImageToBase64 = dynamic(() => import("./workspaces/image-to-base64"), { loading });
+const ExifMetadataRemover = dynamic(() => import("./workspaces/exif-metadata-remover"), { loading });
+const ImageColorPicker = dynamic(() => import("./workspaces/image-color-picker"), { loading });
+const JsonToTypescript = dynamic(() => import("./workspaces/json-to-typescript"), { loading });
+const SvgOptimizer = dynamic(() => import("./workspaces/svg-optimizer"), { loading });
+const CssShadowGenerator = dynamic(() => import("./workspaces/css-shadow-generator"), { loading });
+const CssGradientGenerator = dynamic(() => import("./workspaces/css-gradient-generator"), { loading });
+const RobotsTxtGenerator = dynamic(() => import("./workspaces/robots-txt-generator"), { loading });
+const ChmodCalculator = dynamic(() => import("./workspaces/chmod-calculator"), { loading });
+const UrlParser = dynamic(() => import("./workspaces/url-parser"), { loading });
+const PasswordStrengthChecker = dynamic(() => import("./workspaces/password-strength-checker"), { loading });
+const BcryptGenerator = dynamic(() => import("./workspaces/bcrypt-generator"), { loading });
+const AesTextEncryptor = dynamic(() => import("./workspaces/aes-text-encryptor"), { loading });
+const CsvToJson = dynamic(() => import("./workspaces/csv-to-json"), { loading });
+const XmlToJson = dynamic(() => import("./workspaces/xml-to-json"), { loading });
+const HtmlEntityEncoder = dynamic(() => import("./workspaces/html-entity-encoder"), { loading });
+const RomanNumeralConverter = dynamic(() => import("./workspaces/roman-numeral-converter"), { loading });
+const PpiCalculator = dynamic(() => import("./workspaces/ppi-calculator"), { loading });
+const UnicodeInspector = dynamic(() => import("./workspaces/unicode-inspector"), { loading });
+const FancyTextGenerator = dynamic(() => import("./workspaces/fancy-text-generator"), { loading });
+const LinePrefixSuffix = dynamic(() => import("./workspaces/line-prefix-suffix"), { loading });
+const GpaCalculator = dynamic(() => import("./workspaces/gpa-calculator"), { loading });
+const RoiCalculator = dynamic(() => import("./workspaces/roi-calculator"), { loading });
+const TimezoneConverter = dynamic(() => import("./workspaces/timezone-converter"), { loading });
 
 const WORKSPACES = {
   "word-counter": WordCounter,
@@ -161,6 +186,31 @@ const WORKSPACES = {
   "text-repeater": TextRepeater,
   "reverse-text": ReverseText,
   "image-format-converter": ImageFormatConverter,
+  "image-cropper": ImageCropper,
+  "image-to-base64": ImageToBase64,
+  "exif-metadata-remover": ExifMetadataRemover,
+  "image-color-picker": ImageColorPicker,
+  "json-to-typescript": JsonToTypescript,
+  "svg-optimizer": SvgOptimizer,
+  "css-shadow-generator": CssShadowGenerator,
+  "css-gradient-generator": CssGradientGenerator,
+  "robots-txt-generator": RobotsTxtGenerator,
+  "chmod-calculator": ChmodCalculator,
+  "url-parser": UrlParser,
+  "password-strength-checker": PasswordStrengthChecker,
+  "bcrypt-generator": BcryptGenerator,
+  "aes-text-encryptor": AesTextEncryptor,
+  "csv-to-json": CsvToJson,
+  "xml-to-json": XmlToJson,
+  "html-entity-encoder": HtmlEntityEncoder,
+  "roman-numeral-converter": RomanNumeralConverter,
+  "ppi-calculator": PpiCalculator,
+  "unicode-inspector": UnicodeInspector,
+  "fancy-text-generator": FancyTextGenerator,
+  "line-prefix-suffix": LinePrefixSuffix,
+  "gpa-calculator": GpaCalculator,
+  "roi-calculator": RoiCalculator,
+  "timezone-converter": TimezoneConverter,
 } as const;
 
 export function ToolWorkspace({ slug }: { slug: string }) {
