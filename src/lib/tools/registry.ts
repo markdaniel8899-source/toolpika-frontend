@@ -880,6 +880,7 @@ export const tools: Tool[] = [
     inputs: ["file"],
     clientSide: true,
     status: "live",
+    isNew: true,
   },
   {
     id: "image-cropper",
