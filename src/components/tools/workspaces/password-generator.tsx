@@ -1,11 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { RefreshCw } from "lucide-react";
+import { Check, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceLayout } from "../workspace-layout";
 import { CheckboxRow, CopyButton, OutputEmpty, Stat } from "../workspace-ui";
+import {
+  assessPassword,
+  BAND_LABEL_KEYS,
+  CHECK_KEYS,
+  CHECK_ORDER,
+} from "./password-strength-checker.logic";
 
 /**
  * Character sets exclude look-alike characters (i, l, 1, L, o, 0, O) so a
@@ -106,12 +112,11 @@ export default function PasswordGenerator() {
   const variety =
     Number(useLower) + Number(useUpper) + Number(useNumbers) + Number(useSymbols);
   const noGroups = variety === 0;
-  const strength =
-    length >= 16 && variety >= 3
-      ? "strengthStrong"
-      : length >= 12 && variety >= 2
-        ? "strengthGood"
-        : "strengthWeak";
+
+  const assessment = useMemo(
+    () => assessPassword(password, 12),
+    [password],
+  );
 
   const handleSample = () => {
     setLength(DEFAULT_OPTIONS.length);
@@ -207,8 +212,28 @@ export default function PasswordGenerator() {
 
             <dl className="tp-password-stats">
               <Stat label={t("passwordLength")} value={password.length} />
-              <Stat label={t("strength")} value={t(strength)} />
+              <Stat label={t("strength")} value={tw(BAND_LABEL_KEYS[assessment.band])} />
             </dl>
+
+            <div className="tp-tool-group tp-tool-group--flush">
+              <div className="tp-meta-pill" aria-live="polite">
+                <span>{tw("password-strength-checker.scoreLabel")}</span>
+                <strong dir="ltr">{assessment.score}/4</strong>
+                <span aria-hidden="true">•</span>
+                <span>{tw("password-strength-checker.entropyLabel")}</span>
+                <strong dir="ltr">{assessment.entropyBits}</strong>
+              </div>
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {CHECK_ORDER.map((key) => (
+                  <li className="tp-check-row" key={key}>
+                    {assessment.checks[key]
+                      ? <Check className="h-3.5 w-3.5 text-[var(--success)]" aria-hidden="true" />
+                      : <X className="h-3.5 w-3.5 text-[var(--danger)]" aria-hidden="true" />}
+                    <span className="tp-check-label">{tw(CHECK_KEYS[key])}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <CopyButton
               text={password}

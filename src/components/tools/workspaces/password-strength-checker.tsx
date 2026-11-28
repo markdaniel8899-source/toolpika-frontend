@@ -128,7 +128,6 @@ export default function PasswordStrengthChecker() {
                   : tw("password-strength-checker.showAction")}
               </Button>
             </div>
-            <p className="tp-tool-hint">{tw("password-strength-checker.passwordHint")}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -150,7 +149,6 @@ export default function PasswordStrengthChecker() {
                 increaseLabel={t("stepUp")}
                 decreaseLabel={t("stepDown")}
               />
-              <span className="tp-tool-hint">{tw("password-strength-checker.minLengthHint")}</span>
             </label>
             <div className="tp-tool-group tp-tool-group--flush">
               <span className="tp-tool-group-title">{tw("password-strength-checker.heroLabel")}</span>

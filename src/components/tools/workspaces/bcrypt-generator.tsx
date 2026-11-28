@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { AlertCircle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolIcon } from "@/components/tools/tool-icon";
+import { ThemedSelect } from "@/components/ui/themed-select";
 import {
   CopyButton,
   DownloadButton,
@@ -285,18 +286,12 @@ export default function BcryptGenerator() {
             <span className="tp-tool-subtitle">{tw("bcrypt-generator.shortDesc")}</span>
           </span>
         </div>
-        <SegmentedControl<HashMode>
-          label={tw("bcrypt-generator.modeLabel")}
-          value={mode}
-          options={[
-            { value: "generate", label: tw("bcrypt-generator.modeGenerate") },
-            { value: "verify", label: tw("bcrypt-generator.modeVerify") },
-          ]}
-          onChange={handleModeChange}
-        />
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" size="sm" onClick={handleSample}>
             {tw("bcrypt-generator.sampleAction")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+            {t("clear")}
           </Button>
         </div>
       </div>
@@ -325,12 +320,17 @@ export default function BcryptGenerator() {
               </h3>
               <p className="tp-tool-hint">{tw("bcrypt-generator.inputHint")}</p>
             </div>
-            <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-                {t("clear")}
-              </Button>
-            </div>
           </div>
+
+          <SegmentedControl<HashMode>
+            label={tw("bcrypt-generator.modeLabel")}
+            value={mode}
+            options={[
+              { value: "generate", label: tw("bcrypt-generator.modeGenerate") },
+              { value: "verify", label: tw("bcrypt-generator.modeVerify") },
+            ]}
+            onChange={handleModeChange}
+          />
 
           <ToolField
             label={tw("bcrypt-generator.passphraseLabel")}
@@ -388,20 +388,18 @@ export default function BcryptGenerator() {
                 htmlFor="tp-pbkdf2-iterations"
                 hint={tw("bcrypt-generator.iterationsHint")}
               >
-                <select
-                  id="tp-pbkdf2-iterations"
-                  className={selectClassName}
-                  value={iterations}
-                  onChange={(event) => {
-                    const value = event.target.value;
+                <ThemedSelect
+                  value={String(iterations)}
+                  ariaLabel={tw("bcrypt-generator.iterationsLabel")}
+                  options={ITERATION_OPTIONS.map((value) => ({
+                    value: String(value),
+                    label: value.toLocaleString("en-US"),
+                  }))}
+                  onValueChange={(value) => {
                     setIterations(value);
                     void run(current({ iterations: value }));
                   }}
-                >
-                  {ITERATION_OPTIONS.map((value) => (
-                    <option key={value} value={value}>{value.toLocaleString("en-US")}</option>
-                  ))}
-                </select>
+                />
               </ToolField>
 
               <details className="tp-tool-group tp-tool-group--flush">

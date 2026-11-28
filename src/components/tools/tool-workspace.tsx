@@ -97,7 +97,6 @@ const UrlParser = dynamic(() => import("./workspaces/url-parser"), { loading });
 const PasswordStrengthChecker = dynamic(() => import("./workspaces/password-strength-checker"), { loading });
 const BcryptGenerator = dynamic(() => import("./workspaces/bcrypt-generator"), { loading });
 const AesTextEncryptor = dynamic(() => import("./workspaces/aes-text-encryptor"), { loading });
-const CsvToJson = dynamic(() => import("./workspaces/csv-to-json"), { loading });
 const XmlToJson = dynamic(() => import("./workspaces/xml-to-json"), { loading });
 const HtmlEntityEncoder = dynamic(() => import("./workspaces/html-entity-encoder"), { loading });
 const RomanNumeralConverter = dynamic(() => import("./workspaces/roman-numeral-converter"), { loading });
@@ -200,7 +199,6 @@ const WORKSPACES = {
   "password-strength-checker": PasswordStrengthChecker,
   "bcrypt-generator": BcryptGenerator,
   "aes-text-encryptor": AesTextEncryptor,
-  "csv-to-json": CsvToJson,
   "xml-to-json": XmlToJson,
   "html-entity-encoder": HtmlEntityEncoder,
   "roman-numeral-converter": RomanNumeralConverter,

@@ -102,15 +102,12 @@ export default function CssShadowGenerator() {
             <span className="tp-tool-subtitle">{tw("css-shadow-generator.shortDesc")}</span>
           </span>
         </div>
-        <div className="tp-meta-pill" aria-live="polite">
-          <span>{tw("css-shadow-generator.layerCountLabel")}</span>
-          <strong dir="ltr">{visibleLayers.length}</strong>
-          <span aria-hidden="true">•</span>
-          <span>{tw("css-shadow-generator.maxLayers", { count: SHADOW_MAX_LAYERS })}</span>
-        </div>
         <div className="ml-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={handleSample}>
+          <Button type="button" size="sm" onClick={handleSample}>
             {tw("css-shadow-generator.trySample")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+            {t("clear")}
           </Button>
         </div>
       </div>
@@ -126,11 +123,6 @@ export default function CssShadowGenerator() {
                 {tw("css-shadow-generator.resultTitle")}
               </h3>
               <p className="tp-tool-hint">{tw("css-shadow-generator.resultHint")}</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-                {t("clear")}
-              </Button>
             </div>
           </div>
 

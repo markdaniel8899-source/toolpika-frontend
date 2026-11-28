@@ -150,7 +150,7 @@ export default function UrlParser() {
         </div>
       </div>
 
-      <div className="tp-tool-group tp-tool-group--flush">
+      <div className="tp-url-input-group">
         <div className="tp-industrial-bar">
           <label htmlFor="url-parser-source" className="tp-tool-group-title">
             {tw("url-parser.urlLabel")}

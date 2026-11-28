@@ -72,49 +72,13 @@ export default function JsonToTypeScript() {
             <span className="tp-tool-subtitle">{tw("json-to-typescript.shortDesc")}</span>
           </span>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="ml-auto flex items-center gap-1">
-            <Button type="button" size="sm" onClick={handleSample}>
-              {tw("json-to-typescript.trySample")}
-            </Button>
-            <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
-              {t("clear")}
-            </Button>
-          </div>
-          <label
-            htmlFor="ts-root-name"
-            className="flex items-center gap-2 text-xs font-medium text-[var(--text)]"
-          >
-            {tw("json-to-typescript.rootName")}
-            <input
-              id="ts-root-name"
-              type="text"
-              className={`${selectClassName} w-28`}
-              value={options.rootName}
-              autoComplete="off"
-              dir="ltr"
-              placeholder="Root"
-              aria-label={tw("json-to-typescript.rootName")}
-              onChange={(event) =>
-                setOptions((previous) => ({ ...previous, rootName: event.target.value }))
-              }
-            />
-          </label>
-          <SegmentedControl<RootStyle>
-            label={tw("json-to-typescript.styleTitle")}
-            value={options.style}
-            options={[
-              { value: "interface", label: tw("json-to-typescript.styleInterface") },
-              { value: "type", label: tw("json-to-typescript.styleType") },
-            ]}
-            onChange={(style) => setOptions((previous) => ({ ...previous, style }))}
-          />
-          <CheckboxRow
-            id="ts-optional"
-            label={tw("json-to-typescript.optionalFields")}
-            checked={options.optional}
-            onChange={(optional) => setOptions((previous) => ({ ...previous, optional }))}
-          />
+        <div className="ml-auto flex items-center gap-1">
+          <Button type="button" size="sm" onClick={handleSample}>
+            {tw("json-to-typescript.trySample")}
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={handleClear} disabled={!input}>
+            {t("clear")}
+          </Button>
         </div>
       </div>
 
@@ -148,6 +112,40 @@ export default function JsonToTypeScript() {
                 {t("formatJson")}
               </Button>
             </div>
+          </div>
+
+          <div className="tp-tool-group tp-tool-group--flush">
+            <SegmentedControl<RootStyle>
+              label={tw("json-to-typescript.styleTitle")}
+              value={options.style}
+              options={[
+                { value: "interface", label: tw("json-to-typescript.styleInterface") },
+                { value: "type", label: tw("json-to-typescript.styleType") },
+              ]}
+              onChange={(style) => setOptions((previous) => ({ ...previous, style }))}
+            />
+            <label htmlFor="ts-root-name" className="flex items-center gap-2 text-xs font-medium text-[var(--text)]">
+              {tw("json-to-typescript.rootName")}
+              <input
+                id="ts-root-name"
+                type="text"
+                className={`${selectClassName} w-28`}
+                value={options.rootName}
+                autoComplete="off"
+                dir="ltr"
+                placeholder="Root"
+                aria-label={tw("json-to-typescript.rootName")}
+                onChange={(event) =>
+                  setOptions((previous) => ({ ...previous, rootName: event.target.value }))
+                }
+              />
+            </label>
+            <CheckboxRow
+              id="ts-optional"
+              label={tw("json-to-typescript.optionalFields")}
+              checked={options.optional}
+              onChange={(optional) => setOptions((previous) => ({ ...previous, optional }))}
+            />
           </div>
 
           <textarea
